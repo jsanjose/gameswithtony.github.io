@@ -18,39 +18,41 @@
 <body>
     <main id="onmars">
         <p class="cards-left">{{ currentDeck.length }} left</p>
-        <div class="mission">
+        <div class="mission" v-bind:class="{ showMission: showMission }">
             <p>{{ currentCard.mission }}</p>
         </div>
-        <img src="images/controlcenter.png" class="action" />
-        <p>{{ currentCard.action }} - {{ currentCard.travel }}</p>
+        <img v-bind:src="'images/' + actionImage()" class="action" />
         <div class="sides">
             <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 0 }" v-on:click="currentSide = 0" />
             <img src="images/colonyside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 1 }" v-on:click="currentSide = 1" / />
         </div>
         <button v-on:click="draw" class="draw-button">Draw</button>
         <ul class="turn-order-spaces">
-            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 1 }">
-                1
-            </li>
-            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 2 }">
-                2
-            </li>
-            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 3 }">
-                3
-            </li>
-            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 4 }">
-                4
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" class="travel" v-bind:class="{ noTravel: currentCard.travel === false }" viewBox="0 0 300.68 539.57"><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M155.52,1.75l-.15-.09L155,1.45l-.14-.09-.28-.17a8.24,8.24,0,0,0-8.54,0l-.27.17-.15.09-.33.21-.16.09c-6.36,4-41.21,27.51-64.6,73H220.12C196.72,29.26,161.88,5.77,155.52,1.75Z"/><path class="cls-1" d="M241.74,174c0-36.93-9.18-67.27-21.58-91.4H80.52c-12.4,24.13-21.58,54.47-21.58,91.4,0,28,4.33,84.93,11.18,151.35,4.16,40.32,9.23,84.15,14.84,127.13a33.43,33.43,0,0,0,32.91,29h19V331.85a13.5,13.5,0,1,1,27,0V481.41h19a33.3,33.3,0,0,0,31.12-21.79,32.23,32.23,0,0,0,1.79-7.16c5.61-43,10.69-86.81,14.84-127.13C237.4,258.91,241.74,202,241.74,174Zm-91.4,66.47a58.17,58.17,0,1,1,58.16-58.17A58.23,58.23,0,0,1,150.34,240.45Z"/><path class="cls-1" d="M289,402.45l-49.34-77.13c-4.15,40.33-9.23,84.16-14.84,127.13a32.74,32.74,0,0,1-1.79,7.17l62.92,76.9a8.3,8.3,0,0,0,6.43,3.05,8.45,8.45,0,0,0,2.8-.48,8.31,8.31,0,0,0,5.51-7.83V442.6A74.64,74.64,0,0,0,289,402.45Z"/><path class="cls-1" d="M61,325.33,11.69,402.45A74.64,74.64,0,0,0,0,442.6v88.66a8.31,8.31,0,0,0,14.74,5.26l62.92-76.9a32.74,32.74,0,0,1-1.79-7.17C70.26,409.48,65.18,365.65,61,325.33Z"/><path class="cls-1" d="M150.34,323.54a8.31,8.31,0,0,0-8.31,8.31V531.26a8.31,8.31,0,0,0,16.62,0V331.85A8.3,8.3,0,0,0,150.34,323.54Z"/><circle class="cls-1" cx="150.34" cy="182.28" r="41.54"/></g></g></svg>
             </li>
             <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 1 }">
-                5
+                1
             </li>
             <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 2 }">
-                6
+                2
             </li>
             <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 3 }">
-                7
+                3
             </li>
             <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 4 }">
+                4
+            </li>
+            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 1 }">
+                5
+            </li>
+            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 2 }">
+                6
+            </li>
+            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 3 }">
+                7
+            </li>
+            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 4 }">
                 8
             </li>
         </ul>

@@ -2,7 +2,7 @@ const MISSION_A = 'A';
 const MISSION_B = 'B';
 const MISSION_C = 'C';
 const ORBITAL = 0;
-const PLANET = 1;
+const COLONY = 1;
 const LOCALSTORAGENAME = 'onmarsgamestate';
 
 function createCard(action, travel, mission) {
@@ -62,6 +62,7 @@ var app = new Vue({
           this.saveGameState();
       },
       reset: function() {
+          this.showMission = false;
           this.shuffle();
           this.draw();
       },
@@ -84,6 +85,35 @@ var app = new Vue({
         gameState.showMission = this.showMission;
         gameState.currentSide = this.currentSide;
         localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
+      },
+      actionImage: function () {
+          if (this.currentSide === ORBITAL) {
+                switch (this.currentCard.action) {
+                    case 1:
+                        return "obtainblueprint.png";
+                        break;
+                    case 2:
+                        return "learnnewtechnology.png";
+                        break;
+                    case 3:
+                        return "researchanddevelopment.png";
+                        break;
+                }
+          }
+
+          if (this.currentSide === COLONY) {
+                switch (this.currentCard.action) {
+                    case 1:
+                        return "constructabuilding.png";
+                        break;
+                    case 2:
+                        return "upgradeabuilding.png";
+                        break;
+                    case 3:
+                        return "hireascientist.png";
+                        break;
+                }
+          }
       }
     }
 });
