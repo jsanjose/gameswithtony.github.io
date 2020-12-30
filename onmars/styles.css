@@ -69,6 +69,7 @@ main > * {
 
 .draw-button {
     height: 50px;
+    min-height: 50px;
     background-color: #dd2026;
     color: #ffffff;
     font-size: 1.1rem;
@@ -83,16 +84,21 @@ main > * {
     border: none;
 }
 
+.hexdir {
+    width: 70px;
+    height: 64px;
+}
+
 .sides {
     display: flex;
     justify-content: space-between;
-    width: 70%;
+    width: 50%;
     align-items: center;
 }
 
 .orbital-colony {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     opacity: 0.3;
     cursor: pointer;
 }

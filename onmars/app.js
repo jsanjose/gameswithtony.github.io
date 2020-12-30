@@ -114,6 +114,24 @@ var app = new Vue({
                         break;
                 }
           }
+      },
+      hexDirImage: function () {
+          if (!this.currentCard.travel) {
+              return "bt-rl.png";
+          }
+          else {
+              switch (this.currentCard.action) {
+                  case 1:
+                      return "tb-lr.png";
+                      break;
+                  case 2:
+                      return "tb-rl.png";
+                      break;
+                  case 3:
+                      return "bt-lr.png";
+                      break;
+              }
+          }
       }
     }
 });
