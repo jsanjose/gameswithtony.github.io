@@ -21,6 +21,7 @@
         <div class="mission">
             <p>{{ currentCard.mission }}</p>
         </div>
+        <img src="images/controlcenter.png" class="action" />
         <p>{{ currentCard.action }} - {{ currentCard.travel }}</p>
         <div class="sides">
             <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 0 }" v-on:click="currentSide = 0" />

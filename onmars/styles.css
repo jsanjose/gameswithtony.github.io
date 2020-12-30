@@ -60,6 +60,11 @@ main > * {
     justify-content: center;
 }
 
+.action {
+    height: 200px;
+    width: 200px;
+}
+
 .draw-button {
     height: 50px;
     background-color: #dd2026;
