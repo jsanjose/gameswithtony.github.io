@@ -51,6 +51,7 @@ main > * {
 
 .orbital-colony {
     width: 80px;
+    height: 80px;
     opacity: 0.3;
     cursor: pointer;
 }
