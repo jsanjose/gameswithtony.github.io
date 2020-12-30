@@ -16,6 +16,7 @@ main {
     flex-shrink: 0;
     flex-wrap: wrap;
     justify-content: center;
+    max-width: 100%;
 }
 
 main > * {
@@ -39,6 +40,7 @@ main > * {
 
 .reset-button {
     height: 30px;
+    background-color: #eeeeee;
     box-shadow: none;
     border: none;
 }
