@@ -23,7 +23,32 @@
             <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 0 }" v-on:click="currentSide = 0" />
             <img src="images/colonyside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 1 }" v-on:click="currentSide = 1" / />
         </div>
-        <p>Turn order space: {{ turnOrderSpace() }}</p>
+        <ul class="turn-order-spaces">
+            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 1 }">
+                1
+            </li>
+            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 2 }">
+                2
+            </li>
+            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 3 }">
+                3
+            </li>
+            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 4 }">
+                4
+            </li>
+            <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 1 }">
+                5
+            </li>
+            <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 2 }">
+                6
+            </li>
+            <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 3 }">
+                7
+            </li>
+            <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 4 }">
+                8
+            </li>
+        </ul>
         <button v-on:click="reset" class="reset-button">Reset</button>
     </main>
 </body>
