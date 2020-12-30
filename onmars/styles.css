@@ -1,0 +1,60 @@
+* {
+    font-family: 'Noto Sans';
+}
+
+.accent-color {
+    color: #dd2026;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+main {
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+main > * {
+    flex: 0 0 100%;
+    margin-bottom: 1.5rem;
+}
+
+.cards-left {
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.draw-button {
+    height: 50px;
+    background-color: #dd2026;
+    color: #ffffff;
+    font-size: 1.1rem;
+    box-shadow: none;
+    border: none;
+}
+
+.reset-button {
+    height: 30px;
+    box-shadow: none;
+    border: none;
+}
+
+.sides {
+    display: flex;
+    justify-content: space-between;
+    flex-basis: 50%;
+}
+
+.orbital-colony {
+    width: 80px;
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+.currentSide {
+    opacity: 1.0;
+}
