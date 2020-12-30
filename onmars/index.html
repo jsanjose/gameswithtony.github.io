@@ -23,8 +23,8 @@
         </div>
         <img v-bind:src="'images/' + actionImage()" class="action" />
         <div class="sides">
-            <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 0 }" v-on:click="currentSide = 0" />
-            <img src="images/colonyside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 1 }" v-on:click="currentSide = 1" / />
+            <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 0 }" v-on:click="setSide(0)" />
+            <img src="images/colonyside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 1 }" v-on:click="setSide(1)" / />
         </div>
         <button v-on:click="draw" class="draw-button">Draw</button>
         <img v-bind:src="'images/' + hexDirImage()" class="hexdir" />
