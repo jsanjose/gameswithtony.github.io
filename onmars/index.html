@@ -17,7 +17,7 @@
 </head>
 <body>
     <main id="onmars">
-        <p class="cards-left">{{ currentDeck.length }} left</p>
+        <p class="cards-left">{{ currentDeck.length }} left - (<a href="#" class="reset-button" v-on:click="reset">Reset</a>)</p>
         <div class="mission" v-bind:class="{ showMission: showMission }">
             <p>{{ currentCard.mission }}</p>
         </div>
@@ -57,7 +57,6 @@
                 8
             </li>
         </ul>
-        <button v-on:click="reset" class="reset-button">Reset</button>
     </main>
 </body>
 <script src="app.js"></script>

@@ -78,10 +78,7 @@ main > * {
 }
 
 .reset-button {
-    height: 30px;
-    background-color: #eeeeee;
-    box-shadow: none;
-    border: none;
+    text-decoration: none;
 }
 
 .hexdir {
