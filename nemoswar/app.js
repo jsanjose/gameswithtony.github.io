@@ -62,10 +62,12 @@ var app = new Vue({
             this.diePool[index].showDie = true;
         },
         roll1d3: function() {
+            this.showCalc = false;
             this.clearDiePool();
             this.roll(0, 3, WHITE);
         },
         roll1d6: function() {
+            this.showCalc = false;
             this.clearDiePool();
             this.roll(0, 6, WHITE);
         },
