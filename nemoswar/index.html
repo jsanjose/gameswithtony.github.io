@@ -22,6 +22,10 @@
                 <li class="die-list" v-for="die in activeDice" :key="die.id">
                     <div class="die die--black" v-bind:class="{ dieWhite: die.color === 0, dieBlack: die.color === 1 }">{{ die.currentValue }}</div>
                 </li>
+                <li class="calc" v-if="showCalc">
+                    + {{ diceSum }}<br />
+                    - {{ diceDiff }}
+                </li>
             </ul>
         </section>
         <section id="buttons">

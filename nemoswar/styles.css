@@ -106,3 +106,10 @@ body {
     z-index: -10;
     opacity: 0.1;
 }
+
+.calc {
+    list-style: none;
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    text-align: left;
+}

@@ -30,7 +30,8 @@ const diePoolInit = [
 var app = new Vue({
     el: '#nemo',
     data: {
-      diePool: diePoolInit
+      diePool: diePoolInit,
+      showCalc: false
     },
     mounted: function() {
         
@@ -40,6 +41,12 @@ var app = new Vue({
                 return this.diePool.filter(function (die) {
                 return die.showDie;
             })
+        },
+        diceSum: function () {
+            return this.diePool[0].currentValue + this.diePool[1].currentValue;
+        },
+        diceDiff: function () {
+            return Math.abs(this.diePool[0].currentValue - this.diePool[1].currentValue);
         }
     },
     methods: {
@@ -63,23 +70,27 @@ var app = new Vue({
             this.roll(0, 6, WHITE);
         },
         roll2d6: function() {
+            this.showCalc = true;
             this.clearDiePool();
             this.roll(0, 6, WHITE);
             this.roll(1, 6, WHITE);
         },
         rollAct1Notorious: function() {
+            this.showCalc = true;
             this.clearDiePool();
             this.roll(0, 6, WHITE);
             this.roll(1, 6, WHITE);
             this.roll(2, 6, BLACK);
         },
         rollAct2: function() {
+            this.showCalc = true;
             this.clearDiePool();
             this.roll(0, 6, WHITE);
             this.roll(1, 6, WHITE);
             this.roll(2, 6, BLACK);
         },
         rollAct2Notorious: function() {
+            this.showCalc = true;
             this.clearDiePool();
             this.roll(0, 6, WHITE);
             this.roll(1, 6, WHITE);
@@ -87,6 +98,7 @@ var app = new Vue({
             this.roll(3, 6, BLACK);
         },
         rollAct3: function() {
+            this.showCalc = false;
             this.clearDiePool();
             this.roll(0, 6, WHITE);
             this.roll(1, 6, WHITE);
@@ -94,6 +106,7 @@ var app = new Vue({
             this.roll(3, 6, BLACK);
         },
         rollAct3Notorious: function() {
+            this.showCalc = false;
             this.clearDiePool();
             this.roll(0, 6, WHITE);
             this.roll(1, 6, WHITE);
