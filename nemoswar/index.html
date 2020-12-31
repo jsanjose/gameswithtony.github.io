@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +10,43 @@
     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
     <meta http-equiv="pragma" content="no-cache" />
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <title>Nemo's War Dice Roller</title>
 </head>
+
 <body>
-    
+    <main id="nemo">
+        <section id="dice">
+            <ul class="dice-container">
+                <li class="die-list" v-for="die in activeDice" :key="die.id">
+                    <div class="die die--black" v-bind:class="{ dieWhite: die.color === 0, dieBlack: die.color === 1 }">{{ die.currentValue }}</div>
+                </li>
+            </ul>
+        </section>
+        <section id="buttons">
+            <ul class="dice-buttons">
+                <li class="dice-button-container"><button class="dice-button" v-on:click="roll1d3">1d3</button>
+                </li>
+                <li class="dice-button-container"><button class="dice-button" v-on:click="roll1d6">1d6</button><button class="dice-button" v-on:click="roll2d6">2d6</button>
+                </li>
+                <li class="separator"></li>
+                <li class="dice-button-container"><button class="dice-button" v-on:click="roll2d6">Act I</button></li>
+                <li class="dice-button-container"><button class="dice-button" v-on:click="rollAct1Notorious">Act I
+                        (Notorious)</button></li>
+                <li class="separator"></li>
+                <li class="dice-button-container"><button class="dice-button" v-on:click="rollAct2">Act II</button></li>
+                <li class="dice-button-container"><button class="dice-button" v-on:click="rollAct2Notorious">Act II
+                        (Notorious)</button></li>
+                <li class="separator"></li>
+                <li class="dice-button-container"><button class="dice-button" v-on:click="rollAct3">Act III</button>
+                </li>
+                <li class="dice-button-container"><button class="dice-button" v-on:click="rollAct3Notorious">Act III
+                        (Notorious)</button></li>
+            </ul>
+        </section>
+    </main>
 </body>
 <script src="app.js"></script>
+
 </html>
