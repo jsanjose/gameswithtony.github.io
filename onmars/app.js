@@ -48,6 +48,14 @@ var app = new Vue({
             this.reset();
         }
     },
+    computed: {
+        cardsLeft: function() {
+            if (this.currentDeck.length > 0) {
+                return this.currentDeck.length + " left";
+            }
+            return "Reshuffle";
+        }
+    },
     methods: {
       shuffle: function() {
         this.currentDeck = _.shuffle(soloDeck);

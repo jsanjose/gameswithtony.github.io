@@ -109,7 +109,18 @@ body {
 
 .calc {
     list-style: none;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     margin-top: 2rem;
-    text-align: left;
+    border-radius: 10%;
+    height: 70px;
+    width: 70px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+body {
+    background-color: lightblue;
 }

@@ -17,16 +17,12 @@
 </head>
 <body>
     <main id="onmars">
-        <p class="cards-left">{{ currentDeck.length }} left - (<a href="#" class="reset-button" v-on:click="reset">Reset</a>)</p>
+        <p class="cards-left"><a href="#" class="reset-button" v-on:click="reset">Reset</a></p>
         <div class="mission" v-bind:class="{ showMission: showMission }">
             <p>{{ currentCard.mission }}</p>
         </div>
         <img v-bind:src="'images/' + actionImage()" class="action" />
-        <div class="sides">
-            <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 0 }" v-on:click="setSide(0)" />
-            <img src="images/colonyside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 1 }" v-on:click="setSide(1)" / />
-        </div>
-        <button v-on:click="draw" class="draw-button">Draw</button>
+        <button v-on:click="draw" class="draw-button">Draw ({{ cardsLeft }})</button>
         <img v-bind:src="'images/' + hexDirImage()" class="hexdir" />
         <ul class="turn-order-spaces">
             <li>
@@ -57,6 +53,10 @@
                 8
             </li>
         </ul>
+        <div class="sides">
+            <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 0 }" v-on:click="setSide(0)" />
+            <img src="images/colonyside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 1 }" v-on:click="setSide(1)" / />
+        </div>
     </main>
 </body>
 <script src="app.js"></script>

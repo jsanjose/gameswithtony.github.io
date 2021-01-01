@@ -64,6 +64,7 @@ main > * {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: .25rem 0 1rem 0;
 }
 
 .action {
@@ -123,6 +124,7 @@ main > * {
     display: flex;
     justify-content: space-between;
     padding: 2rem;
+    margin-bottom: 0;
 }
 
 .turn-order-space {
