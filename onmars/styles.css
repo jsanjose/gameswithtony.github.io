@@ -96,6 +96,7 @@ main > * {
     justify-content: space-between;
     width: 50%;
     align-items: center;
+    margin-bottom: 0;
 }
 
 .orbital-colony {
