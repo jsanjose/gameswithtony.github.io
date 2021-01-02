@@ -141,3 +141,13 @@ main > * {
 .currentTurnSpace {
     background-color: #000000;
 }
+
+.starttitle {
+    text-align: center;
+    font-size: 1.7rem;
+}
+
+.startmessage {
+    text-align: center;
+    font-size: 1.2rem;
+}

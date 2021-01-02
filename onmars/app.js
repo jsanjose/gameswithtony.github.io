@@ -54,6 +54,9 @@ var app = new Vue({
                 return this.currentDeck.length + " left";
             }
             return "Reshuffle";
+        },
+        gameHasNotStarted: function () {
+            return this.currentDeck.length === 12 && !this.showMission;
         }
     },
     methods: {
@@ -72,7 +75,6 @@ var app = new Vue({
       reset: function() {
           this.showMission = false;
           this.shuffle();
-          this.draw();
       },
       setSide: function(side) {
           this.currentSide = side;
