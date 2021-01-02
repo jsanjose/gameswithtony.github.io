@@ -96,6 +96,9 @@ main > * {
     justify-content: space-between;
     width: 50%;
     align-items: center;
+}
+
+.noBottomMargin {
     margin-bottom: 0;
 }
 
