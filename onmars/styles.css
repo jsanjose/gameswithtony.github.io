@@ -155,3 +155,19 @@ main > * {
     text-align: center;
     font-size: 1.2rem;
 }
+
+.gameinstructions h2 {
+    font-size: 1.2rem;
+}
+
+.gameinstructions a {
+    text-decoration: underline;
+}
+
+.gameinstructions a:hover {
+    text-decoration: none;
+}
+
+.gameinstructions li  {
+    margin-top: 1rem;
+}
