@@ -17,7 +17,7 @@
 </head>
 <body>
     <main id="onmars">
-        <p class="cards-left" v-if="!gameHasNotStarted"><a href="#" class="reset-button" v-on:click="reset">Reset</a></p>
+        <p class="cards-left" v-if="!gameHasNotStarted"><a href="#" class="reset-button" v-on:click="reset">Start New Game</a></p>
         <div class="mission" v-bind:class="{ showMission: showMission }" v-if="!gameHasNotStarted">
             <p>{{ currentCard.mission }}</p>
         </div>

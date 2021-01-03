@@ -10,7 +10,7 @@ body {
     display: flex;
     justify-content: center;
     min-height: 100vh;
-    background-image: url("images/squid.png");
+    background-image: url("images/nautilus.jpg");
     background-size: cover;
 }
 
@@ -88,13 +88,14 @@ body {
 }
 
 .dieWhite {
-    border: solid 2px #000000;
+    border: solid 3px #000000;
     color: #000000;
+    background-color: #ffffff;
 }
 
 .dieBlack {
     background-color: #000000;
-    border: solid 2px #ffffff;
+    border: solid 3px #ffffff;
     color: #ffffff;
 }
 
@@ -109,7 +110,7 @@ body {
 
 .calc {
     list-style: none;
-    font-size: 1.35rem;
+    font-size: 1.3rem;
     margin-top: 2rem;
     border-radius: 10%;
     height: 70px;
@@ -119,4 +120,5 @@ body {
     align-items: center;
     text-align: center;
     background-color: #ffffff;
+    border: dashed 1px #000000;
 }
