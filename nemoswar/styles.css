@@ -115,9 +115,10 @@ body {
     border-radius: 10%;
     height: 70px;
     width: 70px;
-    padding: 1rem;
+    padding: 0.5rem;
     display: flex;
     align-items: center;
+    justify-content: center;
     text-align: center;
     background-color: #ffffff;
     border: dashed 1px #000000;
