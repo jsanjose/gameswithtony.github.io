@@ -14,6 +14,12 @@ body {
     background-size: cover;
 }
 
+@media (min-width: 900px) {
+    body {
+        background-image: url("images/nautilus_landscape.jpg");
+    }
+}
+
 #nemo {
     display: flex;
     flex: 1;
