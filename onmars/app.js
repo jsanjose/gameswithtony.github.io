@@ -35,7 +35,8 @@ var app = new Vue({
       currentCard: soloDeck[0],
       showMission: false,
       currentSide: ORBITAL,
-      tempSide: ORBITAL
+      tempSide: ORBITAL,
+      showReference: false
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -131,6 +132,12 @@ var app = new Vue({
                         break;
                 }
           }
+      },
+      showReferenceModal: function () {
+        this.showReference = true;
+      },
+      hideReferenceModal: function () {
+        this.showReference = false;
       },
       hexDirImage: function () {
           if (!this.currentCard.travel) {

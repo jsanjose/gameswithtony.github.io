@@ -70,6 +70,7 @@ main > * {
 .action {
     height: 200px;
     width: 190px;
+    cursor: pointer;
 }
 
 .draw-button {
@@ -172,3 +173,56 @@ main > * {
 .gameinstructions li  {
     margin-top: 1rem;
 }
+
+.rulesreference {
+    max-width: 500px;
+    min-height: 400px;
+    z-index: 1;
+    background-color: white;
+    position: absolute;
+    border: solid 1px black;
+    padding: 1rem;
+}
+
+.closereference {
+    width: 100%;
+}
+
+.rule {
+    width: 100%;
+}
+
+.rule-entry {
+    margin-top: 1.5rem;
+}
+
+.rule-entry h2 {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.rule-entry p, .rule-entry li {
+    font-size: 0.95rem;
+    margin: 0;
+    margin-bottom: 0.5rem;
+}
+
+.rule-entry .optional {
+    color: DarkRed;
+}
+
+.rule--standard {
+    border-top: dashed 1px black;
+    margin-top: 2rem;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }
