@@ -34,7 +34,8 @@ var app = new Vue({
       currentDeck: soloDeck,
       currentCard: soloDeck[0],
       showMission: false,
-      currentSide: ORBITAL
+      currentSide: ORBITAL,
+      tempSide: ORBITAL
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -65,6 +66,7 @@ var app = new Vue({
         this.saveGameState();
       },
       draw: function() {
+          this.currentSide = this.tempSide;
           if (this.currentDeck.length === 0) {
               this.shuffle();
               this.showMission = true;
@@ -77,8 +79,13 @@ var app = new Vue({
           this.shuffle();
       },
       setSide: function(side) {
-          this.currentSide = side;
-          this.saveGameState();
+          if (this.gameHasNotStarted) {
+            this.currentSide = side;
+            this.tempSide = this.currentSide;
+            this.saveGameState();
+          } else {
+              this.tempSide = side;
+          }
       },
       turnOrderSpace: function() {
           if (!this.currentCard.travel) {

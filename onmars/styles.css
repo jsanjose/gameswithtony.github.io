@@ -135,7 +135,7 @@ main > * {
 .turn-order-space {
     height: 50px;
     width: 50px;
-    background-color: #999999;
+    background-color: #bbbbbb;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -144,7 +144,7 @@ main > * {
 }
 
 .currentTurnSpace {
-    background-color: #000000;
+    background-color: #444444;
 }
 
 .starttitle {

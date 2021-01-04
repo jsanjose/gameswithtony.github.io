@@ -68,8 +68,8 @@
             Choose AI starting side
         </p>
         <div class="sides" v-bind:class="{ noBottomMargin: !gameHasNotStarted }">
-            <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 0 }" v-on:click="setSide(0)" />
-            <img src="images/colonyside.png" class="orbital-colony" v-bind:class="{ currentSide: currentSide === 1 }" v-on:click="setSide(1)" / />
+            <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: tempSide === 0 }" v-on:click="setSide(0)" />
+            <img src="images/colonyside.png" class="orbital-colony" v-bind:class="{ currentSide: tempSide === 1 }" v-on:click="setSide(1)" / />
         </div>
         <button v-on:click="draw" class="draw-button" v-if="gameHasNotStarted">Start Game</button>
         <section class="gameinstructions" v-if="gameHasNotStarted">
@@ -83,8 +83,8 @@
                 <li>If the action requires choosing a hex, the hex selection icon below can be used. See page 3 of the Pathfinder rulebook for an explanation.</li>
                 <li>Once the deck reshuffles, the mission tracker indicator (A, B, or C) will appear at the top.</li>
                 <li>If the shuttle travels, check the information at the bottom of the screen: if the rocket icon is not grayed out, then the AI travels.</li>
-                <li>The turn order space that should be used by the AI is highlighted.</li>
-                <li>If the AI travels, use the icons at the bottom to select the side of the board the AI moves to then Draw another card.<br /><br />(Note: the action icon will change when you change the side of the board, but you may ignore this and simply draw a new card).</li>
+                <li>The turn order space that should be used by the AI is highlighted. When playing with Lacerda, you may wish to use the Pathfinder rule to move the AI to the  turn order space when the shuttle travels, even if the AI doesn't travel (the AI doesn't gain the turn order space benefit). The app will show you the appropriate turn order space even for when the AI doesn't travel.</li>
+                <li>If the AI travels, tap the orbital or colony icons at the bottom to tell the app the side of the board the AI moves before drawing another card.<br /><br />Important: Don't forget to update the side of the board or the next card draw will show you the action from the wrong side of the board! (If you do this by accident, just check the corresponding action number on the other side of the board, per the rules).</li>
             </ol>
         </section>
     </main>
