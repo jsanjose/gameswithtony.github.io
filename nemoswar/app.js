@@ -31,7 +31,8 @@ var app = new Vue({
     el: '#nemo',
     data: {
       diePool: diePoolInit,
-      showCalc: false
+      showCalc: false,
+      totalRolls: 0
     },
     mounted: function() {
         
@@ -65,17 +66,20 @@ var app = new Vue({
             this.showCalc = false;
             this.clearDiePool();
             this.roll(0, 3, WHITE);
+            this.totalRolls++;
         },
         roll1d6: function() {
             this.showCalc = false;
             this.clearDiePool();
             this.roll(0, 6, WHITE);
+            this.totalRolls++;
         },
         roll2d6: function() {
             this.showCalc = true;
             this.clearDiePool();
             this.roll(0, 6, WHITE);
             this.roll(1, 6, WHITE);
+            this.totalRolls++;
         },
         rollAct1Notorious: function() {
             this.showCalc = true;
@@ -83,6 +87,7 @@ var app = new Vue({
             this.roll(0, 6, WHITE);
             this.roll(1, 6, WHITE);
             this.roll(2, 6, BLACK);
+            this.totalRolls++;
         },
         rollAct2: function() {
             this.showCalc = true;
@@ -90,6 +95,7 @@ var app = new Vue({
             this.roll(0, 6, WHITE);
             this.roll(1, 6, WHITE);
             this.roll(2, 6, BLACK);
+            this.totalRolls++;
         },
         rollAct2Notorious: function() {
             this.showCalc = true;
@@ -98,6 +104,7 @@ var app = new Vue({
             this.roll(1, 6, WHITE);
             this.roll(2, 6, BLACK);
             this.roll(3, 6, BLACK);
+            this.totalRolls++;
         },
         rollAct3: function() {
             this.showCalc = false;
@@ -106,6 +113,7 @@ var app = new Vue({
             this.roll(1, 6, WHITE);
             this.roll(2, 6, WHITE);
             this.roll(3, 6, BLACK);
+            this.totalRolls++;
         },
         rollAct3Notorious: function() {
             this.showCalc = false;
@@ -115,6 +123,7 @@ var app = new Vue({
             this.roll(2, 6, WHITE);
             this.roll(3, 6, BLACK);
             this.roll(4, 6, BLACK);
+            this.totalRolls++;
         }
     }
 });

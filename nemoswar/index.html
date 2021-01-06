@@ -30,7 +30,8 @@
         </section>
         <section id="buttons">
             <ul class="dice-buttons">
-                <li class="dice-button-container"><button class="dice-button" v-on:click="roll1d3">1d3</button>
+                <li class="dice-button-container total-rolls"><button class="dice-button" v-on:click="roll1d3">1d3</button>
+                    <span class="total-rolls-detail" v-if="totalRolls > 0">Roll #{{ totalRolls }}</span>
                 </li>
                 <li class="dice-button-container"><button class="dice-button" v-on:click="roll1d6">1d6</button><button class="dice-button" v-on:click="roll2d6">2d6</button>
                 </li>

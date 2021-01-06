@@ -69,6 +69,17 @@ body {
     margin-top: 1rem;
 }
 
+.total-rolls {
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-rolls-detail {
+    padding-right: 1rem;
+}
+
 .separator {
     border-top: dashed 1px #ffffff;
     height: 20px;
