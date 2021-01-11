@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,48 +16,100 @@
     <link rel="stylesheet" href="styles.css">
     <title>On Mars Solo Deck</title>
 </head>
+
 <body>
     <main id="onmars">
-        <p class="cards-left" v-if="!gameHasNotStarted"><a href="#" class="reset-button" v-on:click="reset">Start New Game</a></p>
+        <p class="cards-left" v-if="!gameHasNotStarted"><a href="#" class="reset-button" v-on:click="reset">Start New
+                Game</a></p>
         <div class="mission" v-bind:class="{ showMission: showMission }" v-if="!gameHasNotStarted">
             <p>{{ currentCard.mission }}</p>
         </div>
-        <img v-bind:src="'images/' + actionImage()" class="action" v-if="!gameHasNotStarted" v-on:click="showReferenceModal" />
+        <img v-bind:src="'images/' + actionImage()" class="action" v-if="!gameHasNotStarted"
+            v-on:click="showReferenceModal" />
         <button v-on:click="draw" class="draw-button" v-if="!gameHasNotStarted">Draw ({{ cardsLeft }})</button>
         <img v-bind:src="'images/' + hexDirImage()" class="hexdir" v-if="!gameHasNotStarted" />
         <ul class="turn-order-spaces" v-if="!gameHasNotStarted">
             <li>
-                <svg xmlns="http://www.w3.org/2000/svg" class="travel" v-bind:class="{ noTravel: currentCard.travel === false }" viewBox="0 0 300.68 539.57"><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M155.52,1.75l-.15-.09L155,1.45l-.14-.09-.28-.17a8.24,8.24,0,0,0-8.54,0l-.27.17-.15.09-.33.21-.16.09c-6.36,4-41.21,27.51-64.6,73H220.12C196.72,29.26,161.88,5.77,155.52,1.75Z"/><path class="cls-1" d="M241.74,174c0-36.93-9.18-67.27-21.58-91.4H80.52c-12.4,24.13-21.58,54.47-21.58,91.4,0,28,4.33,84.93,11.18,151.35,4.16,40.32,9.23,84.15,14.84,127.13a33.43,33.43,0,0,0,32.91,29h19V331.85a13.5,13.5,0,1,1,27,0V481.41h19a33.3,33.3,0,0,0,31.12-21.79,32.23,32.23,0,0,0,1.79-7.16c5.61-43,10.69-86.81,14.84-127.13C237.4,258.91,241.74,202,241.74,174Zm-91.4,66.47a58.17,58.17,0,1,1,58.16-58.17A58.23,58.23,0,0,1,150.34,240.45Z"/><path class="cls-1" d="M289,402.45l-49.34-77.13c-4.15,40.33-9.23,84.16-14.84,127.13a32.74,32.74,0,0,1-1.79,7.17l62.92,76.9a8.3,8.3,0,0,0,6.43,3.05,8.45,8.45,0,0,0,2.8-.48,8.31,8.31,0,0,0,5.51-7.83V442.6A74.64,74.64,0,0,0,289,402.45Z"/><path class="cls-1" d="M61,325.33,11.69,402.45A74.64,74.64,0,0,0,0,442.6v88.66a8.31,8.31,0,0,0,14.74,5.26l62.92-76.9a32.74,32.74,0,0,1-1.79-7.17C70.26,409.48,65.18,365.65,61,325.33Z"/><path class="cls-1" d="M150.34,323.54a8.31,8.31,0,0,0-8.31,8.31V531.26a8.31,8.31,0,0,0,16.62,0V331.85A8.3,8.3,0,0,0,150.34,323.54Z"/><circle class="cls-1" cx="150.34" cy="182.28" r="41.54"/></g></g></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" v-if="currentCard.travel" class="travel" viewBox="0 0 300.68 539.57">
+                    <g id="Layer_2" data-name="Layer 2">
+                        <g id="Layer_1-2" data-name="Layer 1">
+                            <path class="cls-1"
+                                d="M155.52,1.75l-.15-.09L155,1.45l-.14-.09-.28-.17a8.24,8.24,0,0,0-8.54,0l-.27.17-.15.09-.33.21-.16.09c-6.36,4-41.21,27.51-64.6,73H220.12C196.72,29.26,161.88,5.77,155.52,1.75Z" />
+                            <path class="cls-1"
+                                d="M241.74,174c0-36.93-9.18-67.27-21.58-91.4H80.52c-12.4,24.13-21.58,54.47-21.58,91.4,0,28,4.33,84.93,11.18,151.35,4.16,40.32,9.23,84.15,14.84,127.13a33.43,33.43,0,0,0,32.91,29h19V331.85a13.5,13.5,0,1,1,27,0V481.41h19a33.3,33.3,0,0,0,31.12-21.79,32.23,32.23,0,0,0,1.79-7.16c5.61-43,10.69-86.81,14.84-127.13C237.4,258.91,241.74,202,241.74,174Zm-91.4,66.47a58.17,58.17,0,1,1,58.16-58.17A58.23,58.23,0,0,1,150.34,240.45Z" />
+                            <path class="cls-1"
+                                d="M289,402.45l-49.34-77.13c-4.15,40.33-9.23,84.16-14.84,127.13a32.74,32.74,0,0,1-1.79,7.17l62.92,76.9a8.3,8.3,0,0,0,6.43,3.05,8.45,8.45,0,0,0,2.8-.48,8.31,8.31,0,0,0,5.51-7.83V442.6A74.64,74.64,0,0,0,289,402.45Z" />
+                            <path class="cls-1"
+                                d="M61,325.33,11.69,402.45A74.64,74.64,0,0,0,0,442.6v88.66a8.31,8.31,0,0,0,14.74,5.26l62.92-76.9a32.74,32.74,0,0,1-1.79-7.17C70.26,409.48,65.18,365.65,61,325.33Z" />
+                            <path class="cls-1"
+                                d="M150.34,323.54a8.31,8.31,0,0,0-8.31,8.31V531.26a8.31,8.31,0,0,0,16.62,0V331.85A8.3,8.3,0,0,0,150.34,323.54Z" />
+                            <circle class="cls-1" cx="150.34" cy="182.28" r="41.54" />
+                        </g>
+                    </g>
+                </svg>
+
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" v-if="!currentCard.travel" class="travel noTravel"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 300.7 539.6"
+                    style="enable-background:new 0 0 300.7 539.6;" xml:space="preserve">
+                    <g id="Layer_2_1_">
+                        <g id="Layer_1-2">
+                            <path class="st0" d="M155.5,1.8l-0.1-0.1L155,1.5l-0.1-0.1l-0.3-0.2c-2.6-1.6-5.9-1.6-8.5,0l-0.3,0.2l-0.1,0.1l-0.3,0.2l-0.2,0.1
+			c-6.4,4-41.2,27.5-64.6,73h139.6C196.7,29.3,161.9,5.8,155.5,1.8z" />
+                            <path class="st0" d="M241.7,174c0-36.9-9.2-67.3-21.6-91.4H80.5c-12.4,24.1-21.6,54.5-21.6,91.4c0,28,4.3,84.9,11.2,151.4
+			c4.2,40.3,9.2,84.1,14.8,127.1c2.2,16.5,16.2,28.9,32.9,29h19V331.9c0-7.5,6-13.5,13.5-13.5s13.5,6,13.5,13.5v149.6h19
+			c13.9-0.1,26.3-8.7,31.1-21.8c0.9-2.3,1.5-4.7,1.8-7.2c5.6-43,10.7-86.8,14.8-127.1C237.4,258.9,241.7,202,241.7,174z
+			 M150.3,240.5c-32.1,0-58.2-26-58.2-58.2s26-58.2,58.2-58.2c32.1,0,58.2,26,58.2,58.2c0,0,0,0,0,0
+			C208.5,214.4,182.4,240.4,150.3,240.5L150.3,240.5z" />
+                            <path class="st0" d="M289,402.5l-49.3-77.1c-4.1,40.3-9.2,84.2-14.8,127.1c-0.3,2.4-0.9,4.9-1.8,7.2l62.9,76.9
+			c1.6,1.9,3.9,3.1,6.4,3c1,0,1.9-0.2,2.8-0.5c3.3-1.2,5.5-4.3,5.5-7.8v-88.7C300.7,428.4,296.6,414.4,289,402.5z" />
+                            <path class="st0" d="M61,325.3l-49.3,77.1C4,414.4,0,428.4,0,442.6v88.7c0,4.6,3.7,8.3,8.3,8.3c2.5,0,4.8-1.1,6.4-3l62.9-76.9
+			c-0.9-2.3-1.5-4.7-1.8-7.2C70.3,409.5,65.2,365.6,61,325.3z" />
+                            <path class="st0" d="M150.3,323.5c-4.6,0-8.3,3.7-8.3,8.3v199.4c0,4.6,3.7,8.3,8.3,8.3c4.6,0,8.3-3.7,8.3-8.3V331.9
+			C158.7,327.3,154.9,323.5,150.3,323.5C150.4,323.5,150.3,323.5,150.3,323.5z" />
+                            <circle class="st0" cx="150.3" cy="182.3" r="41.5" />
+                        </g>
+                    </g>
+                    <line class="st1" x1="23.7" y1="158" x2="273" y2="407.4"/>
+                    <line class="st1" x1="277" y1="158" x2="27.6" y2="407.4"/>
+                </svg>
             </li>
-            <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 1 }">
+            <li class="turn-order-space" v-if="currentSide === 1"
+                v-bind:class="{ currentTurnSpace: turnOrderSpace() === 1 }">
                 <span v-if="currentCard.travel">1</span>
                 <span v-if="!currentCard.travel">5</span>
             </li>
-            <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 2 }">
+            <li class="turn-order-space" v-if="currentSide === 1"
+                v-bind:class="{ currentTurnSpace: turnOrderSpace() === 2 }">
                 <span v-if="currentCard.travel">2</span>
                 <span v-if="!currentCard.travel">6</span>
             </li>
-            <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 3 }">
+            <li class="turn-order-space" v-if="currentSide === 1"
+                v-bind:class="{ currentTurnSpace: turnOrderSpace() === 3 }">
                 <span v-if="currentCard.travel">3</span>
                 <span v-if="!currentCard.travel">7</span>
             </li>
-            <li class="turn-order-space" v-if="currentSide === 1" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 4 }">
+            <li class="turn-order-space" v-if="currentSide === 1"
+                v-bind:class="{ currentTurnSpace: turnOrderSpace() === 4 }">
                 <span v-if="currentCard.travel">4</span>
                 <span v-if="!currentCard.travel">8</span>
             </li>
-            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 1 }">
+            <li class="turn-order-space" v-if="currentSide === 0"
+                v-bind:class="{ currentTurnSpace: turnOrderSpace() === 1 }">
                 <span v-if="currentCard.travel">5</span>
                 <span v-if="!currentCard.travel">1</span>
             </li>
-            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 2 }">
+            <li class="turn-order-space" v-if="currentSide === 0"
+                v-bind:class="{ currentTurnSpace: turnOrderSpace() === 2 }">
                 <span v-if="currentCard.travel">6</span>
                 <span v-if="!currentCard.travel">2</span>
             </li>
-            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 3 }">
+            <li class="turn-order-space" v-if="currentSide === 0"
+                v-bind:class="{ currentTurnSpace: turnOrderSpace() === 3 }">
                 <span v-if="currentCard.travel">7</span>
                 <span v-if="!currentCard.travel">3</span>
             </li>
-            <li class="turn-order-space" v-if="currentSide === 0" v-bind:class="{ currentTurnSpace: turnOrderSpace() === 4 }">
+            <li class="turn-order-space" v-if="currentSide === 0"
+                v-bind:class="{ currentTurnSpace: turnOrderSpace() === 4 }">
                 <span v-if="currentCard.travel">8</span>
                 <span v-if="!currentCard.travel">4</span>
             </li>
@@ -68,24 +121,40 @@
             Choose AI starting side
         </p>
         <div class="sides" v-bind:class="{ noBottomMargin: !gameHasNotStarted }">
-            <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: tempSide === 0 }" v-on:click="setSide(0)" />
-            <img src="images/colonyside.png" class="orbital-colony" v-bind:class="{ currentSide: tempSide === 1 }" v-on:click="setSide(1)" / />
+            <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: tempSide === 0 }"
+                v-on:click="setSide(0)" />
+            <img src="images/colonyside.png" class="orbital-colony" v-bind:class="{ currentSide: tempSide === 1 }"
+                v-on:click="setSide(1)" / />
         </div>
         <button v-on:click="draw" class="draw-button" v-if="gameHasNotStarted">Start Game</button>
         <section class="gameinstructions" v-if="gameHasNotStarted">
             <h2>How to use this app</h2>
             <p>
-                This app is designed to work with both the official Lacerda solo bot that comes with the game and the unofficial Pathfinder solo bot <a href="https://boardgamegeek.com/filepage/211160/pathfinder-unofficial-mars-solo-mode-w-curiosity-s">which can be found here</a>. It directly matches the solo deck cards that come in the base game of On Mars.
+                This app is designed to work with both the official Lacerda solo bot that comes with the game and the
+                unofficial Pathfinder solo bot <a
+                    href="https://boardgamegeek.com/filepage/211160/pathfinder-unofficial-mars-solo-mode-w-curiosity-s">which
+                    can be found here</a>. It directly matches the solo deck cards that come in the base game of On
+                Mars.
             </p>
             <ol>
                 <li>Choose the AI's starting side and click 'Start Game'.</li>
-                <li>The game will start with the first card drawn, and the AI's action indicated using the same icon as shown on the game board.</li>
+                <li>The game will start with the first card drawn, and the AI's action indicated using the same icon as
+                    shown on the game board.</li>
                 <li>Tap the action icon to bring up the rules for that action, as well as other common actions.</li>
-                <li>If the action requires choosing a hex, the hex selection icon below can be used. See page 3 of the Pathfinder rulebook for an explanation.</li>
+                <li>If the action requires choosing a hex, the hex selection icon below can be used. See page 3 of the
+                    Pathfinder rulebook for an explanation.</li>
                 <li>Once the deck reshuffles, the mission tracker indicator (A, B, or C) will appear at the top.</li>
-                <li>If the shuttle travels, check the information at the bottom of the screen: if the rocket icon is not grayed out, then the AI travels.</li>
-                <li>The turn order space that should be used by the AI is highlighted. When playing with Lacerda, you may wish to use the Pathfinder rule to move the AI to the  turn order space when the shuttle travels, even if the AI doesn't travel (the AI doesn't gain the turn order space benefit). The app will show you the appropriate turn order space even for when the AI doesn't travel.</li>
-                <li>If the AI travels, tap the orbital or colony icons at the bottom to tell the app the side of the board the AI moves to before drawing another card.<br /><br />Important: Don't forget to update the side of the board or the next card draw will show you the action from the wrong side of the board! (If you do this by accident, just check the corresponding action number on the other side of the board, per the rules).</li>
+                <li>If the shuttle travels, check the information at the bottom of the screen: if the rocket icon is not
+                    grayed out with an X over it, then the AI travels.</li>
+                <li>The turn order space that should be used by the AI is highlighted. When playing with Lacerda, you
+                    may wish to use the Pathfinder rule to move the AI to the turn order space when the shuttle travels,
+                    even if the AI doesn't travel (the AI doesn't gain the turn order space benefit). The app will show
+                    you the appropriate turn order space even for when the AI doesn't travel.</li>
+                <li>If the AI travels, tap the orbital or colony icons at the bottom to tell the app the side of the
+                    board the AI moves to before drawing another card.<br /><br />Important: Don't forget to update the
+                    side of the board or the next card draw will show you the action from the wrong side of the board!
+                    (If you do this by accident, just check the corresponding action number on the other side of the
+                    board, per the rules).</li>
             </ol>
         </section>
         <section class="rulesreference" v-if="showReference">
@@ -96,13 +165,16 @@
                 <section class="rule-entry">
                     <h2>LACERDA: Obtain Blueprint</h2>
                     <p>
-                        Take the Blueprint of a type that scores Lacerda’s Scientists. If tied, take the leftmost card from the row with the most cards in it (bottom row if tied).
+                        Take the Blueprint of a type that scores Lacerda’s Scientists. If tied, take the leftmost card
+                        from the row with the most cards in it (bottom row if tied).
                     </p>
                 </section>
                 <section class="rule-entry">
                     <h2>PATHFINDER: Obtain Blueprint</h2>
                     <p>
-                        Take the Blueprint of a type that scores the highest possible (most number of blueprints in the game) for Pathfinder’s Scientists. If tied, take the leftmost card from the row with the most cards in it (bottom row if tied). Keep in a line with oldest to the left.
+                        Take the Blueprint of a type that scores the highest possible (most number of blueprints in the
+                        game) for Pathfinder’s Scientists. If tied, take the leftmost card from the row with the most
+                        cards in it (bottom row if tied). Keep in a line with oldest to the left.
                     </p>
                 </section>
             </section>
@@ -110,13 +182,15 @@
                 <section class="rule-entry">
                     <h2>LACERDA: Learn New Technology</h2>
                     <p>
-                        Lacerda takes the cheapest one, leftmost if there are more than one. Place it in Lacerda’s laboratory, top space first, taking benefit as normal.
+                        Lacerda takes the cheapest one, leftmost if there are more than one. Place it in Lacerda’s
+                        laboratory, top space first, taking benefit as normal.
                     </p>
                 </section>
                 <section class="rule-entry">
                     <h2>PATHFINDER: Learn New Technology</h2>
                     <p>
-                        Pathfinder takes the cheapest one, leftmost if there are more than one. Place it in Pathfinder’s laboratory, top space first, taking the benefit as normal.
+                        Pathfinder takes the cheapest one, leftmost if there are more than one. Place it in Pathfinder’s
+                        laboratory, top space first, taking the benefit as normal.
                     </p>
                 </section>
             </section>
@@ -124,16 +198,20 @@
                 <section class="rule-entry">
                     <h2>LACERDA: Research and Development</h2>
                     <p>
-                        Lacerda develops the most-developed Tech that can be de veloped once, then the least developed Tech that can be developed once. If two Techs are tied, develop the bottom one.
+                        Lacerda develops the most-developed Tech that can be de veloped once, then the least developed
+                        Tech that can be developed once. If two Techs are tied, develop the bottom one.
                     </p>
                 </section>
                 <section class="rule-entry">
                     <h2>PATHFINDER: Research and Development</h2>
                     <p>
-                        Pathfinder develops the most-developed Tech that can be developed once, then the last developed Tech that can be developed once. If two Techs are tied, develop the bottom one.
+                        Pathfinder develops the most-developed Tech that can be developed once, then the last developed
+                        Tech that can be developed once. If two Techs are tied, develop the bottom one.
                     </p>
                     <p>
-                        When developing a chosen Tech, move it to the right and down, if possible, otherwise to the right and up. Receive any benefits as normal. Ignore crystal and specific resource benefits, but Pathfinder will take the Resupply (see below) and other benefits.
+                        When developing a chosen Tech, move it to the right and down, if possible, otherwise to the
+                        right and up. Receive any benefits as normal. Ignore crystal and specific resource benefits, but
+                        Pathfinder will take the Resupply (see below) and other benefits.
                     </p>
                 </section>
             </section>
@@ -141,28 +219,41 @@
                 <section class="rule-entry">
                     <h2>LACERDA: Construct a Building</h2>
                     <p>
-                        Lacerda always builds the Building corresponding to the icon his Bot is on, but only if the LSS marker for that Building is below the Colony level marker.
+                        Lacerda always builds the Building corresponding to the icon his Bot is on, but only if the LSS
+                        marker for that Building is below the Colony level marker.
                     </p>
                     <p>
-                        If his Bot is on the icon for a Building whose marker is above the current Colony level, he builds the next Building in the sequence, unless that Building’s marker is above the current Colony level, and so on. He always constructs a Mine if that is next in the sequence.
+                        If his Bot is on the icon for a Building whose marker is above the current Colony level, he
+                        builds the next Building in the sequence, unless that Building’s marker is above the current
+                        Colony level, and so on. He always constructs a Mine if that is next in the sequence.
                     </p>
                     <p>
-                        When constructing, Lacerda always tries to build the largest Complex possible using any available Tech. If there is more than one legal Building placement, check the Resolving Ambiguities rules.
+                        When constructing, Lacerda always tries to build the largest Complex possible using any
+                        available Tech. If there is more than one legal Building placement, check the Resolving
+                        Ambiguities rules.
                     </p>
                     <p>
-                        After constructing, move his Bot to the next icon in the sequence after the Building that was just constructed.
+                        After constructing, move his Bot to the next icon in the sequence after the Building that was
+                        just constructed.
                     </p>
                 </section>
                 <section class="rule-entry">
                     <h2>PATHFINDER: Construct a Building</h2>
                     <p>
-                        Pathfinder only ever builds mines and building types that are below the Colony level marker. It can select a build location from any available hex on Mars (Bot position does not matter). It always tries to build the largest complex possible, using any available Tech. If multiple hexes are valid build locations, it uses Card Order to tie break.
+                        Pathfinder only ever builds mines and building types that are below the Colony level marker. It
+                        can select a build location from any available hex on Mars (Bot position does not matter). It
+                        always tries to build the largest complex possible, using any available Tech. If multiple hexes
+                        are valid build locations, it uses Card Order to tie break.
                     </p>
                     <p>
-                        After constructing use normal rules for Progress Cube placement and OP rewards. Finally, if Pathfinder has a Colonist on the Hire a Scientist action slot, it retrieves that Colonist, otherwise it ignores the 2nd LSS benefit.
+                        After constructing use normal rules for Progress Cube placement and OP rewards. Finally, if
+                        Pathfinder has a Colonist on the Hire a Scientist action slot, it retrieves that Colonist,
+                        otherwise it ignores the 2nd LSS benefit.
                     </p>
                     <p class="optional">
-                        Optional Difficulty Modifier #2: If multiple building types are tied for largest possible complex, Pathfinder chooses the building type that will give it the most OP at that moment from the LSS Reward tiles. Leftmost if tied.
+                        Optional Difficulty Modifier #2: If multiple building types are tied for largest possible
+                        complex, Pathfinder chooses the building type that will give it the most OP at that moment from
+                        the LSS Reward tiles. Leftmost if tied.
                     </p>
                 </section>
             </section>
@@ -170,16 +261,21 @@
                 <section class="rule-entry">
                     <h2>LACERDA: Upgrade a Building</h2>
                     <p>
-                        Lacerda uses one of his Blueprints and upgrades a Building anywhere on the board. If the Upgrade Tech is in play, he uses it if able to upgrade as many Buildings as he can.
+                        Lacerda uses one of his Blueprints and upgrades a Building anywhere on the board. If the Upgrade
+                        Tech is in play, he uses it if able to upgrade as many Buildings as he can.
                     </p>
                     <p>
-                        If there is more than one Blueprint to upgrade, he gives preference to the one that increases the OP provided by his Scientists.
+                        If there is more than one Blueprint to upgrade, he gives preference to the one that increases
+                        the OP provided by his Scientists.
                     </p>
                 </section>
                 <section class="rule-entry">
                     <h2>PATHFINDER: Upgrade a Building</h2>
                     <p>
-                        Pathfinder chooses the Blueprint that most increases the OP provided by his Scientists. If there is none, it chooses the oldest blueprint. It uses Tech, if available, to upgrade as many Buildings as it can. It chooses Buildings to upgrade using Card Order (icon shown in the app below the 'Draw' button).
+                        Pathfinder chooses the Blueprint that most increases the OP provided by his Scientists. If there
+                        is none, it chooses the oldest blueprint. It uses Tech, if available, to upgrade as many
+                        Buildings as it can. It chooses Buildings to upgrade using Card Order (icon shown in the app
+                        below the 'Draw' button).
                     </p>
                 </section>
             </section>
@@ -187,16 +283,25 @@
                 <section class="rule-entry">
                     <h2>LACERDA: Hire a Scientist or Take an Earth Contract</h2>
                     <p>
-                        Lacerda hires the Scientist that will score him the most potential OP based on the number of Blueprints owned by each player (whether used to upgrade yet or not). Once he has two Scientists, he takes a Contract instead (the one worth the most OP). His Contracts are considered automatically completed. After taking the Scientist or Contract card, Lacerda shuffles the Contract deck and refills the display with the top card.
+                        Lacerda hires the Scientist that will score him the most potential OP based on the number of
+                        Blueprints owned by each player (whether used to upgrade yet or not). Once he has two
+                        Scientists, he takes a Contract instead (the one worth the most OP). His Contracts are
+                        considered automatically completed. After taking the Scientist or Contract card, Lacerda
+                        shuffles the Contract deck and refills the display with the top card.
                     </p>
                 </section>
                 <section class="rule-entry">
                     <h2>PATHFINDER: Hire a Scientist or Take an Earth Contract</h2>
                     <p>
-                        If there is at least one Contract on display, Pathfinder takes a Contract (the one worth the most OP, leftmost on the display in case of a tie). Otherwise, it takes the Scientist that will score the most potential OP based on the number of Blueprint cards owned by you and Pathfinder together (whether used to upgrade a Building yet or not). In case of a tie, take the one which scores for its Blueprints, oldest first. If it has no Blueprints, take the leftmost Scientist.
+                        If there is at least one Contract on display, Pathfinder takes a Contract (the one worth the
+                        most OP, leftmost on the display in case of a tie). Otherwise, it takes the Scientist that will
+                        score the most potential OP based on the number of Blueprint cards owned by you and Pathfinder
+                        together (whether used to upgrade a Building yet or not). In case of a tie, take the one which
+                        scores for its Blueprints, oldest first. If it has no Blueprints, take the leftmost Scientist.
                     </p>
                     <p>
-                        After taking the Scientist or Contract card, Pathfinder shuffles the Contract deck and refills the display with the top card.
+                        After taking the Scientist or Contract card, Pathfinder shuffles the Contract deck and refills
+                        the display with the top card.
                     </p>
                 </section>
             </section>
@@ -214,18 +319,24 @@
                 <section class="rule-entry">
                     <h2>LACERDA: Moving Lacerda's Rover</h2>
                     <p>
-                        Whenever Lacerda moves his Rover, it moves toward the closest tile (either Research or Discovery) that it can collect. Do not count any Discovery tiles that give Resources as they are useless to Lacerda. If tied, check the Resolving Ambiguities rules. He uses any available Tech and spends additional Crystals if required. If he reaches a tile , it is resolved immediately.
+                        Whenever Lacerda moves his Rover, it moves toward the closest tile (either Research or
+                        Discovery) that it can collect. Do not count any Discovery tiles that give Resources as they are
+                        useless to Lacerda. If tied, check the Resolving Ambiguities rules. He uses any available Tech
+                        and spends additional Crystals if required. If he reaches a tile , it is resolved immediately.
                     </p>
                 </section>
                 <section class="rule-entry">
                     <h2>PATHFINDER: Move Bots</h2>
                     <p>
-                        After taking any action on the Colony side, using Card Order tiebreaker for all hex choices (icon below the 'Draw' button), Pathfinder also:
+                        After taking any action on the Colony side, using Card Order tiebreaker for all hex choices
+                        (icon below the 'Draw' button), Pathfinder also:
                     </p>
                     <ol>
                         <li>Chooses one Bot using Card Order.</li>
-                        <li>Moves that Bot a number of hexes equal to the current Colony Status, towards the nearest Research or Discovery tile or crystal.</li>
-                        <li>Stops that Bot’s movement if it lands on a Research or Discovery tile or crystal and then removes that tile or crystal from the game.</li>
+                        <li>Moves that Bot a number of hexes equal to the current Colony Status, towards the nearest
+                            Research or Discovery tile or crystal.</li>
+                        <li>Stops that Bot’s movement if it lands on a Research or Discovery tile or crystal and then
+                            removes that tile or crystal from the game.</li>
                     </ol>
                 </section>
             </section>
@@ -233,10 +344,13 @@
                 <section class="rule-entry">
                     <h2>LACERDA: Resupply</h2>
                     <p>
-                        Lacerda only takes this action in the Shuttle Phase when his as tronaut is placed on the Resupply space of the turn order track, or by placing a Tech tile on the appropriate space of his Lab.
+                        Lacerda only takes this action in the Shuttle Phase when his as tronaut is placed on the
+                        Resupply space of the turn order track, or by placing a Tech tile on the appropriate space of
+                        his Lab.
                     </p>
                     <p>
-                        Lacerda takes whatever there is the most of. In case of a tie, he takes the leftmost one (Crystals first). Any Resources taken are placed into the general supply.
+                        Lacerda takes whatever there is the most of. In case of a tie, he takes the leftmost one
+                        (Crystals first). Any Resources taken are placed into the general supply.
                     </p>
                 </section>
                 <section class="rule-entry">
@@ -245,7 +359,10 @@
                         Pathfinder only takes the Resupply action when the Colony Status updates or as an R&D benefit.
                     </p>
                     <p>
-                        Pathfinder takes the resource least produced by your built Blueprints (thus, resources not produced by your Advanced Buildings on the board get priority). If tied, then the least potentially produced by your built and unbuilt Blueprints (thus resources that don’t appear on your Blueprints get priority). If still tied, then leftmost available.
+                        Pathfinder takes the resource least produced by your built Blueprints (thus, resources not
+                        produced by your Advanced Buildings on the board get priority). If tied, then the least
+                        potentially produced by your built and unbuilt Blueprints (thus resources that don’t appear on
+                        your Blueprints get priority). If still tied, then leftmost available.
                     </p>
                 </section>
             </section>
@@ -253,13 +370,17 @@
                 <section class="rule-entry">
                     <h2>LACERDA: Colony Levels Up</h2>
                     <p>
-                        Every time this happens, Lacerda places a Shelter according to the c onstruction rules above, then he takes 1 Bot which is placed on his Player board. It is never placed on the main board, but it counts towards LSS Rewards or Missions.
+                        Every time this happens, Lacerda places a Shelter according to the c onstruction rules above,
+                        then he takes 1 Bot which is placed on his Player board. It is never placed on the main board,
+                        but it counts towards LSS Rewards or Missions.
                     </p>
                 </section>
                 <section class="rule-entry">
                     <h2>PATHFINDER: Colony Levels Up</h2>
                     <ol>
-                        <li>Pathfinder receives the benefits of the discovery tiles on the space the Colony Status marker is moved on to. Use the corresponding Pathfinder rules for each benefit. Then remove those tiles from the game.</li>
+                        <li>Pathfinder receives the benefits of the discovery tiles on the space the Colony Status
+                            marker is moved on to. Use the corresponding Pathfinder rules for each benefit. Then remove
+                            those tiles from the game.</li>
                         <li>Pathfinder builds a shelter.</li>
                         <li>Pathfinder gains a Bot and places it on that just-built shelter.</li>
                         <li>Pathfinder welcomes a shuttle (but does not gain a Bot or Colonist).</li>
@@ -271,4 +392,5 @@
     </main>
 </body>
 <script src="app.js"></script>
+
 </html>
