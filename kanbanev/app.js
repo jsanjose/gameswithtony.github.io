@@ -117,27 +117,35 @@ var app = new Vue({
             return _.find(this.players, function(p) { return p.isWorking });
         },
         lacerdaPlayer: function () {
+            this.computedUpdater;
             return _.find(this.players, function(p) { return p.engineer === ENGINEER.Lacerda });
         },
         turcziPlayer: function () {
+            this.computedUpdater;
             return _.find(this.players, function(p) { return p.engineer === ENGINEER.Turczi });
         },
         sandraPlayer: function () {
+            this.computedUpdater;
             return _.find(this.players, function(p) { return p.engineer === ENGINEER.Sandra });
         },
         humanPlayer: function () {
+            this.computedUpdater;
             return _.find(this.players, function(p) { return p.engineer === ENGINEER.Human });
         },
         sandrasPosition: function () {
+            this.computedUpdater;
             return _.find(this.players, function(p) { return p.engineer === ENGINEER.Sandra }).dept;
         },
         currentPlayerImage: function () {
+            this.computedUpdater;
             return 'images/' + this.playerImage(this.currentPlayer.engineer);
         },
         currentPartImage: function () {
+            this.computedUpdater;
             return 'images/' + this.partImage(this.currentPlayer.part);
         },
         currentCarImage: function () {
+            this.computedUpdater;
             return 'images/' + this.carImage(this.sandrasPosition);
         }
     },
