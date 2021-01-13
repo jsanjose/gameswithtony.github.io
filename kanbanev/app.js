@@ -87,10 +87,12 @@ var app = new Vue({
       playerColor: PLAYERCOLOR.yellow,
       playerStartingCertTrackPosition: 0,
       phaseIndex: 0,
+      computedUpdater: 0,
       gameHasStarted: false,
       isFirstDeptSelection: true
     },
     mounted: function() {
+        this.computedUpdater++;
         if (localStorage.getItem(LOCALSTORAGENAME)) {
             let gameState = JSON.parse(localStorage.getItem(LOCALSTORAGENAME));
             this.currentPhase = gameState.currentPhase;
@@ -111,6 +113,7 @@ var app = new Vue({
     },
     computed: {
         currentPlayer: function () {
+            this.computedUpdater;
             return _.find(this.players, function(p) { return p.isWorking });
         },
         lacerdaPlayer: function () {
@@ -338,6 +341,8 @@ var app = new Vue({
         }
 
         this.saveGameState();
+
+        let self = this;
       },
       setDept: function(dept) {
         this.currentPlayer.dept = dept;
@@ -489,6 +494,8 @@ var app = new Vue({
         gameState.gameHasStarted = this.gameHasStarted;
         gameState.isFirstDeptSelection = this.isFirstDeptSelection;
         localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
+
+        this.computedUpdater++;
       }
     }
 });
