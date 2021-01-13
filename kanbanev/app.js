@@ -340,7 +340,7 @@ var app = new Vue({
       setDept: function(dept) {
         this.currentPlayer.dept = dept;
 
-        if (this.currentPlayer.engineer === ENGINEER.Sandra) {
+        if (this.currentPlayer.engineer === ENGINEER.Sandra && dept === DEPARTMENT.Admin) {
             this.currentPlayer.position = DEPTPOSITION.SandrasDesk;
         }
 
