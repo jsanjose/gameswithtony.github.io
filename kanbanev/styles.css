@@ -1,0 +1,149 @@
+* {
+    font-family: 'Noto Sans', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+a, a:visited, a:hover {
+    text-decoration: none;
+}
+
+.playerArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    padding-top: .25rem;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    max-height: 900px;
+    max-width: 500px;
+}
+
+.playerArea > * {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.starttitle {
+    text-align: center;
+    font-size: 1.7rem;
+}
+
+.startmessage {
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.gameinstructions h2 {
+    font-size: 1.2rem;
+}
+
+.gameinstructions a {
+    text-decoration: underline;
+}
+
+.gameinstructions a:hover {
+    text-decoration: none;
+}
+
+.gameinstructions li  {
+    margin-top: 1rem;
+}
+
+.car-icon-title {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background-color: #307D82;
+    padding: 0.5rem 0;
+}
+
+.car-icon-title-svg {
+    width: 95px;
+}
+
+.cls-1{fill:#fff;}.cls-2{fill:#a7a9ac;}
+
+.player-color-options {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 0rem .25rem 2rem .25rem;
+    margin-bottom: 0;
+    max-width: 300px;
+}
+
+.player-color-option {
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #ffffff;
+    border: solid 1px #47443f;
+    cursor: pointer;
+}
+
+.playerColorOptionSelected {
+    border: solid 6px #47443f;
+}
+
+.playerColorOptionTrack li {
+    color: #47443f;
+}
+
+
+.player-image {
+    width: 100px;
+}
+
+.button {
+    height: 50px;
+    min-height: 50px;
+    background-color: #47443f;
+    color: #ffffff;
+    font-size: 1.1rem;
+    box-shadow: none;
+    cursor: pointer;
+    border: none;
+}
+
+.yellow {
+    fill: #ffff4d;
+    background-color: #ffff4d;
+    color: #47443f;
+}
+
+.blue {
+    fill: #00d0ff;
+    background-color: #00d0ff;
+}
+
+.purple {
+    fill: #a253ac;
+    background-color: #a253ac;
+}
+
+.red {
+    fill: #ff8a26;
+    background-color: #ff8a26;
+}
+
+.cardback-gray {
+    background-color: #47443f;
+}
+
+.helper-gray {
+    background-color: #307D82;
+}
