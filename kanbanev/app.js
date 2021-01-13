@@ -174,10 +174,10 @@ var app = new Vue({
 
         // for the first department selection phase, don't preset the human player
         if (this.isFirstDeptSelection) {
-            let newCurrentPlayer = _.find(this.players, function(p) { return p.engineer === ENGINEER.Human  });
-            if (newCurrentPlayer.engineer === ENGINEER.Human) {
-                newCurrentPlayer.dept = null;
-                newCurrentPlayer.position = null;
+            let humanPlayer = _.find(this.players, function(p) { return p.engineer === ENGINEER.Human  });
+            if (humanPlayer.engineer === ENGINEER.Human) {
+                humanPlayer.dept = null;
+                humanPlayer.position = null;
             }
         }
 
@@ -320,22 +320,23 @@ var app = new Vue({
             }
         }
 
+        let newCurrentPlayer = _.find(this.players, function(p) { return p.isWorking });
+
         // if department phase, and is Lacerda or Turczi, draw a card and pre-set the workstation
         if (this.currentPhase === PHASE.DepartmentSelection) {
-            if (this.currentPlayer.engineer === ENGINEER.Lacerda || this.currentPlayer.engineer === ENGINEER.Turczi) {
+            if (newCurrentPlayer.engineer === ENGINEER.Lacerda || newCurrentPlayer.engineer === ENGINEER.Turczi) {
                 this.selectDepartmentByCard(this.currentPlayer);
 
-                if (this.currentPlayer.engineer === ENGINEER.Lacerda) {
-                    this.currentPlayer.position = 1;
+                if (newCurrentPlayer.engineer === ENGINEER.Lacerda) {
+                    newCurrentPlayer.position = 1;
                 }
 
-                if (this.currentPlayer.engineer === ENGINEER.Turczi) {
-                    this.currentPlayer.position = 0;
+                if (newCurrentPlayer.engineer === ENGINEER.Turczi) {
+                    newCurrentPlayer.position = 0;
                 }
             }
         }
 
-        this.$forceUpdate(); // TODO: do this better
         this.saveGameState();
       },
       setDept: function(dept) {
