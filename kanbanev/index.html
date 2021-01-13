@@ -82,7 +82,7 @@
             <button class="button" v-on:click="startGame">Start Game</button>
             <section class="instructions">
                 <ul class="instructions-list">
-                    <li><strong>How To Use This App</strong></li>
+                    <strong>How To Use This App</strong>
                     <li>Begin by selecting your player color and starting position on the certification track.</li>
                     <li>The app will cycle between the Department Selection and Working phases of the game.</li>
                     <li>During department selection, you must select the department and workstation for yourself and Sandra.</li>
@@ -177,11 +177,13 @@
             </section>
             <section class="instructions" v-if="this.currentPhase === 1">
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 0">
+                    <li>Advance once on the training track.</li>
                     <li>Upgrade a Design from the Colleagues' shared Design stack.</li>
                     <li>Advance the Part value, and gain PP.</li>
                     <li>Take car <span class="instructions-important">behind Pace Car.</span></li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 1">
+                    <li>Advance once on the training track.</li>
                     <li>Upgrade a Design from the Colleagues' shared Design stack.</li>
                     <li>Advance the Part value, and gain PP.</li>
                     <li>Take car <span class="instructions-important">with highest value.</span></li>
@@ -209,11 +211,13 @@
                     <li>Check for Factory Goals.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 0">
+                    <li>Advance once on the training track.</li>
                     <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
                     <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Lacerda moves the Cars from top to bottom, or bottom to top before moving left.</li>
                     <li>If Mr. Lacerda is certified, provide an additional Part.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 1">
+                    <li>Advance once on the training track.</li>
                     <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
                     <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Turczi always moves left (where it is possible to choose).</li>
                 </ul>
@@ -235,11 +239,13 @@
                     <li>If there are more than four cars behind the Pace Car, remove cars nearest to the Pace Car until there are four.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 0">
+                    <li>Advance once on the training track.</li>
                     <li>Issue a Kanban Order. See above for card placement.</li>
                     <li>Empty warehouse and take 1 of the part indicated above.</li>
                     <li>If Mr. Lacerda is certified, take an additional Part.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 1">
+                    <li>Advance once on the training track.</li>
                     <li>Empty warehouse and take 1 of the part indicated above.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 2">
@@ -259,10 +265,12 @@
                     <li>Take 1 Parts Voucher from the supply.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 0">
+                    <li>Advance once on the training track.</li>
                     <li>Take 2 Design tiles (see above for column to use).</li>
                     <li>If Mr. Lacerda is certified, take an additional tile from the Central Stack.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 1">
+                    <li>Advance once on the training track.</li>
                     <li>Take 2 Design tiles (see above for column to use).</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 2">
@@ -279,10 +287,12 @@
                     <li>You can select the top Designs from the Central stack and from the stacks in the First Office.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 0">
+                    <li>Advance once on the training track.</li>
                     <li>Advance training in Sandra's current department.</li>
                     <li>If Mr. Lacerda is certified, advance an additional training space.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 1">
+                    <li>Advance once on the training track.</li>
                     <li>Advance training in Sandra's current department.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 2">
