@@ -335,6 +335,7 @@ var app = new Vue({
             }
         }
 
+        this.$forceUpdate(); // TODO: do this better
         this.saveGameState();
       },
       setDept: function(dept) {
