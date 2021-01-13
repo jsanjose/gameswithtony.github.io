@@ -5,6 +5,7 @@ const PART = { Motor: 0, Autopilot: 1, Battery: 2, Body: 3, Electronics: 4, Driv
 const ENGINEER = { Lacerda: 0, Turczi: 1, Sandra: 2, Human: 3 };
 const PHASE = { DepartmentSelection: 0, Working: 1 };
 const PLAYERCOLOR = { yellow: 0, blue: 1, purple: 2, red: 3 };
+const DEPTPOSITION = { Top: 0, Bottom: 1 };
 const LOCALSTORAGENAME = 'kanbanevgamestate';
 
 function createDeptCard(id, dept, lacerdaDouble, isReshuffle) {
@@ -58,10 +59,11 @@ const selectionDeck = [
     createSelectionCard(PART.Drivetrain, CARD.Bottom)
 ];
 
-function createPlayer(engineer, dept, part, isLacerdaDouble, isWorking) {
+function createPlayer(engineer, dept, position, part, isLacerdaDouble, isWorking) {
     return {
         engineer: engineer,
         dept: dept,
+        position: position,
         part: part,
         isLacerdaDouble: isLacerdaDouble,
         isWorking: isWorking
@@ -77,16 +79,16 @@ var app = new Vue({
       currentSelectionCard: {},
       currentDeptCards: [],
       players: [
-        createPlayer(ENGINEER.Lacerda, null, null, false, false),
-        createPlayer(ENGINEER.Turczi, null, null, false, false),
-        createPlayer(ENGINEER.Sandra, null, null, false, false),
-        createPlayer(ENGINEER.Human, null, null, false, false),
+        createPlayer(ENGINEER.Lacerda, null, DEPTPOSITION.Top, null, false, false),
+        createPlayer(ENGINEER.Turczi, null, DEPTPOSITION.Bottom, null, false, false),
+        createPlayer(ENGINEER.Sandra, null, null, null, false, false),
+        createPlayer(ENGINEER.Human, null, null, null, false, false),
       ],
       playerColor: PLAYERCOLOR.yellow,
       playerStartingCertTrackPosition: 0,
-      departmentPhaseIndex: 0,
-      workPhaseIndex: 0,
-      gameHasStarted: false
+      phaseIndex: 0,
+      gameHasStarted: false,
+      isFirstDeptSelection: true
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -99,9 +101,9 @@ var app = new Vue({
             this.players = gameState.players;
             this.playerColor = gameState.playerColor;
             this.playerStartingCertTrackPosition = gameState.playerStartingCertTrackPosition;
-            this.departmentPhaseIndex = gameState.departmentPhaseIndex;
-            this.workPhaseIndex = gameState.workPhaseIndex;
+            this.phaseIndex = gameState.phaseIndex;
             this.gameHasStarted = gameState.gameHasStarted;
+            this.isFirstDeptSelection = gameState.isFirstDeptSelection;
         }
         else {
             this.reset();
@@ -125,6 +127,15 @@ var app = new Vue({
         },
         sandrasPosition: function () {
             return _.find(this.players, function(p) { return p.engineer === ENGINEER.Sandra }).dept;
+        },
+        currentPlayerImage: function () {
+            return 'images/' + this.playerImage(this.currentPlayer.engineer);
+        },
+        currentPartImage: function () {
+            return 'images/' + this.partImage(this.currentPlayer.part);
+        },
+        currentCarImage: function () {
+            return 'images/' + this.carImage(this.sandrasPosition);
         }
     },
     methods: {
@@ -159,8 +170,19 @@ var app = new Vue({
 
         this.sandraPlayer.dept = 4;
         this.sortPlayers();
-        this.setDepartmentPhaseIndex(0);
+        this.setPhaseIndex(0);
+
+        // for the first department selection phase, don't preset the human player
+        if (this.isFirstDeptSelection) {
+            let newCurrentPlayer = _.find(this.players, function(p) { return p.engineer === ENGINEER.Human  });
+            if (newCurrentPlayer.engineer === ENGINEER.Human) {
+                newCurrentPlayer.dept = null;
+                newCurrentPlayer.position = null;
+            }
+        }
+
         this.gameHasStarted = true;
+        this.saveGameState();
       },
       addShuffleCard: function () {
         this.currentDeptDeck.push(createDeptCard(10, DEPARTMENT.Admin, false, true));
@@ -180,7 +202,7 @@ var app = new Vue({
         this.saveGameState();
       },
       sortPlayers: function () {
-        this.players = _.sortBy(this.players, ['dept']);
+        this.players = _.sortBy(this.players, ['dept', 'position']);
         this.saveGameState();
       },
       drawSelectionCard: function() {
@@ -189,6 +211,10 @@ var app = new Vue({
           }
           this.currentSelectionCard = this.currentSelectionDeck.shift();
           this.saveGameState();
+      },
+      drawPart: function () {
+        this.drawSelectionCard();
+        this.currentPlayer.part = this.currentSelectionCard.part;
       },
       drawDeptCard: function () {
         if (this.currentDeptDeck.length === 0) {
@@ -240,63 +266,84 @@ var app = new Vue({
             chosenDeptCard = this.currentDeptCards.pop();
         }
 
-        player.dept = chosenDeptCard.dept;
+        // cannot assign to department that it is already in
+        if (player.dept === chosenDeptCard.dept) {
+            if (chosenDeptCard.dept === 4) {
+                player.dept = 0;
+            } else {
+                player.dept = chosenDeptCard.dept + 1;
+            }
+        } else {
+            player.dept = chosenDeptCard.dept;
+        }
+
+        // position is static for Lacerda and Turczi
+        if (player.engineer === ENGINEER.Lacerda) {
+            player.position = DEPTPOSITION.Top;
+        }
+        
+        if (player.engineer === ENGINEER.Turczi) {
+            player.position = DEPTPOSITION.Bottom;
+        }
+
+        // TODO: move the double reference external to the card
         player.isLacerdaDouble = chosenDeptCard.isLacerdaDouble;
         this.saveGameState();
       },
-      selectDepartmentManually: function (player, dept) {
-          // Human player and Sandra, or Lacerda and Turczi if player must set their position because chosen is unavailable
-          player.dept = dept;
-          this.saveGameState();
-      },
-      changePhase: function(phase) {
-        this.currentPhase = phase;
+      changePhase: function() {
+        if (this.currentPhase === PHASE.DepartmentSelection) {
+            this.isFirstDeptSelection = false;
+            this.currentPhase = PHASE.Working;
+        } else {
+            this.refillDeptCards();
+            this.currentPhase = PHASE.DepartmentSelection;
+        }
+        this.sortPlayers();
         this.saveGameState();
       },
-      setDepartmentPhaseIndex: function(index) {
+      setPhaseIndex: function(index) {
         if (index > 3) {
             // department phase is over
             // start work phase
-            this.setWorkPhaseIndex(0);
-            this.currentPhase = 1;
-            this.saveGameState();
-            return;
+            this.changePhase();
+            this.phaseIndex = 0;
+        } else {
+            this.phaseIndex = index;
         }
 
-        this.departmentPhaseIndex = index;
-
         // set current player
-        this.players[this.departmentPhaseIndex].isWorking = true;
+        this.players[this.phaseIndex].isWorking = true;
 
         for (let i=0;i<3;i++) {
-            if (i !== this.departmentPhaseIndex) {
+            if (i !== this.phaseIndex) {
                 this.players[i].isWorking = false;
             }
         }
+
+        // if department phase, and is Lacerda or Turczi, draw a card and pre-set the workstation
+        if (this.currentPhase === PHASE.DepartmentSelection) {
+            if (this.currentPlayer.engineer === ENGINEER.Lacerda || this.currentPlayer.engineer === ENGINEER.Turczi) {
+                this.selectDepartmentByCard(this.currentPlayer);
+
+                if (this.currentPlayer.engineer === ENGINEER.Lacerda) {
+                    this.currentPlayer.position = 1;
+                }
+
+                if (this.currentPlayer.engineer === ENGINEER.Turczi) {
+                    this.currentPlayer.position = 0;
+                }
+            }
+        }
+
         this.saveGameState();
       },
-      setWorkPhaseIndex: function(index) {
-        if (index > 3) {
-            // work phase is over
-            // start department selection phase
-            this.setDepartmentPhaseIndex(0);
-            this.currentPhase = 0;
-            this.saveGameState();
-            return;
-        }
-
-        this.workPhaseIndex = index;
-
-        // set current player
-        this.players[this.workPhaseIndex].isWorking = true;
-
-        for (let i=0;i<3;i++) {
-            if (i !== this.workPhaseIndex) {
-                this.players[i].isWorking = false;
-            }
-        }
-
+      setDept: function(dept) {
+        this.currentPlayer.dept = dept;
         this.saveGameState();
+      },
+      setPos: function(pos) {
+          this.currentPlayer.position = pos;
+          this.saveGameState();
       },
       playerImage: function (engineer) {
         switch (engineer) {
@@ -346,6 +393,47 @@ var app = new Vue({
                 break;
         }
       },
+      partImage: function (dept) {
+        switch (dept) {
+            case 0:
+                return "motor.png";
+                break;
+            case 1:
+                return "autopilot.png";
+                break;
+            case 2:
+                return "battery.png";
+                break;
+            case 3:
+                return "body.png"
+                break;
+            case 4:
+                return "electronics.png"
+                break;
+            case 5:
+                return "drivetrain.png"
+                break;
+        }
+      },
+      carImage: function (dept) {
+        switch (dept) {
+            case 0:
+                return "concept.png";
+                break;
+            case 1:
+                return "suv.png";
+                break;
+            case 2:
+                return "city.png";
+                break;
+            case 3:
+                return "truck.png"
+                break;
+            case 4:
+                return "sports.png"
+                break;
+        }
+      },
       playerName: function (engineer) {
         switch (engineer) {
             case 0:
@@ -375,9 +463,9 @@ var app = new Vue({
           createPlayer(ENGINEER.Human, null, null, false, false),
         ];
         this.playerStartingCertTrackPosition = 0;
-        this.departmentPhaseIndex = 0;
-        this.workPhaseIndex = 0;
+        this.phaseIndex = 0;
         this.gameHasStarted = false;
+        this.isFirstDeptSelection = true;
         this.saveGameState();
       },
       saveGameState: function() {
@@ -390,9 +478,9 @@ var app = new Vue({
         gameState.players = this.players;
         gameState.playerColor = this.playerColor;
         gameState.playerStartingCertTrackPosition = this.playerStartingCertTrackPosition;
-        gameState.departmentPhaseIndex = this.departmentPhaseIndex;
-        gameState.workPhaseIndex = this.workPhaseIndex;
+        gameState.phaseIndex = this.phaseIndex;
         gameState.gameHasStarted = this.gameHasStarted;
+        gameState.isFirstDeptSelection = this.isFirstDeptSelection;
         localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
       }
     }

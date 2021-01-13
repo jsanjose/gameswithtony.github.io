@@ -81,19 +81,206 @@
             </ul>
             <button class="button" v-on:click="startGame">Start Game</button>
         </section>
-        <section class="playerArea" v-if="gameHasStarted && this.currentPhase === 0">
-            Department Selection
-            <img v-bind:src="'images/' + playerImage(currentPlayer.engineer)" class="player-image" />
-            <p>{{ playerName(currentPlayer.engineer) }}</p>
-            <button class="button" v-on:click="setDepartmentPhaseIndex(departmentPhaseIndex + 1)">Next >></button>
-            <a href="#" v-on:click="reset">Start a New Game</a>
-        </section>
-        <section class="playerArea" v-if="gameHasStarted && this.currentPhase === 1">
-            Work
-            <img v-bind:src="'images/' + playerImage(currentPlayer.engineer)" class="player-image" />
-            <p>{{ playerName(currentPlayer.engineer) }}</p>
-            <button class="button" v-on:click="setWorkPhaseIndex(workPhaseIndex + 1)">Next >></button>
-            <a href="#" v-on:click="reset">Start a New Game</a>
+        <section class="playerArea" v-if="gameHasStarted">
+            <a href="#" v-on:click="reset" class="start-new">Start a New Game</a>
+            <header v-if="this.currentPhase === 0" class="phase-title phase-title-dept">
+                <h2>Department Selection</h2>
+                <p>{{ playerName(currentPlayer.engineer) }}</p>  
+            </header>
+            <header v-if="this.currentPhase === 1" class="phase-title phase-title-work">
+                <h2>Working Phase</h2>
+                <p>{{ playerName(currentPlayer.engineer) }}</p>  
+            </header>
+            <img v-bind:src="currentPlayerImage" class="player-image" />
+            <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 2 || this.currentPlayer.engineer === 3) && this.currentPlayer.dept != null">Tap department to change.</p>
+            <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 2 || this.currentPlayer.engineer === 3) && this.currentPlayer.dept == null">Tap to select department.</p>
+            <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)"><span class="instructions-important">Department has been pre-selected.</span> If the pre-selected department is not possible, tap to change.</p>
+            <section class="dept-select" v-if="this.currentPhase === 0">
+                <ul class="dept-selector">
+                    <li class="dept-selection" v-on:click="setDept(0)"
+                    v-bind:class="{ deptSelected: currentPlayer.dept === 0 }">
+                        <img class="dept-img" src="images/randd.png" />
+                    </li>
+                    <li class="dept-selection" v-on:click="setDept(1)"
+                    v-bind:class="{ deptSelected: currentPlayer.dept === 1 }">
+                        <img class="dept-img" src="images/assembly.png" />
+                    </li>
+                    <li class="dept-selection" v-on:click="setDept(2)"
+                    v-bind:class="{ deptSelected: currentPlayer.dept === 2 }">
+                        <img class="dept-img" src="images/logistics.png" />
+                    </li>
+                    <li class="dept-selection" v-on:click="setDept(3)"
+                    v-bind:class="{ deptSelected: currentPlayer.dept === 3 }">
+                        <img class="dept-img" src="images/design.png" />
+                    </li>
+                    <li class="dept-selection" v-on:click="setDept(4)"
+                    v-bind:class="{ deptSelected: currentPlayer.dept === 4 }">
+                        <img class="dept-img" src="images/admin.png" />
+                    </li>
+                </ul>
+            </section>
+            <p class="dept-message" v-if="this.currentPhase === 0 && this.currentPlayer.engineer === 0">Mr. Lacerda always takes the bottom workstation.</p>
+            <p class="dept-message" v-if="this.currentPhase === 0 && this.currentPlayer.engineer === 1">Mr. Turczi always takes the top workstation.</p>
+            <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 2 || this.currentPlayer.engineer === 3) && !(this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4)">Tap to select a workstation.</p>
+            <section class="pos-select" v-if="this.currentPhase === 0 && !(this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4)">
+                <ul class="pos-selector">
+                    <li class="pos-selection" v-on:click="setPos(0)"
+                    v-bind:class="{ posSelected: currentPlayer.position === 0, posImgInvisible: this.currentPlayer.engineer === 0 }">
+                        <img class="pos-img" src="images/position2.png" />
+                    </li>
+                    <li class="pos-selection" v-if="this.currentPlayer.dept < 4" v-on:click="setPos(1)"
+                    v-bind:class="{ posSelected: currentPlayer.position === 1, posImgInvisible: this.currentPlayer.engineer === 1 }">
+                        <img class="pos-img" src="images/position3.png" />
+                    </li>
+                    <li class="pos-selection" v-if="this.currentPlayer.dept === 4" v-on:click="setPos(1)"
+                    v-bind:class="{ posSelected: currentPlayer.position === 1, posImgInvisible: this.currentPlayer.engineer === 1 }">
+                        <img class="pos-img" src="images/position2.png" />
+                    </li>
+                </ul>
+            </section>
+            <section class="selected-dept" v-if="this.currentPhase === 1">
+                <img v-if="currentPlayer.dept === 0" class="dept-img" src="images/randd.png" />
+                <img v-if="currentPlayer.dept === 1" class="dept-img" src="images/assembly.png" />
+                <img v-if="currentPlayer.dept === 2" class="dept-img" src="images/logistics.png" />
+                <img v-if="currentPlayer.dept === 3" class="dept-img" src="images/design.png" />
+                <img v-if="currentPlayer.dept === 4" class="dept-img" src="images/admin.png" />
+            </section>
+            <section class="extra-info" v-if="this.currentPhase === 1 && (currentPlayer.dept === 1 || currentPlayer.dept === 2) && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)">
+                <img v-bind:src="currentPartImage" class="extra-image" />
+                <img v-bind:src="currentCarImage" class="extra-image"  v-if="currentPlayer.dept === 1" />
+                <br />
+                <a href="#" class="draw-part" v-on:click="drawPart">Draw Another Part</a>
+            </section>
+            <section class="design-tiles" v-if="this.currentPhase === 1 && currentPlayer.dept === 3 && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)">
+                <img v-bind:class="{ designTileSelected: sandrasPosition === 0 }" src="images/designstack.png" />
+                <img v-bind:class="{ designTileSelected: sandrasPosition === 1 }" src="images/designtile.png" />
+                <img v-bind:class="{ designTileSelected: sandrasPosition === 2 }" src="images/designtile.png" />
+                <img v-bind:class="{ designTileSelected: sandrasPosition === 3 }" src="images/designtile.png" />
+                <img v-bind:class="{ designTileSelected: sandrasPosition === 4 }" src="images/designtile.png" />
+            </section>
+            <section class="instructions" v-if="this.currentPhase === 1">
+                <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 0">
+                    <li>Upgrade a Design from the Colleagues' shared Design stack.</li>
+                    <li>Advance the Part value, and gain PP.</li>
+                    <li>Take car <span class="instructions-important">behind Pace Car.</span></li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 1">
+                    <li>Upgrade a Design from the Colleagues' shared Design stack.</li>
+                    <li>Advance the Part value, and gain PP.</li>
+                    <li>Take car <span class="instructions-important">with highest value.</span></li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 2">
+                    <li>Advance the Pace Car 1 space. Advance all Cars behind it to fill the gap. If the Pace Car moves onto a striped space, this triggers a Meeting.</li>
+                    <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Upgraded Designs.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 3">
+                    <strong>Claim Cars</strong>
+                    <li>Return a matching Design to the bottom of the Central stack.</li>
+                    <li>Spend Shifts cost.</li>
+                    <li>Place Car in any empty garage.</li>
+                    <li>Receive Garage tile benefit.</li>
+                    <li>Flip the Garage tile.</li>
+                    <li>Check for Factory Goals.</li>
+                    <li>At end of turn, advance the Pace Car once per Car claimed and advance Cars to close gaps.</li>
+                    <li>Check Meeting marker.</li>
+                    <p style="margin-top: 2rem;"><strong>Upgrade a Design</strong></p>
+                    <li>Place a Car Part on any empty Upgrade space.</li>
+                    <li>Receive benefit.</li>
+                    <li>Advance the Value marker for the Car Part.</li>
+                    <li>Place the Upgraded Design face down next to your Player board, or above a garage if you have a matching car (it is a Tested Design).</li>
+                    <li>Earn 2 PP.</li>
+                    <li>Check for Factory Goals.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 0">
+                    <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
+                    <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Lacerda moves the Cars from top to bottom, or bottom to top before moving left.</li>
+                    <li>If Mr. Lacerda is certified, provide an additional Part.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 1">
+                    <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
+                    <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Turczi always moves left (where it is possible to choose).</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 2">
+                    <li>Remove all Car Parts from all Assembly spaces.</li>
+                    <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Cars in your garages.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 3">
+                    <strong>Clean Out Assembly Spaces</strong>
+                    <li><span class="instructions-important">Before taking actions:</span> if a Model has all of its Assembly spaces full, return those Car Parts to the supply.</li>
+                    <p style="margin-top: 2rem;"><strong>Provide a Needed Part</strong></p>
+                    <li>Place a Car Part on an empty Assembly space for any Model. <span class="instructions-important">Provide upgraded parts first.</span></li>
+                    <li>The Car Part must be different.</li>
+                    <li>Move the Car at the start of this Model’s assembly line 1 position, displacing other Cars along the path following the arrows.</li>
+                    <li>Place a new Car of this Model from the supply at the beginning of the assembly line.</li>
+                    <li>Score PP if car is pushed off assembly line .</li>
+                    <li>Check Demand tiles.</li>
+                    <li>Move Car to Test track.</li>
+                    <li>If there are more than four cars behind the Pace Car, remove cars nearest to the Pace Car until there are four.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 0">
+                    <li>Issue a Kanban Order. See above for card placement.</li>
+                    <li>Empty warehouse and take 1 of the part indicated above.</li>
+                    <li>If Mr. Lacerda is certified, take an additional Part.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 1">
+                    <li>Empty warehouse and take 1 of the part indicated above.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 2">
+                    <li>Remove all but 1 Car Part from each warehouse.</li>
+                    <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Car Parts on your Player board.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 3">
+                    <strong>Issue Kanban Order <br /><span class="instructions-important">Only once per turn</span></strong>
+                    <li>Gain 1 Banked shift.</li>
+                    <li>Place a Kanban Order card with 4 symbols on one side of the line and 2 on the other.</li>
+                    <li>For each matching symbol, add 1 Car Part.</li>
+                    <li>Return the card to the bottom of the deck.</li>
+                    <li>Draw the top card from the deck into your hand.</li>
+                    <p style="margin-top: 2rem;"><strong>Collect Car Parts</strong></p>
+                    <li>Take any number of Car Parts from any one warehouse.</li>
+                    <p style="margin-top: 2rem;"><strong><span class="instructions-important">IF YOU ARE CERTIFIED</span><br />Collect Car Parts<br /><span class="instructions-important">Only once per turn</span></strong></p>
+                    <li>Take 1 Parts Voucher from the supply.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 0">
+                    <li>Take 2 Design tiles (see above for column to use).</li>
+                    <li>If Mr. Lacerda is certified, take an additional tile from the Central Stack.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 1">
+                    <li>Take 2 Design tiles (see above for column to use).</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 2">
+                    <li>Shuffle and return the rightmost 4 Design tiles to the bottom of the Central stack. In a 2-player game, remove the rightmost 8 tiles. Then, slide the Designs right and fill any gaps as normal.</li>
+                    <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Designs on your desk.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 3">
+                    <strong>Select a Design</strong>
+                    <li>Choose one of the Designs on the rightmost 8 spaces.</li>
+                    <li>Receive benefit (if any).</li>
+                    <li>Move the Design to an available space on your Player board. Keep it design-side up.</li>
+                    <li>At the end of the turn:  slide all Designs in both rows to the right to fill any gaps.</li>
+                    <p style="margin-top: 2rem;"><strong><span class="instructions-important">IF YOU ARE CERTIFIED</span><br />Select an Advanced Design</strong></p>
+                    <li>You can select the top Designs from the Central stack and from the stacks in the First Office.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 0">
+                    <li>Advance training in Sandra's current department.</li>
+                    <li>If Mr. Lacerda is certified, advance an additional training space.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 1">
+                    <li>Advance training in Sandra's current department.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 2">
+                    <li>Perform End-of-Week Scoring.</li>
+                    <li><strong>Evaluation Penalty: </strong>Be certified in 2 or fewer departments.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 3">
+                    <li>Choose <span class="instructions-important">one</span> other department to work in.</li>
+                    <li>Split your Shifts and Books however you like between Administration and the chosen department: only in Administration, or only in the chosen department, or in both.</li>
+                    <li>Shifts worked in Administration can only be used for training.</li>
+                </ul>
+            </section>
+            <section class="button-container">
+                <button class="button" v-on:click="setPhaseIndex(phaseIndex + 1)">Next >></button>
+            </section>
         </section>
     </main>
     <script src="app.js"></script>

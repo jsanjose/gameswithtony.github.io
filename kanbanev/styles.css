@@ -8,6 +8,7 @@ body {
     justify-content: center;
     margin: 0;
     padding: 0;
+    padding-bottom: 150px;
 }
 
 a, a:visited, a:hover {
@@ -18,6 +19,7 @@ a, a:visited, a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     padding: 1rem;
     padding-top: .25rem;
     margin: 0;
@@ -30,7 +32,7 @@ a, a:visited, a:hover {
 .playerArea > * {
     margin: 0;
     padding: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     width: 100%;
 }
 
@@ -105,12 +107,28 @@ a, a:visited, a:hover {
 
 
 .player-image {
-    width: 100px;
+    width: 80px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    padding: 2rem;
+    width: 100%;
+    background-color: #cccccc;
+    border-top: solid 1px #47443f;
+    margin: 0;
 }
 
 .button {
     height: 50px;
     min-height: 50px;
+    width: 100%;
+    max-width: 500px;
     background-color: #47443f;
     color: #ffffff;
     font-size: 1.1rem;
@@ -118,6 +136,151 @@ a, a:visited, a:hover {
     cursor: pointer;
     border: none;
 }
+
+.start-new {
+    margin-bottom: .25rem;
+    font-size: 0.9rem;
+}
+
+.phase-title {
+    margin: 0 0 1rem 0;
+    color: #fff;
+    padding: .5rem 0;
+    width: 100vw;
+}
+
+.phase-title h2 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.phase-title p {
+    font-size: 1.1rem;
+    font-weight: normal;
+    margin: 0;
+}
+
+.phase-title-dept {
+    background-color: #00d0ff;
+}
+
+.phase-title-work {
+    background-color: #ff8a26;
+}
+
+.pos-select {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+.dept-selector, .pos-selector {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: no-wrap;
+    margin: 0;
+    padding: 0;
+}
+
+.pos-selector {
+    justify-content: space-around;
+    width: 50%;
+}
+
+.dept-selection, .pos-selection {
+    padding: 0.5rem;
+    margin: 0.5rem;
+    cursor: pointer;
+}
+
+.pos-selection {
+    padding: 0.3rem;
+}
+
+.dept-img {
+    max-width: 100%;
+}
+
+.pos-img {
+    max-width: 100%;
+}
+
+.posImgInvisible {
+    visibility: hidden;
+}
+
+.deptSelected {
+    border: dashed 2px #47443f;
+    border-radius: 8px;
+}
+
+.posSelected {
+    border-bottom: solid 2px #47443f;
+}
+
+.selected-dept {
+    border-top: solid 1px #47443f;
+    padding-top: 1rem;
+}
+
+.selected-dept img {
+    max-height: 60px;
+}
+
+.dept-message {
+    font-size: 0.9rem;
+    margin: 1rem 0 0 0;
+}
+
+.extra-info {
+    margin-top: 1rem;
+}
+
+.extra-image {
+    max-height: 60px;
+}
+
+.draw-part {
+    font-size: 0.9rem;
+}
+
+.design-tiles {
+    display: flex;
+    justify-content: space-between;
+}
+
+.design-tiles img {
+    max-height: 50px;
+    opacity: 0.4;
+}
+
+.design-tiles img.designTileSelected {
+    opacity: 1.0;
+}
+
+.instructions {
+    text-align: left;
+    margin-top: 2rem;
+    border: solid 1px #ccc;
+    padding: .5rem;
+    padding-bottom: 150px;
+}
+
+.instructions-list {
+    margin-left: -0.5rem;
+}
+
+.instructions-list li {
+    margin-top: 1rem;
+}
+
+.instructions-important {
+    color: red;
+    font-weight: bold;d
+}
+
 
 .yellow {
     fill: #ffff4d;
