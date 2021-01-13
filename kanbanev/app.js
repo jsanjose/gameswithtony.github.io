@@ -396,19 +396,19 @@ var app = new Vue({
       partImage: function (dept) {
         switch (dept) {
             case 0:
-                return "motor.png";
+                return "motor.PNG";
                 break;
             case 1:
-                return "autopilot.png";
+                return "autopilot.PNG";
                 break;
             case 2:
-                return "battery.png";
+                return "battery.PNG";
                 break;
             case 3:
                 return "body.png"
                 break;
             case 4:
-                return "electronics.png"
+                return "electronics.PNG"
                 break;
             case 5:
                 return "drivetrain.png"
