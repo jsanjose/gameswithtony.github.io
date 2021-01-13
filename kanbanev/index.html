@@ -80,6 +80,19 @@
                     v-bind:class="{ playerColorOptionSelected: playerStartingCertTrackPosition === 0 }">1</li>
             </ul>
             <button class="button" v-on:click="startGame">Start Game</button>
+            <section class="instructions">
+                <ul class="instructions-list">
+                    <li><strong>How To Use This App</strong></li>
+                    <li>Begin by selecting your player color and starting position on the certification track.</li>
+                    <li>The app will cycle between the Department Selection and Working phases of the game.</li>
+                    <li>During department selection, you must select the department and workstation for yourself and Sandra.</li>
+                    <li>During department selection a department will be chosen for Mr. Lacerda and Mr. Turczi. You may change their department if the pre-selected one is not possible.</li>
+                    <li>During the working phase, the app will display each player in turn order and show the department the player is working in.</li>
+                    <li>During the working phase, for Mr. Lacerda and Mr. Turczi, other information is shown such as the current Part, and based on Sandra's position the Car and Design Tile column.</li>
+                    <li>During the working phase, if you the department you are in requires selecting a Part, the current Part will be shown. If that Part is not valid, then use the 'Draw Another Part' link to get a new Part.</li>
+                    <li>Instructions for yourself, Sandra, Mr. Lacerda and Mr. Turczi are all provided below the department information.</li>
+                </ul>
+            </section>  
         </section>
         <section class="playerArea" v-if="gameHasStarted">
             <a href="#" v-on:click="reset" class="start-new">Start a New Game</a>
