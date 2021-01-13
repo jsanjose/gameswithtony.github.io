@@ -5,7 +5,7 @@ const PART = { Motor: 0, Autopilot: 1, Battery: 2, Body: 3, Electronics: 4, Driv
 const ENGINEER = { Lacerda: 0, Turczi: 1, Sandra: 2, Human: 3 };
 const PHASE = { DepartmentSelection: 0, Working: 1 };
 const PLAYERCOLOR = { yellow: 0, blue: 1, purple: 2, red: 3 };
-const DEPTPOSITION = { Top: 0, Bottom: 1 };
+const DEPTPOSITION = { Top: 0, Bottom: 1, SandrasDesk: 2 };
 const LOCALSTORAGENAME = 'kanbanevgamestate';
 
 function createDeptCard(id, dept, lacerdaDouble, isReshuffle) {
@@ -81,7 +81,7 @@ var app = new Vue({
       players: [
         createPlayer(ENGINEER.Lacerda, null, DEPTPOSITION.Top, null, false, false),
         createPlayer(ENGINEER.Turczi, null, DEPTPOSITION.Bottom, null, false, false),
-        createPlayer(ENGINEER.Sandra, null, null, null, false, false),
+        createPlayer(ENGINEER.Sandra, null, DEPTPOSITION.SandrasDesk, null, false, false),
         createPlayer(ENGINEER.Human, null, null, null, false, false),
       ],
       playerColor: PLAYERCOLOR.yellow,
@@ -339,6 +339,11 @@ var app = new Vue({
       },
       setDept: function(dept) {
         this.currentPlayer.dept = dept;
+
+        if (this.currentPlayer.engineer === ENGINEER.Sandra) {
+            this.currentPlayer.position = DEPTPOSITION.SandrasDesk;
+        }
+
         this.saveGameState();
       },
       setPos: function(pos) {
