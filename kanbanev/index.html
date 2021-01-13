@@ -137,13 +137,17 @@
             <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 2 || this.currentPlayer.engineer === 3) && !(this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4)">Tap to select a workstation.</p>
             <section class="pos-select" v-if="this.currentPhase === 0 && !(this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4)">
                 <ul class="pos-selector">
-                    <li class="pos-selection" v-on:click="setPos(0)"
+                    <li class="pos-selection" v-if="this.currentPlayer.dept < 4" v-on:click="setPos(0)"
                     v-bind:class="{ posSelected: currentPlayer.position === 0, posImgInvisible: this.currentPlayer.engineer === 0 }">
                         <img class="pos-img" src="images/position2.png" />
                     </li>
                     <li class="pos-selection" v-if="this.currentPlayer.dept < 4" v-on:click="setPos(1)"
                     v-bind:class="{ posSelected: currentPlayer.position === 1, posImgInvisible: this.currentPlayer.engineer === 1 }">
                         <img class="pos-img" src="images/position3.png" />
+                    </li>
+                    <li class="pos-selection" v-if="this.currentPlayer.dept === 4" v-on:click="setPos(0)"
+                    v-bind:class="{ posSelected: currentPlayer.position === 0, posImgInvisible: this.currentPlayer.engineer === 0 }">
+                        <img class="pos-img" src="images/position1.png" />
                     </li>
                     <li class="pos-selection" v-if="this.currentPlayer.dept === 4" v-on:click="setPos(1)"
                     v-bind:class="{ posSelected: currentPlayer.position === 1, posImgInvisible: this.currentPlayer.engineer === 1 }">
