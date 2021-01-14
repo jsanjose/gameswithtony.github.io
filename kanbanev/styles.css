@@ -106,6 +106,7 @@ a, a:visited, a:hover {
 
 .player-image {
     width: 80px;
+    margin-bottom: 0;
 }
 
 .button-container {
@@ -143,7 +144,7 @@ a, a:visited, a:hover {
 .phase-title {
     margin: 0 0 1rem 0;
     color: #fff;
-    padding: .5rem 0;
+    padding: .25rem 0;
     width: 100vw;
 }
 
@@ -218,6 +219,11 @@ a, a:visited, a:hover {
     border-bottom: solid 2px #47443f;
 }
 
+.dept-card-img {
+    max-height: 30px;
+    margin-right: 1rem;
+}
+
 .selected-dept {
     border-top: solid 1px #47443f;
     padding-top: 1rem;
@@ -229,7 +235,7 @@ a, a:visited, a:hover {
 
 .dept-message {
     font-size: 0.9rem;
-    margin: 1rem 0 0 0;
+    margin: 0.5rem 0 0 0;
 }
 
 .extra-info {

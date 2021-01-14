@@ -413,6 +413,25 @@ var app = new Vue({
                 break;
         }
       },
+      deptImageYellow: function (dept) {
+        switch (dept) {
+            case 0:
+                return "randd_yellow.png";
+                break;
+            case 1:
+                return "assembly_yellow.png";
+                break;
+            case 2:
+                return "logistics_yellow.png";
+                break;
+            case 3:
+                return "design_yellow.png"
+                break;
+            case 4:
+                return "admin_yellow.png"
+                break;
+        }
+      },
       partImage: function (dept) {
         switch (dept) {
             case 0:

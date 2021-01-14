@@ -87,6 +87,7 @@
                     <li>The app will cycle between the Department Selection and Working phases of the game.</li>
                     <li>During department selection, you must select the department and workstation for yourself and Sandra.</li>
                     <li>During department selection a department will be chosen for Mr. Lacerda and Mr. Turczi. You may change their department if the pre-selected one is not possible.</li>
+                    <li>The possible locations for Mr. Lacerda and Mr. Turczi (i.e. the column of cards, or what is left of them) is shown at the top of the screen as small yellow department icons. This helps you anticipate where the bots may be placed.</li>
                     <li>During the working phase, the app will display each player in turn order and show the department the player is working in.</li>
                     <li>During the working phase, for Mr. Lacerda and Mr. Turczi, other information is shown such as the current Part, and based on Sandra's position the Car and Design Tile column.</li>
                     <li>During the working phase, if you the department you are in requires selecting a Part, the current Part will be shown. If that Part is not valid, then use the 'Draw Another Part' link to get a new Part.</li>
@@ -97,6 +98,9 @@
         <section class="playerArea" v-if="gameHasStarted">
             <a href="#" v-on:click="reset" class="start-new">Start a New Game</a>
             <header v-if="this.currentPhase === 0" class="phase-title phase-title-dept">
+                <span v-for="deptCard in currentDeptCards">
+                    <img class="dept-card-img" v-bind:src="'images/' + deptImageYellow(deptCard.dept)" />
+                </span>
                 <h2>Department Selection</h2>
                 <p>{{ playerName(currentPlayer.engineer) }}</p>  
             </header>
