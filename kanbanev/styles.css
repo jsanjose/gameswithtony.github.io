@@ -315,3 +315,7 @@ a, a:visited, a:hover {
 .helper-gray {
     background-color: #307D82;
 }
+
+.dim {
+    opacity: 0.4;
+}

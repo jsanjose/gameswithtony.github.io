@@ -109,25 +109,26 @@
                 <p>{{ playerName(currentPlayer.engineer) }}</p>  
             </header>
             <img v-bind:src="currentPlayerImage" class="player-image" />
-            <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 2 || this.currentPlayer.engineer === 3) && this.currentPlayer.dept != null">Tap department to change.</p>
+            <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 2 || this.currentPlayer.engineer === 3) && this.currentPlayer.dept != null && !(this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection)">Tap department to change.</p>
+            <p v-if="this.currentPhase === 0 && this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection">On the first day of the game, Sandra sits at her desk and takes no action.</p>
             <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 2 || this.currentPlayer.engineer === 3) && this.currentPlayer.dept == null">Tap to select department.</p>
             <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)"><span class="instructions-important">Department has been pre-selected.</span> If the pre-selected department is not possible, tap to change.</p>
             <section class="dept-select" v-if="this.currentPhase === 0">
                 <ul class="dept-selector">
                     <li class="dept-selection" v-on:click="setDept(0)"
-                    v-bind:class="{ deptSelected: currentPlayer.dept === 0 }">
+                    v-bind:class="{ deptSelected: currentPlayer.dept === 0, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
                         <img class="dept-img" src="images/randd.png" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(1)"
-                    v-bind:class="{ deptSelected: currentPlayer.dept === 1 }">
+                    v-bind:class="{ deptSelected: currentPlayer.dept === 1, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
                         <img class="dept-img" src="images/assembly.png" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(2)"
-                    v-bind:class="{ deptSelected: currentPlayer.dept === 2 }">
+                    v-bind:class="{ deptSelected: currentPlayer.dept === 2, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
                         <img class="dept-img" src="images/logistics.png" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(3)"
-                    v-bind:class="{ deptSelected: currentPlayer.dept === 3 }">
+                    v-bind:class="{ deptSelected: currentPlayer.dept === 3, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
                         <img class="dept-img" src="images/design.png" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(4)"
@@ -304,7 +305,7 @@
                     <li><strong>Evaluation Penalty: </strong>Be certified in 2 or fewer departments.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 2 && isFirstDeptSelection">
-                    <li>During the first round, Sandra sits at her desk. She takes no action.</li>
+                    <li>On the first day of the game, Sandra sits at her desk and takes no action.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 3">
                     <li>Choose <span class="instructions-important">one</span> other department to work in.</li>
