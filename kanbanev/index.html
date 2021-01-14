@@ -109,9 +109,11 @@
                 <p>{{ playerName(currentPlayer.engineer) }}</p>  
             </header>
             <img v-bind:src="currentPlayerImage" class="player-image" />
-            <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 2 || this.currentPlayer.engineer === 3) && this.currentPlayer.dept != null && !(this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection)">Tap department to change.</p>
+            <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 3) && this.currentPlayer.dept != null && !(this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection)">Tap department to change.</p>
             <p v-if="this.currentPhase === 0 && this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection">On the first day of the game, Sandra sits at her desk and takes no action.</p>
-            <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 2 || this.currentPlayer.engineer === 3) && this.currentPlayer.dept == null">Tap to select department.</p>
+            <p class="dept-message" v-if="this.currentPhase === 0 &&this.currentPlayer.engineer === 2 && !this.isFirstDeptSelection"><span class="instructions-important">Next available workstation has been pre-selected.</span></p>
+            <p class="dept-message" v-if="this.currentPhase === 0 &&this.currentPlayer.engineer === 2 && !this.isFirstDeptSelection && this.currentPlayer.dept === 4">Sandra sits at her desk.</p>
+            <p class="dept-message" v-if="this.currentPhase === 0 && this.currentPlayer.engineer === 3 && this.currentPlayer.dept == null">Tap to select department.</p>
             <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)"><span class="instructions-important">Department has been pre-selected.</span> If the pre-selected department is not possible, tap to change.</p>
             <section class="dept-select" v-if="this.currentPhase === 0">
                 <ul class="dept-selector">

@@ -7,6 +7,17 @@ const PHASE = { DepartmentSelection: 0, Working: 1 };
 const PLAYERCOLOR = { yellow: 0, blue: 1, purple: 2, red: 3 };
 const DEPTPOSITION = { Top: 0, Bottom: 1, SandrasDesk: 2 };
 const LOCALSTORAGENAME = 'kanbanevgamestate';
+const sandraWorkstationOrder = [
+    [DEPARTMENT.RandD, DEPTPOSITION.Top],
+    [DEPARTMENT.RandD, DEPTPOSITION.Bottom],
+    [DEPARTMENT.Assembly, DEPTPOSITION.Top],
+    [DEPARTMENT.Assembly, DEPTPOSITION.Bottom],
+    [DEPARTMENT.Logistics, DEPTPOSITION.Top],
+    [DEPARTMENT.Logistics, DEPTPOSITION.Bottom],
+    [DEPARTMENT.Design, DEPTPOSITION.Top],
+    [DEPARTMENT.Design, DEPTPOSITION.Bottom],
+    [DEPARTMENT.Admin, DEPTPOSITION.SandrasDesk]
+];
 
 function createDeptCard(id, dept, lacerdaDouble, isReshuffle) {
     return {
@@ -192,7 +203,7 @@ var app = new Vue({
             }
         }
 
-        this.gameHasStarted = true;
+        this.gameHasStarted = true; // must do this last
         this.saveGameState();
       },
       addShuffleCard: function () {
@@ -313,6 +324,13 @@ var app = new Vue({
         this.saveGameState();
       },
       setPhaseIndex: function(index) {
+        let donePlayer = this.players[this.phaseIndex];
+
+        if (this.gameHasStarted && donePlayer.engineer === ENGINEER.Human && (donePlayer.dept === null || donePlayer.position === null)) {
+            alert("You must choose a department and workstation.");
+            return;
+        }
+
         if (index > 3) {
             // department phase is over
             // start work phase
@@ -345,6 +363,52 @@ var app = new Vue({
                 if (newCurrentPlayer.engineer === ENGINEER.Turczi) {
                     newCurrentPlayer.position = 0;
                 }
+            }
+
+            if (newCurrentPlayer.engineer === ENGINEER.Sandra && !this.isFirstDeptSelection) {
+                // find next available workstation
+                let dept = newCurrentPlayer.dept;
+                let pos = newCurrentPlayer.position;
+                let isAvailable = false;
+
+                if (dept === DEPARTMENT.Admin) {
+                    // loop back to top
+                    dept = DEPARTMENT.RandD;
+                } else {
+                    // move to next department
+                    dept = dept + 1;
+
+                    if (dept === DEPARTMENT.Admin) {
+                        pos = DEPTPOSITION.SandrasDesk;
+                        isAvailable = true;
+                    }
+                }
+
+                pos = DEPTPOSITION.Top;
+
+                while (!isAvailable) {
+                    let occupant = this.workStationOccupiedBy(dept, pos);
+                
+                    if (occupant === undefined) {
+                        isAvailable = true;
+                    } else {
+                        if (pos === DEPTPOSITION.Top) {
+                            pos = DEPTPOSITION.Bottom;
+                        } else {
+                            dept = dept + 1;
+
+                            if (dept === DEPARTMENT.Admin) {
+                                pos = DEPTPOSITION.SandrasDesk;
+                                isAvailable = true;
+                            } else {
+                                pos = DEPTPOSITION.Top;
+                            }
+                        }
+                    }
+                }
+
+                newCurrentPlayer.dept = dept;
+                newCurrentPlayer.position = pos;
             }
         }
 
@@ -488,6 +552,9 @@ var app = new Vue({
                 return "You"
                 break;
         }
+      },
+      workStationOccupiedBy: function(dept, pos) {
+        return _.find(this.players, function(p) { return p.dept === dept && p.position === pos });
       },
       reset: function() {
         this.currentPhase = PHASE.DepartmentSelection;
