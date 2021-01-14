@@ -336,7 +336,7 @@ var app = new Vue({
         // if department phase, and is Lacerda or Turczi, draw a card and pre-set the workstation
         if (this.currentPhase === PHASE.DepartmentSelection) {
             if (newCurrentPlayer.engineer === ENGINEER.Lacerda || newCurrentPlayer.engineer === ENGINEER.Turczi) {
-                this.selectDepartmentByCard(this.currentPlayer);
+                this.selectDepartmentByCard(newCurrentPlayer);
 
                 if (newCurrentPlayer.engineer === ENGINEER.Lacerda) {
                     newCurrentPlayer.position = 1;
