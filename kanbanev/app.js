@@ -303,9 +303,9 @@ var app = new Vue({
       },
       changePhase: function() {
         if (this.currentPhase === PHASE.DepartmentSelection) {
-            this.isFirstDeptSelection = false;
             this.currentPhase = PHASE.Working;
         } else {
+            this.isFirstDeptSelection = false;
             this.refillDeptCards();
             this.currentPhase = PHASE.DepartmentSelection;
         }

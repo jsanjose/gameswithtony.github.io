@@ -299,9 +299,12 @@
                     <li>Advance once on the training track.</li>
                     <li>Advance training in Sandra's current department.</li>
                 </ul>
-                <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 2">
+                <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 2 && !isFirstDeptSelection">
                     <li>Perform End-of-Week Scoring.</li>
                     <li><strong>Evaluation Penalty: </strong>Be certified in 2 or fewer departments.</li>
+                </ul>
+                <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 2 && isFirstDeptSelection">
+                    <li>During the first round, Sandra sits at her desk. She takes no action.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 3">
                     <li>Choose <span class="instructions-important">one</span> other department to work in.</li>
