@@ -227,6 +227,7 @@ a, a:visited, a:hover {
 .selected-dept {
     border-top: solid 1px #47443f;
     padding-top: 1rem;
+    margin-top: .25rem;
 }
 
 .selected-dept img {
