@@ -3,6 +3,12 @@
     box-sizing: border-box;
 }
 
+main#kanbanev {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 body {
     display: flex;
     justify-content: center;
@@ -66,6 +72,7 @@ a, a:visited, a:hover {
     justify-content: center;
     background-color: #307D82;
     padding: 0.5rem 0;
+    width: 100vw;
 }
 
 .car-icon-title-svg {
