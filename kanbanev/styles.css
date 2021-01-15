@@ -225,9 +225,10 @@ a, a:visited, a:hover {
 }
 
 .selected-dept {
-    border-top: solid 1px #47443f;
-    padding-top: 1rem;
+    padding: 0.75rem;
     margin-top: .25rem;
+    width: 100vw;
+    background-color: #efefef;
 }
 
 .selected-dept img {

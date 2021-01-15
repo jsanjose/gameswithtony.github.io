@@ -100,7 +100,9 @@ var app = new Vue({
       phaseIndex: 0,
       computedUpdater: 0,
       gameHasStarted: false,
-      isFirstDeptSelection: true
+      isFirstDeptSelection: true,
+      lacerdaTrainingTrack: [1, 1, 1, 1, 1],
+      turcziTrainingTrack: [0, 0, 0, 0, 0]
     },
     mounted: function() {
         this.computedUpdater++;
@@ -117,6 +119,14 @@ var app = new Vue({
             this.phaseIndex = gameState.phaseIndex;
             this.gameHasStarted = gameState.gameHasStarted;
             this.isFirstDeptSelection = gameState.isFirstDeptSelection;
+
+            // added post-release
+            if (gameState.lacerdaTrainingTrack) {
+                this.lacerdaTrainingTrack = gameState.lacerdaTrainingTrack;
+            }
+            if (gameState.turcziTrainingTrack) {
+                this.turcziTrainingTrack = gameState.turcziTrainingTrack;
+            }
         }
         else {
             this.reset();
@@ -158,6 +168,31 @@ var app = new Vue({
         currentCarImage: function () {
             this.computedUpdater;
             return 'images/' + this.carImage(this.sandrasPosition);
+        },
+        currentTrainingTrackImage: function () {
+            this.computedUpdater;
+            let path = 'images/training';
+            let playerPrefix = '';
+            let direction = (this.currentPlayer.dept === 0 || this.currentPlayer.dept === 3) ? 'rl' : 'lr';
+            let level = 0;
+
+            if (this.currentPlayer.engineer === ENGINEER.Lacerda) {
+                playerPrefix = 'L';
+                level = this.lacerdaTrainingTrack[this.currentPlayer.dept];
+            }
+
+            if (this.currentPlayer.engineer === ENGINEER.Turczi) {
+                playerPrefix = 'T';
+                level = this.turcziTrainingTrack[this.currentPlayer.dept];
+            }
+
+            return path + playerPrefix + "_" + direction + "_" + level + ".png";
+        },
+        lacerdaIsCertified: function() {
+            // assumes Lacerda is the current player
+            this.computedUpdater;
+            let level = this.lacerdaTrainingTrack[this.currentPlayer.dept];
+            return level > 2;
         }
     },
     methods: {
@@ -289,27 +324,34 @@ var app = new Vue({
         }
 
         // cannot assign to department that it is already in
-        if (player.dept === chosenDeptCard.dept) {
+        let chosenDept = chosenDeptCard.dept;
+
+        if (player.dept === chosenDept) {
             if (chosenDeptCard.dept === 4) {
-                player.dept = 0;
+                chosenDept = 0;
             } else {
-                player.dept = chosenDeptCard.dept + 1;
+                chosenDept = chosenDept + 1;
             }
-        } else {
-            player.dept = chosenDeptCard.dept;
         }
 
-        // position is static for Lacerda and Turczi
-        if (player.engineer === ENGINEER.Lacerda) {
-            player.position = DEPTPOSITION.Top;
-        }
-        
-        if (player.engineer === ENGINEER.Turczi) {
-            player.position = DEPTPOSITION.Bottom;
+        // find an empty spot
+        let isAvailable = false;
+        let playerPos = (player.engineer === ENGINEER.Lacerda) ? DEPTPOSITION.Bottom : DEPTPOSITION.Top;
+        while (!isAvailable) {
+            let occupant = this.workStationOccupiedBy(chosenDept, playerPos);
+            if (occupant !== undefined) {
+                if (chosenDeptCard.dept === 4) {
+                    chosenDept = 0;
+                } else {
+                    chosenDept = chosenDept + 1;
+                }
+            } else {
+                player.dept = chosenDept;
+                player.position = playerPos;
+                isAvailable = true;
+            }
         }
 
-        // TODO: move the double reference external to the card
-        player.isLacerdaDouble = chosenDeptCard.isLacerdaDouble;
         this.saveGameState();
       },
       changePhase: function() {
@@ -412,8 +454,23 @@ var app = new Vue({
             }
         }
 
-        this.saveGameState();
+        // if working phase, increment Lacerda or Turczi training levels
+        if (this.currentPhase === PHASE.Working && (newCurrentPlayer.engineer === ENGINEER.Lacerda || newCurrentPlayer.engineer === ENGINEER.Turczi)) {
+            let trainingTrack = [];
+            if (newCurrentPlayer.engineer === ENGINEER.Lacerda) {
+                trainingTrack = this.lacerdaTrainingTrack;
+            }
+            else if (newCurrentPlayer.engineer === ENGINEER.Turczi) {
+                trainingTrack = this.turcziTrainingTrack;
+            }
 
+            if (trainingTrack[newCurrentPlayer.dept] < 5) {
+                trainingTrack[newCurrentPlayer.dept]++;
+            }
+        }
+
+        this.saveGameState();
+        window.scrollTo(0,0);
         let self = this;
       },
       setDept: function(dept) {
@@ -572,6 +629,8 @@ var app = new Vue({
         this.phaseIndex = 0;
         this.gameHasStarted = false;
         this.isFirstDeptSelection = true;
+        this.lacerdaTrainingTrack = [1, 1, 1, 1, 1];
+        this.turcziTrainingTrack = [0, 0, 0, 0, 0];
         this.saveGameState();
       },
       saveGameState: function() {
@@ -587,6 +646,8 @@ var app = new Vue({
         gameState.phaseIndex = this.phaseIndex;
         gameState.gameHasStarted = this.gameHasStarted;
         gameState.isFirstDeptSelection = this.isFirstDeptSelection;
+        gameState.lacerdaTrainingTrack = this.lacerdaTrainingTrack;
+        gameState.turcziTrainingTrack = this.turcziTrainingTrack;
         localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
 
         this.computedUpdater++;
