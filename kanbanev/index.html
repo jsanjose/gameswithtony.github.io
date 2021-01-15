@@ -83,7 +83,7 @@
             <button class="button" v-on:click="startGame">Start Game</button>
             <section class="instructions">
                 <ul class="instructions-list">
-                    <strong>How To Use This App</strong>
+                    <p><strong>How To Use This App</strong></p>
                     <li>Begin by selecting your player color and starting position on the certification track.</li>
                     <li>The app will cycle between the Department Selection and Working phases of the game.</li>
                     <li>During department selection, you must select the department and workstation for yourself.</li>
@@ -203,7 +203,7 @@
                     <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Upgraded Designs.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 3">
-                    <strong>Claim Cars</strong>
+                    <p><strong>Claim Cars</strong></p>
                     <li>Return a matching Design to the bottom of the Central stack.</li>
                     <li>Spend Shifts cost.</li>
                     <li>Place Car in any empty garage.</li>
@@ -244,7 +244,7 @@
                     <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Cars in your garages.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 3">
-                    <strong>Clean Out Assembly Spaces</strong>
+                    <p><strong>Clean Out Assembly Spaces</strong></p>
                     <li><span class="instructions-important">Before taking actions:</span> if a Model has all of its Assembly spaces full, return those Car Parts to the supply.</li>
                     <p style="margin-top: 2rem;"><strong>Provide a Needed Part</strong></p>
                     <li>Place a Car Part on an empty Assembly space for any Model. <span class="instructions-important">Provide upgraded parts first.</span></li>
@@ -279,7 +279,7 @@
                     <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Car Parts on your Player board.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 3">
-                    <strong>Issue Kanban Order <br /><span class="instructions-important">Only once per turn</span></strong>
+                    <p><strong>Issue Kanban Order <br /><span class="instructions-important">Only once per turn</span></strong></p>
                     <li>Gain 1 Banked shift.</li>
                     <li>Place a Kanban Order card with 4 symbols on one side of the line and 2 on the other.</li>
                     <li>For each matching symbol, add 1 Car Part.</li>
@@ -312,7 +312,7 @@
                     <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Designs on your desk.</li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 3">
-                    <strong>Select a Design</strong>
+                    <p><strong>Select a Design</strong></p>
                     <li>Choose one of the Designs on the rightmost 8 spaces.</li>
                     <li>Receive benefit (if any).</li>
                     <li>Move the Design to an available space on your Player board. Keep it design-side up.</li>

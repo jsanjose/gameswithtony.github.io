@@ -287,6 +287,13 @@ a, a:visited, a:hover {
     font-weight: bold;
 }
 
+.instructions-list > p {
+    margin-bottom: 0;
+}
+
+.instructions-list p + li {
+    margin-top: 0.4rem;
+}
 
 .yellow {
     fill: #ffff4d;

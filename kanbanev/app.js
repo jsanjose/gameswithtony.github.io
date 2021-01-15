@@ -284,7 +284,14 @@ var app = new Vue({
       refillDeptCards: function () {
         // add two cards
         let isReshuffle = false;
+
+        let escaper = 0;
         while (this.currentDeptCards.length < 3) {
+            if (escaper > 100) {
+                alert("Something went wrong during department card refill. Try refreshing.")
+                return;
+            }
+
             let deptCard = this.drawDeptCard();
 
             if (deptCard.isReshuffle) {
@@ -294,6 +301,8 @@ var app = new Vue({
                 // add card to end of column
                 this.currentDeptCards[this.currentDeptCards.length] = deptCard;
             }
+
+            escaper++;
         }
 
         // reshuffle if the reshuffle card was drawn
@@ -337,7 +346,14 @@ var app = new Vue({
         // find an empty spot
         let isAvailable = false;
         let playerPos = (player.engineer === ENGINEER.Lacerda) ? DEPTPOSITION.Bottom : DEPTPOSITION.Top;
+
+        let escaper = 0;
         while (!isAvailable) {
+            if (escaper > 100) {
+                alert("Something went wrong during AI workstation selection. Try refreshing.")
+                return;
+            }
+
             let occupant = this.workStationOccupiedBy(chosenDept, playerPos);
             if (occupant !== undefined) {
                 if (chosenDeptCard.dept === 4) {
@@ -350,6 +366,8 @@ var app = new Vue({
                 player.position = playerPos;
                 isAvailable = true;
             }
+
+            escaper++;
         }
 
         this.saveGameState();
@@ -428,7 +446,13 @@ var app = new Vue({
 
                 pos = DEPTPOSITION.Top;
 
+                let escaper = 0;
                 while (!isAvailable) {
+                    if (escaper > 100) {
+                        alert("Something went wrong during Sandra's workstation selection. Try refreshing.")
+                        return;
+                    }
+
                     let occupant = this.workStationOccupiedBy(dept, pos);
                 
                     if (occupant === undefined) {
@@ -447,6 +471,7 @@ var app = new Vue({
                             }
                         }
                     }
+                    escaper++;
                 }
 
                 newCurrentPlayer.dept = dept;
