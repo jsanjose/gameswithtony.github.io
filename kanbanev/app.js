@@ -102,7 +102,8 @@ var app = new Vue({
       gameHasStarted: false,
       isFirstDeptSelection: true,
       lacerdaTrainingTrack: [1, 1, 1, 1, 1],
-      turcziTrainingTrack: [0, 0, 0, 0, 0]
+      turcziTrainingTrack: [0, 0, 0, 0, 0],
+      difficultyCards: [false, false, false, false, false, false, false, false, false]
     },
     mounted: function() {
         this.computedUpdater++;
@@ -126,6 +127,9 @@ var app = new Vue({
             }
             if (gameState.turcziTrainingTrack) {
                 this.turcziTrainingTrack = gameState.turcziTrainingTrack;
+            }
+            if (gameState.difficultyCards) {
+                this.difficultyCards = gameState.difficultyCards;
             }
         }
         else {
@@ -492,6 +496,13 @@ var app = new Vue({
             if (trainingTrack[newCurrentPlayer.dept] < 5) {
                 trainingTrack[newCurrentPlayer.dept]++;
             }
+
+            // if current department is admin, increment where Sandra is
+            if (newCurrentPlayer.dept === DEPARTMENT.Admin) {
+                if (trainingTrack[this.sandrasPosition] < 5) {
+                    trainingTrack[this.sandrasPosition]++;
+                }
+            }
         }
 
         this.saveGameState();
@@ -656,6 +667,7 @@ var app = new Vue({
         this.isFirstDeptSelection = true;
         this.lacerdaTrainingTrack = [1, 1, 1, 1, 1];
         this.turcziTrainingTrack = [0, 0, 0, 0, 0];
+        this.difficultyCards = [false, false, false, false, false, false, false, false, false];
         this.saveGameState();
       },
       saveGameState: function() {
@@ -673,6 +685,7 @@ var app = new Vue({
         gameState.isFirstDeptSelection = this.isFirstDeptSelection;
         gameState.lacerdaTrainingTrack = this.lacerdaTrainingTrack;
         gameState.turcziTrainingTrack = this.turcziTrainingTrack;
+        gameState.difficultyCards = this.difficultyCards;
         localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
 
         this.computedUpdater++;
