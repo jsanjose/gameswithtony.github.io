@@ -499,6 +499,13 @@ var app = new Vue({
 
             // if current department is admin, increment where Sandra is
             if (newCurrentPlayer.dept === DEPARTMENT.Admin) {
+                // if Lacerda is certified in admin, do it twice (we check this first, so the first movement doesn't affect the Lacerda certification check if Sandra is also in admin)
+                if (newCurrentPlayer.engineer === ENGINEER.Lacerda && trainingTrack[DEPARTMENT.Admin] > 2) {
+                    if (trainingTrack[this.sandrasPosition] < 5) {
+                        trainingTrack[this.sandrasPosition]++;
+                    }
+                }
+
                 if (trainingTrack[this.sandrasPosition] < 5) {
                     trainingTrack[this.sandrasPosition]++;
                 }
