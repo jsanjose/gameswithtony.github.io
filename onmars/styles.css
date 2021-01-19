@@ -81,6 +81,7 @@ main > * {
     font-size: 1.1rem;
     box-shadow: none;
     border: none;
+    cursor: pointer;
 }
 
 .reset-button {
