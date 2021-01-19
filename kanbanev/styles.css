@@ -247,6 +247,10 @@ a, a:visited, a:hover {
     margin: 0.5rem 0 0 0;
 }
 
+.dept-message-secondary {
+    margin-top: 0.15rem;
+}
+
 .extra-info {
     margin-top: 1rem;
 }

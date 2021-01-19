@@ -113,7 +113,7 @@
             <img v-bind:src="currentPlayerImage" class="player-image" />
             <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 3) && this.currentPlayer.dept != null && !(this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection)">Tap department to change.</p>
             <p v-if="this.currentPhase === 0 && this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection">On the first day of the game, Sandra sits at her desk and takes no action.</p>
-            <p class="dept-message" v-if="this.currentPhase === 0 &&this.currentPlayer.engineer === 2 && !this.isFirstDeptSelection"><span class="instructions-important">Next available workstation has been pre-selected.</span></p>
+            <p class="dept-message" v-if="this.currentPhase === 0 &&this.currentPlayer.engineer === 2 && !this.isFirstDeptSelection"><span class="instructions-important">Next available workstation pre-selected.</span></p>
             <p class="dept-message" v-if="this.currentPhase === 0 &&this.currentPlayer.engineer === 2 && !this.isFirstDeptSelection && this.currentPlayer.dept === 4">Sandra sits at her desk.</p>
             <p class="dept-message" v-if="this.currentPhase === 0 && this.currentPlayer.engineer === 3 && this.currentPlayer.dept == null">Tap to select department.</p>
             <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)"><span class="instructions-important">Department has been pre-selected.</span></p>
@@ -141,9 +141,9 @@
                     </li>
                 </ul>
             </section>
-            <p class="dept-message" v-if="this.currentPhase === 0 && this.currentPlayer.engineer === 0">Mr. Lacerda always takes the bottom workstation.</p>
-            <p class="dept-message" v-if="this.currentPhase === 0 && this.currentPlayer.engineer === 1">Mr. Turczi always takes the top workstation.</p>
-            <p class="dept-message" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 2 || this.currentPlayer.engineer === 3) && !(this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4)">Tap to select a workstation.</p>
+            <p class="dept-message dept-message-secondary" v-if="this.currentPhase === 0 && this.currentPlayer.engineer === 0">Mr. Lacerda always takes the bottom workstation.</p>
+            <p class="dept-message dept-message-secondary" v-if="this.currentPhase === 0 && this.currentPlayer.engineer === 1">Mr. Turczi always takes the top workstation.</p>
+            <p class="dept-message dept-message-secondary" v-if="this.currentPhase === 0 && (this.currentPlayer.engineer === 2 || this.currentPlayer.engineer === 3) && !(this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4)">Tap to select a workstation.</p>
             <section class="pos-select" v-if="this.currentPhase === 0 && !(this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4)">
                 <ul class="pos-selector">
                     <li class="pos-selection" v-if="this.currentPlayer.dept < 4" v-on:click="setPos(0)"
