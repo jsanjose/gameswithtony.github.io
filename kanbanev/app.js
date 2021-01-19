@@ -278,6 +278,8 @@ var app = new Vue({
 
         this.difficultyCards[randomResult1].include = true;
         this.difficultyCards[randomResult2].include = true;
+
+        return false;
       },
       startGame: function() {
         this.shuffleSelectionDeck();
