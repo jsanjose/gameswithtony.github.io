@@ -150,7 +150,10 @@ var app = new Vue({
                 this.turcziTrainingTrack = gameState.turcziTrainingTrack;
             }
             if (gameState.difficultyCards) {
-                this.difficultyCards = gameState.difficultyCards;
+                // data type changed
+                if (gameState.difficultyCards[0].id) {
+                    this.difficultyCards = gameState.difficultyCards;
+                }
             }
         }
         else {
