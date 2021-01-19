@@ -19,6 +19,25 @@ const sandraWorkstationOrder = [
     [DEPARTMENT.Admin, DEPTPOSITION.SandrasDesk]
 ];
 
+function chooseRandom(min, max, exclude) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    let result = Math.floor(Math.random() * (max - min + 1) + min);
+
+    // assumes at most only one excluded value at a time
+    if (exclude) {
+        if (result === exclude) {
+            if (result === 8) {
+                result = 1;
+            } else {
+                result++;
+            }
+        }
+    }
+
+    return result;
+}
+
 function createDeptCard(id, dept, lacerdaDouble, isReshuffle) {
     return {
         id: id,
@@ -103,7 +122,9 @@ var app = new Vue({
       isFirstDeptSelection: true,
       lacerdaTrainingTrack: [1, 1, 1, 1, 1],
       turcziTrainingTrack: [0, 0, 0, 0, 0],
-      difficultyCards: [false, false, false, false, false, false, false, false, false]
+      difficultyCards: [
+          { id: 0, include: false }, { id: 1, include: false }, { id: 2, include: false }, { id: 3, include: false }, { id: 4, include: false }, { id: 5, include: false }, { id: 6, include: false }, { id: 7, include: false }, { id: 8, include: false }
+      ]
     },
     mounted: function() {
         this.computedUpdater++;
@@ -140,6 +161,28 @@ var app = new Vue({
         currentPlayer: function () {
             this.computedUpdater;
             return _.find(this.players, function(p) { return p.isWorking });
+        },
+        currentPlayerName: function () {
+            this.computedUpdater;
+            let currentPlayer = _.find(this.players, function(p) { return p.isWorking });
+
+            let playerName;
+            switch (currentPlayer.engineer) {
+                case ENGINEER.Lacerda: 
+                    playerName = "Mr. Lacerda";
+                    break;
+                case ENGINEER.Turczi:
+                    playerName = "Mr. Turczi";
+                    break;
+                case ENGINEER.Human:
+                    playerName = "You";
+                    break;
+                case ENGINEER.Sandra:
+                    playerName = "Sandra";
+                    break;
+            }
+
+            return playerName;
         },
         lacerdaPlayer: function () {
             this.computedUpdater;
@@ -192,6 +235,20 @@ var app = new Vue({
 
             return path + playerPrefix + "_" + direction + "_" + level + ".png";
         },
+        currentTrainingTrackLevel: function () {
+            this.computedUpdater;
+            let level = 0;
+
+            if (this.currentPlayer.engineer === ENGINEER.Lacerda) {
+                level = this.lacerdaTrainingTrack[this.currentPlayer.dept];
+            }
+
+            if (this.currentPlayer.engineer === ENGINEER.Turczi) {
+                level = this.turcziTrainingTrack[this.currentPlayer.dept];
+            }
+
+            return level;
+        },
         lacerdaIsCertified: function() {
             // assumes Lacerda is the current player
             this.computedUpdater;
@@ -207,6 +264,19 @@ var app = new Vue({
       setStartingCertTrackPosition: function (pos) {
         this.playerStartingCertTrackPosition = pos;
         this.saveGameState();
+      },
+      chooseRandomDifficulty: function() {
+        for (let i=0;i<9;i++) {
+            this.difficultyCards[i].include = false;
+        }
+
+        let randomResult1 = chooseRandom(0, 8);
+        let randomResult2 = chooseRandom(0, 8, randomResult1);
+
+        this.difficultyCards[randomResult1].include = true;
+        this.difficultyCards[randomResult2].include = true;
+
+        console.log(this.difficultyCards);
       },
       startGame: function() {
         this.shuffleSelectionDeck();
@@ -500,7 +570,9 @@ var app = new Vue({
             // if current department is admin, increment where Sandra is
             if (newCurrentPlayer.dept === DEPARTMENT.Admin) {
                 // if Lacerda is certified in admin, do it twice (we check this first, so the first movement doesn't affect the Lacerda certification check if Sandra is also in admin)
-                if (newCurrentPlayer.engineer === ENGINEER.Lacerda && trainingTrack[DEPARTMENT.Admin] > 2) {
+
+                // also: if difficulty card #1 is selected, then always do the double movement, whether certified or not
+                if (newCurrentPlayer.engineer === ENGINEER.Lacerda && ((trainingTrack[DEPARTMENT.Admin] > 2 && !this.difficultyCards[0].include) || this.difficultyCards[0].include)) {
                     if (trainingTrack[this.sandrasPosition] < 5) {
                         trainingTrack[this.sandrasPosition]++;
                     }
@@ -674,7 +746,9 @@ var app = new Vue({
         this.isFirstDeptSelection = true;
         this.lacerdaTrainingTrack = [1, 1, 1, 1, 1];
         this.turcziTrainingTrack = [0, 0, 0, 0, 0];
-        this.difficultyCards = [false, false, false, false, false, false, false, false, false];
+        this.difficultyCards = [
+            { id: 0, include: false }, { id: 1, include: false }, { id: 2, include: false }, { id: 3, include: false }, { id: 4, include: false }, { id: 5, include: false }, { id: 6, include: false }, { id: 7, include: false }, { id: 8, include: false }
+        ];
         this.saveGameState();
       },
       saveGameState: function() {

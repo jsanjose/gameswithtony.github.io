@@ -50,6 +50,10 @@ a, a:visited, a:hover {
     font-size: 1.2rem;
 }
 
+.startmessage--small {
+    font-size: 1rem;
+}
+
 .gameinstructions h2 {
     font-size: 1.2rem;
 }
@@ -108,6 +112,27 @@ a, a:visited, a:hover {
 
 .playerColorOptionTrack li {
     color: #47443f;
+}
+
+.difficulty-card-options {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 0rem .25rem 1rem .25rem;
+    margin-bottom: 0;
+    max-width: 350px;
+}
+
+.difficulty-card-option {
+    font-size: 1.1rem;
+    padding: .25rem;
+    border: solid 1px #ccc;
+    margin: 0.5rem;
+}
+
+.difficulty-card-option label {
+    cursor: pointer;
 }
 
 

@@ -80,17 +80,30 @@
                 <li class="player-color-option" v-on:click="setStartingCertTrackPosition(0)"
                     v-bind:class="{ playerColorOptionSelected: playerStartingCertTrackPosition === 0 }">1</li>
             </ul>
+            <p class="startmessage startmessage--small">
+                Select your difficulty cards (if any) or <a href="#" v-on:click="chooseRandomDifficulty" style="text-decoration: underline;">randomly choose two.</a>
+            </p>
+            <ul class="difficulty-card-options">
+               <li class="difficulty-card-option" v-for="difficultyCard in difficultyCards">
+                <label v-bind:for="difficultyCard.id">
+                   <input type="checkbox" v-model="difficultyCard.include" v-bind:id="difficultyCard.id" /> 
+                   {{ difficultyCard.id + 1 }}
+                </label>
+               </li> 
+            </ul>
             <button class="button" v-on:click="startGame">Start Game</button>
             <section class="instructions">
                 <ul class="instructions-list">
                     <p><strong>How To Use This App</strong></p>
                     <li>Begin by selecting your player color and starting position on the certification track.</li>
+                    <li>If you want to use any Difficulty Cards you can either select them or use the 'randomly choose two' link which will choose two for you.</li>
                     <li>The app will cycle between the Department Selection and Working phases of the game.</li>
                     <li>During department selection, you must select the department and workstation for yourself.</li>
                     <li>During department selection, the next available workstation will be automatically chosen for Sandra (except for the first day of the game, where she sits at her desk).</li>
                     <li>During department selection a department will be chosen for Mr. Lacerda and Mr. Turczi. If the department chosen by the card is not available, the next available department is chosen.</li>
                     <li>The possible locations for Mr. Lacerda and Mr. Turczi (i.e. the column of cards, or what is left of them) is shown at the top of the screen as small yellow department icons. This helps you anticipate where the bots may be placed.</li>
                     <li>During the working phase, the app will display each player in turn order and show the department the player is working in.</li>
+                    <li>During the working phase, if you have chosen an applicable Difficulty Card, reminders are shown at the bottom of the rules references.</li>
                     <li>During the working phase, for Mr. Lacerda and Mr. Turczi, other information is shown such as the current Part, and based on Sandra's position the Car and Design Tile column.</li>
                     <li>During the working phase, if you the department you are in requires selecting a Part, the current Part will be shown. If that Part is not valid, then use the 'Draw Another Part' link to get a new Part.</li>
                     <li>Instructions for yourself, Sandra, Mr. Lacerda and Mr. Turczi are all provided below the department information.</li>
@@ -187,20 +200,59 @@
             </section>
             <section class="instructions" v-if="this.currentPhase === 1">
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 0">
-                    <li>Advance once on the training track (you should end up on the spot indicated above).</li>
+                    <li>Advance once on the training track ({{ currentPlayerName }} should end up on the spot indicated above).</li>
                     <li>Upgrade a Design from the Colleagues' shared Design stack.</li>
                     <li>Advance the Part value, and gain PP.</li>
                     <li>Take car <span class="instructions-important">behind Pace Car.</span></li>
+                    <li v-if="difficultyCards[1].include">
+                        <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[2].include">
+                        <span class="instructions-important">Difficulty Card #3: Certified Advantage<br /></span>{{ currentPlayerName }} scores the PP shown on the certification track, plus <span v-if="!difficultyCards[1].include">1 PP</span><span v-if="difficultyCards[1].include">2 PP (because of #2 Cushy Speech)</span> per Generic Speech token he is.
+                    </li>
+                    <li v-if="difficultyCards[3].include">
+                        <span class="instructions-important">Difficulty Card #4: Productive Upgrades<br /></span>If {{ currentPlayerName }} places a Part, and it covers a PP bonus space, {{ currentPlayerName }} them (any other bonus is still ignored).
+                    </li>
+                    <li v-if="difficultyCards[4].include">
+                        <span class="instructions-important">Difficulty Card #5: Optimized Upgrades<br /></span>If {{ currentPlayerName }} places a Part, and it covers a non-PP bonus space, {{ currentPlayerName }} scores 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[6].include">
+                        <span class="instructions-important">Difficulty Card #7: Forced Overtime<br /></span>Whenever {{ currentPlayerName }} would advance on a training track he already maxed out, he cancels one of your Banked Shifts instead, if any.
+                    </li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 1">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Upgrade a Design from the Colleagues' shared Design stack.</li>
                     <li>Advance the Part value, and gain PP.</li>
                     <li>Take car <span class="instructions-important">with highest value.</span></li>
+                    <li v-if="difficultyCards[1].include">
+                        <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[2].include">
+                        <span class="instructions-important">Difficulty Card #3: Certified Advantage<br /></span>{{ currentPlayerName }} scores the PP shown on the certification track, plus <span v-if="!difficultyCards[1].include">1 PP</span><span v-if="difficultyCards[1].include">2 PP (because of #2 Cushy Speech)</span> per Generic Speech token he is.
+                    </li>
+                    <li v-if="difficultyCards[3].include">
+                        <span class="instructions-important">Difficulty Card #4: Productive Upgrades<br /></span>If {{ currentPlayerName }} places a Part, and it covers a PP bonus space, {{ currentPlayerName }} scores them (any other bonus is still ignored).
+                    </li>
+                    <li v-if="difficultyCards[4].include">
+                        <span class="instructions-important">Difficulty Card #5: Optimized Upgrades<br /></span>If {{ currentPlayerName }} places a Part, and it covers a non-PP bonus space, {{ currentPlayerName }} scores 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[6].include">
+                        <span class="instructions-important">Difficulty Card #7: Forced Overtime<br /></span>Whenever {{ currentPlayerName }} would advance on a training track he already maxed out, he cancels one of your Banked Shifts instead, if any.
+                    </li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 2">
                     <li>Advance the Pace Car 1 space. Advance all Cars behind it to fill the gap. If the Pace Car moves onto a striped space, this triggers a Meeting.</li>
                     <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Upgraded Designs.</li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 3">
                     <p><strong>Claim Cars</strong></p>
@@ -219,29 +271,62 @@
                     <li>Place the Upgraded Design face down next to your Player board, or above a garage if you have a matching car (it is a Tested Design).</li>
                     <li>Earn 2 PP.</li>
                     <li>Check for Factory Goals.</li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
                     <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Lacerda moves the Cars from top to bottom, or bottom to top before moving left.</li>
                     <li>
-                        <span v-if="!lacerdaIsCertified">
+                        <span v-if="!lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda is NOT yet certified.<br /></span>
                             Once he is certified, he provides an additional Part.
                         </span>
-                        <span v-if="lacerdaIsCertified">
+                        <span v-if="lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda IS CERTIFIED<br /></span>Because he is certified, Mr. Lacerda provides an additional Part.
                         </span>
+                        <span v-if="difficultyCards[0].include">
+                            <span class="instructions-important">Difficulty Card #1: Certified Lacerda<br /></span>Mr. Lacerda provides an additional Part.
+                        </span>
+                    </li>
+                    <li v-if="difficultyCards[1].include">
+                        <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[2].include">
+                        <span class="instructions-important">Difficulty Card #3: Certified Advantage<br /></span>{{ currentPlayerName }} scores the PP shown on the certification track, plus <span v-if="!difficultyCards[1].include">1 PP</span><span v-if="difficultyCards[1].include">2 PP (because of #2 Cushy Speech)</span> per Generic Speech token he is.
+                    </li>
+                    <li v-if="difficultyCards[6].include">
+                        <span class="instructions-important">Difficulty Card #7: Forced Overtime<br /></span>Whenever {{ currentPlayerName }} would advance on a training track he already maxed out, he cancels one of your Banked Shifts instead, if any.
+                    </li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
                     </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 1">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
                     <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Turczi always moves left (where it is possible to choose).</li>
+                    <li v-if="difficultyCards[1].include">
+                        <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[2].include">
+                        <span class="instructions-important">Difficulty Card #3: Certified Advantage<br /></span>{{ currentPlayerName }} scores the PP shown on the certification track, plus <span v-if="!difficultyCards[1].include">1 PP</span><span v-if="difficultyCards[1].include">2 PP (because of #2 Cushy Speech)</span> per Generic Speech token he is.
+                    </li>
+                    <li v-if="difficultyCards[6].include">
+                        <span class="instructions-important">Difficulty Card #7: Forced Overtime<br /></span>Whenever {{ currentPlayerName }} would advance on a training track he already maxed out, he cancels one of your Banked Shifts instead, if any.
+                    </li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 2">
                     <li>Remove all Car Parts from all Assembly spaces.</li>
                     <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Cars in your garages.</li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 3">
                     <p><strong>Clean Out Assembly Spaces</strong></p>
@@ -255,28 +340,58 @@
                     <li>Check Demand tiles.</li>
                     <li>Move Car to Test track.</li>
                     <li>If there are more than four cars behind the Pace Car, remove cars nearest to the Pace Car until there are four.</li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Issue a Kanban Order. See above for card placement.</li>
                     <li>Empty warehouse and take 1 of the part indicated above.</li>
                     <li>
-                        <span v-if="!lacerdaIsCertified">
+                        <span v-if="!lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda is NOT yet certified<br /></span>
                             Once he is certified, he takes an additional Part.
                         </span>
-                        <span v-if="lacerdaIsCertified">
+                        <span v-if="lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda IS CERTIFIED<br /></span>Because he is certified, Mr. Lacerda takes an additional Part.
                         </span>
+                        <span v-if="difficultyCards[0].include">
+                            <span class="instructions-important">Difficulty Card #1: Certified Lacerda<br /></span>Mr. Lacerda takes an additional Part.
+                        </span>
+                    </li>
+                    <li v-if="difficultyCards[1].include">
+                        <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[2].include">
+                        <span class="instructions-important">Difficulty Card #3: Certified Advantage<br /></span>{{ currentPlayerName }} scores the PP shown on the certification track, plus <span v-if="!difficultyCards[1].include">1 PP</span><span v-if="difficultyCards[1].include">2 PP (because of #2 Cushy Speech)</span> per Generic Speech token he is.
+                    </li>
+                    <li v-if="difficultyCards[6].include">
+                        <span class="instructions-important">Difficulty Card #7: Forced Overtime<br /></span>Whenever {{ currentPlayerName }} would advance on a training track he already maxed out, he cancels one of your Banked Shifts instead, if any.
+                    </li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
                     </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 1">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Empty warehouse and take 1 of the part indicated above.</li>
+                    <li v-if="difficultyCards[1].include">
+                        <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[2].include">
+                        <span class="instructions-important">Difficulty Card #3: Certified Advantage<br /></span>{{ currentPlayerName }} scores the PP shown on the certification track, plus <span v-if="!difficultyCards[1].include">1 PP</span><span v-if="difficultyCards[1].include">2 PP (because of #2 Cushy Speech)</span> per Generic Speech token he is.
+                    </li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 2">
                     <li>Remove all but 1 Car Part from each warehouse.</li>
                     <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Car Parts on your Player board.</li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 3">
                     <p><strong>Issue Kanban Order <br /><span class="instructions-important">Only once per turn</span></strong></p>
@@ -289,27 +404,61 @@
                     <li>Take any number of Car Parts from any one warehouse.</li>
                     <p style="margin-top: 2rem;"><strong><span class="instructions-important">IF YOU ARE CERTIFIED</span><br />Collect Car Parts<br /><span class="instructions-important">Only once per turn</span></strong></p>
                     <li>Take 1 Parts Voucher from the supply.</li>
+                    <p style="margin-top: 2rem;" v-if="difficultyCards[8].include"><strong><span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause</span></strong></p>
+                    <li v-if="difficultyCards[8].include">
+                        If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Take 2 Design tiles (see above for column to use).</li>
                     <li>
-                        <span v-if="!lacerdaIsCertified">
+                        <span v-if="!lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda is NOT yet certified<br /></span>
                             Once he is certified, he takes an additional tile from the Central Stack.
                         </span>
-                        <span v-if="lacerdaIsCertified">
+                        <span v-if="lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda IS CERTIFIED<br /></span>Because he is certified, Mr. Lacerda takes an additional tile from the Central Stack.
                         </span>
+                        <span v-if="difficultyCards[0].include">
+                            <span class="instructions-important">Difficulty Card #1: Certified Lacerda<br /></span>Mr. Lacerda takes an additional tile from the Central Stack.
+                        </span>
+                    </li>
+                    <li v-if="difficultyCards[1].include">
+                        <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[2].include">
+                        <span class="instructions-important">Difficulty Card #3: Certified Advantage<br /></span>{{ currentPlayerName }} scores the PP shown on the certification track, plus <span v-if="!difficultyCards[1].include">1 PP</span><span v-if="difficultyCards[1].include">2 PP (because of #2 Cushy Speech)</span> per Generic Speech token he is due.
+                    </li>
+                    <li v-if="difficultyCards[6].include">
+                        <span class="instructions-important">Difficulty Card #7: Forced Overtime<br /></span>Whenever {{ currentPlayerName }} would advance on a training track he already maxed out, he cancels one of your Banked Shifts instead, if any.
+                    </li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
                     </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 1">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Take 2 Design tiles (see above for column to use).</li>
+                    <li v-if="difficultyCards[1].include">
+                        <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[2].include">
+                        <span class="instructions-important">Difficulty Card #3: Certified Advantage<br /></span>{{ currentPlayerName }} scores the PP shown on the certification track, plus <span v-if="!difficultyCards[1].include">1 PP</span><span v-if="difficultyCards[1].include">2 PP (because of #2 Cushy Speech)</span> per Generic Speech token he is due.
+                    </li>
+                    <li v-if="difficultyCards[6].include">
+                        <span class="instructions-important">Difficulty Card #7: Forced Overtime<br /></span>Whenever {{ currentPlayerName }} would advance on a training track he already maxed out, he cancels one of your Banked Shifts instead, if any.
+                    </li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 2">
                     <li>Shuffle and return the rightmost 4 Design tiles to the bottom of the Central stack. In a 2-player game, remove the rightmost 8 tiles. Then, slide the Designs right and fill any gaps as normal.</li>
                     <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Designs on your desk.</li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 3">
                     <p><strong>Select a Design</strong></p>
@@ -319,27 +468,67 @@
                     <li>At the end of the turn:  slide all Designs in both rows to the right to fill any gaps.</li>
                     <p style="margin-top: 2rem;"><strong><span class="instructions-important">IF YOU ARE CERTIFIED</span><br />Select an Advanced Design</strong></p>
                     <li>You can select the top Designs from the Central stack and from the stacks in the First Office.</li>
+                    <p style="margin-top: 2rem;" v-if="difficultyCards[8].include"><strong><span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause</span></strong></p>
+                    <li v-if="difficultyCards[8].include">
+                        If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Advance training in Sandra's current department.</li>
                     <li>
-                        <span v-if="!lacerdaIsCertified">
+                        <span v-if="!lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda is NOT yet certified<br /></span>
                             Once he is certified, he advances an additional training space in Sandra's current department.
                         </span>
-                        <span v-if="lacerdaIsCertified">
+                        <span v-if="lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda IS CERTIFIED<br /></span>Because he is certified, Mr. Lacerda advances an additional training space in Sandra's current department.
                         </span>
+                        <span v-if="difficultyCards[0].include">
+                            <span class="instructions-important">Difficulty Card #1: Certified Lacerda<br /></span>Mr. Lacerda advances an additional training space in Sandra's current department.
+                        </span>
+                    </li>
+                    <li v-if="difficultyCards[1].include">
+                        <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[2].include">
+                        <span class="instructions-important">Difficulty Card #3: Certified Advantage<br /></span>{{ currentPlayerName }} scores the PP shown on the certification track, plus <span v-if="!difficultyCards[1].include">1 PP</span><span v-if="difficultyCards[1].include">2 PP (because of #2 Cushy Speech)</span> per Generic Speech token he is due.
+                    </li>
+                    <li v-if="difficultyCards[6].include">
+                        <span class="instructions-important">Difficulty Card #7: Forced Overtime<br /></span>Whenever {{ currentPlayerName }} would advance on a training track he already maxed out, he cancels one of your Banked Shifts instead, if any.
+                    </li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
                     </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 1">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Advance training in Sandra's current department.</li>
+                    <li v-if="difficultyCards[1].include">
+                        <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
+                    </li>
+                    <li v-if="difficultyCards[2].include">
+                        <span class="instructions-important">Difficulty Card #3: Certified Advantage<br /></span>{{ currentPlayerName }} scores the PP shown on the certification track, plus <span v-if="!difficultyCards[1].include">1 PP</span><span v-if="difficultyCards[1].include">2 PP (because of #2 Cushy Speech)</span> per Generic Speech token he is due.
+                    </li>
+                    <li v-if="difficultyCards[6].include">
+                        <span class="instructions-important">Difficulty Card #7: Forced Overtime<br /></span>Whenever {{ currentPlayerName }} would advance on a training track he already maxed out, he cancels one of your Banked Shifts instead, if any.
+                    </li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 2 && !isFirstDeptSelection">
                     <li>Perform End-of-Week Scoring.</li>
                     <li><strong>Evaluation Penalty: </strong>Be certified in 2 or fewer departments.</li>
+                    <li v-if="difficultyCards[5].include">
+                        <span class="instructions-important">Difficulty Card #6: Increased Quotas<br /></span>The Colleagues score one additional PP (3 PP total) per Upgraded Design they have during the End-of-Week scoring.
+                    </li>
+                    <li v-if="difficultyCards[7].include">
+                        <span class="instructions-important">Difficulty Card #8: Keeping up with the Colleagues<br /></span>During End-of-Week scoring, besides the Colleagues scoring their Designs, they also score 2/4/6/8 PP (at the end of the 1st/2nd/3rd/4th week).
+                    </li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 2 && isFirstDeptSelection">
                     <li>On the first day of the game, Sandra sits at her desk and takes no action.</li>
@@ -348,6 +537,9 @@
                     <li>Choose <span class="instructions-important">one</span> other department to work in.</li>
                     <li>Split your Shifts and Books however you like between Administration and the chosen department: only in Administration, or only in the chosen department, or in both.</li>
                     <li>Shifts worked in Administration can only be used for training.</li>
+                    <li v-if="difficultyCards[8].include">
+                        <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
+                    </li>
                 </ul>
             </section>
             <section class="button-container">
