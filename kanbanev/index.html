@@ -201,7 +201,7 @@
             <section class="instructions" v-if="this.currentPhase === 1">
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track ({{ currentPlayerName }} should end up on the spot indicated above).</li>
-                    <li>Upgrade a Design from the Colleagues' shared Design stack.</li>
+                    <li>Upgrade a Design from the Colleagues' shared Design stack using a Car Part from the supply (Highest available PP > Books > Blank), ignoring <span v-if="!difficultyCards[3].include">any printed benefits in Upgrade spaces.</span><span v-if="difficultyCards[3].include">non-PP benefits in Upgrade spaces (Difficulty Card #4).</span></li>
                     <li>Advance the Part value, and gain PP.</li>
                     <li>Take car <span class="instructions-important">behind Pace Car.</span></li>
                     <li v-if="difficultyCards[1].include">
@@ -225,9 +225,9 @@
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 1">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
-                    <li>Upgrade a Design from the Colleagues' shared Design stack.</li>
+                    <li>Upgrade a Design from the Colleagues' shared Design stack using a Car Part from the supply (Highest available PP > Books > Blank), ignoring <span v-if="!difficultyCards[3].include">any printed benefits in Upgrade spaces.</span><span v-if="difficultyCards[3].include">non-PP benefits in Upgrade spaces (Difficulty Card #4).</span></li>
                     <li>Advance the Part value, and gain PP.</li>
-                    <li>Take car <span class="instructions-important">with highest value.</span></li>
+                    <li>Take car <span class="instructions-important">with highest PP value</span> (Concept > Sports > Truck > SUV > City).</li>
                     <li v-if="difficultyCards[1].include">
                         <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
                     </li>

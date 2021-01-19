@@ -151,7 +151,7 @@ var app = new Vue({
             }
             if (gameState.difficultyCards) {
                 // data type changed
-                if (gameState.difficultyCards[0].id) {
+                if (gameState.difficultyCards[1].id) {
                     this.difficultyCards = gameState.difficultyCards;
                 }
             }
