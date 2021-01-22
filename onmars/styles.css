@@ -96,9 +96,15 @@ main > * {
 .sides {
     display: flex;
     justify-content: space-between;
-    width: 50%;
+    width: 60%;
     align-items: center;
-    min-height: 60px;
+    min-height: 65px;
+}
+
+@media (min-width: 700px) {
+    .sides {
+        width: 50%;
+    }
 }
 
 .noBottomMargin {
@@ -106,21 +112,21 @@ main > * {
 }
 
 .orbital-colony {
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
     opacity: 0.3;
     cursor: pointer;
 }
 
 .travel {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     fill: #333333;
 }
 
 .noTravel {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     fill: rgba(51, 51, 51, 0.2);
 }
 
@@ -139,13 +145,14 @@ main > * {
     list-style: none;
     display: flex;
     justify-content: space-between;
-    padding: 2rem;
+    padding: 2rem 2rem 1.675rem 2rem;
     margin-bottom: 0;
+    border-top: solid 1px #444444;
 }
 
 .turn-order-space {
-    height: 50px;
-    width: 50px;
+    height: 45px;
+    width: 45px;
     background-color: #bbbbbb;
     display: flex;
     justify-content: center;
