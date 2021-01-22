@@ -2,3 +2,24 @@
     font-family: 'Noto Sans', sans-serif;
     box-sizing: border-box;
 }
+
+body {
+    margin: 0;
+}
+
+h1, h2 {
+    margin: 1.5rem 1rem 0.325rem 1rem;
+    padding: 0;
+}
+
+p {
+    margin: 0 1rem 1rem 1rem;
+    padding: 0 1rem 0 0;
+}
+
+h1 {
+    margin: 0;
+    width: 100vw;
+    padding: 1rem;
+    background-color: orange;
+}
