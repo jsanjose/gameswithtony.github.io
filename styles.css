@@ -22,4 +22,13 @@ h1 {
     width: 100vw;
     padding: 1rem;
     background-color: orange;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.7rem;
+}
+
+.avatar {
+    margin: 0;
+    height: 50px;
 }
