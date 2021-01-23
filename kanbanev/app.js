@@ -38,27 +38,28 @@ function chooseRandom(min, max, exclude) {
     return result;
 }
 
-function createDeptCard(id, dept, lacerdaDouble, isReshuffle) {
+function createDeptCard(id, dept, lacerdaDouble, isReshuffle, parts) {
     return {
         id: id,
         dept: dept,
         lacerdaDouble: lacerdaDouble,
-        isReshuffle: isReshuffle
+        isReshuffle: isReshuffle,
+        parts: parts
     };
 }
 
 // does not include reshuffle card, which is added after first shuffle
 const deptDeck = [
-    createDeptCard(0, DEPARTMENT.RandD, true, false),
-    createDeptCard(1, DEPARTMENT.RandD, true, false),
-    createDeptCard(2, DEPARTMENT.Assembly, true, false),
-    createDeptCard(3, DEPARTMENT.Assembly, true, false),
-    createDeptCard(4, DEPARTMENT.Logistics, false, false),
-    createDeptCard(5, DEPARTMENT.Logistics, false, false),
-    createDeptCard(6, DEPARTMENT.Design, false, false),
-    createDeptCard(7, DEPARTMENT.Design, false, false),
-    createDeptCard(8, DEPARTMENT.Admin, true, false),
-    createDeptCard(9, DEPARTMENT.Admin, true, false)
+    createDeptCard(0, DEPARTMENT.RandD, true, false, null),
+    createDeptCard(1, DEPARTMENT.RandD, true, false, [PART.Motor]),
+    createDeptCard(2, DEPARTMENT.Assembly, true, false, null),
+    createDeptCard(3, DEPARTMENT.Assembly, true, false, [PART.Electronics, PART.Drivetrain]),
+    createDeptCard(4, DEPARTMENT.Logistics, false, false, null),
+    createDeptCard(5, DEPARTMENT.Logistics, false, false, [PART.Body]),
+    createDeptCard(6, DEPARTMENT.Design, false, false, null),
+    createDeptCard(7, DEPARTMENT.Design, false, false, [PART.Battery]),
+    createDeptCard(8, DEPARTMENT.Admin, true, false, null),
+    createDeptCard(9, DEPARTMENT.Admin, true, false, [PART.Autopilot])
 ];
 
 function createSelectionCard(part, cardToTake) {
@@ -257,6 +258,14 @@ var app = new Vue({
             this.computedUpdater;
             let level = this.lacerdaTrainingTrack[this.currentPlayer.dept];
             return level > 2;
+        },
+        isEndOfDay: function() {
+            this.computedUpdater++;
+            return this.currentPhase === PHASE.Working && this.phaseIndex === 3;
+        },
+        isEndOfWeek: function() {
+            this.computedUpdater++;
+            return !this.isFirstDeptSelection && this.currentPhase === PHASE.Working && this.currentPlayer.engineer === ENGINEER.Sandra && this.currentPlayer.dept === DEPARTMENT.Admin;
         }
     },
     methods: {
@@ -585,6 +594,11 @@ var app = new Vue({
                     trainingTrack[this.sandrasPosition]++;
                 }
             }
+        }
+
+        // if this is the working phase and it is the end of day (Sandra in Admin) and the remaining Plan card has parts
+        if (!this.isFirstDeptSelection && this.currentPhase === PHASE.Working && newCurrentPlayer.engineer === ENGINEER.Sandra && newCurrentPlayer.dept === DEPARTMENT.Admin && this.currentDeptCards[0].parts) {
+            this.drawSelectionCard();
         }
 
         this.saveGameState();

@@ -190,7 +190,7 @@
                 <img v-bind:src="currentCarImage" class="extra-image"  v-if="currentPlayer.dept === 1" />
                 <br />
                 <a href="#" class="draw-part" v-on:click="drawPart">Draw Another Part</a>
-            </section>
+            </section>          
             <section class="design-tiles" v-if="this.currentPhase === 1 && currentPlayer.dept === 3 && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)">
                 <img v-bind:class="{ designTileSelected: sandrasPosition === 0 }" src="images/designstack.png" />
                 <img v-bind:class="{ designTileSelected: sandrasPosition === 1 }" src="images/designtile.png" />
@@ -198,6 +198,26 @@
                 <img v-bind:class="{ designTileSelected: sandrasPosition === 3 }" src="images/designtile.png" />
                 <img v-bind:class="{ designTileSelected: sandrasPosition === 4 }" src="images/designtile.png" />
             </section>
+            <section class="extra-info recycle" v-if="this.isEndOfDay && this.currentDeptCards[0].parts">
+                <strong class="recycle-title">END OF DAY: Recycle if possible.</strong>
+                <section class="recycle-section">
+                    <section>
+                        Plan
+                        <div v-for="part in currentDeptCards[0].parts">
+                            <img v-bind:src="'images/' + partImage(part)" class="small-image" />
+                        </div>
+                    </section>
+                    <section class="recycle-selection">
+                        Selection 
+                        <div>
+                            <img v-bind:src="'images/' + partImage(currentSelectionCard.part)" class="small-image" />
+                        </div>
+                    </section> 
+                </section>
+            </section>
+            <section class="extra-info recycle" v-if="this.isEndOfDay && !this.currentDeptCards[0].parts">
+                <strong class="recycle-title">END OF DAY: Plan card has no Parts.</strong>(No Recycle)
+            </section> 
             <section class="instructions" v-if="this.currentPhase === 1">
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track ({{ currentPlayerName }} should end up on the spot indicated above).</li>

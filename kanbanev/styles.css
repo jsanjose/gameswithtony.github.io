@@ -267,6 +267,32 @@ a, a:visited, a:hover {
     max-height: 60px;
 }
 
+.recycle {
+    padding: 0.75rem;
+    margin-top: .25rem;
+    width: 100vw;
+    background-color: #ffefe1;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.recycle-title {
+    flex-basis: 100%;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.recycle-section {
+    flex-basis: 200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.recycle-section img + img {
+    margin-left: 0.5rem;
+}
+
 .dept-message {
     font-size: 0.9rem;
     margin: 0.5rem 0 0 0;
@@ -282,6 +308,10 @@ a, a:visited, a:hover {
 
 .extra-image {
     max-height: 60px;
+}
+
+.small-image {
+    max-height: 40px;
 }
 
 .draw-part {
