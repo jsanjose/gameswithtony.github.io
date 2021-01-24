@@ -227,7 +227,7 @@ a, a:visited, a:hover {
 }
 
 .pos-selection {
-    padding: 0.3rem;
+    padding: 0.3rem 0.3rem 0 0.3rem;
 }
 
 .dept-img {
@@ -299,7 +299,7 @@ a, a:visited, a:hover {
 }
 
 .dept-message-secondary {
-    margin-top: 0.15rem;
+    margin-top: 0.05rem;
 }
 
 .extra-info {
