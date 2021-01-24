@@ -306,7 +306,7 @@ a, a:visited, a:hover {
 }
 
 .extra-info {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
 .extra-image {
@@ -338,9 +338,9 @@ a, a:visited, a:hover {
 
 .instructions {
     text-align: left;
-    margin-top: 2rem;
+    margin-top: 1rem;
     border: solid 1px #ccc;
-    padding: .5rem;
+    padding: 0.25rem 0.5rem 0.5rem 0.5rem;
     padding-bottom: 150px;
 }
 
