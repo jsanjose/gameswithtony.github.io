@@ -442,7 +442,7 @@ var app = new Vue({
 
             let occupant = this.workStationOccupiedBy(chosenDept, playerPos);
             if (occupant !== undefined) {
-                if (chosenDeptCard.dept === 4) {
+                if (chosenDept === 4) {
                     chosenDept = 0;
                 } else {
                     chosenDept = chosenDept + 1;
