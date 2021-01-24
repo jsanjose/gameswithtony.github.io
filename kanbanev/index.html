@@ -198,7 +198,7 @@
                 <img v-bind:class="{ designTileSelected: sandrasPosition === 3 }" src="images/designtile.png" />
                 <img v-bind:class="{ designTileSelected: sandrasPosition === 4 }" src="images/designtile.png" />
             </section>
-            <section class="extra-info recycle" v-if="this.isEndOfDay && this.currentDeptCards[0].parts">
+            <section class="recycle" v-if="this.isEndOfDay && this.currentDeptCards[0].parts">
                 <strong class="recycle-title">END OF DAY: Recycle if possible.</strong>
                 <section class="recycle-section">
                     <section>
@@ -215,7 +215,7 @@
                     </section> 
                 </section>
             </section>
-            <section class="extra-info recycle" v-if="this.isEndOfDay && !this.currentDeptCards[0].parts">
+            <section class="recycle" v-if="this.isEndOfDay && !this.currentDeptCards[0].parts">
                 <strong class="recycle-title">END OF DAY: No Recycle.</strong>
             </section> 
             <section class="instructions" v-if="this.currentPhase === 1">
