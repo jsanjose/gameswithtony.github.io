@@ -288,6 +288,10 @@ a, a:visited, a:hover {
     justify-content: space-between;
 }
 
+.recycle-section-centered {
+    justify-content: center;
+}
+
 .recycle-title + .recycle-section {
     margin-top: 0.5rem;
 }

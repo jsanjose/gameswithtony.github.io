@@ -217,7 +217,21 @@
             </section>
             <section class="recycle" v-if="this.isEndOfDay && !this.currentDeptCards[0].parts">
                 <strong class="recycle-title">END OF DAY: No Recycle.</strong>
-            </section> 
+            </section>
+            <section class="recycle" v-if="this.currentPhase === 0 && this.phaseIndex === 3 &&this.currentDeptCards.length > 0 && !this.currentDeptCards[0].parts">
+                <strong class="recycle-title">NOTE: No Recycle will occur at the end-of-day.</strong>
+            </section>
+            <section class="recycle" v-if="this.currentPhase === 0 && this.phaseIndex === 3 && this.currentDeptCards.length > 0 && this.currentDeptCards[0].parts">
+                <strong class="recycle-title">NOTE: Recycle may occur at end-of-day.</strong>
+                <section class="recycle-section recycle-section-centered">
+                    <section>
+                        Plan
+                        <div v-for="part in currentDeptCards[0].parts">
+                            <img v-bind:src="'images/' + partImage(part)" class="small-image" />
+                        </div>
+                    </section> 
+                </section>
+            </section>
             <section class="instructions" v-if="this.currentPhase === 1">
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track ({{ currentPlayerName }} should end up on the spot indicated above).</li>
