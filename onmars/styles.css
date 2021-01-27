@@ -193,7 +193,7 @@ main > * {
 
 .rulesreference {
     max-width: 500px;
-    min-height: 400px;
+    min-height: 100vh;
     z-index: 1;
     background-color: white;
     position: absolute;

@@ -161,15 +161,21 @@
             <nav class="closereference">
                 <a href="#" v-on:click="hideReferenceModal">(X) Close Rules Reference</a>
             </nav>
+            <section class="rule-entry">
+                Show Rules: <input type="checkbox" name="showLacerdaRules" id="showLacerdaRules" v-model="showLacerdaRules" /><label for="showLacerdaRules">Lacerda</label> <input type="checkbox" name="showPathfinderRules" id="showPathfinderRules" v-model="showPathfinderRules" /><label for="showPathfinderRules">Pathfinder</label>
+            </section>
+            <section class="rule-entry" v-if="!showLacerdaRules && !showPathfinderRules">
+                <strong>Choose a rule set to show.</strong>
+            </section>
             <section class="rule" v-if="actionImage() === 'obtainblueprint.png'">
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Obtain Blueprint</h2>
                     <p>
                         Take the Blueprint of a type that scores Lacerda’s Scientists. If tied, take the leftmost card
                         from the row with the most cards in it (bottom row if tied).
                     </p>
                 </section>
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showPathfinderRules">
                     <h2>PATHFINDER: Obtain Blueprint</h2>
                     <p>
                         Take the Blueprint of a type that scores the highest possible (most number of blueprints in the
@@ -179,14 +185,14 @@
                 </section>
             </section>
             <section class="rule" v-if="actionImage() === 'learnnewtechnology.png'">
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Learn New Technology</h2>
                     <p>
                         Lacerda takes the cheapest one, leftmost if there are more than one. Place it in Lacerda’s
                         laboratory, top space first, taking benefit as normal.
                     </p>
                 </section>
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showPathfinderRules">
                     <h2>PATHFINDER: Learn New Technology</h2>
                     <p>
                         Pathfinder takes the cheapest one, leftmost if there are more than one. Place it in Pathfinder’s
@@ -195,14 +201,14 @@
                 </section>
             </section>
             <section class="rule" v-if="actionImage() === 'researchanddevelopment.png'">
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Research and Development</h2>
                     <p>
                         Lacerda develops the most-developed Tech that can be de veloped once, then the least developed
                         Tech that can be developed once. If two Techs are tied, develop the bottom one.
                     </p>
                 </section>
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showPathfinderRules">
                     <h2>PATHFINDER: Research and Development</h2>
                     <p>
                         Pathfinder develops the most-developed Tech that can be developed once, then the last developed
@@ -216,7 +222,7 @@
                 </section>
             </section>
             <section class="rule" v-if="actionImage() === 'constructabuilding.png'">
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Construct a Building</h2>
                     <p>
                         Lacerda always builds the Building corresponding to the icon his Bot is on, but only if the LSS
@@ -237,7 +243,7 @@
                         just constructed.
                     </p>
                 </section>
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showPathfinderRules">
                     <h2>PATHFINDER: Construct a Building</h2>
                     <p>
                         Pathfinder only ever builds mines and building types that are below the Colony level marker. It
@@ -258,7 +264,7 @@
                 </section>
             </section>
             <section class="rule" v-if="actionImage() === 'upgradeabuilding.png'">
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Upgrade a Building</h2>
                     <p>
                         Lacerda uses one of his Blueprints and upgrades a Building anywhere on the board. If the Upgrade
@@ -269,7 +275,7 @@
                         the OP provided by his Scientists.
                     </p>
                 </section>
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showPathfinderRules">
                     <h2>PATHFINDER: Upgrade a Building</h2>
                     <p>
                         Pathfinder chooses the Blueprint that most increases the OP provided by his Scientists. If there
@@ -280,7 +286,7 @@
                 </section>
             </section>
             <section class="rule" v-if="actionImage() === 'hireascientist.png'">
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Hire a Scientist or Take an Earth Contract</h2>
                     <p>
                         Lacerda hires the Scientist that will score him the most potential OP based on the number of
@@ -290,7 +296,7 @@
                         shuffles the Contract deck and refills the display with the top card.
                     </p>
                 </section>
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showPathfinderRules">
                     <h2>PATHFINDER: Hire a Scientist or Take an Earth Contract</h2>
                     <p>
                         If there is at least one Contract on display, Pathfinder takes a Contract (the one worth the
@@ -307,16 +313,16 @@
             </section>
             <section class="rule rule--standard">
                 <section class="rule-entry">
-                    <p>
+                    <p v-if="showLacerdaRules">
                         * If Lacerda cannot perform his action, it moves its Rover (see below).
                     </p>
-                    <p>
+                    <p v-if="showPathfinderRules">
                         * If Pathfinder cannot perform its action, it takes the Move Bots action (see below).
                     </p>
                 </section>
             </section>
             <section class="rule rule--standard">
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Moving Lacerda's Rover</h2>
                     <p>
                         Whenever Lacerda moves his Rover, it moves toward the closest tile (either Research or
@@ -325,7 +331,7 @@
                         and spends additional Crystals if required. If he reaches a tile , it is resolved immediately.
                     </p>
                 </section>
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showPathfinderRules">
                     <h2>PATHFINDER: Move Bots</h2>
                     <p>
                         After taking any action on the Colony side, using Card Order tiebreaker for all hex choices
@@ -341,7 +347,7 @@
                 </section>
             </section>
             <section class="rule rule--standard">
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Resupply</h2>
                     <p>
                         Lacerda only takes this action in the Shuttle Phase when his as tronaut is placed on the
@@ -353,7 +359,7 @@
                         (Crystals first). Any Resources taken are placed into the general supply.
                     </p>
                 </section>
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showPathfinderRules">
                     <h2>PATHFINDER: Resupply</h2>
                     <p>
                         Pathfinder only takes the Resupply action when the Colony Status updates or as an R&D benefit.
@@ -367,7 +373,7 @@
                 </section>
             </section>
             <section class="rule rule--standard">
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Colony Levels Up</h2>
                     <p>
                         Every time this happens, Lacerda places a Shelter according to the c onstruction rules above,
@@ -375,7 +381,7 @@
                         but it counts towards LSS Rewards or Missions.
                     </p>
                 </section>
-                <section class="rule-entry">
+                <section class="rule-entry" v-if="showPathfinderRules">
                     <h2>PATHFINDER: Colony Levels Up</h2>
                     <ol>
                         <li>Pathfinder receives the benefits of the discovery tiles on the space the Colony Status

@@ -37,7 +37,9 @@ var app = new Vue({
       showMission: false,
       currentSide: ORBITAL,
       tempSide: ORBITAL,
-      showReference: false
+      showReference: false,
+      showLacerdaRules: true,
+      showPathfinderRules: true
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -46,6 +48,9 @@ var app = new Vue({
             this.currentCard = gameState.currentCard;
             this.showMission = gameState.showMission;
             this.currentSide = gameState.currentSide;
+
+            if (gameState.showLacerdaRules !== undefined && gameState.showLacerdaRules !== null) this.showLacerdaRules = gameState.showLacerdaRules;
+            if (gameState.showPathfinderRules !== undefined && gameState.showPathfinderRules !== null) this.showPathfinderRules = gameState.showPathfinderRules;
         }
         else {
             this.reset();
@@ -110,6 +115,8 @@ var app = new Vue({
         gameState.currentCard = this.currentCard;
         gameState.showMission = this.showMission;
         gameState.currentSide = this.currentSide;
+        gameState.showLacerdaRules = this.showLacerdaRules;
+        gameState.showPathfinderRules = this.showPathfinderRules;
         localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
       },
       actionImage: function () {
@@ -146,6 +153,7 @@ var app = new Vue({
       },
       hideReferenceModal: function () {
         this.showReference = false;
+        this.saveGameState();
       },
       hexDirImage: function () {
           if (!this.currentCard.travel) {
