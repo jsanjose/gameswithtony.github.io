@@ -31,6 +31,7 @@ const soloDeck = [
 var app = new Vue({
     el: '#onmars',
     data: {
+      isDisabledButton: false,
       currentDeck: soloDeck,
       currentCard: soloDeck[0],
       showMission: false,
@@ -67,6 +68,9 @@ var app = new Vue({
         this.saveGameState();
       },
       draw: function() {
+          if (this.isDisabledButton) return;
+          this.isDisabledButton = true;
+
           this.currentSide = this.tempSide;
           if (this.currentDeck.length === 0) {
               this.shuffle();
@@ -74,6 +78,10 @@ var app = new Vue({
           }
           this.currentCard = this.currentDeck.shift();
           this.saveGameState();
+
+          setTimeout(() => {
+            this.isDisabledButton = false;
+          }, 1000);
       },
       reset: function() {
           this.showMission = false;
