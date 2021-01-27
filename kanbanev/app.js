@@ -104,6 +104,7 @@ function createPlayer(engineer, dept, position, part, isLacerdaDouble, isWorking
 var app = new Vue({
     el: '#kanbanev',
     data: {
+      isDisabledButton: false,
       currentPhase: PHASE.DepartmentSelection,
       currentSelectionDeck: selectionDeck,
       currentDeptDeck: deptDeck,
@@ -470,6 +471,9 @@ var app = new Vue({
         this.saveGameState();
       },
       setPhaseIndex: function(index) {
+        if (this.isDisabledButton) return;
+        this.isDisabledButton = true;
+
         let donePlayer = this.players[this.phaseIndex];
 
         if (this.gameHasStarted && donePlayer.engineer === ENGINEER.Human && (donePlayer.dept === null || donePlayer.position === null)) {
@@ -604,6 +608,11 @@ var app = new Vue({
         this.saveGameState();
         window.scrollTo(0,0);
         let self = this;
+
+        setTimeout(() => {
+            this.isDisabledButton = false;
+        }, 1000);
+
       },
       setDept: function(dept) {
         this.currentPlayer.dept = dept;
