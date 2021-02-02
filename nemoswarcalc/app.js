@@ -16,9 +16,13 @@ var app = new Vue({
     data: {
       motive: 0,
       warshipsSunk: null,
+      warshipsSunkNumber: null,
       nonWarshipsSunk: null,
+      nonWarhsipsSunkNumber: null,
       adventureCards: null,
+      adventureCardsNumber: null,
       treasure: null,
+      treasureNumber: null,
       liberation: null,
       scienceDiscovered: null,
       wondersSeen: null,
@@ -44,16 +48,16 @@ var app = new Vue({
     },
     computed: {
         warshipsSunkTotal: function () {
-            return (this.warshipsSunk || 0) * MOTIVE_MULTIPLIER[this.motive][0];
+            return new Number(this.warshipsSunk || 0) + new Number((this.warshipsSunkNumber || 0) * MOTIVE_MULTIPLIER[this.motive][0]);
         },
         nonWarshipsSunkTotal: function () {
-            return (this.nonWarshipsSunk || 0) * MOTIVE_MULTIPLIER[this.motive][1];
+            return new Number(this.nonWarshipsSunk) + new Number((this.nonWarshipsSunkNumber || 0) * MOTIVE_MULTIPLIER[this.motive][1]);
         },
         adventureCardsTotal: function () {
-            return (this.adventureCards || 0) * MOTIVE_MULTIPLIER[this.motive][2];
+            return new Number(this.adventureCards) + new Number((this.adventureCardsNumber || 0) * MOTIVE_MULTIPLIER[this.motive][2]);
         },
         treasureTotal: function () {
-            return (this.treasure || 0) * MOTIVE_MULTIPLIER[this.motive][3];
+            return new Number(this.treasure) + new Number((this.treasureNumber || 0) * MOTIVE_MULTIPLIER[this.motive][3]);
         },
         liberationTotal: function () {
             return (this.liberation || 0) * MOTIVE_MULTIPLIER[this.motive][4];
