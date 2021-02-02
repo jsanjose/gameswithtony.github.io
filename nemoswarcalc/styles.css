@@ -59,6 +59,22 @@ body {
     margin-right: 0.15rem;
 }
 
+.instructions {
+    border-bottom: solid 1px #fff;
+}
+
+.instructions ul {
+    padding: 0 0.5rem;
+}
+
+.instructions * {
+    font-size: 0.75rem;
+}
+
+.instructions li {
+    margin-bottom: 0.25rem;
+}
+
 .motive {
     background-color: #000;
     width: 100%;
@@ -80,4 +96,5 @@ option {
 .totalscore {
     margin-top: 1rem;
     font-size: 1.5rem;
+    border-top: solid 1px #fff;
 }

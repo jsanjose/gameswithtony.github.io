@@ -28,6 +28,13 @@
                     <option value="5">Humanist</option>
                 </select>
             </section>
+            <section class="instructions">
+                <ul>
+                    <li>In the first box: enter the total <em>value</em> of all indicated cards/tiles.</li>
+                    <li>If there is a second box (#): enter the total <em>number</em> of all indicated cards/tiles.</li>
+                    <li>If there is a third box (0s): enter the total <em>number</em> of all indicated cards/tiles with a 0VP value.</li>
+                </ul>
+            </section>
             <label for="warshipsSunk">Warships Sunk</label>
             <input type="number" inputmode="numeric" name="warshipsSunk" id="warshipsSunk" class="entry" v-model="warshipsSunk" />
             <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][0] != 0">#</span><input type="number" inputmode="numeric" name="warshipsSunkNumber" id="warshipsSunkNumber" class="entry-small" v-model="warshipsSunkNumber" v-if="MOTIVE_MULTIPLIER[motive][0] != 0" />
