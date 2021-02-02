@@ -1,0 +1,73 @@
+* {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 18px;
+    box-sizing: border-box;
+    color: #fff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    background-image: url("images/nautilus.jpg");
+    background-size: cover;
+}
+
+@media (min-width: 900px) {
+    body {
+        background-image: url("images/nautilus_landscape.jpg");
+    }
+}
+
+#nemocalc {
+    display: flex;
+    flex: 1;
+    max-width: 900px;
+    min-height: 100vh;
+    justify-content: center;
+}
+
+.entries {
+    background-color: rgb(21, 39, 63, .9);
+    width: 80vw;
+    padding: 1rem;
+    font-size: 1.3rem;
+}
+
+.entries label {
+    display: block;
+    margin-top: 0.75rem;
+    font-size: 1rem;
+}
+
+.entry {
+    padding: .5rem;
+    color: #000;
+    margin-right: 1rem;
+    width: 7rem;
+}
+
+.motive {
+    background-color: #000;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    display: flex;
+}
+
+select {
+    color: #000;
+    padding: 0.5rem;
+    width: 90%;
+}
+
+option {
+    color: #000;
+}
+
+.totalscore {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+}
