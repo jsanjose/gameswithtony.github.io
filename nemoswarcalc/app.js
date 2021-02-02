@@ -1,14 +1,5 @@
 const MOTIVE = { Science: 0, Explore: 1, AntiImperalism: 2, War: 3, Adventure: 4, Humanist: 5 };
 
-const MOTIVE_MULTIPLIER = [
-    [0, -1, 1, 0, 3, 6, 4], // science
-    [-1, 0, 0, 1, 3, 4, 7], // explore
-    [0, 2, 0, -1, 6, 2, 3], // antiimperalism
-    [2, 0, -1, 0, 4, 3, 2], // war
-    [0, -1, 2, 0, 3, 3, 3], // adventure
-    [-1, -1, 0, 0, 8, 5, 3] // humanist
-];
-
 const LOCALSTORAGENAME = 'nemoswarcalc';
 
 var app = new Vue({
@@ -17,18 +8,30 @@ var app = new Vue({
       motive: 0,
       warshipsSunk: null,
       warshipsSunkNumber: null,
+      warshipsSunkZero: null,
       nonWarshipsSunk: null,
-      nonWarhsipsSunkNumber: null,
+      nonWarshipsSunkNumber: null,
+      nonWarshipsSunkZero: null,
       adventureCards: null,
       adventureCardsNumber: null,
+      adventureCardsZero: null,
       treasure: null,
       treasureNumber: null,
+      treasureZero: null,
       liberation: null,
       scienceDiscovered: null,
       wondersSeen: null,
       shipResourcesPenalty: null,
       scouringTheSeas: null,
-      charactersRemaining: null
+      charactersRemaining: null,
+      MOTIVE_MULTIPLIER: [
+        [0, -1, 1, 0, 3, 6, 4], // science
+        [-1, 0, 0, 1, 3, 4, 7], // explore
+        [0, 2, 0, -1, 6, 2, 3], // antiimperalism
+        [2, 0, -1, 0, 4, 3, 2], // war
+        [0, -1, 2, 0, 3, 3, 3], // adventure
+        [-1, -1, 0, 0, 8, 5, 3] // humanist
+      ]
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -48,25 +51,57 @@ var app = new Vue({
     },
     computed: {
         warshipsSunkTotal: function () {
-            return new Number(this.warshipsSunk || 0) + new Number((this.warshipsSunkNumber || 0) * MOTIVE_MULTIPLIER[this.motive][0]);
+            let totalZero = this.warshipsSunkZero || 0;
+            let multiplier = this.MOTIVE_MULTIPLIER[this.motive][0];
+            let totalCards = new Number(this.warshipsSunkNumber || 0);
+
+            if (multiplier < 0) {
+                totalCards = totalCards - totalZero;
+            }
+
+            return new Number(this.warshipsSunk || 0) + new Number(totalCards * multiplier);
         },
         nonWarshipsSunkTotal: function () {
-            return new Number(this.nonWarshipsSunk) + new Number((this.nonWarshipsSunkNumber || 0) * MOTIVE_MULTIPLIER[this.motive][1]);
+            let totalZero = this.nonWarshipsSunkZero || 0;
+            let multiplier = this.MOTIVE_MULTIPLIER[this.motive][1];
+            let totalCards = new Number(this.nonWarshipsSunkNumber || 0);
+
+            if (multiplier < 0) {
+                totalCards = totalCards - totalZero;
+            }
+
+            return new Number(this.nonWarshipsSunk || 0) + new Number(totalCards * multiplier);
         },
         adventureCardsTotal: function () {
-            return new Number(this.adventureCards) + new Number((this.adventureCardsNumber || 0) * MOTIVE_MULTIPLIER[this.motive][2]);
+            let totalZero = this.adventureCardsZero || 0;
+            let multiplier = this.MOTIVE_MULTIPLIER[this.motive][2];
+            let totalCards = new Number(this.adventureCardsNumber || 0);
+
+            if (multiplier < 0) {
+                totalCards = totalCards - totalZero;
+            }
+
+            return new Number(this.adventureCards || 0) + new Number(totalCards * multiplier);
         },
         treasureTotal: function () {
-            return new Number(this.treasure) + new Number((this.treasureNumber || 0) * MOTIVE_MULTIPLIER[this.motive][3]);
+            let totalZero = this.treasureZero || 0;
+            let multiplier = this.MOTIVE_MULTIPLIER[this.motive][3];
+            let totalCards = new Number(this.treasureNumber || 0);
+
+            if (multiplier < 0) {
+                totalCards = totalCards - totalZero;
+            }
+
+            return new Number(this.treasure || 0) + new Number(totalCards * multiplier);
         },
         liberationTotal: function () {
-            return (this.liberation || 0) * MOTIVE_MULTIPLIER[this.motive][4];
+            return (this.liberation || 0) * this.MOTIVE_MULTIPLIER[this.motive][4];
         },
         scienceDiscoveredTotal: function () {
-            return (this.scienceDiscovered || 0) * MOTIVE_MULTIPLIER[this.motive][5];
+            return (this.scienceDiscovered || 0) * this.MOTIVE_MULTIPLIER[this.motive][5];
         },
         wondersSeenTotal: function () {
-            return (this.wondersSeen || 0) * MOTIVE_MULTIPLIER[this.motive][6];
+            return (this.wondersSeen || 0) * this.MOTIVE_MULTIPLIER[this.motive][6];
         },
         shipResourcesPenaltyTotal: function () {
             return (this.shipResourcesPenalty * -1 || 0);

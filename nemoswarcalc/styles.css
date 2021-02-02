@@ -45,13 +45,18 @@ body {
 .entry, .entry-small {
     padding: .5rem;
     color: #000;
-    margin-right: 0.25rem;
-    width: 6rem;
+    margin-right: 0.5rem;
+    width: 4rem;
 }
 
 .entry-small {
-    width: 3rem;
+    width: 2.5rem;
     margin-right: 0.25rem;
+}
+
+.small-label {
+    font-size: 0.9rem;
+    margin-right: 0.15rem;
 }
 
 .motive {
