@@ -575,6 +575,15 @@
                         <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
                     </li>
                 </ul>
+                <ul class="instructions-list" v-if="this.isEndOfDay">
+                    <p style="margin-top: 2rem; margin-left: -1rem;"><strong>If a meeting occurs...</strong></p>
+                    <p style="margin-top: 0rem; margin-bottom: 1rem; margin-left: -1rem; font-size: 0.9rem;">In certification track order, perform the Meeting as normal with the following changes:</p>
+                    <li>Colleagues don't play Performance Goals, and nor do they interact with yours.</li>
+                    <li>Mr. Lacerda has a number of Generic Speech tokens equal to the number of the meeting (1, 2, 3, or 4). He picks cards to place Speech tokens on from left to right, starting from the leftmost card (and skipping cards that are already full) and scores the maximum available multiplier for each such card.</li>
+                    <li>Mr. Turczi always takes exactly 3 Generic Speech tokens. He picks cards to place Speech tokens on from right to left, starting from the rightmost card (and skipping cards that are already full) and scores as if he had a single multiplier for each such card.</li>
+                    <li>If the Colleagues were unable to place all of their Speech tokens (due to cards being full), return any remaining tokens to the supply.</li>
+                    <li>After the meeting, you must play 2 of your remaining 3 Performance Goal cards, add 2 randomly drawn from the deck, shuffle them together and lay them out randomly to create new Goals for the next meeting, then redraw back up to 4 Performance Goal cards.</li>
+                </ul>
             </section>
             <section class="button-container">
                 <button class="button" v-on:click="setPhaseIndex(phaseIndex + 1)">Next >></button>
