@@ -553,6 +553,7 @@
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 2 && !isFirstDeptSelection">
                     <li>Perform End-of-Week Scoring.</li>
+                    <li>The Colleagues score 2 PP for each Upgraded Design tile they have. These tiles are then removed from the game (and so will not be scored again at the end of next Week).</li>
                     <li><strong>Evaluation Penalty: </strong>Be certified in 2 or fewer departments.</li>
                     <li v-if="difficultyCards[5].include">
                         <span class="instructions-important">Difficulty Card #6: Increased Quotas<br /></span>The Colleagues score one additional PP (3 PP total) per Upgraded Design they have during the End-of-Week scoring.
