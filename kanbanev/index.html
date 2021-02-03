@@ -576,7 +576,7 @@
                         <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
                     </li>
                 </ul>
-                <ul class="instructions-list" v-if="this.isEndOfDay">
+                <ul class="instructions-list" v-if="this.isEndOfDay && !this.isFirstDeptSelection">
                     <p style="margin-top: 2rem; margin-left: -1rem;"><strong>If a meeting occurs...</strong></p>
                     <p style="margin-top: 0rem; margin-bottom: 1rem; margin-left: -1rem; font-size: 0.9rem;">In certification track order, perform the Meeting as normal with the following changes:</p>
                     <li>Colleagues don't play Performance Goals, and nor do they interact with yours.</li>
