@@ -188,6 +188,7 @@
             <section class="extra-info" v-if="this.currentPhase === 1 && (currentPlayer.dept === 1 || currentPlayer.dept === 2) && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)">
                 <img v-bind:src="currentPartImage" class="extra-image" />
                 <img v-bind:src="currentCarImage" class="extra-image"  v-if="currentPlayer.dept === 1" />
+                <img v-bind:src="currentKanbanImage" class="extra-image" v-if="currentPlayer.dept === 2 && this.currentPlayer.engineer === 0" />
                 <br />
                 <a href="#" class="draw-part" v-on:click="drawPart">Draw Another Part</a>
             </section>          
@@ -235,8 +236,11 @@
             <section class="instructions" v-if="this.currentPhase === 1">
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track ({{ currentPlayerName }} should end up on the spot indicated above).</li>
-                    <li>Upgrade a Design from the Colleagues' shared Design stack using a Car Part from the supply (Highest available PP > Banked Shift > Books > Blank), ignoring <span v-if="!difficultyCards[3].include">any printed benefits in Upgrade spaces.</span><span v-if="difficultyCards[3].include">non-PP benefits in Upgrade spaces (Difficulty Card #4).</span></li>
-                    <li>Advance the Part value, and gain PP.</li>
+                    <li>Upgrade the Design from the top of the Colleagues' shared Design stack using a Car Part from the supply (Highest available PP > Banked Shift > Books > Blank), ignoring <span v-if="!difficultyCards[3].include">any printed benefits in Upgrade spaces.</span><span v-if="difficultyCards[3].include">non-PP benefits in Upgrade spaces (Difficulty Card #4).</span></li>
+                    <li>Advance the Part value, and gain PP equal to the new value of the Part.</li>
+                    <li v-if="lacerdaIsCertified && !difficultyCards[0].include"><span class="instructions-important">Lacerda Is Certified: </span>Mr. Lacerda upgrades a design again.</li>
+                    <li v-if="!lacerdaIsCertified && !difficultyCards[0].include"><span class="instructions-important">Lacerda Is NOT Certified: </span>If he was, he would upgrade a design again.</li>
+                    <li v-if="difficultyCards[0].include"><span class="instructions-important">Difficulty Card #1: Certified Lacerda: </span>Mr. Lacerda upgrades a design again.</li>
                     <li>Take car <span class="instructions-important">behind Pace Car.</span></li>
                     <li v-if="difficultyCards[1].include">
                         <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
@@ -259,8 +263,8 @@
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 1">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
-                    <li>Upgrade a Design from the Colleagues' shared Design stack using a Car Part from the supply (Highest available PP > Banked Shift > Books > Blank), ignoring <span v-if="!difficultyCards[3].include">any printed benefits in Upgrade spaces.</span><span v-if="difficultyCards[3].include">non-PP benefits in Upgrade spaces (Difficulty Card #4).</span></li>
-                    <li>Advance the Part value, and gain PP.</li>
+                    <li>Upgrade the Design from the top of the Colleagues' shared Design stack using a Car Part from the supply (Highest available PP > Banked Shift > Books > Blank), ignoring <span v-if="!difficultyCards[3].include">any printed benefits in Upgrade spaces.</span><span v-if="difficultyCards[3].include">non-PP benefits in Upgrade spaces (Difficulty Card #4).</span></li>
+                    <li>Advance the Part value, and gain PP equal to the new value of the Part.</li>
                     <li>Take car <span class="instructions-important">with highest PP value</span> (Concept > Sports > Truck > SUV > City).</li>
                     <li v-if="difficultyCards[1].include">
                         <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
@@ -380,15 +384,20 @@
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
-                    <li>Issue a Kanban Order. See above for card placement.</li>
-                    <li>Empty warehouse and take 1 of the part indicated above.</li>
+                    <p><strong>First, Mr. Lacerda issues a Kanban order <br /><span class="instructions-important">See above for card placement.</span></strong></p>
+                    <li>Flip the top card of the Kanban deck, place it in its space with the 2 symbols for the same Part oriented to align with the matching warehouse (i.e. double Battery or Autopilot at the top; double Body or Electronics at the bottom).</li>
+                    <li>Shift the card so that 4 symbols are above or below the line (see the card image above, which will change depending on Sandra's location).</li>
+                    <li>Refill Parts as shown by the Kanban card according to normal rules, then return the card to the bottom of the Kanban deck.</li>
+                    <p><strong>Second, Mr. Lacerda collects parts</strong></p>
+                    <li>Remove all Parts of the type indicated above from the warehouse, keep 1, and discard the rest (if no Parts of that type are available choose another).</li>
+                    <li>The Colleagues keep a maximum of 6 Parts between them; if they gain a 7th, reduce down to 6 by discarding the type that is lowest on the Upgrade Value track (if tied, select a tied Part at random).</li>
                     <li>
                         <span v-if="!lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda is NOT yet certified<br /></span>
                             Once he is certified, he takes an additional Part.
                         </span>
                         <span v-if="lacerdaIsCertified && !difficultyCards[0].include">
-                            <span class="instructions-important">Mr. Lacerda IS CERTIFIED<br /></span>Because he is certified, Mr. Lacerda takes an additional Part.
+                            <span class="instructions-important">Mr. Lacerda IS CERTIFIED<br /></span>Because he is certified, Mr. Lacerda collects parts again.
                         </span>
                         <span v-if="difficultyCards[0].include">
                             <span class="instructions-important">Difficulty Card #1: Certified Lacerda<br /></span>Mr. Lacerda takes an additional Part.
@@ -409,7 +418,8 @@
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 1">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
-                    <li>Empty warehouse and take 1 of the part indicated above.</li>
+                    <li>Remove all Parts of the type indicated above from the warehouse, keep 1, and discard the rest (if no Parts of that type are available choose another).</li>
+                    <li>The Colleagues keep a maximum of 6 Parts between them; if they gain a 7th, reduce down to 6 by discarding the type that is lowest on the Upgrade Value track (if tied, select a tied Part at random).</li>
                     <li v-if="difficultyCards[1].include">
                         <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
                     </li>
@@ -510,12 +520,12 @@
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Advance training in Sandra's current department.</li>
-                    <li>
+                    <li v-if="!(currentTrainingTrackLevel === 3 && sandrasPosition === 4)">
                         <span v-if="!lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda is NOT yet certified<br /></span>
                             Once he is certified, he advances an additional training space in Sandra's current department.
                         </span>
-                        <span v-if="lacerdaIsCertified && !difficultyCards[0].include">
+                        <span v-if="lacerdaIsCertified && !difficultyCards[0].include && !(currentTrainingTrackLevel === 3 && sandrasPosition === 4)">
                             <span class="instructions-important">Mr. Lacerda IS CERTIFIED<br /></span>Because he is certified, Mr. Lacerda advances an additional training space in Sandra's current department.
                         </span>
                         <span v-if="difficultyCards[0].include">
@@ -552,7 +562,10 @@
                     </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 2 && !isFirstDeptSelection">
-                    <li>Perform End-of-Week Scoring.</li>
+                    <p><strong>Perform End-of-Week Scoring</strong><br /><span class="instructions-important">For each Car in your garages:</span></p>
+                    <li>Gain 1 PP for each Upgrade that has been made to that Model <span class="instructions-important">(by all players)</span>. To do this, count the number of Car Parts on the Upgrade spaces of the Model.</li>
+                    <li>Gain 1 PP for each Tested Design you have of that Model.</li>
+                    <li>Advance the Week marker by 1 space unless it is already on position 3 (in that case just ignore this step).</li>
                     <li>The Colleagues score 2 PP for each Upgraded Design tile they have. These tiles are then removed from the game (and so will not be scored again at the end of next Week).</li>
                     <li><strong>Evaluation Penalty: </strong>Be certified in 2 or fewer departments.</li>
                     <li v-if="difficultyCards[5].include">

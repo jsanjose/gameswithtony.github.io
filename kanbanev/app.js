@@ -221,6 +221,10 @@ var app = new Vue({
             this.computedUpdater;
             return 'images/' + this.carImage(this.sandrasPosition);
         },
+        currentKanbanImage: function () {
+            this.computedUpdater;
+            return 'images/' + this.kanbanImage(this.sandrasPosition);
+        },
         currentTrainingTrackImage: function () {
             this.computedUpdater;
             let path = 'images/training';
@@ -585,15 +589,16 @@ var app = new Vue({
 
             // if current department is admin, increment where Sandra is
             if (newCurrentPlayer.dept === DEPARTMENT.Admin) {
-                // if Lacerda is certified in admin, do it twice (we check this first, so the first movement doesn't affect the Lacerda certification check if Sandra is also in admin)
+                // if Lacerda is certified in admin, do it twice
 
-                // also: if difficulty card #1 is selected, then always do the double movement, whether certified or not
+                // also: if difficulty card #1 is selected or Lacerda is certified, then always advance a second time on Sandra's current position, whether certified or not (we check this first, so the first movement doesn't affect the Lacerda certification check if Sandra is also in admin)
                 if (newCurrentPlayer.engineer === ENGINEER.Lacerda && ((trainingTrack[DEPARTMENT.Admin] > 2 && !this.difficultyCards[0].include) || this.difficultyCards[0].include)) {
                     if (trainingTrack[this.sandrasPosition] < 5) {
                         trainingTrack[this.sandrasPosition]++;
                     }
                 }
 
+                // also advance on Sandra's current position
                 if (trainingTrack[this.sandrasPosition] < 5) {
                     trainingTrack[this.sandrasPosition]++;
                 }
@@ -733,6 +738,14 @@ var app = new Vue({
             case 4:
                 return "sports.png"
                 break;
+        }
+      },
+      kanbanImage: function (dept) {
+        if (dept === 0 || dept === 1 || dept === 2) {
+            return "kanban_above.png";
+        }
+        if (dept === 3 || dept === 4) {
+            return "kanban_below.png";
         }
       },
       playerName: function (engineer) {
