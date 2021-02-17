@@ -607,6 +607,9 @@
                 <button class="button" v-on:click="setPhaseIndex(phaseIndex + 1)">Next >></button>
             </section>
         </section>
+        <section v-if="!gameHasStarted">
+            <p>*Not affiliated with Eagle-Gryphon games.</p>
+        </section>
     </main>
     <script src="app.js"></script>
 </body>
