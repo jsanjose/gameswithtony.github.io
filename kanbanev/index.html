@@ -112,7 +112,7 @@
         </section>
         <section class="playerArea" v-if="gameHasStarted">
             <section class="start-new">
-            <a href="#" v-on:click="reset">Start a New Game</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="loadUndoState">Undo</a>
+            <a href="#" v-on:click="if (confirm('Are you sure you want to start a NEW GAME?')) { reset(); }">Start a New Game</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="loadUndoState">Undo</a>
             </section>
             <header v-if="this.currentPhase === 0" class="phase-title phase-title-dept">
                 <span v-for="deptCard in currentDeptCards">

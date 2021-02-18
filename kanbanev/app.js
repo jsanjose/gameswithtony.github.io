@@ -847,7 +847,7 @@ var app = new Vue({
         this.computedUpdater++;
       },
       loadUndoState: function() {
-        if (confirm("WARNING: This will reset the entire app to your most recent department selection step. Are you sure you want to undo?")) {
+        if (confirm("WARNING: This will reset the entire app to your most recent department selection step. Are you sure you want to UNDO?")) {
             if (this.undoState.currentPhase === null || this.undoState.currentPhase === undefined) {
                 return;
             }
