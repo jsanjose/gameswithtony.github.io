@@ -488,6 +488,7 @@ var app = new Vue({
 
         if (this.gameHasStarted && donePlayer.engineer === ENGINEER.Human && (donePlayer.dept === null || donePlayer.position === null)) {
             alert("You must choose a department and workstation.");
+            this.isDisabledButton = false;
             return;
         }
 
