@@ -111,7 +111,9 @@
             </section>  
         </section>
         <section class="playerArea" v-if="gameHasStarted">
-            <a href="#" v-on:click="reset" class="start-new">Start a New Game</a>
+            <section class="start-new">
+            <a href="#" v-on:click="reset">Start a New Game</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="loadUndoState">Undo</a>
+            </section>
             <header v-if="this.currentPhase === 0" class="phase-title phase-title-dept">
                 <span v-for="deptCard in currentDeptCards">
                     <img class="dept-card-img" v-bind:src="'images/' + deptImageYellow(deptCard.dept)" />

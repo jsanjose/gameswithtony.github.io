@@ -126,7 +126,8 @@ var app = new Vue({
       turcziTrainingTrack: [0, 0, 0, 0, 0],
       difficultyCards: [
           { id: 0, include: false }, { id: 1, include: false }, { id: 2, include: false }, { id: 3, include: false }, { id: 4, include: false }, { id: 5, include: false }, { id: 6, include: false }, { id: 7, include: false }, { id: 8, include: false }
-      ]
+      ],
+      undoState: {}
     },
     mounted: function() {
         this.computedUpdater++;
@@ -156,6 +157,10 @@ var app = new Vue({
                 if (gameState.difficultyCards[1].id) {
                     this.difficultyCards = gameState.difficultyCards;
                 }
+            }
+
+            if (gameState.undoState) {
+                this.undoState = _.cloneDeep(gameState.undoState);
             }
         }
         else {
@@ -330,6 +335,7 @@ var app = new Vue({
         }
 
         this.gameHasStarted = true; // must do this last
+        this.saveUndoState();
         this.saveGameState();
       },
       addShuffleCard: function () {
@@ -610,6 +616,11 @@ var app = new Vue({
             this.drawSelectionCard();
         }
 
+        // save undo
+        if (this.gameHasStarted && this.currentPhase === PHASE.DepartmentSelection && newCurrentPlayer.engineer === ENGINEER.Human) {
+            this.saveUndoState();
+        }
+
         this.saveGameState();
         window.scrollTo(0,0);
         let self = this;
@@ -788,6 +799,7 @@ var app = new Vue({
         this.difficultyCards = [
             { id: 0, include: false }, { id: 1, include: false }, { id: 2, include: false }, { id: 3, include: false }, { id: 4, include: false }, { id: 5, include: false }, { id: 6, include: false }, { id: 7, include: false }, { id: 8, include: false }
         ];
+        this.undoState = {};
         this.saveGameState();
       },
       saveGameState: function() {
@@ -806,9 +818,69 @@ var app = new Vue({
         gameState.lacerdaTrainingTrack = this.lacerdaTrainingTrack;
         gameState.turcziTrainingTrack = this.turcziTrainingTrack;
         gameState.difficultyCards = this.difficultyCards;
+        gameState.undoState = this.undoState;
         localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
 
         this.computedUpdater++;
+      },
+      saveUndoState: function() {
+        this.undoState = {};
+        this.undoState.currentPhase = _.cloneDeep(this.currentPhase);
+        this.undoState.currentSelectionDeck = _.cloneDeep(this.currentSelectionDeck);
+        this.undoState.currentDeptDeck = _.cloneDeep(this.currentDeptDeck);
+        this.undoState.currentSelectionCard = _.cloneDeep(this.currentSelectionCard);
+        this.undoState.currentDeptCards = _.cloneDeep(this.currentDeptCards);
+        this.undoState.players = _.cloneDeep(this.players);
+        this.undoState.playerColor = this.playerColor;
+        this.undoState.playerStartingCertTrackPosition = _.cloneDeep(this.playerStartingCertTrackPosition);
+        this.undoState.phaseIndex = _.cloneDeep(this.phaseIndex);
+        this.undoState.gameHasStarted = this.gameHasStarted;
+        this.undoState.isFirstDeptSelection = _.cloneDeep(this.isFirstDeptSelection);
+        this.undoState.lacerdaTrainingTrack = _.cloneDeep(this.lacerdaTrainingTrack);
+        this.undoState.turcziTrainingTrack = _.cloneDeep(this.turcziTrainingTrack);
+        this.undoState.difficultyCards = _.cloneDeep(this.difficultyCards);
+
+        // only one level of undo is saved
+        this.undoState.undoState = _.cloneDeep({});
+        
+        this.saveGameState();
+        this.computedUpdater++;
+      },
+      loadUndoState: function() {
+        if (confirm("WARNING: This will reset the entire app to your most recent department selection step. Are you sure you want to undo?")) {
+            if (this.undoState.currentPhase === null || this.undoState.currentPhase === undefined) {
+                return;
+            }
+
+            this.currentPhase = _.cloneDeep(this.undoState.currentPhase);
+            this.currentSelectionDeck = _.cloneDeep(this.undoState.currentSelectionDeck);
+            this.currentDeptDeck = _.cloneDeep(this.undoState.currentDeptDeck);
+            this.currentSelectionCard = _.cloneDeep(this.undoState.currentSelectionCard);
+            this.currentDeptCards = _.cloneDeep(this.undoState.currentDeptCards);
+            this.players = _.cloneDeep(this.undoState.players);
+            this.playerColor = this.undoState.playerColor;
+            this.playerStartingCertTrackPosition = this.undoState.playerStartingCertTrackPosition;
+            this.phaseIndex = _.cloneDeep(this.undoState.phaseIndex);
+            this.gameHasStarted = this.undoState.gameHasStarted;
+            this.isFirstDeptSelection = _.cloneDeep(this.undoState.isFirstDeptSelection);
+
+            // added post-release
+            if (this.lacerdaTrainingTrack) {
+                this.lacerdaTrainingTrack = _.cloneDeep(this.undoState.lacerdaTrainingTrack);
+            }
+            if (this.turcziTrainingTrack) {
+                this.turcziTrainingTrack = _.cloneDeep(this.undoState.turcziTrainingTrack);
+            }
+            if (this.difficultyCards) {
+                // data type changed
+                if (this.difficultyCards[1].id) {
+                    this.difficultyCards = _.cloneDeep(this.undoState.difficultyCards);
+                }
+            }
+
+            this.saveGameState();
+            this.computedUpdater++;
+        }
       }
     }
 });
