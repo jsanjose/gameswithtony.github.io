@@ -318,7 +318,9 @@
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
-                    <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Lacerda moves the Cars from top to bottom, or bottom to top before moving left.</li>
+                    <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Lacerda moves the Cars from top to bottom, or bottom to top before moving left.
+                        <br /><img src="images/assembly_lacerda.png" style="width: 200px; margin: 1rem;" />
+                    </li>
                     <li>
                         <span v-if="!lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda is NOT yet certified.<br /></span>
@@ -347,7 +349,9 @@
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 1">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
-                    <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Turczi always moves left (where it is possible to choose).</li>
+                    <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Turczi always moves left (where it is possible to choose).
+                        <br /><img src="images/assembly_turczi.png" style="width: 200px; margin: 1rem;" />
+                    </li>
                     <li v-if="difficultyCards[1].include">
                         <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
                     </li>
