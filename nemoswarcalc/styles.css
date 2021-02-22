@@ -89,7 +89,7 @@ select {
     width: 90%;
 }
 
-option {
+option, optgroup {
     color: #000;
 }
 
