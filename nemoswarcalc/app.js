@@ -114,6 +114,13 @@ var app = new Vue({
         },
         totalScore: function () {
             return new Number(this.warshipsSunkTotal) + this.nonWarshipsSunkTotal + this.adventureCardsTotal + this.treasureTotal + this.liberationTotal + this.scienceDiscoveredTotal + this.wondersSeenTotal + this.shipResourcesPenaltyTotal + this.scouringTheSeasTotal + this.charactersRemainingTotal;
+        },
+        victoryLevel: function () {
+            if (this.totalScore < 185) return "Defeat";
+            if (this.totalScore >= 185 && this.totalScore <= 219) return "Failure";
+            if (this.totalScore >= 220 && this.totalScore <= 249) return "Inconsequential";
+            if (this.totalScore >= 250 && this.totalScore <= 274) return "Success";
+            if (this.totalScore >= 275) return "Triumph";
         }
     },
     methods: {
