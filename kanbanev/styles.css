@@ -267,6 +267,25 @@ a, a:visited, a:hover {
     max-height: 60px;
 }
 
+.selectionParts {
+    padding: 0.75rem;
+    width: 100vw;
+    background-color: #efefef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+}
+
+.selectionParts-title {
+    flex-basis: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .recycle {
     padding: 0.75rem;
     width: 100vw;
@@ -315,6 +334,10 @@ a, a:visited, a:hover {
 
 .extra-image {
     max-height: 60px;
+}
+
+.selectionPart-image {
+    max-height: 40px;
 }
 
 .small-image {

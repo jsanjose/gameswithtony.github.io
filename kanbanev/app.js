@@ -222,6 +222,14 @@ var app = new Vue({
             this.computedUpdater;
             return 'images/' + this.partImage(this.currentPlayer.part);
         },
+        currentLacerdaPartImage: function () {
+            this.computedUpdater;
+            return 'images/' + this.partImage(this.lacerdaPlayer.part);
+        },
+        currentTurcziPartImage: function () {
+            this.computedUpdater;
+            return 'images/' + this.partImage(this.turcziPlayer.part);
+        },
         currentCarImage: function () {
             this.computedUpdater;
             return 'images/' + this.carImage(this.sandrasPosition);
