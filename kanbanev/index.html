@@ -190,9 +190,8 @@
             <section class="extra-info" v-if="this.currentPhase === 1 && (currentPlayer.dept === 1 || currentPlayer.dept === 2) && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)">
                 <img v-bind:src="currentKanbanImage" class="extra-image" style="margin-right: 1rem; border-right: dashed 1px black; padding-right: 1rem;" v-if="currentPlayer.dept === 2 && this.currentPlayer.engineer === 0" />
                 <img v-bind:src="currentPartImage" class="extra-image" />
-                <img v-bind:src="currentTurcziPartImage" class="extra-image" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 0 && lacerdaIsCertified && !difficultyCards[0].include" />
-                <img v-bind:src="currentTurcziPartImage" class="extra-image" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 0 && lacerdaIsCertified && !difficultyCards[0].include" />
-                <span v-if="(currentPlayer.dept === 2 && currentPlayer.engineer === 1) || (currentPlayer.dept === 2 && currentPlayer.engineer === 0 && !lacerdaIsCertified && !difficultyCards[0].include)">or&nbsp;&nbsp;</span>
+                <img v-bind:src="currentTurcziPartImage" class="small-image" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 0 && lacerdaIsCertified && !difficultyCards[0].include" />
+                <img v-bind:src="currentTurcziPartImage" class="small-image" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 0 && lacerdaIsCertified && !difficultyCards[0].include" />
                 <img v-bind:src="currentLacerdaPartImage" class="small-image" v-if="(currentPlayer.dept === 2 && currentPlayer.engineer === 1) || (currentPlayer.dept === 2 && currentPlayer.engineer === 0 && !lacerdaIsCertified && !difficultyCards[0].include)" />
                 <img v-bind:src="currentCarImage" class="extra-image"  v-if="currentPlayer.dept === 1" />
                 <br />
