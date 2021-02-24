@@ -188,11 +188,13 @@
                 <img v-if="currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1" v-bind:src="currentTrainingTrackImage" style="height: 60px; padding-left: 1rem; margin-left: 1rem; border-left: solid 1px black;" />
             </section>
             <section class="extra-info" v-if="this.currentPhase === 1 && (currentPlayer.dept === 1 || currentPlayer.dept === 2) && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)">
+                <img v-bind:src="currentKanbanImage" class="extra-image" style="margin-right: 1rem; border-right: dashed 1px black; padding-right: 1rem;" v-if="currentPlayer.dept === 2 && this.currentPlayer.engineer === 0" />
                 <img v-bind:src="currentPartImage" class="extra-image" />
                 <img v-bind:src="currentTurcziPartImage" class="extra-image" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 0 && lacerdaIsCertified && !difficultyCards[0].include" />
                 <img v-bind:src="currentTurcziPartImage" class="extra-image" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 0 && lacerdaIsCertified && !difficultyCards[0].include" />
+                <span v-if="(currentPlayer.dept === 2 && currentPlayer.engineer === 1) || (currentPlayer.dept === 2 && currentPlayer.engineer === 0 && !lacerdaIsCertified && !difficultyCards[0].include)">or&nbsp;&nbsp;</span>
+                <img v-bind:src="currentLacerdaPartImage" class="small-image" v-if="(currentPlayer.dept === 2 && currentPlayer.engineer === 1) || (currentPlayer.dept === 2 && currentPlayer.engineer === 0 && !lacerdaIsCertified && !difficultyCards[0].include)" />
                 <img v-bind:src="currentCarImage" class="extra-image"  v-if="currentPlayer.dept === 1" />
-                <img v-bind:src="currentKanbanImage" class="extra-image" v-if="currentPlayer.dept === 2 && this.currentPlayer.engineer === 0" />
                 <br />
                 <a href="#" class="draw-part" v-on:click="drawPart">Draw Another Part</a>
             </section>          
@@ -401,7 +403,7 @@
                     <li>Shift the card so that 4 symbols are above or below the line (see the card image above, which will change depending on Sandra's location).</li>
                     <li>Refill Parts as shown by the Kanban card according to normal rules, then return the card to the bottom of the Kanban deck.</li>
                     <p><strong>Second, Mr. Lacerda collects parts</strong></p>
-                    <li>Remove all Parts of the type indicated above from the warehouse, keep 1, and discard the rest (if no Parts of that type are available choose another).</li>
+                    <li>Remove all Parts of the type indicated above from the warehouse, keep 1, and discard the rest (if no Parts of that type are available choose another (see above)).</li>
                     <li>The Colleagues keep a maximum of 6 Parts between them; if they gain a 7th, reduce down to 6 by discarding the type that is lowest on the Upgrade Value track (if tied, select a tied Part at random).</li>
                     <li>
                         <span v-if="!lacerdaIsCertified && !difficultyCards[0].include">
@@ -430,7 +432,7 @@
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 1">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
-                    <li>Remove all Parts of the type indicated above from the warehouse, keep 1, and discard the rest (if no Parts of that type are available choose another).</li>
+                    <li>Remove all Parts of the type indicated above from the warehouse, keep 1, and discard the rest (if no Parts of that type are available choose another (see above)).</li>
                     <li>The Colleagues keep a maximum of 6 Parts between them; if they gain a 7th, reduce down to 6 by discarding the type that is lowest on the Upgrade Value track (if tied, select a tied Part at random).</li>
                     <li v-if="difficultyCards[1].include">
                         <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
