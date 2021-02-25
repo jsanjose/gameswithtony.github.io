@@ -1,4 +1,4 @@
-const MOTIVE = { Science: 0, Explore: 1, AntiImperalism: 2, War: 3, Adventure: 4, Humanist: 5, PrinceDakkar: 6, NemoHook: 7, Swashbuckler: 8 };
+const MOTIVE = { Science: 0, Explore: 1, AntiImperalism: 2, War: 3, Adventure: 4, Humanist: 5, PrinceDakkar: 6, NemoHook: 7, Swashbuckler: 8, AntiColonialism: 9 };
 
 const LOCALSTORAGENAME = 'nemoswarcalc';
 
@@ -33,7 +33,8 @@ var app = new Vue({
         [-1, -1, 0, 0, 8, 5, 3], // humanist
         [1, -1, 0, 0, 5, 4, 3], // prince dakkar
         [0, 2, 0, 1, 3, 2, 2], // nemo-hook
-        [1, 0, 2, 0, 2, 3, 3] // swashbuckler
+        [1, 0, 2, 0, 2, 3, 3], // swashbuckler
+        [0, 2, 0, -1, 6, 2, 3] // anticolonialism
       ]
     },
     mounted: function() {
