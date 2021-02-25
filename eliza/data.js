@@ -26,8 +26,18 @@ const INITIAL_BOARD = {
                     tile: null
                 }
             ],
-            adjacentToCanal: [1],
-            adjacentToRail: [1]
+            edgesCanal: [
+                {
+                    toId: 1,
+                    tile: null
+                }
+            ],
+            edgesRail: [
+                {
+                    toId: 1,
+                    tile: null
+                }
+            ]
         },
         {
             id: 1,
@@ -58,8 +68,26 @@ const INITIAL_BOARD = {
                     tile: null
                 }
             ],
-            adjacentToCanal: [0,2],
-            adjacentToRail: [0,2]
+            edgesCanal: [
+                {
+                    toId: 0,
+                    tile: null
+                },
+                {
+                    toId: 2,
+                    tile: null
+                }
+            ],
+            edgesRail: [
+                {
+                    toId: 0,
+                    tile: null
+                },
+                {
+                    toId: 2,
+                    tile: null
+                }
+            ]
         },
         {
             id: 2,
@@ -83,8 +111,26 @@ const INITIAL_BOARD = {
                     tile: null
                 }
             ],
-            adjacentToCanal: [1,3],
-            adjacentToRail: [1,3]
+            edgesCanal: [
+                {
+                    toId: 1,
+                    tile: null
+                },
+                {
+                    toId: 3,
+                    tile: null
+                }
+            ],
+            edgesRail: [
+                {
+                    toId: 1,
+                    tile: null
+                },
+                {
+                    toId: 3,
+                    tile: null
+                }
+            ]
         },
         {
             id: 3,
@@ -114,8 +160,26 @@ const INITIAL_BOARD = {
                     tile: null
                 }
             ],
-            adjacentToCanal: [2,7],
-            adjacentToRail: [2,7]
+            edgesCanal: [
+                {
+                    toId: 2,
+                    tile: null
+                },
+                {
+                    toId: 7,
+                    tile: null
+                }
+            ],
+            edgesRail: [
+                {
+                    toId: 2,
+                    tile: null
+                },
+                {
+                    toId: 7,
+                    tile: null
+                }
+            ]
         }
     ]
 };
