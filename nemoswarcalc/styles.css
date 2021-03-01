@@ -62,7 +62,7 @@ body {
 .instructions {
     background-color: #FCF4E7;
     opacity: 0.8;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
 }
 
 .instructions ul {
