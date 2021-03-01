@@ -43,26 +43,26 @@
             </section>
             <label for="warshipsSunk">Warships Sunk</label>
             <input type="number" inputmode="numeric" name="warshipsSunk" id="warshipsSunk" class="entry" v-model="warshipsSunk" />
-            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][0] != 0">#</span><input type="number" inputmode="numeric" name="warshipsSunkNumber" id="warshipsSunkNumber" class="entry-small" v-model="warshipsSunkNumber" v-if="MOTIVE_MULTIPLIER[motive][0] != 0" />
-            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][0] < 0">0s</span><input type="number" inputmode="numeric" name="warshipsSunkZero" id="warshipsSunkZero" class="entry-small" v-model="warshipsSunkZero" v-if="MOTIVE_MULTIPLIER[motive][0] < 0" />
+            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][0] != 0">#</span><input type="number" min="0" max="100" inputmode="numeric" name="warshipsSunkNumber" id="warshipsSunkNumber" class="entry-small" v-model="warshipsSunkNumber" v-if="MOTIVE_MULTIPLIER[motive][0] != 0" />
+            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][0] < 0">0s</span><input type="number" min="0" max="100" inputmode="numeric" name="warshipsSunkZero" id="warshipsSunkZero" class="entry-small" v-model="warshipsSunkZero" v-if="MOTIVE_MULTIPLIER[motive][0] < 0" />
             {{ warshipsSunkTotal }}
             
             <label for="nonWarshipsSunk">Non-Warships Sunk</label>
             <input type="number" inputmode="numeric" name="nonWarshipsSunk" id="nonWarshipsSunk" class="entry" v-model="nonWarshipsSunk" />
-            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][1] != 0">#</span><input type="number" inputmode="numeric" name="nonWarshipsSunkNumber" id="nonWarshipsSunkNumber" class="entry-small" v-model="nonWarshipsSunkNumber"  v-model="warshipsSunkNumber" v-if="MOTIVE_MULTIPLIER[motive][1] != 0" />
-            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][1] < 0">0s</span><input type="number" inputmode="numeric" name="nonWarshipsSunkZero" id="nonWarshipsSunkZero" class="entry-small" v-model="nonWarshipsSunkZero" v-if="MOTIVE_MULTIPLIER[motive][1] < 0" />
+            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][1] != 0">#</span><input type="number" min="0" max="100" inputmode="numeric" name="nonWarshipsSunkNumber" id="nonWarshipsSunkNumber" class="entry-small" v-model="nonWarshipsSunkNumber"  v-model="warshipsSunkNumber" v-if="MOTIVE_MULTIPLIER[motive][1] != 0" />
+            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][1] < 0">0s</span><input type="number" min="0" max="100" inputmode="numeric" name="nonWarshipsSunkZero" id="nonWarshipsSunkZero" class="entry-small" v-model="nonWarshipsSunkZero" v-if="MOTIVE_MULTIPLIER[motive][1] < 0" />
             {{ nonWarshipsSunkTotal }}
             
             <label for="adventureCards">Adventure Cards</label>
             <input type="number" inputmode="numeric" name="adventureCards" id="adventureCards" class="entry" v-model="adventureCards" />
-            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][2] != 0">#</span><input type="number" inputmode="numeric" name="adventureCardsNumber" id="adventureCardsNumber" class="entry-small" v-model="adventureCardsNumber" v-if="MOTIVE_MULTIPLIER[motive][2] != 0" />
-            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][2] < 0">0s</span><input type="number" inputmode="numeric" name="adventureCardsZero" id="adventureCardsZero" class="entry-small" v-model="adventureCardsZero"  v-if="MOTIVE_MULTIPLIER[motive][2] < 0" />
+            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][2] != 0">#</span><input type="number" min="0" max="100" inputmode="numeric" name="adventureCardsNumber" id="adventureCardsNumber" class="entry-small" v-model="adventureCardsNumber" v-if="MOTIVE_MULTIPLIER[motive][2] != 0" />
+            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][2] < 0">0s</span><input type="number" min="0" max="100" inputmode="numeric" name="adventureCardsZero" id="adventureCardsZero" class="entry-small" v-model="adventureCardsZero"  v-if="MOTIVE_MULTIPLIER[motive][2] < 0" />
             {{ adventureCardsTotal }}
 
             <label for="treasure">Collected Treasure</label>
             <input type="number" inputmode="numeric" name="treasure" id="treasure" class="entry" v-model="treasure" />
-            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][3] != 0">#</span><input type="number" inputmode="numeric" name="treasureNumber" id="treasureNumber" class="entry-small" v-model="treasureNumber" v-if="MOTIVE_MULTIPLIER[motive][3] != 0" />
-            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][3] < 0">0s</span><input type="number" inputmode="numeric" name="treasureZero" id="treasureZero" class="entry-small" v-model="treasureZero" v-if="MOTIVE_MULTIPLIER[motive][3] < 0" />
+            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][3] != 0">#</span><input type="number" min="0" max="100" inputmode="numeric" name="treasureNumber" id="treasureNumber" class="entry-small" v-model="treasureNumber" v-if="MOTIVE_MULTIPLIER[motive][3] != 0" />
+            <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][3] < 0">0s</span><input type="number" min="0" max="100" inputmode="numeric" name="treasureZero" id="treasureZero" class="entry-small" v-model="treasureZero" v-if="MOTIVE_MULTIPLIER[motive][3] < 0" />
             {{ treasureTotal }}
 
             <label for="liberation">Liberation</label>
