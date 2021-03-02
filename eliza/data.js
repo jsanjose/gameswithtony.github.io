@@ -7,6 +7,10 @@ const BONUSTYPE = { Pounds: 0, VPs: 1, Income: 2, Develop: 3 };
 // ids on industry spots used for reading order
 // adjacency listed in clockface order
 const INITIAL_BOARD = {
+    market: {
+        usedCoal: 1,
+        usedIron: 1
+    },
     locations: [
         {
             id: 0,
@@ -360,6 +364,249 @@ const INITIAL_BOARD = {
             edgesRail: [
                 {
                     toId: 6,
+                    tile: null
+                }
+            ]
+        },
+        {
+            id: 8,
+            type: LOCATIONTYPE.Industries,
+            name: "Stafford",
+            spaces: [
+                {
+                    id: 0,
+                    types: [
+                        INDUSTRY.Manufacturer,
+                        INDUSTRY.Brewery
+                    ],
+                    tile: null
+                },
+                {
+                    id: 1,
+                    types: [
+                        INDUSTRY.Pottery
+                    ],
+                    tile: null
+                }
+            ],
+            edgesCanal: [
+                {
+                    toId: 4,
+                    tile: null
+                },
+                {
+                    toId: 11,
+                    tile: null
+                }
+            ],
+            edgesRail: [
+                {
+                    toId: 4,
+                    tile: null
+                },
+                {
+                    toId: 11,
+                    tile: null
+                }
+            ]
+        },
+        {
+            id: 9,
+            type: LOCATIONTYPE.Industries,
+            name: "Burton-Upon-Trent",
+            spaces: [
+                {
+                    id: 0,
+                    types: [
+                        INDUSTRY.Manufacturer,
+                        INDUSTRY.CoalMine
+                    ],
+                    tile: null
+                },
+                {
+                    id: 1,
+                    types: [
+                        INDUSTRY.Brewery
+                    ],
+                    tile: null
+                }
+            ],
+            edgesCanal: [
+                {
+                    toId: 6,
+                    tile: null
+                },
+                {
+                    toId: 12,
+                    tile: null
+                },
+                {
+                    toId: 16,
+                    tile: null
+                },
+                {
+                    toId: 4,
+                    tile: null
+                }
+            ],
+            edgesRail: [
+                {
+                    toId: 6,
+                    tile: null
+                },
+                {
+                    toId: 12,
+                    tile: null
+                },
+                {
+                    toId: 11,
+                    tile: null
+                },
+                {
+                    toId: 4,
+                    tile: null
+                }
+            ]
+        },
+        {
+            id: 10,
+            type: LOCATIONTYPE.Industries,
+            name: "Farm Brewery (Connected to Cannock)",
+            spaces: [
+                {
+                    id: 0,
+                    types: [
+                        INDUSTRY.Brewery
+                    ],
+                    tile: null
+                }
+            ],
+            edgesCanal: [
+                {
+                    toId: 11,
+                    tile: null
+                }
+            ],
+            edgesRail: [
+                {
+                    toId: 11,
+                    tile: null
+                }
+            ]
+        },
+        {
+            id: 11,
+            type: LOCATIONTYPE.Industries,
+            name: "Cannock",
+            spaces: [
+                {
+                    id: 0,
+                    types: [
+                        INDUSTRY.Manufacturer,
+                        INDUSTRY.CoalMine
+                    ],
+                    tile: null
+                },
+                {
+                    id: 1,
+                    types: [
+                        INDUSTRY.CoalMine
+                    ],
+                    tile: null
+                }
+            ],
+            edgesCanal: [
+                {
+                    toId: 8,
+                    tile: null
+                },
+                {
+                    toId: 16,
+                    tile: null
+                },
+                {
+                    toId: 15,
+                    tile: null
+                },
+                {
+                    toId: 10,
+                    tile: null
+                }
+            ],
+            edgesRail: [
+                {
+                    toId: 8,
+                    tile: null
+                },
+                {
+                    toId: 9,
+                    tile: null
+                },
+                {
+                    toId: 16,
+                    tile: null
+                },
+                {
+                    toId: 15,
+                    tile: null
+                },
+                {
+                    toId: 10,
+                    tile: null
+                }
+            ]
+        },
+        {
+            id: 11,
+            type: LOCATIONTYPE.Industries,
+            name: "Tamworth",
+            spaces: [
+                {
+                    id: 0,
+                    types: [
+                        INDUSTRY.CottonMill,
+                        INDUSTRY.CoalMine
+                    ],
+                    tile: null
+                },
+                {
+                    id: 1,
+                    types: [
+                        INDUSTRY.CottonMill,
+                        INDUSTRY.CoalMine
+                    ],
+                    tile: null
+                }
+            ],
+            edgesCanal: [
+                {
+                    toId: 9,
+                    tile: null
+                },
+                {
+                    toId: 18,
+                    tile: null
+                },
+                {
+                    toId: 19,
+                    tile: null
+                }
+            ],
+            edgesRail: [
+                {
+                    toId: 9,
+                    tile: null
+                },
+                {
+                    toId: 18,
+                    tile: null
+                },
+                {
+                    toId: 19,
+                    tile: null
+                },
+                {
+                    toId: 16,
                     tile: null
                 }
             ]
