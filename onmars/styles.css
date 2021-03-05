@@ -233,6 +233,23 @@ main > * {
     margin-top: 2rem;
 }
 
+.turn-order-space-benefits ul {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+li.turn-order-space-benefit {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.turn-order-space-benefit-image {
+    width: 40px;
+    margin-right: 1.5rem;
+}
+
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
     from {opacity: 0;}
