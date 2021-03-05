@@ -37,9 +37,7 @@ const ELEANOR = {
 
 // player boards (hold tiles)
 const INITIAL_HUMAN_BOARD = {
-    [
-        
-    ]
+
 };
 
 const INITIAL_AI_BOARD = {
