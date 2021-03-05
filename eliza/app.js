@@ -9,6 +9,14 @@ function spaceToString(space) {
     return replacedString;
 }
 
+// player boards (hold tiles)
+const INITIAL_HUMAN_BOARD = {
+
+};
+
+const INITIAL_AI_BOARD = {
+};
+
 // players
 const HUMAN_PLAYER = {
     id: 0,
@@ -34,14 +42,6 @@ const ELEANOR = {
     board: _.cloneDeep(INITIAL_AI_BOARD),
     difficulty: DIFFICULTY_LEVEL.Apprentice
 }
-
-// player boards (hold tiles)
-const INITIAL_HUMAN_BOARD = {
-
-};
-
-const INITIAL_AI_BOARD = {
-};
 
 var app = new Vue({
     el: '#eliza',
