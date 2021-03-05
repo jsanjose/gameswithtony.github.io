@@ -1,18 +1,4 @@
-let map = INITIAL_BOARD.locations;
-
-// find spaces that have a particular industry type
-let typeSearch = INDUSTRY.CoalMine;
-let spacesWithType = _.filter(map, function(o) {
-    let findSpaces = _.find(o.spaces, function(p) {
-        return _.includes(p.types, typeSearch);
-    });
-    return findSpaces;
-});
-
-console.log(spacesWithType);
-
-
-// toString for spaces
+// toString for names of spaces by industries
 function spaceToString(space) {
     let toStringResult = _.join(space.types, ' / ');
 
@@ -23,27 +9,88 @@ function spaceToString(space) {
     return replacedString;
 }
 
-let locationId = 1;
-let selectedLocation = (_.filter(map, function(o) {
-    return o.id === locationId;
-}))[0];
+// players
+const HUMAN_PLAYER = {
+    id: 0,
+    name: "You",
+    color: null,
+    board: _.cloneDeep(INITIAL_HUMAN_BOARD)
+};
 
-console.log(spaceToString(selectedLocation.spaces[0]));
+// AI player 1
+const ELIZA = {
+    id: 1,
+    name: "Eliza",
+    color: null,
+    board: _.cloneDeep(INITIAL_AI_BOARD),
+    difficulty: DIFFICULTY_LEVEL.Apprentice
+}
 
+// future AI player 2
+const ELEANOR = {
+    id: 2,
+    name: "Eleanor",
+    color: null,
+    board: _.cloneDeep(INITIAL_AI_BOARD),
+    difficulty: DIFFICULTY_LEVEL.Apprentice
+}
+
+// player boards (hold tiles)
+const INITIAL_HUMAN_BOARD = {
+    [
+        
+    ]
+};
+
+const INITIAL_AI_BOARD = {
+};
 
 var app = new Vue({
     el: '#eliza',
     data: {
         computedUpdater: 0,
+        numberOfPlayers: 2,
+        board: _.cloneDeep(INITIAL_BOARD),
+        humanPlayer: _.cloneDeep(HUMAN_PLAYER),
+        eliza: _.cloneDeep(ELIZA),
+        eleanor: _.cloneDeep(ELEANOR),
+        players: [this.humanPlayer, this.eliza],
         undoState: {}
     },
     mounted: function() {
         this.computedUpdater++;
+        console.log(this.findLocationsByIndustry(INDUSTRY.CoalMine));
+        console.log(this.findLocationById(19));
     },
     computed: {
 
     },
     methods: {
+        layIndustryTile: function (tile) {
 
+        },
+        findLocationsByIndustry: function (industry) {
+            // find spaces that have a particular industry type
+            return _.filter(this.board.locations, function(o) {
+                let findSpaces = _.find(o.spaces, function(p) {
+                    return _.includes(p.types, industry);
+                });
+                return findSpaces;
+            });
+        },
+        findLocationById: function (id) {
+            return _.find(this.board.locations, function(o) {
+                return o.id === id;
+            });
+        },
+        reset: function () {
+            this.numberOfPlayers = 2;
+            this.board = _.cloneDeep(INITIAL_BOARD);
+            this.humanPlayer = _.cloneDeep(HUMAN_PLAYER),
+            this.eliza = _.cloneDeep(ELIZA),
+            this.eleanor = _.cloneDeep(ELEANOR),
+            this.players = [this.humanPlayer, this.eliza],
+            this.undoState = {};
+        }
     }
 });

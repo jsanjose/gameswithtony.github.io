@@ -34,37 +34,10 @@ const bonusTypeMap = {
 
 const DIFFICULTY_LEVEL = { Apprentice: 0, Professional: 1, Manager: 2, Titan: 3 };
 
-// players (holds color, AI vs human, and player board)
-const INITIAL_HUMAN_BOARD = {
-};
-
-const INITIAL_AI_BOARD = {
-};
-
-// ---- TODO: Move to Vue --- //
-const HUMAN_PLAYER = {
-    id: 0,
-    name: "You",
-    color: null,
-    board: _.cloneDeep(INITIAL_HUMAN_BOARD)
-};
-
-const ELIZA = {
-    id: 1,
-    name: "Eliza",
-    color: null,
-    board: _.cloneDeep(INITIAL_AI_BOARD),
-    difficulty: DIFFICULTY_LEVEL.Apprentice
-}
-
-const ELEANOR = {
+// all 2 and 3 player merchant tiles
+const MERCHANT_TILES = {
 
 }
-
-const players = [
-
-];
-// ------------------------ //
 
 // ids on industry spots used for reading order
 // adjacency listed in clockface order
