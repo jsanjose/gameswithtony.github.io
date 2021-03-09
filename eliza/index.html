@@ -18,7 +18,50 @@
 </head>
 <body>
     <main id="eliza">
-        
+        <section v-if="!gameHasStarted" class="playerArea">
+            <h1 class="starttitle">
+                Eliza
+            </h1>
+            <h2>
+                Brass: Birmingham Solo Mode
+            </h2>
+            <p class="startmessage">
+                Select your player color
+            </p>
+            <ul class="player-color-options">
+                <li class="player-color-option lightblue" v-on:click="setPlayerColor(0)"
+                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 0 }">LB</li>
+                <li class="player-color-option blue" v-on:click="setPlayerColor(1)"
+                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 1 }">B</li>
+                <li class="player-color-option yellow" v-on:click="setPlayerColor(2)"
+                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 2 }">Y</li>
+                <li class="player-color-option red" v-on:click="setPlayerColor(3)"
+                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 3 }">R</li>
+            </ul>
+            <ul class="player-color-options playerColorOptionTrack numberOfPlayers">
+                <li class="player-color-option"><input type="radio" name="numberOfPlayers" id="2" value="2" v-model="numberOfPlayers" /> <label for="2">2-player</label></li>
+                <li class="player-color-option"><input type="radio" name="numberOfPlayers" id="3" value="3" v-model="numberOfPlayers" /> <label for="3">3-player</label></li>
+            </ul>
+            <div>
+                Eliza Deck Type:
+                <select v-model="eliza.deckType">
+                    <option value="0">Balanced</option>
+                </select>
+            </div>
+            <div v-if="numberOfPlayers === '3'">
+                Eleanor Deck Type:
+                <select v-model="eleanor.deckType">
+                    <option value="0">Balanced</option>
+                </select>
+            </div>
+            <br />
+            <button class="button" v-on:click="startGame">Start Game</button>
+        </section>
+        <section class="playerArea" v-if="gameHasStarted">
+            <section class="button-container">
+                <button class="button">Next >></button>
+            </section>
+        </section>
     </main>
 </body>
 <script src="data.js"></script>

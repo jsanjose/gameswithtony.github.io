@@ -47,6 +47,7 @@ const ELIZA = {
     color: null,
     board: _.cloneDeep(INITIAL_AI_BOARD),
     linktiles: _.cloneDeep(LINK_TILES),
+    deckType: AI_DECK_TYPES.Balanced,
     cards: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice
 }
@@ -59,6 +60,7 @@ const ELEANOR = {
     color: null,
     board: _.cloneDeep(INITIAL_AI_BOARD),
     linktiles: _.cloneDeep(LINK_TILES),
+    deckType: AI_DECK_TYPES.Balanced,
     cards: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice
 }
@@ -75,32 +77,11 @@ var app = new Vue({
         eliza: _.cloneDeep(ELIZA),
         eleanor: _.cloneDeep(ELEANOR),
         players: [this.humanPlayer, this.eliza],
+        showBoardState: false,
         undoState: {}
     },
     mounted: function() {
         this.computedUpdater++;
-
-        // TEMPORARY (CHANGE THIS TO PLAYER CHOICE): set player colors
-        _.forEach(this.humanPlayer.linktiles, function(p) {
-            p.color = PLAYER_COLOR.LightBlue;
-        });
-        _.forEach(this.humanPlayer.board, function(p) {
-            p.color = PLAYER_COLOR.LightBlue;
-        });
-
-        _.forEach(this.eliza.linktiles, function(p) {
-            p.color = PLAYER_COLOR.Red;
-        });
-        _.forEach(this.eliza.board, function(p) {
-            p.color = PLAYER_COLOR.Red;
-        });
-
-        _.forEach(this.eleanor.linktiles, function(p) {
-            p.color = PLAYER_COLOR.Yellow;
-        });
-        _.forEach(this.eleanor.board, function(p) {
-            p.color = PLAYER_COLOR.Yellow;
-        });
 
         // TEMPORARY (remove this later): setup board state
         this.layIndustryTile(PLAYER_TYPE.Human, 0, 21, 0);
@@ -110,10 +91,41 @@ var app = new Vue({
 
     },
     methods: {
+        setPlayerColor: function (color) {
+            this.humanPlayer.color = color;
+            this.saveGameState();
+        },
         startGame: function() {
-            // TODO: This will be replaced with a start screen for deck types and number of players
-            this.eliza.cards = _.cloneDeep(getAIDeck(AI_DECK_TYPES.Balanced, 2));
-            this.eleanor.cards = _.cloneDeep(getAIDeck(AI_DECK_TYPES.Balanced, 2));
+            this.gameHasStarted = true;
+
+            // TODO: This will be replaced with a start screen for deck types, color choice, and number of players
+            this.eliza.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
+            this.eleanor.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
+
+            // TEMPORARY (CHANGE THIS TO PLAYER CHOICE): set player colors
+            _.forEach(this.humanPlayer.linktiles, function(p) {
+                p.color = PLAYER_COLOR.LightBlue;
+            });
+            _.forEach(this.humanPlayer.board, function(p) {
+                p.color = PLAYER_COLOR.LightBlue;
+            });
+
+            _.forEach(this.eliza.linktiles, function(p) {
+                p.color = PLAYER_COLOR.Red;
+            });
+            _.forEach(this.eliza.board, function(p) {
+                p.color = PLAYER_COLOR.Red;
+            });
+
+            _.forEach(this.eleanor.linktiles, function(p) {
+                p.color = PLAYER_COLOR.Yellow;
+            });
+            _.forEach(this.eleanor.board, function(p) {
+                p.color = PLAYER_COLOR.Yellow;
+            });
+        },
+        nextStep: function() {
+
         },
         tryHumanBuildAction: function (space, tile) {
 
@@ -304,16 +316,23 @@ var app = new Vue({
                 case PLAYER_TYPE.Eleanor_AI: return this.eleanor;
             }
         },
+        industryTileToString: function (tile) {
+            return industryStringMap[tile.industryType] + ' ' + romanize(tile.level);
+        },
         reset: function () {
             this.numberOfPlayers = 2;
             this.gameHasStarted = false;
             this.currentEra = ERA.Canal;
             this.board = _.cloneDeep(INITIAL_BOARD);
-            this.humanPlayer = _.cloneDeep(HUMAN_PLAYER),
-            this.eliza = _.cloneDeep(ELIZA),
-            this.eleanor = _.cloneDeep(ELEANOR),
-            this.players = [this.humanPlayer, this.eliza],
+            this.humanPlayer = _.cloneDeep(HUMAN_PLAYER);
+            this.eliza = _.cloneDeep(ELIZA);
+            this.eleanor = _.cloneDeep(ELEANOR);
+            this.players = [this.humanPlayer, this.eliza];
+            this.showBoardState = false;
             this.undoState = {};
+        },
+        saveGameState: function () {
+
         }
     }
 });
