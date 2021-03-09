@@ -71,6 +71,7 @@ var app = new Vue({
         computedUpdater: 0,
         numberOfPlayers: 2,
         gameHasStarted: false,
+        currentGameStep: GAME_STEPS.Setup,
         currentEra: ERA.Canal,
         board: _.cloneDeep(INITIAL_BOARD),
         humanPlayer: _.cloneDeep(HUMAN_PLAYER),
@@ -84,11 +85,21 @@ var app = new Vue({
         this.computedUpdater++;
 
         // TEMPORARY (remove this later): setup board state
-        this.layIndustryTile(PLAYER_TYPE.Human, 0, 21, 0);
-        this.layNetworkTile(PLAYER_TYPE.Human, 0, 21, 18);
+
+
+        let paths = this.findAllPathsBetweenLocations(21, 18, false);
+        console.log(paths);
     },
     computed: {
+        validHumanNetworkLocations: function() {
+            this.computedUpdater++;
+            let locations = this.findAllLocationsInNetwork(PLAYER_TYPE.Human);
 
+            if (locations.length === 0) {
+                return _.sortBy(this.board.locations, 'name');
+            }
+            return _.sortBy(locations, 'name');
+        }
     },
     methods: {
         setPlayerColor: function (color) {
@@ -123,9 +134,6 @@ var app = new Vue({
             _.forEach(this.eleanor.board, function(p) {
                 p.color = PLAYER_COLOR.Yellow;
             });
-        },
-        nextStep: function() {
-
         },
         tryHumanBuildAction: function (space, tile) {
 
@@ -162,15 +170,12 @@ var app = new Vue({
                 });
             }
         },
-        layNetworkTile: function (player_type, linktileid, locationid1, locationid2) {
+        layNetworkTile: function (player_type, locationid1, locationid2) {
             // This function does no error checking. 'tryHumanNetworkAction' does error checking, and is otherwise used by the AI bots directly.
 
             let player = this.getPlayerFromType(player_type);
 
-            // get the link tile
-            let linktile = _.find(player.linktiles, function(p) {
-                return p.id === linktileid;
-            });
+            let linktile = player.linktiles.pop();
 
             // add the tile to the edges
             let location1 = this.findLocationById(locationid1);
@@ -199,10 +204,6 @@ var app = new Vue({
             // update both edges and remove the tile from the player
             edge1.tile = _.cloneDeep(linktile);
             edge2.tile = _.cloneDeep(linktile);
-
-            _.remove(player.linktiles, function (p) {
-                return p.id === linktileid;
-            });
         },
         isLocationInNetwork: function (locationid, player_type) {
             let player = this.getPlayerFromType(player_type);
@@ -241,29 +242,29 @@ var app = new Vue({
                 }
             });
 
-            return locationsInPlayerNetwork;
+            return _.uniqBy(locationsInPlayerNetwork, 'id');
         },
-        findAllPathsBetweenLocations: function (locationid1, targetlocationid) {
+        findAllPathsBetweenLocations: function (locationid1, targetlocationid, requireLinks) {
             // do a depth-first search to connect all locations
             // the resulting array of paths can then be used for various checks
             // this is and findAllPathsUtil is a fundamental function for all
             // other connection-related checks.
+            // set "requireLinks" to true to only find paths with placed links (i.e. "connected")
             
             let visited = [locationid1];
             let paths = [];
             let path = [this.findLocationById(locationid1)];
 
-            this.findAllPathsUtil(locationid1, targetlocationid, visited, paths, path);
+            this.findAllPathsUtil(locationid1, targetlocationid, visited, paths, path, requireLinks);
 
             // sort shortest paths to the top
             let sortedPaths = _.sortBy(paths, function(a) {
                 return a.length;
             });
 
-            console.log(sortedPaths);
             return sortedPaths;
         },
-        findAllPathsUtil: function (locationid, targetlocationid, visited, paths, path) {
+        findAllPathsUtil: function (locationid, targetlocationid, visited, paths, path, requireLinks) {
             if (locationid === targetlocationid) {
                 paths.push(_.cloneDeep(path));
             } else {
@@ -276,12 +277,19 @@ var app = new Vue({
                     edges = location.edgesRail;
                 }
 
+                // optionally, only include edges with links placed on them
+                if (requireLinks) {
+                    edges = _.filter(edges, function (e) {
+                        return e.tile;
+                    });
+                }
+
                 let self = this;
                 _.forEach(edges, function(e) { 
                     if (!_.includes(visited, e.toId)) {
                         visited.push(e.toId);
                         path.push(self.findLocationById(e.toId));
-                        self.findAllPathsUtil(e.toId, targetlocationid, visited, paths, path);
+                        self.findAllPathsUtil(e.toId, targetlocationid, visited, paths, path, requireLinks);
                         visited.pop();
                         path.pop();
                     }
@@ -322,6 +330,7 @@ var app = new Vue({
         reset: function () {
             this.numberOfPlayers = 2;
             this.gameHasStarted = false;
+            this.currentGameStep = GAME_STEPS.Setup;
             this.currentEra = ERA.Canal;
             this.board = _.cloneDeep(INITIAL_BOARD);
             this.humanPlayer = _.cloneDeep(HUMAN_PLAYER);
@@ -330,6 +339,22 @@ var app = new Vue({
             this.players = [this.humanPlayer, this.eliza];
             this.showBoardState = false;
             this.undoState = {};
+        },
+        nextGameStep: function () {
+            if (this.numberOfPlayers == '2' && this.currentGameStep === GAME_STEPS.Eliza_ShowAction) {
+                this.currentGameStep = GAME_STEPS.HumanPlayer_ChooseAction1;
+                return;
+            }
+
+            if (this.numberOfPlayers == '3' && this.currentGameStep === GAME_STEPS.Eleanor_ShowAction) {
+                this.currentGameStep = GAME_STEPS.HumanPlayer_ChooseAction1;
+                return;
+            }
+
+            this.currentGameStep = this.currentGameStep + 1;
+        },
+        loadUndoState: function() {
+
         },
         saveGameState: function () {
 

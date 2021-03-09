@@ -58,8 +58,31 @@
             <button class="button" v-on:click="startGame">Start Game</button>
         </section>
         <section class="playerArea" v-if="gameHasStarted">
+            <section class="start-new">
+                <a href="#" v-on:click="if (confirm('Are you sure you want to start a NEW GAME?')) { reset(); }">Start a New Game</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="if (confirm('Are you sure you want to UNDO?')) { loadUndoState }">Undo</a>
+            </section>
+            <section v-if="currentGameStep === 0">
+                <h1>Setup</h1>
+            </section>
+            <section v-if="currentGameStep === 1">
+                Choose your action:
+
+                <p>Where are you networking from (only valid locations shown)?</p> 
+                <ul>
+                    <li v-for="location in validHumanNetworkLocations" :key="location.id">
+                        {{ location.name }}
+                    </li>
+                </ul>
+            </section>
+            <section v-if="currentGameStep === 2">
+                Eliza
+            </section>
+            <section v-if="currentGameStep === 3">
+                Eleanor
+            </section>
+            <a href="#">View Board State</a>
             <section class="button-container">
-                <button class="button">Next >></button>
+                <button class="button" v-on:click="nextGameStep">Next >></button>
             </section>
         </section>
     </main>

@@ -5,13 +5,19 @@ const PLAYER_TYPE = { Human: 0, Eliza_AI: 1, Eleanor_AI: 2 };
 const PLAYER_COLOR = { LightBlue: 0, Blue: 1, Red: 2, Yellow: 3 };
 
 const GAME_STEPS = {
-    HumanPlayer_ChooseAction: 1,
-    HumanPlayer_Build: 2,
-    HumanPlayer_Network: 3,
-    HumanPlayer_Develop: 4,
-    HumanPlayer_Consume: 5,
-    AI_ShowAction: 6
+    Setup: 0,
+    HumanPlayer_ChooseAction1: 1,
+    HumanPlayer_ChooseAction2: 2,
+    Eliza_ShowAction: 2,
+    Eleanor_ShowAction: 3
 };
+
+const HUMAN_ACTION = {
+    Build: 0,
+    Network: 1,
+    Develop: 2,
+    ScoutOrLoan: 3
+}
 
 const ERA = { Canal: 0, Rail: 1 };
 const eraStringMap = {
@@ -1116,64 +1122,6 @@ const INITIAL_BOARD = {
                 },
                 {
                     toId: 19,
-                    tile: null
-                }
-            ]
-        },
-        {
-            id: 21,
-            type: LOCATIONTYPE.Industries,
-            name: "Kidderminster",
-            spaces: [
-                {
-                    id: 0,
-                    types: [
-                        INDUSTRY.CottonMill,
-                        INDUSTRY.CoalMine
-                    ],
-                    tile: null
-                },
-                {
-                    id: 1,
-                    types: [
-                        INDUSTRY.CottonMill
-                    ],
-                    tile: null
-                }
-            ],
-            edgesCanal: [
-                {
-                    toId: 14,
-                    tile: null
-                },
-                {
-                    toId: 18,
-                    tile: null
-                },
-                {
-                    toId: 25,
-                    tile: null
-                },
-                {
-                    toId: 22,
-                    tile: null
-                }
-            ],
-            edgesRail: [
-                {
-                    toId: 14,
-                    tile: null
-                },
-                {
-                    toId: 18,
-                    tile: null
-                },
-                {
-                    toId: 25,
-                    tile: null
-                },
-                {
-                    toId: 22,
                     tile: null
                 }
             ]
