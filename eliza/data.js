@@ -1,6 +1,17 @@
 const LOCALSTORAGENAME = 'elizagamestate';
 
-const PLAYER_TYPE = { Human: 0, AI: 1 };
+const PLAYER_TYPE = { Human: 0, Eliza_AI: 1, Eleanor_AI: 2 };
+
+const PLAYER_COLOR = { LightBlue: 0, Blue: 1, Red: 2, Yellow: 3 };
+
+const GAME_STEPS = {
+    HumanPlayer_ChooseAction: 1,
+    HumanPlayer_Build: 2,
+    HumanPlayer_Network: 3,
+    HumanPlayer_Develop: 4,
+    HumanPlayer_Consume: 5,
+    AI_ShowAction: 6
+};
 
 const ERA = { Canal: 0, Rail: 1 };
 const eraStringMap = {
@@ -18,6 +29,8 @@ const industryStringMap = {
     5: "Iron Works"
  };
 
+const RESOURCES = { Coal: 0, Iron: 1 };
+
 const LOCATIONTYPE = { Industries: 0, Merchants: 1 };
 const locationTypeMap = {
     0: "Industries",
@@ -34,11 +47,29 @@ const bonusTypeMap = {
 
 const DIFFICULTY_LEVEL = { Apprentice: 0, Professional: 1, Manager: 2, Titan: 3 };
 
-// all 2 and 3 player merchant tiles
-const MERCHANT_TILES = {
-
+// MERCHANT TILES
+function createMerchantTile(id, minPlayers, industryTypes) {
+    return {
+        id: id,
+        minPlayers: minPlayers,
+        industryTypes: industryTypes
+    };
 }
 
+const MERCHANT_TILES = [
+    createMerchantTile(0, 2, null),
+    createMerchantTile(1, 2, null),
+    createMerchantTile(2, 2, [INDUSTRY.CottonMill]),
+    createMerchantTile(3, 2, [INDUSTRY.Manufacturer]),
+    createMerchantTile(4, 2, [INDUSTRY.Manufacturer, INDUSTRY.CottonMill, INDUSTRY.Pottery]),
+    createMerchantTile(5, 3, null),
+    createMerchantTile(6, 3, [INDUSTRY.Pottery]),
+    createMerchantTile(7, 4, [INDUSTRY.Manufacturer]),
+    createMerchantTile(8, 4, [INDUSTRY.CottonMill])
+];
+
+
+// GAME BOARD
 // ids on industry spots used for reading order
 // adjacency listed in clockface order
 const INITIAL_BOARD = {
@@ -592,7 +623,7 @@ const INITIAL_BOARD = {
             ]
         },
         {
-            id: 11,
+            id: 12,
             type: LOCATIONTYPE.Industries,
             name: "Tamworth",
             spaces: [
@@ -820,15 +851,19 @@ const INITIAL_BOARD = {
                     tile: null
                 },
                 {
-                    toId: 16,
+                    toId: 9,
                     tile: null
                 },
                 {
-                    toId: 18,
+                    toId: 12,
                     tile: null
                 },
                 {
-                    toId: 14,
+                    toId: 19,
+                    tile: null
+                },
+                {
+                    toId: 15,
                     tile: null
                 }
             ],
@@ -838,15 +873,15 @@ const INITIAL_BOARD = {
                     tile: null
                 },
                 {
-                    toId: 16,
+                    toId: 12,
                     tile: null
                 },
                 {
-                    toId: 18,
+                    toId: 19,
                     tile: null
                 },
                 {
-                    toId: 14,
+                    toId: 15,
                     tile: null
                 }
             ]
@@ -924,7 +959,7 @@ const INITIAL_BOARD = {
                     tile: null
                 },
                 {
-                    toId: 18,
+                    toId: 21,
                     tile: null
                 }
             ],
@@ -938,7 +973,7 @@ const INITIAL_BOARD = {
                     tile: null
                 },
                 {
-                    toId: 18,
+                    toId: 21,
                     tile: null
                 }
             ]
@@ -992,7 +1027,7 @@ const INITIAL_BOARD = {
                     tile: null
                 },
                 {
-                    toId: 26,
+                    toId: 24,
                     tile: null
                 },
                 {
@@ -1202,7 +1237,7 @@ const INITIAL_BOARD = {
             ]
         },
         {
-            id: 21,
+            id: 22,
             type: LOCATIONTYPE.Industries,
             name: "Southern Farm Brewery (near Kidderminster)",
             spaces: [
@@ -1216,7 +1251,7 @@ const INITIAL_BOARD = {
             ],
             edgesCanal: [
                 {
-                    toId: 22,
+                    toId: 21,
                     tile: null
                 },
                 {
@@ -1226,7 +1261,7 @@ const INITIAL_BOARD = {
             ],
             edgesRail: [
                 {
-                    toId: 22,
+                    toId: 21,
                     tile: null
                 },
                 {
@@ -1418,3 +1453,149 @@ const INITIAL_BOARD = {
         }
     ]
 };
+
+
+// CARDS
+const CARD_TYPES = {
+    Location: 0,
+    Industry: 1
+};
+
+function createCard(id, locationid, industrytype, name, minPlayers, type) {
+    return {
+        id: id,
+        locationid: locationid,
+        industrytype: industrytype,
+        name: name,
+        minPlayers: minPlayers,
+        type: type
+    };
+}
+
+const CARDS = [
+    createCard(0, 3, null, 'Belper', 4, CARD_TYPES.Location),
+    createCard(1, 6, null, 'Derby', 4, CARD_TYPES.Location),
+    createCard(2, 2, null, 'Leek', 3, CARD_TYPES.Location),
+    createCard(3, 1, null, 'Stoke-On-Trent', 3, CARD_TYPES.Location),
+    createCard(4, 4, null, 'Stone', 3, CARD_TYPES.Location),
+    createCard(5, 5, null, 'Uttoxeter', 3, CARD_TYPES.Location),
+    createCard(6, 8, null, 'Stafford', 2, CARD_TYPES.Location),
+    createCard(7, 9, null, 'Burton-On-Trent', 2, CARD_TYPES.Location),
+    createCard(8, 11, null, 'Cannock', 2, CARD_TYPES.Location),
+    createCard(9, 12, null, 'Tamworth', 2, CARD_TYPES.Location),
+    createCard(10, 16, null, 'Walsall', 2, CARD_TYPES.Location),
+    createCard(11, 14, null, 'Coalbrookdale', 2, CARD_TYPES.Location),
+    createCard(12, 18, null, 'Dudley', 2, CARD_TYPES.Location),
+    createCard(13, 21, null, 'Kidderminster', 2, CARD_TYPES.Location),
+    createCard(14, 15, null, 'Wolverhampton', 2, CARD_TYPES.Location),
+    createCard(15, 25, null, 'Worcester', 2, CARD_TYPES.Location),
+    createCard(16, 19, null, 'Birmingham', 2, CARD_TYPES.Location),
+    createCard(17, 20, null, 'Coventry', 2, CARD_TYPES.Location),
+    createCard(18, 17, null, 'Nuneaton', 2, CARD_TYPES.Location),
+    createCard(19, 23, null, 'Redditch', 2, CARD_TYPES.Location),
+    createCard(20, null, INDUSTRY.IronWorks, 'Iron Works', 2, CARD_TYPES.Location),
+    createCard(21, null, INDUSTRY.CoalMine, 'Coal Mine', 2, CARD_TYPES.Location),
+    createCard(22, null, INDUSTRY.Manufacturer, 'Man Goods / Cotton Mill', 2, CARD_TYPES.Location),
+    createCard(23, null, INDUSTRY.Pottery, 'Pottery', 2, CARD_TYPES.Location),
+    createCard(24, null, INDUSTRY.Brewery, 'Brewery', 2, CARD_TYPES.Location),
+];
+
+const AI_DECK_TYPES = { Balanced: 0 };
+function getAIDeck(type, numberOfPlayers) {
+    if (type === AI_DECK_TYPES.Balanced && numberOfPlayers === 2) {
+        return [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24];
+    }
+}
+
+// INDUSTRY TILES
+function createIndustryTile(id, industrytype, canalOnly, level, poundsCost, coalCost, ironCost, beerCost, VPs, LinkVPs, income, availableCoal, availableIron, availableBeer) {
+    return {
+        id: id,
+        industrytype: industrytype,
+        canalOnly: canalOnly,
+        level: level,
+        poundsCost: poundsCost,
+        coalCost: coalCost,
+        ironCost: ironCost,
+        beerCost: beerCost,
+        VPs: VPs,
+        LinkVPs: LinkVPs,
+        income: income,
+        availableCoal: availableCoal,
+        availableIron: availableIron,
+        availableBeer: availableBeer,
+        color: null,
+        flipped: false
+    };
+}
+
+const INDUSTRY_TILES = [
+    // coal mines
+    createIndustryTile(0, INDUSTRY.CoalMine, true, 1, 5, 0, 0, null, 1, 2, 4, 2, 0, 0),
+    createIndustryTile(1, INDUSTRY.CoalMine, false, 2, 7, 0, 0, null, 2, 1, 7, 3, 0, 0),
+    createIndustryTile(2, INDUSTRY.CoalMine, false, 2, 7, 0, 0, null, 2, 1, 7, 3, 0, 0),
+    createIndustryTile(3, INDUSTRY.CoalMine, false, 3, 8, 0, 1, null, 3, 1, 6, 4, 0, 0),
+    createIndustryTile(4, INDUSTRY.CoalMine, false, 3, 8, 0, 1, null, 3, 1, 6, 4, 0, 0),
+    createIndustryTile(5, INDUSTRY.CoalMine, false, 4, 10, 0, 1, null, 4, 1, 5, 4, 0, 0),
+    createIndustryTile(6, INDUSTRY.CoalMine, false, 4, 10, 0, 1, null, 4, 1, 5, 4, 0, 0),
+
+    // iron works
+    createIndustryTile(7, INDUSTRY.IronWorks, true, 1, 5, 1, 0, null, 3, 1, 3, 0, 4, 0),
+    createIndustryTile(8, INDUSTRY.IronWorks, false, 2, 7, 1, 0, null, 5, 1, 3, 0, 4, 0),
+    createIndustryTile(9, INDUSTRY.IronWorks, false, 3, 9, 1, 0, null, 7, 1, 2, 0, 4, 0),
+    createIndustryTile(10, INDUSTRY.IronWorks, false, 4, 12, 1, 0, null, 9, 1, 1, 0, 4, 0),
+
+    // potteries
+    createIndustryTile(11, INDUSTRY.Pottery, false, 1, 17, 0, 1, 1, 10, 1, 5, 0, 0, 0),
+    createIndustryTile(12, INDUSTRY.Pottery, false, 2, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0),
+    createIndustryTile(13, INDUSTRY.Pottery, false, 3, 22, 2, 0, 2, 11, 1, 5, 0, 0, 0),
+    createIndustryTile(14, INDUSTRY.Pottery, false, 4, 0, 1, 0, 1, 1, 1, 5, 0, 0, 0),
+    createIndustryTile(15, INDUSTRY.Pottery, false, 5, 24, 2, 0, 2, 20, 1, 5, 0, 0, 0),
+
+    // breweries
+    createIndustryTile(16, INDUSTRY.Brewery, true, 1, 5, 0, 1, null, 4, 2, 4, 0, 0, 1),
+    createIndustryTile(17, INDUSTRY.Brewery, true, 1, 5, 0, 1, null, 4, 2, 4, 0, 0, 1),
+    createIndustryTile(18, INDUSTRY.Brewery, false, 2, 7, 0, 1, null, 5, 2, 5, 0, 0, 1),
+    createIndustryTile(19, INDUSTRY.Brewery, false, 2, 7, 0, 1, null, 5, 2, 5, 0, 0, 1),
+    createIndustryTile(20, INDUSTRY.Brewery, false, 3, 9, 0, 1, null, 7, 2, 5, 0, 0, 1),
+    createIndustryTile(21, INDUSTRY.Brewery, false, 3, 9, 0, 1, null, 7, 2, 5, 0, 0, 1),
+    createIndustryTile(22, INDUSTRY.Brewery, false, 4, 9, 0, 1, null, 10, 2, 5, 0, 0, 1),
+
+    // cotton mills
+    createIndustryTile(23, INDUSTRY.CottonMill, true, 1, 12, 0, 0, 1, 5, 1, 5, 0, 0, 0),
+    createIndustryTile(24, INDUSTRY.CottonMill, true, 1, 12, 0, 0, 1, 5, 1, 5, 0, 0, 0),
+    createIndustryTile(25, INDUSTRY.CottonMill, true, 1, 12, 0, 0, 1, 5, 1, 5, 0, 0, 0),
+    createIndustryTile(26, INDUSTRY.CottonMill, false, 2, 14, 1, 0, 1, 5, 2, 4, 0, 0, 0),
+    createIndustryTile(27, INDUSTRY.CottonMill, false, 2, 14, 1, 0, 1, 5, 2, 4, 0, 0, 0),
+    createIndustryTile(28, INDUSTRY.CottonMill, false, 3, 16, 1, 1, 1, 9, 1, 3, 0, 0, 0),
+    createIndustryTile(29, INDUSTRY.CottonMill, false, 3, 16, 1, 1, 1, 9, 1, 3, 0, 0, 0),
+    createIndustryTile(30, INDUSTRY.CottonMill, false, 3, 16, 1, 1, 1, 9, 1, 3, 0, 0, 0),
+    createIndustryTile(31, INDUSTRY.CottonMill, false, 4, 18, 1, 1, 1, 12, 1, 2, 0, 0, 0),
+    createIndustryTile(32, INDUSTRY.CottonMill, false, 4, 18, 1, 1, 1, 12, 1, 2, 0, 0, 0),
+    createIndustryTile(33, INDUSTRY.CottonMill, false, 4, 18, 1, 1, 1, 12, 1, 2, 0, 0, 0),
+
+    // manufactured goods
+    createIndustryTile(34, INDUSTRY.Manufacturer, true, 1, 8, 1, 0, 1, 3, 2, 5, 0, 0, 0),
+    createIndustryTile(35, INDUSTRY.Manufacturer, false, 2, 10, 0, 1, 1, 5, 1, 0, 0, 0, 0),
+    createIndustryTile(36, INDUSTRY.Manufacturer, false, 2, 10, 0, 1, 1, 5, 1, 0, 0, 0, 0),
+    createIndustryTile(37, INDUSTRY.Manufacturer, false, 3, 12, 2, 0, 0, 4, 0, 4, 0, 0, 0),
+    createIndustryTile(38, INDUSTRY.Manufacturer, false, 4, 14, 0, 1, 1, 3, 1, 7, 0, 0, 0),
+    createIndustryTile(39, INDUSTRY.Manufacturer, false, 5, 16, 1, 0, 2, 8, 2, 2, 0, 0, 0),
+    createIndustryTile(40, INDUSTRY.Manufacturer, false, 5, 16, 1, 0, 2, 8, 2, 2, 0, 0, 0),
+    createIndustryTile(41, INDUSTRY.Manufacturer, false, 6, 20, 0, 0, 1, 7, 1, 6, 0, 0, 0),
+    createIndustryTile(42, INDUSTRY.Manufacturer, false, 7, 16, 1, 1, 0, 9, 0, 4, 0, 0, 0),
+    createIndustryTile(43, INDUSTRY.Manufacturer, false, 8, 20, 0, 2, 1, 11, 1, 1, 0, 0, 0)
+];
+
+// LINK TILES
+function createLinkTile(id) {
+    return {
+        id: id,
+        color: null
+    };
+}
+const LINK_TILES = [];
+
+for (let i=0; i<=13; i++) {
+    LINK_TILES[i] = createLinkTile(i);
+}
