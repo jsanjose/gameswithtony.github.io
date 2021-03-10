@@ -85,18 +85,43 @@ var app = new Vue({
         this.computedUpdater++;
 
         // TEMPORARY (remove this later): setup board state
-
+        this.layIndustryTile(PLAYER_TYPE.Human, 0, 21, 0);
+        this.layNetworkTile(PLAYER_TYPE.Human, 21, 18);
+        this.layNetworkTile(PLAYER_TYPE.Human, 21, 14);
+        this.layNetworkTile(PLAYER_TYPE.Human, 14, 15);
+        this.layNetworkTile(PLAYER_TYPE.Human, 15, 18);
 
         let paths = this.findAllPathsBetweenLocations(21, 18, false);
         console.log(paths);
     },
     computed: {
         validHumanBuildLocations: function () {
+            let locations = [];
+            let self = this;
             if (this.currentEra === ERA.Canal) {
                 // locations where the player hasn't built
+                locations = _.filter(this.board.locations, function (l) {
+                    let canBuildHere = true;
+                    _.forEach(l.spaces, function (s) {
+                        if (s.tile && s.tile.color === self.humanPlayer.color) {
+                            canBuildHere = false;
+                        }
+                    });
+
+                    return canBuildHere;
+                });
             } else {
                 // all locations for the number of players
+                let cardsForNumberOfPlayers = _.filter(CARDS, function (c) {
+                    return c.type === CARD_TYPES.Location && c.minPlayers <= self.numberOfPlayers;
+                });
+
+                _.forEach(cardsForNumberOfPlayers, function (c) {
+                    locations.push(self.findLocationById(c.locationid));
+                });
             }
+
+            return locations;
         },
         validHumanNetworkLocations: function() {
             this.computedUpdater++;

@@ -67,6 +67,13 @@
             <section v-if="currentGameStep === 1">
                 Choose your action:
 
+                <p>Where are you building (only valid locations shown)?</p> 
+                <ul>
+                    <li v-for="location in validHumanBuildLocations" :key="location.id">
+                        {{ location.name }}
+                    </li>
+                </ul>
+
                 <p>Where are you networking from (only valid locations shown)?</p> 
                 <ul>
                     <li v-for="location in validHumanNetworkLocations" :key="location.id">

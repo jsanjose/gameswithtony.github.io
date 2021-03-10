@@ -1441,11 +1441,11 @@ const CARDS = [
     createCard(17, 20, null, 'Coventry', 2, CARD_TYPES.Location),
     createCard(18, 17, null, 'Nuneaton', 2, CARD_TYPES.Location),
     createCard(19, 23, null, 'Redditch', 2, CARD_TYPES.Location),
-    createCard(20, null, INDUSTRY.IronWorks, 'Iron Works', 2, CARD_TYPES.Location),
-    createCard(21, null, INDUSTRY.CoalMine, 'Coal Mine', 2, CARD_TYPES.Location),
-    createCard(22, null, INDUSTRY.Manufacturer, 'Man Goods / Cotton Mill', 2, CARD_TYPES.Location),
-    createCard(23, null, INDUSTRY.Pottery, 'Pottery', 2, CARD_TYPES.Location),
-    createCard(24, null, INDUSTRY.Brewery, 'Brewery', 2, CARD_TYPES.Location),
+    createCard(20, null, INDUSTRY.IronWorks, 'Iron Works', 2, CARD_TYPES.Industry),
+    createCard(21, null, INDUSTRY.CoalMine, 'Coal Mine', 2, CARD_TYPES.Industry),
+    createCard(22, null, INDUSTRY.Manufacturer, 'Man Goods / Cotton Mill', 2, CARD_TYPES.Industry),
+    createCard(23, null, INDUSTRY.Pottery, 'Pottery', 2, CARD_TYPES.Industry),
+    createCard(24, null, INDUSTRY.Brewery, 'Brewery', 2, CARD_TYPES.Industry),
 ];
 
 const AI_DECK_TYPES = { Balanced: 0 };
