@@ -91,6 +91,13 @@ var app = new Vue({
         console.log(paths);
     },
     computed: {
+        validHumanBuildLocations: function () {
+            if (this.currentEra === ERA.Canal) {
+                // locations where the player hasn't built
+            } else {
+                // all locations for the number of players
+            }
+        },
         validHumanNetworkLocations: function() {
             this.computedUpdater++;
             let locations = this.findAllLocationsInNetwork(PLAYER_TYPE.Human);
