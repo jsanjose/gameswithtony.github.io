@@ -19,6 +19,11 @@ const HUMAN_ACTION = {
     ScoutOrLoan: 3
 }
 
+const AI_ACTION = {
+    BuildAndNetwork: 0,
+    Sell: 1
+}
+
 const ERA = { Canal: 0, Rail: 1 };
 const eraStringMap = {
     0: "Canal",

@@ -29,6 +29,39 @@ const INITIAL_AI_BOARD = _.filter(INDUSTRY_TILES, function(p) {
     return p.level > 1 && !(p.industrytype === INDUSTRY.Manufacturer && p.level <= 2);
 });
 
+// action object stores the next action intended to be taken
+// when the 'Next' button is taken then the action is
+// these are stored on each player object
+// 'consumedata' is an array of tileids with how many of each resource taken from each tile
+function createAction(action, data) {
+    return {
+        action: action,
+        data: data
+    };
+}
+
+function createBuildData(locationid, industrytype, consumedata) {
+    return {
+        locationid: locationid,
+        industrytype: industrytype,
+        consumedata: consumedata
+    };
+}
+
+function createNetworkData(locationid1, locationid2, consumedata) {
+    return {
+        locationid1: locationid1,
+        locationid2: locationid2,
+        consumedata: consumedata
+    };
+}
+
+function createDevelopData(consumedata) {
+    return {
+        consumedata: consumedata
+    };
+}
+
 // players
 const HUMAN_PLAYER = {
     id: 0,
@@ -36,7 +69,8 @@ const HUMAN_PLAYER = {
     player_type: PLAYER_TYPE.Human,
     color: null,
     board: _.cloneDeep(INITIAL_HUMAN_BOARD),
-    linktiles: _.cloneDeep(LINK_TILES)
+    linktiles: _.cloneDeep(LINK_TILES),
+    nextAction: null
 };
 
 // AI player 1
@@ -49,7 +83,8 @@ const ELIZA = {
     linktiles: _.cloneDeep(LINK_TILES),
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
-    difficulty: DIFFICULTY_LEVEL.Apprentice
+    difficulty: DIFFICULTY_LEVEL.Apprentice,
+    nextAction: null
 }
 
 // optional AI player 2
@@ -62,7 +97,8 @@ const ELEANOR = {
     linktiles: _.cloneDeep(LINK_TILES),
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
-    difficulty: DIFFICULTY_LEVEL.Apprentice
+    difficulty: DIFFICULTY_LEVEL.Apprentice,
+    nextAction: null
 }
 
 var app = new Vue({
@@ -90,9 +126,18 @@ var app = new Vue({
         this.layNetworkTile(PLAYER_TYPE.Human, 21, 14);
         this.layNetworkTile(PLAYER_TYPE.Human, 14, 15);
         this.layNetworkTile(PLAYER_TYPE.Human, 15, 18);
+        this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
+        this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
+        this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);
 
         let paths = this.findAllPathsBetweenLocations(21, 18, false);
         console.log(paths);
+
+        let connectedlocations = this.findAllConnectedLocations(21);
+        console.log(connectedlocations);
+
+        let connectedmarketlocations = this.findAllConnectedMarkets(21);
+        console.log(connectedmarketlocations);
     },
     computed: {
         validHumanBuildLocations: function () {
@@ -121,7 +166,7 @@ var app = new Vue({
                 });
             }
 
-            return locations;
+            return _.sortBy(locations, 'name');
         },
         validHumanNetworkLocations: function() {
             this.computedUpdater++;
@@ -327,6 +372,34 @@ var app = new Vue({
                     }
                 });
             }
+        },
+        findAllConnectedLocations: function (locationid) {
+            let connectedLocations = [];
+
+            let self = this;
+            _.forEach(this.board.locations, function (p) {
+                let paths = self.findAllPathsBetweenLocations(locationid, p.id, true);
+                if (paths && paths.length > 0) {
+                    connectedLocations.push(p);
+                }
+            });
+
+            return _.uniqBy(connectedLocations, 'id');
+        },
+        findAllConnectedMarkets: function (locationid) {
+            let connectedLocations = this.findAllConnectedLocations(locationid);
+            let connectedMarketLocations = [];
+
+            if (connectedLocations && connectedLocations.length > 0) {
+                 connectedMarketLocations = _.filter(connectedLocations, function (p) {
+                    return p.type === LOCATIONTYPE.Merchants;
+                 });
+            }
+
+            return connectedMarketLocations;
+        },
+        isConnectedToMarket: function (locationid) {
+            return this.findAllConnectedMarkets(locationid).length > 0;
         },
         findLocationsByIndustry: function (industry) {
             // find locations that have a particular industry type
