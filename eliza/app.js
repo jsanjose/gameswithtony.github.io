@@ -129,6 +129,7 @@ var app = new Vue({
         this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
         this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
         this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);
+        this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 0);
 
         let paths = this.findAllPathsBetweenLocations(21, 18, false);
         console.log(paths);
@@ -138,6 +139,9 @@ var app = new Vue({
 
         let connectedmarketlocations = this.findAllConnectedMarkets(21);
         console.log(connectedmarketlocations);
+
+        let connectedcoallocations = this.findAllConnectedCoal(21);
+        console.log(connectedcoallocations);
     },
     computed: {
         validHumanBuildLocations: function () {
@@ -385,6 +389,53 @@ var app = new Vue({
             });
 
             return _.uniqBy(connectedLocations, 'id');
+        },
+        findAllConnectedCoal: function (locationid) {
+            let connectedLocations = this.findAllConnectedLocations(locationid);
+            let connectedCoalLocations = [];
+
+            if (connectedLocations && connectedLocations.length > 0) {
+                connectedCoalLocations = _.filter(connectedLocations, function(o) {
+                    let coalSpaces = _.find(o.spaces, function(p) {
+                        if (p.tile) {
+                            return p.tile.industrytype === INDUSTRY.CoalMine && p.tile.availableCoal > 0;
+                        }
+                        return false;
+                    });
+                    return coalSpaces;
+                });
+           }
+
+           return connectedCoalLocations;
+        },
+        findCoalClosestToFlipping: function (locationid) {
+            let connectedCoalLocations = this.findAllConnectedCoal;
+
+            let closestToFlippingLocationId = null;
+            let closestToFlippingSpaceId = null;
+            let tempAvailableCoal = null;
+            _.forEach(connectedCoalLocations, function (c) {
+                _.forEach(c.spaces, function (s) {
+                    if (s.tile && s.tile.industrytype === INDUSTRY.CoalMine && s.tile.availableCoal > 0) {
+                        if (!tempAvailableCoal) {
+                            tempAvailableCoal = s.tile.availableCoal;
+                            closestToFlippingLocationId = c.id;
+                            closestToFlippingSpaceId = s.id;
+                        } else {
+                            if (s.tile.availableCoal < tempAvailableCoal) {
+                                tempAvailableCoal = s.tile.availableCoal;
+                                closestToFlippingLocationId = c.id;
+                                closestToFlippingSpaceId = s.id;
+                            }
+                        }
+                    }
+                });
+            });
+
+            return {
+                closestToFlippingLocationId: closestToFlippingLocationId,
+                closestToFlippingSpaceId: closestToFlippingSpaceId
+            }
         },
         findAllConnectedMarkets: function (locationid) {
             let connectedLocations = this.findAllConnectedLocations(locationid);
