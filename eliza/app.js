@@ -142,6 +142,9 @@ var app = new Vue({
 
         let connectedcoallocations = this.findAllConnectedCoal(21);
         console.log(connectedcoallocations);
+
+        let coalClosestToFlipping = this.findCoalClosestToFlipping(21, PLAYER_TYPE.Human);
+        console.log(coalClosestToFlipping);
     },
     computed: {
         validHumanBuildLocations: function () {
@@ -408,12 +411,15 @@ var app = new Vue({
 
            return connectedCoalLocations;
         },
-        findCoalClosestToFlipping: function (locationid) {
-            let connectedCoalLocations = this.findAllConnectedCoal;
+        findCoalClosestToFlipping: function (locationid, player_type) {
+            let connectedCoalLocations = this.findAllConnectedCoal(locationid);
+            let player = this.getPlayerFromType(player_type);
 
             let closestToFlippingLocationId = null;
             let closestToFlippingSpaceId = null;
+            let closestToFlippingColor = null;
             let tempAvailableCoal = null;
+            let location = null;
             _.forEach(connectedCoalLocations, function (c) {
                 _.forEach(c.spaces, function (s) {
                     if (s.tile && s.tile.industrytype === INDUSTRY.CoalMine && s.tile.availableCoal > 0) {
@@ -421,9 +427,72 @@ var app = new Vue({
                             tempAvailableCoal = s.tile.availableCoal;
                             closestToFlippingLocationId = c.id;
                             closestToFlippingSpaceId = s.id;
+                            closestToFlippingColor = s.tile.color;
                         } else {
                             if (s.tile.availableCoal < tempAvailableCoal) {
                                 tempAvailableCoal = s.tile.availableCoal;
+                                closestToFlippingLocationId = c.id;
+                                closestToFlippingSpaceId = s.id;
+                                closestToFlippingColor = s.tile.color;
+                            }
+
+                            // player's coal wins tie breaks
+                            if (s.tile.availableCoal === tempAvailableCoal) {
+                                if (s.tile.color === player.color && closestToFlippingColor !== player.color) {
+                                    tempAvailableCoal = s.tile.availableCoal;
+                                    closestToFlippingLocationId = c.id;
+                                    closestToFlippingSpaceId = s.id;
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+            if (closestToFlippingLocationId) {
+                location = this.findLocationById(closestToFlippingLocationId);
+            }
+
+            return {
+                closestToFlippingLocation: location,
+                closestToFlippingSpaceId: closestToFlippingSpaceId
+            }
+        },
+        findAllConnectedBeer: function (locationid) {
+            let connectedLocations = this.findAllConnectedLocations(locationid);
+            let connectedBeerLocations = [];
+
+            if (connectedLocations && connectedLocations.length > 0) {
+                connectedBeerLocations = _.filter(connectedLocations, function(o) {
+                    let beerSpaces = _.find(o.spaces, function(p) {
+                        if (p.tile) {
+                            return p.tile.industrytype === INDUSTRY.Brewery && p.tile.availableBeer > 0;
+                        }
+                        return false;
+                    });
+                    return beerSpaces;
+                });
+           }
+
+           return connectedBeerLocations;
+        },
+        findBeerClosestToFlipping: function (locationid) {
+            let connectedBeerLocations = this.findAllConnectedBeer(locationid);
+
+            let closestToFlippingLocationId = null;
+            let closestToFlippingSpaceId = null;
+            let tempAvailableBeer = null;
+            let location = null;
+            _.forEach(connectedBeerLocations, function (c) {
+                _.forEach(c.spaces, function (s) {
+                    if (s.tile && s.tile.industrytype === INDUSTRY.Brewery && s.tile.availableBeer > 0) {
+                        if (!tempAvailableBeer) {
+                            tempAvailableBeer = s.tile.tempAvailableBeer;
+                            closestToFlippingLocationId = c.id;
+                            closestToFlippingSpaceId = s.id;
+                        } else {
+                            if (s.tile.availableBeer < tempAvailableBeer) {
+                                tempAvailableBeer = s.tile.availableBeer;
                                 closestToFlippingLocationId = c.id;
                                 closestToFlippingSpaceId = s.id;
                             }
@@ -432,10 +501,26 @@ var app = new Vue({
                 });
             });
 
+            if (closestToFlippingLocationId) {
+                location = this.findLocationById(closestToFlippingLocationId);
+            }
+
             return {
-                closestToFlippingLocationId: closestToFlippingLocationId,
+                closestToFlippingLocation: location,
                 closestToFlippingSpaceId: closestToFlippingSpaceId
             }
+        },
+        findPlayerIronClosestToFlipping: function (locationid, player_type) {
+            let player = this.getPlayerFromType(player_type);
+        },
+        findOpponentIronFurthestFromFlipping: function (locationid, player_type) {
+            let player = this.getPlayerFromType(player_type);
+        },
+        findPlayerBeerClosestToFlipping: function (locationid, player_type) {
+            let player = this.getPlayerFromType(player_type);
+        },
+        findOpponentBeerFurthestFromFlipping: function (locationid, player_type) {
+            let player = this.getPlayerFromType(player_type);
         },
         findAllConnectedMarkets: function (locationid) {
             let connectedLocations = this.findAllConnectedLocations(locationid);
