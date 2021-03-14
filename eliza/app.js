@@ -35,6 +35,7 @@ const INITIAL_AI_BOARD = _.filter(INDUSTRY_TILES, function(p) {
 // 'consumedata' is an array of tileids with how many of each resource taken from each tile
 function createAction(action, data) {
     return {
+        round: 0, // increment each round (use this over page refreshes to see if the action needs to be recalculated)
         action: action,
         data: data
     };
@@ -44,7 +45,7 @@ function createBuildData(locationid, industrytype, consumedata) {
     return {
         locationid: locationid,
         industrytype: industrytype,
-        consumedata: consumedata
+        consumedata: consumedata // an array of locationid/spaceid/type/amount
     };
 }
 
@@ -70,6 +71,7 @@ const HUMAN_PLAYER = {
     color: null,
     board: _.cloneDeep(INITIAL_HUMAN_BOARD),
     linktiles: _.cloneDeep(LINK_TILES),
+    turnOrder: 0,
     nextAction: null
 };
 
@@ -84,6 +86,7 @@ const ELIZA = {
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice,
+    turnOrder: 1,
     nextAction: null
 }
 
@@ -98,6 +101,7 @@ const ELEANOR = {
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice,
+    turnOrder: 2,
     nextAction: null
 }
 
@@ -107,6 +111,7 @@ var app = new Vue({
         computedUpdater: 0,
         numberOfPlayers: 2,
         gameHasStarted: false,
+        currentRound: 0,
         currentGameStep: GAME_STEPS.Setup,
         currentEra: ERA.Canal,
         board: _.cloneDeep(INITIAL_BOARD),
@@ -219,12 +224,21 @@ var app = new Vue({
                 p.color = PLAYER_COLOR.Yellow;
             });
         },
+
+        
+        // Primary action functions
         tryHumanBuildAction: function (space, tile) {
 
         },
         tryHumanNetworkAction: function (locationid1, locationid2, tile) {
 
         },
+        calculateAIAction: function (player_type) {
+
+        },
+        // end: Primary action functions
+
+
         layIndustryTile: function (player_type, tileid, locationid, spaceid) {
             // This function does no error checking. 'tryHumanBuildAction' does error checking, and is otherwise used by the AI bots directly.
 
@@ -289,6 +303,120 @@ var app = new Vue({
             edge1.tile = _.cloneDeep(linktile);
             edge2.tile = _.cloneDeep(linktile);
         },
+
+        // -- Eliza rule support
+        hasUnflippedBrewery: function (player_type) {
+            // for: Build (Location Card), step 1
+        },
+        hasUnflippedCoalMine: function (player_type) {
+            // for: Build (Location Card), step 2
+        },
+        hasUnflippedIronWorks: function (player_type) {
+            // for: Build (Location Card), step 3
+        },
+        findAvailableIndustrySpaceInLocation: function (locationid, industrytype, canOverbuild) {
+            // for: Build (Location Card), step 4 and Build (Industry Card), step 2
+            // return: the spaceid
+        },
+        findClosestUnconnectedUnflippedIndustry: function (locationid, player_type, findBelongingToPlayer) {
+            // for: Network (after build Coal Mine, Iron Works, or Brewery)
+            // if findBelongingToPlayer is true then only find the player's, otherwise find any other than the player's
+        },
+        findClosestUnconnectedMerchant: function (locationid, industrytype) {
+            // for: Network (after build Coal Mine, Iron Works, or Brewery)
+        },
+        findClosestUnconnectedMatchingMerchant: function (locationid, industrytype) {
+            // for: Network (after build Pottery, Cotton Mill, or Manufacturer)
+        },
+        findPlayerUnflippedIndustries: function (player_type) {
+            // for: Sell, step 1
+        },
+        findPlayerUnflippedIndustriesConnectedToMarket: function (player_type) {
+            // for: Sell, step 1 and 2
+            // use "findAllConnectedMarkets" for each unflipped industry
+        },
+        // end: Eliza rule support
+
+
+        // -- Eliza consumption support
+        findPlayerIronClosestToFlipping: function (locationid, player_type) {
+            let player = this.getPlayerFromType(player_type);
+        },
+        findOpponentIronFurthestFromFlipping: function (locationid, player_type) {
+            let player = this.getPlayerFromType(player_type);
+        },
+        findPlayerBeerClosestToFlipping: function (locationid, player_type) {
+            let player = this.getPlayerFromType(player_type);
+        },
+        findClosestOpponentBeer: function (locationid, player_type) {
+            // use id as tiebreaker (lower id is first in clockface order)
+            let player = this.getPlayerFromType(player_type);
+        },
+        findClosestMatchingMarket: function (locationid, industrytype, needBeer) {
+            // use beer existence (if needed) as tiebreaker, then id as tiebreaker (lower id is first in clockface order)
+        },
+        findPlayerUnflippedBreweries: function (player_type) {
+            // for: Sell, step 2
+        },
+        // end: Eliza consumption support
+
+        // -- Human player consumption support
+        findAllConnectedCoal: function (locationid) {
+            let connectedLocations = this.findAllConnectedLocations(locationid);
+            let connectedCoalLocations = [];
+
+            if (connectedLocations && connectedLocations.length > 0) {
+                connectedCoalLocations = _.filter(connectedLocations, function(o) {
+                    let coalSpaces = _.find(o.spaces, function(p) {
+                        if (p.tile) {
+                            return p.tile.industrytype === INDUSTRY.CoalMine && p.tile.availableCoal > 0;
+                        }
+                        return false;
+                    });
+                    return coalSpaces;
+                });
+           }
+
+           return connectedCoalLocations;
+        },
+        findClosestConnectedCoal: function (locationid) {
+            // use "findAllConnectedCoal", already sorted by path length
+        },
+        findOpponentConnectedBeer: function (locationid, player_type) {
+            // also used for Sell, step 2
+            let connectedLocations = this.findAllConnectedLocations(locationid);
+            let player = this.getPlayerFromType(player_type);
+            let connectedOpponentBeerLocations = [];
+
+            if (connectedLocations && connectedLocations.length > 0) {
+                connectedOpponentBeerLocations = _.filter(connectedLocations, function(o) {
+                    let beerSpaces = _.find(o.spaces, function(p) {
+                        if (p.tile) {
+                            return p.tile.industrytype === INDUSTRY.Brewery && p.tile.availableBeer > 0 && p.tile.color !== player.color;
+                        }
+                        return false;
+                    });
+                    return beerSpaces;
+                });
+           }
+
+           return connectedOpponentBeerLocations;
+        },
+        findConsumableBeer: function (locationid, player_type) {
+            let connectedLocations = this.findAllConnectedLocations(locationid);
+            let player = this.getPlayerFromType(player_type);
+            let consumableBeerLocations = [];
+
+            // connected opponent beer
+            let connectedOpponentBeerLocations = this.findOpponentConnectedBeer(locationid, player_type);
+
+            // TODO: also get all player beer (connected or not), append and unique select
+
+            return consumableBeerLocations;
+        },
+        // end: Human player consumption support
+
+        // -- Supporting logical methods
         isLocationInNetwork: function (locationid, player_type) {
             let player = this.getPlayerFromType(player_type);
             let location = this.findLocationById(locationid);
@@ -346,6 +474,10 @@ var app = new Vue({
                 return a.length;
             });
 
+            _.forEach(sortedPaths, function (p) {
+                p.distance = p.length - 1;
+            });
+
             return sortedPaths;
         },
         findAllPathsUtil: function (locationid, targetlocationid, visited, paths, path, requireLinks) {
@@ -387,30 +519,105 @@ var app = new Vue({
             _.forEach(this.board.locations, function (p) {
                 let paths = self.findAllPathsBetweenLocations(locationid, p.id, true);
                 if (paths && paths.length > 0) {
+                    p.distance = paths[0].distance;
                     connectedLocations.push(p);
                 }
             });
 
-            return _.uniqBy(connectedLocations, 'id');
+            // return closest locations, clockface tiebreaker
+            return _.sortBy(_.uniqBy(connectedLocations, 'id'), 'distance', 'id');
         },
-        findAllConnectedCoal: function (locationid) {
+        findAllConnectedMarkets: function (locationid) {
             let connectedLocations = this.findAllConnectedLocations(locationid);
-            let connectedCoalLocations = [];
+            let connectedMarketLocations = [];
 
             if (connectedLocations && connectedLocations.length > 0) {
-                connectedCoalLocations = _.filter(connectedLocations, function(o) {
-                    let coalSpaces = _.find(o.spaces, function(p) {
-                        if (p.tile) {
-                            return p.tile.industrytype === INDUSTRY.CoalMine && p.tile.availableCoal > 0;
-                        }
-                        return false;
-                    });
-                    return coalSpaces;
-                });
-           }
+                 connectedMarketLocations = _.filter(connectedLocations, function (p) {
+                    return p.type === LOCATIONTYPE.Merchants;
+                 });
+            }
 
-           return connectedCoalLocations;
+            return connectedMarketLocations;
         },
+        isConnectedToMarket: function (locationid) {
+            return this.findAllConnectedMarkets(locationid).length > 0;
+        },
+        findLocationsByIndustry: function (industry) {
+            // find locations that have a particular industry type
+            return _.filter(this.board.locations, function(o) {
+                let findSpaces = _.find(o.spaces, function(p) {
+                    return _.includes(p.types, industry);
+                });
+                return findSpaces;
+            });
+        },
+        findLocationById: function (id) {
+            return _.find(this.board.locations, function(o) {
+                return o.id === id;
+            });
+        },
+        findPlayerBoardIndustryTileById: function(player_type, id) {
+            let player = this.getPlayerFromType(player_type);
+
+            return _.find(player.board, function (o) {
+                return o.id === id;
+            });
+        },
+        getPlayerFromType: function (player_type) {
+            switch (player_type) {
+                case PLAYER_TYPE.Human: return this.humanPlayer;
+                case PLAYER_TYPE.Eliza_AI: return this.eliza;
+                case PLAYER_TYPE.Eleanor_AI: return this.eleanor;
+            }
+        },
+        findCardById: function (id) {
+            let card = _.find(CARDS, function(c) {
+                return c.id === id;
+            });
+
+            return _.cloneDeep(card);
+        },
+        industryTileToString: function (tile) {
+            return industryStringMap[tile.industryType] + ' ' + romanize(tile.level);
+        },
+        // -- end Supporting logical methods
+
+        reset: function () {
+            this.numberOfPlayers = 2;
+            this.gameHasStarted = false;
+            this.currentRound = 0;
+            this.currentGameStep = GAME_STEPS.Setup;
+            this.currentEra = ERA.Canal;
+            this.board = _.cloneDeep(INITIAL_BOARD);
+            this.humanPlayer = _.cloneDeep(HUMAN_PLAYER);
+            this.eliza = _.cloneDeep(ELIZA);
+            this.eleanor = _.cloneDeep(ELEANOR);
+            this.players = [this.humanPlayer, this.eliza];
+            this.showBoardState = false;
+            this.undoState = {};
+        },
+        nextGameStep: function () {
+            if (this.numberOfPlayers == '2' && this.currentGameStep === GAME_STEPS.Eliza_ShowAction) {
+                this.currentGameStep = GAME_STEPS.HumanPlayer_ChooseAction1;
+                return;
+            }
+
+            if (this.numberOfPlayers == '3' && this.currentGameStep === GAME_STEPS.Eleanor_ShowAction) {
+                this.currentGameStep = GAME_STEPS.HumanPlayer_ChooseAction1;
+                return;
+            }
+
+            this.currentGameStep = this.currentGameStep + 1;
+        },
+        loadUndoState: function() {
+
+        },
+        saveGameState: function () {
+
+        },
+
+
+        // --- BEGIN: may not truly need these ---
         findCoalClosestToFlipping: function (locationid, player_type) {
             let connectedCoalLocations = this.findAllConnectedCoal(locationid);
             let player = this.getPlayerFromType(player_type);
@@ -458,24 +665,6 @@ var app = new Vue({
                 closestToFlippingSpaceId: closestToFlippingSpaceId
             }
         },
-        findAllConnectedBeer: function (locationid) {
-            let connectedLocations = this.findAllConnectedLocations(locationid);
-            let connectedBeerLocations = [];
-
-            if (connectedLocations && connectedLocations.length > 0) {
-                connectedBeerLocations = _.filter(connectedLocations, function(o) {
-                    let beerSpaces = _.find(o.spaces, function(p) {
-                        if (p.tile) {
-                            return p.tile.industrytype === INDUSTRY.Brewery && p.tile.availableBeer > 0;
-                        }
-                        return false;
-                    });
-                    return beerSpaces;
-                });
-           }
-
-           return connectedBeerLocations;
-        },
         findBeerClosestToFlipping: function (locationid) {
             let connectedBeerLocations = this.findAllConnectedBeer(locationid);
 
@@ -509,96 +698,7 @@ var app = new Vue({
                 closestToFlippingLocation: location,
                 closestToFlippingSpaceId: closestToFlippingSpaceId
             }
-        },
-        findPlayerIronClosestToFlipping: function (locationid, player_type) {
-            let player = this.getPlayerFromType(player_type);
-        },
-        findOpponentIronFurthestFromFlipping: function (locationid, player_type) {
-            let player = this.getPlayerFromType(player_type);
-        },
-        findPlayerBeerClosestToFlipping: function (locationid, player_type) {
-            let player = this.getPlayerFromType(player_type);
-        },
-        findOpponentBeerFurthestFromFlipping: function (locationid, player_type) {
-            let player = this.getPlayerFromType(player_type);
-        },
-        findAllConnectedMarkets: function (locationid) {
-            let connectedLocations = this.findAllConnectedLocations(locationid);
-            let connectedMarketLocations = [];
-
-            if (connectedLocations && connectedLocations.length > 0) {
-                 connectedMarketLocations = _.filter(connectedLocations, function (p) {
-                    return p.type === LOCATIONTYPE.Merchants;
-                 });
-            }
-
-            return connectedMarketLocations;
-        },
-        isConnectedToMarket: function (locationid) {
-            return this.findAllConnectedMarkets(locationid).length > 0;
-        },
-        findLocationsByIndustry: function (industry) {
-            // find locations that have a particular industry type
-            return _.filter(this.board.locations, function(o) {
-                let findSpaces = _.find(o.spaces, function(p) {
-                    return _.includes(p.types, industry);
-                });
-                return findSpaces;
-            });
-        },
-        findLocationById: function (id) {
-            return _.find(this.board.locations, function(o) {
-                return o.id === id;
-            });
-        },
-        findPlayerBoardIndustryTileById: function(player_type, id) {
-            let player = this.getPlayerFromType(player_type);
-
-            return _.find(player.board, function (o) {
-                return o.id === id;
-            });
-        },
-        getPlayerFromType: function (player_type) {
-            switch (player_type) {
-                case PLAYER_TYPE.Human: return this.humanPlayer;
-                case PLAYER_TYPE.Eliza_AI: return this.eliza;
-                case PLAYER_TYPE.Eleanor_AI: return this.eleanor;
-            }
-        },
-        industryTileToString: function (tile) {
-            return industryStringMap[tile.industryType] + ' ' + romanize(tile.level);
-        },
-        reset: function () {
-            this.numberOfPlayers = 2;
-            this.gameHasStarted = false;
-            this.currentGameStep = GAME_STEPS.Setup;
-            this.currentEra = ERA.Canal;
-            this.board = _.cloneDeep(INITIAL_BOARD);
-            this.humanPlayer = _.cloneDeep(HUMAN_PLAYER);
-            this.eliza = _.cloneDeep(ELIZA);
-            this.eleanor = _.cloneDeep(ELEANOR);
-            this.players = [this.humanPlayer, this.eliza];
-            this.showBoardState = false;
-            this.undoState = {};
-        },
-        nextGameStep: function () {
-            if (this.numberOfPlayers == '2' && this.currentGameStep === GAME_STEPS.Eliza_ShowAction) {
-                this.currentGameStep = GAME_STEPS.HumanPlayer_ChooseAction1;
-                return;
-            }
-
-            if (this.numberOfPlayers == '3' && this.currentGameStep === GAME_STEPS.Eleanor_ShowAction) {
-                this.currentGameStep = GAME_STEPS.HumanPlayer_ChooseAction1;
-                return;
-            }
-
-            this.currentGameStep = this.currentGameStep + 1;
-        },
-        loadUndoState: function() {
-
-        },
-        saveGameState: function () {
-
         }
+        // --- END: may not truly need these ---
     }
 });
