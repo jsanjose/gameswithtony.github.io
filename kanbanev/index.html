@@ -105,7 +105,7 @@
                     <li>During the working phase, the app will display each player in turn order and show the department the player is working in.</li>
                     <li>During the working phase, if you have chosen an applicable Difficulty Card, reminders are shown at the bottom of the rules references.</li>
                     <li>During the working phase, for Mr. Lacerda and Mr. Turczi, other information is shown such as the current Part, and based on Sandra's position the Car and Design Tile column.</li>
-                    <li>During the working phase, if you the department you are in requires selecting a Part, the current Part will be shown. If that Part is not valid, then use the 'Draw Another Part' link to get a new Part.</li>
+                    <li>During the working phase, if the department you are in requires selecting a Part, the current Part will be shown. If that Part is not valid, then use the 'Draw Another Part' link to get a new Part.</li>
                     <li>Instructions for yourself, Sandra, Mr. Lacerda and Mr. Turczi are all provided below the department information.</li>
                 </ul>
             </section>  
@@ -195,7 +195,7 @@
                 <img v-bind:src="currentLacerdaPartImage" class="small-image" v-if="(currentPlayer.dept === 2 && currentPlayer.engineer === 1) || (currentPlayer.dept === 2 && currentPlayer.engineer === 0 && !lacerdaIsCertified && !difficultyCards[0].include)" />
                 <img v-bind:src="currentCarImage" class="extra-image" v-if="currentPlayer.dept === 1"  style="margin-left: 1rem; border-left: dashed 1px black; padding-left: 0.5rem;" />
                 <br />
-                <a href="#" class="draw-part" v-on:click="drawPart">Draw Another Part</a>
+                <a href="#" class="draw-part" v-if="currentPlayer.dept === 2" v-on:click="drawPart">Draw Another Part</a>
             </section>          
             <section class="design-tiles" v-if="this.currentPhase === 1 && currentPlayer.dept === 3 && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)">
                 <img v-bind:class="{ designTileSelected: sandrasPosition === 0 }" src="images/designstack.png" />
