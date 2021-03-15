@@ -250,7 +250,7 @@
                     <li v-if="lacerdaIsCertified && !difficultyCards[0].include"><span class="instructions-important">Lacerda Is Certified: </span>Mr. Lacerda upgrades a design again.</li>
                     <li v-if="!lacerdaIsCertified && !difficultyCards[0].include"><span class="instructions-important">Lacerda Is NOT Certified: </span>If he was, he would upgrade a design again.</li>
                     <li v-if="difficultyCards[0].include"><span class="instructions-important">Difficulty Card #1: Certified Lacerda: </span>Mr. Lacerda upgrades a design again.</li>
-                    <li>Take car <span class="instructions-important">behind Pace Car.</span></li>
+                    <li>Take the car <span class="instructions-important">behind the Pace Car</span> and <span class="instructions-important">advance the Pace Car as normal.</span></li>
                     <li v-if="difficultyCards[1].include">
                         <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
                     </li>
@@ -274,7 +274,7 @@
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Upgrade the Design from the top of the Colleagues' shared Design stack using a Car Part from the supply (Highest available PP > Banked Shift > Books > Blank), ignoring <span v-if="!difficultyCards[3].include">any printed benefits in Upgrade spaces.</span><span v-if="difficultyCards[3].include">non-PP benefits in Upgrade spaces (Difficulty Card #4).</span></li>
                     <li>Advance the Part value, and gain PP equal to the new value of the Part.</li>
-                    <li>Take car <span class="instructions-important">with highest PP value</span> (Concept > Sports > Truck > SUV > City).</li>
+                    <li>Take the car <span class="instructions-important">with highest PP value</span> (Concept > Sports > Truck > SUV > City) and <span class="instructions-important">advance the Pace Car as normal</span>.</li>
                     <li v-if="difficultyCards[1].include">
                         <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
                     </li>
