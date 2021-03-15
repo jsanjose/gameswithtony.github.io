@@ -114,6 +114,7 @@ var app = new Vue({
         currentRound: 0,
         currentGameStep: GAME_STEPS.Setup,
         currentEra: ERA.Canal,
+        currentPlayer: PLAYER_TYPE.Human,
         board: _.cloneDeep(INITIAL_BOARD),
         humanPlayer: _.cloneDeep(HUMAN_PLAYER),
         eliza: _.cloneDeep(ELIZA),
@@ -239,13 +240,25 @@ var app = new Vue({
         },
         
         // Primary action functions
+        calculateAIAction: function (player_type) {
+
+        },
+        executeNextAction: function () {
+            // use 'currentPlayer
+        },
+        executeAIBuild: function (player_type) {
+
+        },
+        executeAINetwork: function (player_type) {
+
+        },
+        executeAISell: function (player_type) {
+
+        },
         tryHumanBuildAction: function (space, tile) {
 
         },
         tryHumanNetworkAction: function (locationid1, locationid2, tile) {
-
-        },
-        calculateAIAction: function (player_type) {
 
         },
         // end: Primary action functions
@@ -319,16 +332,31 @@ var app = new Vue({
         // -- Eliza rule support
         playerHasUnflippedBrewery: function (player_type) {
             // for: Build (Location Card), step 1
+            let playerUnflippedBreweries = this.findPlayerUnflippedBreweries(player_type);
+
+            return (playerUnflippedBreweries && playerUnflippedBreweries.length > 0);
         },
         playerHasUnflippedCoalMine: function (player_type) {
             // for: Build (Location Card), step 2
+            let playerUnflippedCoalMines = this.findPlayerUnflippedCoalMines(player_type);
+
+            return (playerUnflippedCoalMines && playerUnflippedCoalMines.length > 0);
         },
         playerHasUnflippedIronWorks: function (player_type) {
             // for: Build (Location Card), step 3
+            let playerUnflippedIronWorks = this.findPlayerUnflippedIronWorks(player_type);
+
+            return (playerUnflippedIronWorks && playerUnflippedIronWorks.length > 0);
         },
         findAvailableIndustrySpaceInLocation: function (locationid, industrytype, canOverbuild) {
             // for: Build (Location Card), step 4 and Build (Industry Card), step 2
             // return: the spaceid
+
+            let location = this.findLocationById(locationid);
+
+            let space = _.forEach(location.spaces, function (s) {
+
+            });
         },
         findClosestUnconnectedUnflippedIndustry: function (locationid, player_type, findBelongingToPlayer) {
             // for: Network (after build Coal Mine, Iron Works, or Brewery)
@@ -369,6 +397,52 @@ var app = new Vue({
         },
         findPlayerUnflippedBreweries: function (player_type) {
             // for: Sell, step 2
+            let player = this.getPlayerFromType(player_type);
+            let playerUnflippedBreweryLocations = [];
+
+            playerUnflippedBreweryLocations = _.filter(this.board.locations, function(o) {
+                let beerSpaces = _.find(o.spaces, function(p) {
+                    if (p.tile) {
+                        return p.tile.industrytype === INDUSTRY.Brewery && p.tile.availableBeer > 0 && p.tile.color === player.color;
+                    }
+                    return false;
+                });
+                return beerSpaces;
+            });
+
+            return playerUnflippedBreweryLocations;
+        },
+        findPlayerUnflippedCoalMines: function (player_type) {
+            let player = this.getPlayerFromType(player_type);
+            let playerUnflippedCoalMineLocations = [];
+
+            playerUnflippedCoalMineLocations = _.filter(this.board.locations, function(o) {
+                let coalSpaces = _.find(o.spaces, function(p) {
+                    if (p.tile) {
+                        return p.tile.industrytype === INDUSTRY.CoalMine && p.tile.availableCoal > 0 && p.tile.color === player.color;
+                    }
+                    return false;
+                });
+                return coalSpaces;
+            });
+
+            return playerUnflippedCoalMineLocations;
+        },
+        findPlayerUnflippedIronWorks: function (player_type) {
+            let player = this.getPlayerFromType(player_type);
+            let playerUnflippedIronWorksLocations = [];
+
+            playerUnflippedIronWorksLocations = _.filter(this.board.locations, function(o) {
+                let ironSpaces = _.find(o.spaces, function(p) {
+                    if (p.tile) {
+                        return p.tile.industrytype === INDUSTRY.IronWorks && p.tile.availableIron > 0 && p.tile.color === player.color;
+                    }
+                    return false;
+                });
+                return ironSpaces;
+            });
+
+            return playerUnflippedIronWorksLocations;
         },
         // end: Eliza consumption support
 
@@ -600,6 +674,7 @@ var app = new Vue({
             this.currentRound = 0;
             this.currentGameStep = GAME_STEPS.Setup;
             this.currentEra = ERA.Canal;
+            this.currentPlayer = PLAYER_TYPE.Human;
             this.board = _.cloneDeep(INITIAL_BOARD);
             this.humanPlayer = _.cloneDeep(HUMAN_PLAYER);
             this.eliza = _.cloneDeep(ELIZA);
