@@ -224,7 +224,19 @@ var app = new Vue({
                 p.color = PLAYER_COLOR.Yellow;
             });
         },
+        nextGameStep: function () {
+            if (this.numberOfPlayers == '2' && this.currentGameStep === GAME_STEPS.Eliza_ShowAction) {
+                this.currentGameStep = GAME_STEPS.HumanPlayer_ChooseAction1;
+                return;
+            }
 
+            if (this.numberOfPlayers == '3' && this.currentGameStep === GAME_STEPS.Eleanor_ShowAction) {
+                this.currentGameStep = GAME_STEPS.HumanPlayer_ChooseAction1;
+                return;
+            }
+
+            this.currentGameStep = this.currentGameStep + 1;
+        },
         
         // Primary action functions
         tryHumanBuildAction: function (space, tile) {
@@ -305,13 +317,13 @@ var app = new Vue({
         },
 
         // -- Eliza rule support
-        hasUnflippedBrewery: function (player_type) {
+        playerHasUnflippedBrewery: function (player_type) {
             // for: Build (Location Card), step 1
         },
-        hasUnflippedCoalMine: function (player_type) {
+        playerHasUnflippedCoalMine: function (player_type) {
             // for: Build (Location Card), step 2
         },
-        hasUnflippedIronWorks: function (player_type) {
+        playerHasUnflippedIronWorks: function (player_type) {
             // for: Build (Location Card), step 3
         },
         findAvailableIndustrySpaceInLocation: function (locationid, industrytype, canOverbuild) {
@@ -595,19 +607,6 @@ var app = new Vue({
             this.players = [this.humanPlayer, this.eliza];
             this.showBoardState = false;
             this.undoState = {};
-        },
-        nextGameStep: function () {
-            if (this.numberOfPlayers == '2' && this.currentGameStep === GAME_STEPS.Eliza_ShowAction) {
-                this.currentGameStep = GAME_STEPS.HumanPlayer_ChooseAction1;
-                return;
-            }
-
-            if (this.numberOfPlayers == '3' && this.currentGameStep === GAME_STEPS.Eleanor_ShowAction) {
-                this.currentGameStep = GAME_STEPS.HumanPlayer_ChooseAction1;
-                return;
-            }
-
-            this.currentGameStep = this.currentGameStep + 1;
         },
         loadUndoState: function() {
 
