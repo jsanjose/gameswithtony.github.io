@@ -192,8 +192,8 @@
 
                 <img v-bind:src="currentPartImage" class="extra-image" />
 
-                <img v-bind:src="currentTurcziPartImage" class="small-image" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 0 && (lacerdaIsCertified || !difficultyCards[0].include)" />
-                <img v-bind:src="currentTurcziPartImage" class="small-image" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 0 && (lacerdaIsCertified || !difficultyCards[0].include)" />
+                <img v-bind:src="currentTurcziPartImage" class="small-image" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 0 && (lacerdaIsCertified || difficultyCards[0].include)" />
+                <img v-bind:src="currentTurcziPartImage" class="small-image" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 0" />
                 <img v-bind:src="currentLacerdaPartImage" class="small-image" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 1" />
                 <img v-bind:src="currentCarImage" class="extra-image" v-if="currentPlayer.dept === 1"  style="margin-left: 1rem; border-left: dashed 1px black; padding-left: 0.5rem;" />
                 <br />
