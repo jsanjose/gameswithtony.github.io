@@ -353,10 +353,25 @@ var app = new Vue({
             // return: the spaceid
 
             let location = this.findLocationById(locationid);
+            let validSpaces = [];
 
-            let space = _.forEach(location.spaces, function (s) {
-
+            _.forEach(location.spaces, function (s) {
+                if (_.includes(s.types, industrytype)) {
+                    if (canOverbuild || s.tile === null) {
+                        validSpaces.push(s);
+                    }
+                }
             });
+
+            let sortedSpaces = _.sortBy(validSpaces, function (s) {
+                return s.length; // sort single type to the top
+            });
+
+            if (sortedSpaces.length > 0) {
+                return sortedSpaces[0]; // choose single type over double
+            } else {
+                return null;
+            }
         },
         findClosestUnconnectedUnflippedIndustry: function (locationid, player_type, findBelongingToPlayer) {
             // for: Network (after build Coal Mine, Iron Works, or Brewery)
