@@ -546,43 +546,44 @@ var app = new Vue({
                 } else {
                     // move to next department
                     dept = dept + 1;
-
-                    if (dept === DEPARTMENT.Admin) {
-                        pos = DEPTPOSITION.SandrasDesk;
-                        isAvailable = true;
-                    }
                 }
 
-                pos = DEPTPOSITION.Top;
+                if (dept === DEPARTMENT.Admin) {
+                    pos = DEPTPOSITION.SandrasDesk;
+                    isAvailable = true;
+                } else {
 
-                let escaper = 0;
-                while (!isAvailable) {
-                    if (escaper > 100) {
-                        alert("Something went wrong during Sandra's workstation selection. Try refreshing.")
-                        return;
-                    }
+                    pos = DEPTPOSITION.Top;
 
-                    let occupant = this.workStationOccupiedBy(dept, pos);
-                
-                    if (occupant === undefined) {
-                        isAvailable = true;
-                    } else {
-                        if (pos === DEPTPOSITION.Top) {
-                            pos = DEPTPOSITION.Bottom;
+                    let escaper = 0;
+                    while (!isAvailable) {
+                        if (escaper > 100) {
+                            alert("Something went wrong during Sandra's workstation selection. Try refreshing.")
+                            return;
+                        }
+
+                        let occupant = this.workStationOccupiedBy(dept, pos);
+                    
+                        if (occupant === undefined) {
+                            isAvailable = true;
                         } else {
-                            dept = dept + 1;
-
-                            if (dept === DEPARTMENT.Admin) {
-                                pos = DEPTPOSITION.SandrasDesk;
-                                isAvailable = true;
+                            if (pos === DEPTPOSITION.Top) {
+                                pos = DEPTPOSITION.Bottom;
                             } else {
-                                pos = DEPTPOSITION.Top;
+                                dept = dept + 1;
+
+                                if (dept === DEPARTMENT.Admin) {
+                                    pos = DEPTPOSITION.SandrasDesk;
+                                    isAvailable = true;
+                                } else {
+                                    pos = DEPTPOSITION.Top;
+                                }
                             }
                         }
+                        escaper++;
                     }
-                    escaper++;
                 }
-
+                
                 newCurrentPlayer.dept = dept;
                 newCurrentPlayer.position = pos;
             }

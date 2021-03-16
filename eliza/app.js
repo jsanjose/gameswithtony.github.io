@@ -151,6 +151,9 @@ var app = new Vue({
 
         let coalClosestToFlipping = this.findCoalClosestToFlipping(21, PLAYER_TYPE.Human);
         console.log(coalClosestToFlipping);
+
+        let unconnectedLocations = this.findUnconnectedLocations(21);
+        console.log(unconnectedLocations);
     },
     computed: {
         validHumanBuildLocations: function () {
@@ -383,12 +386,39 @@ var app = new Vue({
         findClosestUnconnectedMatchingMerchant: function (locationid, industrytype) {
             // for: Network (after build Pottery, Cotton Mill, or Manufacturer)
         },
+        findUnconnectedLocations: function (locationid) {
+            
+        },
         findPlayerUnflippedIndustries: function (player_type) {
             // for: Sell, step 1
         },
         findPlayerUnflippedIndustriesConnectedToMarket: function (player_type) {
             // for: Sell, step 1 and 2
             // use "findAllConnectedMarkets" for each unflipped industry
+        },
+        findAllUnflippedIndustries: function () {
+            let unflippedIndustryLocations = [];
+
+            unflippedIndustryLocations = _.filter(this.board.locations, function(o) {
+                let spaces = _.find(o.spaces, function(p) {
+                    if (p.tile) {
+                        return !p.tile.flipped;
+                    }
+                    return false;
+                });
+                return o.type === LOCATIONTYPE.Industries && spaces;
+            });
+
+            return unflippedIndustryLocations;
+        },
+        findAllMerchants: function () {
+            let merchantLocations = [];
+
+            unflippedIndustryLocations = _.filter(this.board.locations, function(o) {
+                return o.type === LOCATIONTYPE.Merchants;
+            });
+
+            return merchantLocations;
         },
         // end: Eliza rule support
 
