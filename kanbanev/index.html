@@ -472,7 +472,7 @@
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Take 2 Design tiles (see above for column to use).</li>
                     <li>Upgradeable design tiles are placed at the bottom of the Colleagues' shared design stack.</li>
-                    <li>Non-upgradeable design tiles are returned to the bottom of the Central Stack and the Colleagues score 2 PP each.</li>
+                    <li>Non-upgradeable design tiles are returned to the bottom of the Central Stack and the Colleagues score 2 PP per each tile returned.</li>
                     <li>
                         <span v-if="!lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda is NOT yet certified<br /></span>
@@ -581,9 +581,10 @@
                     </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 4 && currentPlayer.engineer === 2 && !isFirstDeptSelection">
-                    <p><strong>Perform End-of-Week Scoring</strong><br /><span class="instructions-important">For each Car in your garages:</span></p>
+                    <p><strong>Perform End-of-Week Scoring</strong><br /><br /><span class="instructions-important">For each Car in your garages:</span></p>
                     <li>Gain 1 PP for each Upgrade that has been made to that Model <span class="instructions-important">(by all players)</span>. To do this, count the number of Car Parts on the Upgrade spaces of the Model.</li>
                     <li>Gain 1 PP for each Tested Design you have of that Model.</li>
+                    <p><span class="instructions-important">Then...</span></p>
                     <li>Advance the Week marker by 1 space unless it is already on position 3 (in that case just ignore this step).</li>
                     <li>The Colleagues score 2 PP for each Upgraded Design tile they have. These tiles are then removed from the game (and so will not be scored again at the end of next Week).</li>
                     <li><strong>Evaluation Penalty: </strong>Be certified in 2 or fewer departments.</li>
