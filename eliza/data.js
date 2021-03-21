@@ -6,10 +6,9 @@ const PLAYER_COLOR = { LightBlue: 0, Blue: 1, Red: 2, Yellow: 3 };
 
 const GAME_STEPS = {
     Setup: 0,
-    HumanPlayer_ChooseAction1: 1,
-    HumanPlayer_ChooseAction2: 2,
-    Eliza_ShowAction: 2,
-    Eleanor_ShowAction: 3
+    Round: 1,
+    SetupRailEra: 2,
+    FinalScore: 3
 };
 
 const HUMAN_ACTION = {
@@ -1544,7 +1543,9 @@ const INDUSTRY_TILES = [
 function createLinkTile(id) {
     return {
         id: id,
-        color: null
+        color: null,
+        toId1: null,
+        toId2: null
     };
 }
 const LINK_TILES = [];
