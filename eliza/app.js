@@ -45,7 +45,7 @@ function createBuildData(locationid, industrytype, consumedata) {
     return {
         locationid: locationid,
         industrytype: industrytype,
-        consumedata: consumedata // an array of locationid/spaceid/type/amount
+        consumedata: consumedata
     };
 }
 
@@ -60,6 +60,16 @@ function createNetworkData(locationid1, locationid2, consumedata) {
 function createDevelopData(consumedata) {
     return {
         consumedata: consumedata
+    };
+}
+
+function createConsumeData(locationid, spaceid, resourcetype, totalavailable, totalconsumed) {
+    return {
+        locationid: locationid,
+        spaceid: spaceid,
+        resourcetype: resourcetype,
+        totalavailable: totalavailable,
+        totalconsumed: totalconsumed
     };
 }
 
@@ -550,38 +560,30 @@ var app = new Vue({
 
 
         // -- Eliza consumption support
-        findClosestCoal: function (locationid, player_type) {
+        generateAICoalConsumption: function (locationid, player_type, neededCoal) {
             // for Build (all eras) and Network (Rail Era)
             let player = this.getPlayerFromType(player_type);
+            let coalConsumptionData = [];
 
             let connectedCoalLocations = this.findAllConnectedCoal(locationid, player_type);
 
-            // if multiple exist closest, choose Eliza's closest to flipping, otherwise opponent furthest from flipping
-
-            // if neither exist, indicate to get from market
+            
         },
-        findPlayerIronClosestToFlipping: function (locationid, player_type) {
+        generateAIIronConsumption: function (locationid, player_type, neededIron) {
             // for Build
-            let player = this.getPlayerFromType(player_type);
+
+            // start with player iron (closest to flipping first)
+
+            // continue with opponent iron (furthest from flipping first)
         },
-        findOpponentIronFurthestFromFlipping: function (locationid, player_type) {
-            // for Build
-            let player = this.getPlayerFromType(player_type);
-        },
-        findClosestMatchingMarket: function (locationid, industrytype, neededBeer) {
+        generateAIBeerConsumption: function (locationid, player_type, neededBeer) {
             // for: Sell, step 2
 
-            // if multiple matching, id (clockface) order
-        },
-        findPlayerBeerClosestToFlipping: function (locationid, player_type) {  
-            // for: Sell, step 2
-            let player = this.getPlayerFromType(player_type);
-        },
-        findClosestOpponentBeer: function (locationid, player_type) {
-            // for: Sell, step 2
-            let player = this.getPlayerFromType(player_type);
+            // start with merchant beer
 
-            // if multiple exist, choose furthest from flipping
+            // continue with player beer (connected or not, closest to flipping first)
+
+            // continue with opponent beer (connected, furthest from flipping first)
         },
         findPlayerUnflippedBreweries: function (player_type) {
             let player = this.getPlayerFromType(player_type);
