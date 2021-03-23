@@ -96,6 +96,8 @@ const ELIZA = {
     linktiles: _.cloneDeep(LINK_TILES),
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
+    currentCard1: null,
+    currentCard2: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice,
     turnOrder: 1,
     nextAction: null // intended action
@@ -111,6 +113,8 @@ const ELEANOR = {
     linktiles: _.cloneDeep(LINK_TILES),
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
+    currentCard1: null,
+    currentCard2: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice,
     turnOrder: 2,
     nextAction: null // intended action
@@ -224,13 +228,10 @@ var app = new Vue({
         startGame: function() {
             this.gameHasStarted = true;
 
+            // TODO: This will be replaced with a start screen for deck types, color choice, and number of players
             this.humanPlayer.color = PLAYER_COLOR.LightBlue;
             this.eliza.color = PLAYER_COLOR.Red;
             this.eleanor.color = PLAYER_COLOR.Yellow;
-
-            // TODO: This will be replaced with a start screen for deck types, color choice, and number of players
-            this.eliza.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
-            this.eleanor.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
 
             // TEMPORARY (CHANGE THIS TO PLAYER CHOICE): set player colors
             _.forEach(this.humanPlayer.linktiles, function(p) {
@@ -253,6 +254,10 @@ var app = new Vue({
             _.forEach(this.eleanor.board, function(p) {
                 p.color = PLAYER_COLOR.Yellow;
             });
+
+            // shuffle cards
+            this.eliza.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
+            this.eleanor.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
         },
         nextGameStep: function () {
             this.currentGameStep = this.currentGameStep + 1;
@@ -260,13 +265,162 @@ var app = new Vue({
         
         // Primary action functions
         calculateAIAction: function (player_type) {
+            // this function builds the 'nextAction' object attached to the player object. It does not execute any actions.
 
+            let player = this.getPlayerFromType(player_type);
+            let action = null;
+
+            // data package, start with storing the current round
+            // use action data to describe what the AI will do and then eventually do it
+            let actiondata = {
+                round: this.currentRound
+            };
+
+            // draw two cards
+            player.currentCard1 = player.cards.shift();
+            player.currentCard2 = player.cards.shift();
+
+            let sell = false;
+
+            // if both cards are industry (non-null industry type) then SELL
+            if (player.currentCard1.industrytype && player.currentCard2.industrytype) {
+                sell = true;
+            }
+            else {
+                // TRY BUILD (first card, then second card)
+                let build = false;
+                let actioncards = [this.player.currentCard1, this.player.currentCard2];
+
+                // try each card
+                for (let cardi = 0; cardi < actioncards.length; cardi++) {
+                    let othercardi = card1 === 0 ? 1 : 0;
+
+                    let card = actioncards[cardi];
+                    let othercard = actioncards[othercardi];
+
+                    // if location card
+                    if (!card.industrytype) {
+                        let availablespaceid = null;
+
+                        // first try brewery
+                        availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.Brewery, false);
+
+                        if (availablespaceid) {
+                            // if a brewery can be built in the location, then check if AI has unflipped breweries
+                            if (!this.playerHasUnflippedBrewery(player_type)) {
+                                build = true;
+
+                                actiondata.locationid = card.locationid;
+                                actiondata.spaceid = availablespaceid;
+                                actiondata.industrytype = INDUSTRY.Brewery;
+                            }
+                        }
+
+                        if (!build) {
+                            // then try coal mine
+                            availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.CoalMine, false);
+
+                            if (availablespaceid) {
+                                // if a coal mine can be built in the location, then check if AI has unflipped coal mine
+                                if (!this.playerHasUnflippedCoalMine(player_type)) {
+                                    build = true;
+    
+                                    actiondata.locationid = card.locationid;
+                                    actiondata.spaceid = availablespaceid;
+                                    actiondata.industrytype = INDUSTRY.CoalMine;
+                                }
+                            }
+                        }
+
+                        if (!build) {
+                            // then try iron works
+                            availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.IronWorks, false);
+
+                            if (availablespaceid) {
+                                // if an iron works can be built in the location, then check if AI has unflipped coal mine
+                                if (!this.playerHasUnflippedIronWorks(player_type)) {
+                                    build = true;
+    
+                                    actiondata.locationid = card.locationid;
+                                    actiondata.spaceid = availablespaceid;
+                                    actiondata.industrytype = INDUSTRY.IronWorks;
+                                }
+                            }
+                        }
+
+                        if (!build) {
+                            // then try pottery
+                            availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.Pottery, false);
+
+                            if (availablespaceid) {
+                                build = true;
+    
+                                actiondata.locationid = card.locationid;
+                                actiondata.spaceid = availablespaceid;
+                                actiondata.industrytype = INDUSTRY.Pottery;
+                            }
+                        }
+
+                        if (!build) {
+                            // then try cotton mill
+                            availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.CottonMill, false);
+
+                            if (availablespaceid) {
+                                build = true;
+    
+                                actiondata.locationid = card.locationid;
+                                actiondata.spaceid = availablespaceid;
+                                actiondata.industrytype = INDUSTRY.CottonMill;
+                            }
+                        }
+
+                        if (!build) {
+                            // then try manufactured goods
+                            availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.Manufacturer, false);
+
+                            if (availablespaceid) {
+                                build = true;
+    
+                                actiondata.locationid = card.locationid;
+                                actiondata.spaceid = availablespaceid;
+                                actiondata.industrytype = INDUSTRY.Manufacturer;
+                            }
+                        }
+                    } else {
+                        // if industry card, try sellable goods in adjacent locations
+                        let adjacentIndustryLocations = this.findAdjacentIndustryLocations(card.locationid); 
+                    }
+
+                    if (build) {
+                        // TODO: NETWORK
+
+                        // TODO: consumption
+                    }
+                }
+
+                // if neither card could be built, sell
+                if (build) {
+                    action = AI_ACTION.BuildAndNetwork;
+                    
+                    player.nextAction = {
+                        action: action,
+                        actiondata: actiondata
+                    };
+                } else {
+                    sell = true;
+                }
+            }
+
+            // SELL
+            if (sell) {
+                action = AI_ACTION.Sell;
+            }
         },
         executeNextAction: function () {
             // use 'currentPlayer'
         },
         executeAIBuild: function (player_type) {
-            // if coal or iron, check market and move/flip
+            
         },
         executeAINetwork: function (player_type) {
 
@@ -274,7 +428,7 @@ var app = new Vue({
         executeAISell: function (player_type) {
 
         },
-        tryHumanBuildAction: function (space, tile) {
+        tryHumanBuildAction: function (locationid, spaceid, tile) {
 
         },
         tryHumanNetworkAction: function (locationid1, locationid2, tile) {
@@ -560,6 +714,12 @@ var app = new Vue({
 
 
         // -- Eliza consumption support
+        generateAIIndustryTileConsumption: function (tileid) {
+
+        },
+        generateAINetworkTileConsumption: function (tileid) {
+
+        },
         generateAICoalConsumption: function (locationid, player_type, neededCoal) {
             // for Build (all eras) and Network (Rail Era)
             let player = this.getPlayerFromType(player_type);
@@ -567,7 +727,7 @@ var app = new Vue({
 
             let connectedCoalLocations = this.findAllConnectedCoal(locationid, player_type);
 
-            
+            // TODO: generate consumption
         },
         generateAIIronConsumption: function (locationid, player_type, neededIron) {
             // for Build
@@ -654,6 +814,21 @@ var app = new Vue({
 
            return connectedCoalLocations;
         },
+        findAllUnflippedIronWorks: function () {
+            let playerIronWorksLocations = [];
+
+            playerIronWorksLocations = _.filter(this.board.locations, function(o) {
+                let ironSpaces = _.find(o.spaces, function(p) {
+                    if (p.tile) {
+                        return p.tile.industrytype === INDUSTRY.IronWorks && p.tile.availableIron > 0;
+                    }
+                    return false;
+                });
+                return ironSpaces;
+            });
+
+            return playerIronWorksLocations;
+        },
         findOpponentConnectedBeer: function (locationid, player_type) {
             // also used for Sell, step 2
             let connectedLocations = this.findAllConnectedLocations(locationid, player_type);
@@ -682,7 +857,11 @@ var app = new Vue({
             // connected opponent beer
             let connectedOpponentBeerLocations = this.findOpponentConnectedBeer(locationid, player_type);
 
-            // TODO: also get all player beer (connected or not), append and unique select
+            // all player beer
+            let playerUnflippedBreweries = this.findPlayerUnflippedBreweries(player_type);
+
+            // union and unique select, getting all consumable beer locations
+            consumableBeerLocations = _.uniqBy(_.union(connectedOpponentBeerLocations, playerUnflippedBreweries), 'id');
 
             return consumableBeerLocations;
         },
@@ -727,6 +906,28 @@ var app = new Vue({
             });
 
             return _.uniqBy(locationsInPlayerNetwork, 'id');
+        },
+        findAdjacentIndustryLocations: function (locationid) {
+            let location = this.findLocationById(locationid);
+            let edges = [];
+            let adjacentIndustryLocations = [];
+
+            if (this.currentEra === ERA.Canal) {
+                edges = location.edgesCanal;
+            } else {
+                edges = location.edgesRail;
+            }
+
+            let self = this;
+            _.forEach(edges, function (e) {
+                let adjacentlocation = self.findLocationById(e.toId);
+
+                if (adjacentlocation.type === LOCATIONTYPE.Industries) {
+                    adjacentIndustryLocations.push(adjacentlocation);
+                }
+            });
+
+            return adjacentIndustryLocations;
         },
         findAllPathsBetweenLocations: function (locationid1, targetlocationid, requireLinks, player_type) {
             // do a depth-first search to connect all locations
