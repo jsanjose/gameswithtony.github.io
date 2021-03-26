@@ -260,7 +260,10 @@ var app = new Vue({
             // data package, start with storing the current round
             // use action data to describe what the AI will do and then eventually do it
             let actiondata = {
-                round: this.currentRound
+                round: this.currentRound,
+                neededCoal: 0,
+                neededIron: 0,
+                neededBeer: 0
             };
 
             // draw two cards
@@ -495,7 +498,7 @@ var app = new Vue({
                             actiondata.neededCoal = actiondata.neededCoal + 1;
                         }
 
-                        // TODO: calculate consumption
+                        // TODO: calculate iron and coal consumption
                     }
 
                     if (build) {
@@ -522,6 +525,8 @@ var app = new Vue({
                 action = AI_ACTION.Sell;
 
                 // TODO: flip sellable market-connected industries
+
+                // TODO: calculate beer consumption
             }
 
             console.log(actiondata);
