@@ -91,6 +91,11 @@
                 </label>
                </li> 
             </ul>
+            <!--
+            <label for="useDEArt" class="useDEArt"> <input type="checkbox" v-model="useDEArt" name="useDEArt" id="useDEArt" /> Use Driver's Edition Art
+            </label>
+            -->
+            
             <button class="button" v-on:click="startGame">Start Game</button>
             <section class="instructions">
                 <ul class="instructions-list">
@@ -110,7 +115,7 @@
                 </ul>
             </section>  
         </section>
-        <section class="playerArea" v-if="gameHasStarted">
+        <section class="playerArea" v-if="gameHasStarted" v-bind:class="{ usingDEArt: useDEArt }">
             <section class="start-new">
             <a href="#" v-on:click="if (confirm('Are you sure you want to start a NEW GAME?')) { reset(); }">Start a New Game</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="loadUndoState">Undo</a>
             </section>
@@ -136,23 +141,23 @@
                 <ul class="dept-selector">
                     <li class="dept-selection" v-on:click="setDept(0)"
                     v-bind:class="{ deptSelected: currentPlayer.dept === 0, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
-                        <img class="dept-img" src="images/randd.png" />
+                        <img class="dept-img" v-bind:src="'images/' + deptImage(0)" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(1)"
                     v-bind:class="{ deptSelected: currentPlayer.dept === 1, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
-                        <img class="dept-img" src="images/assembly.png" />
+                        <img class="dept-img" v-bind:src="'images/' + deptImage(1)" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(2)"
                     v-bind:class="{ deptSelected: currentPlayer.dept === 2, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
-                        <img class="dept-img" src="images/logistics.png" />
+                        <img class="dept-img" v-bind:src="'images/' + deptImage(2)" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(3)"
                     v-bind:class="{ deptSelected: currentPlayer.dept === 3, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
-                        <img class="dept-img" src="images/design.png" />
+                        <img class="dept-img" v-bind:src="'images/' + deptImage(3)" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(4)"
                     v-bind:class="{ deptSelected: currentPlayer.dept === 4 }">
-                        <img class="dept-img" src="images/admin.png" />
+                        <img class="dept-img" v-bind:src="'images/' + deptImage(4)" />
                     </li>
                 </ul>
             </section>

@@ -424,3 +424,16 @@ a, a:visited, a:hover {
 .dim {
     opacity: 0.4;
 }
+
+.useDEArt {
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.usingDEArt .dept-selector .dept-selection {
+    padding: 0;
+}
+
+.usingDEArt .dept-img {
+    min-width: 47px;
+}

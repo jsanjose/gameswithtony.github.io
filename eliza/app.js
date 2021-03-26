@@ -154,32 +154,19 @@ var app = new Vue({
         this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 0);
         this.layIndustryTile(PLAYER_TYPE.Human, 34, 23, 0);
 
-        let paths = this.findAllPathsBetweenLocations(21, 18, false, PLAYER_TYPE.Human);
-        console.log(paths);
-
-        let connectedlocations = this.findAllConnectedLocations(21, PLAYER_TYPE.Human);
-        console.log(connectedlocations);
-
-        let optionalAIPathBetweenUnconnected = this.findOptimalAIPathBetweenUnconnectedLocations(21, 2, PLAYER_TYPE.Human);
-        console.log(optionalAIPathBetweenUnconnected);
-
         let closestUnconnectedUnflippedIndustryWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(21, PLAYER_TYPE.Human);
         console.log(closestUnconnectedUnflippedIndustryWithPath);
 
         let closestUnconnectedMerchantWithPath = this.findClosestUnconnectedMerchantWithPath(21, null, PLAYER_TYPE.Human);
         console.log(closestUnconnectedMerchantWithPath);
 
-        let connectedmarketlocations = this.findAllConnectedMarkets(21, PLAYER_TYPE.Human);
-        console.log(connectedmarketlocations);
+        let allNextTiles = this.findAllNextTilesFromPlayerBoard(PLAYER_TYPE.Human);
+        let self = this;
+        _.forEach(allNextTiles, function (t) {
+            console.log(self.industryTileToString(t));
+        });
 
-        let connectedcoallocations = this.findAllConnectedCoal(21, PLAYER_TYPE.Human);
-        console.log(connectedcoallocations);
-
-        let coalClosestToFlipping = this.findCoalClosestToFlipping(21, PLAYER_TYPE.Human);
-        console.log(coalClosestToFlipping);
-
-        let playerUnflippedIndustriesConnectedToMarket = this.findPlayerUnflippedIndustriesConnectedToMarket(PLAYER_TYPE.Human);
-        console.log(playerUnflippedIndustriesConnectedToMarket);
+        this.calculateAIAction(PLAYER_TYPE.Eliza_AI);
     },
     computed: {
         validHumanBuildLocations: function () {
@@ -277,8 +264,11 @@ var app = new Vue({
             };
 
             // draw two cards
-            player.currentCard1 = player.cards.shift();
-            player.currentCard2 = player.cards.shift();
+            player.currentCard1 = this.findCardById(player.cards.shift());
+            player.currentCard2 = this.findCardById(player.cards.shift());
+            console.log('--------------');
+            console.log(player.currentCard1.name);
+            console.log(player.currentCard2.name);
 
             let sell = false;
 
@@ -289,11 +279,11 @@ var app = new Vue({
             else {
                 // TRY BUILD (first card, then second card)
                 let build = false;
-                let actioncards = [this.player.currentCard1, this.player.currentCard2];
+                let actioncards = [player.currentCard1, player.currentCard2];
 
                 // try each card
                 for (let cardi = 0; cardi < actioncards.length; cardi++) {
-                    let othercardi = card1 === 0 ? 1 : 0;
+                    let othercardi = cardi === 0 ? 1 : 0;
 
                     let card = actioncards[cardi];
                     let othercard = actioncards[othercardi];
@@ -328,6 +318,9 @@ var app = new Vue({
                                     actiondata.locationid = card.locationid;
                                     actiondata.spaceid = availablespaceid;
                                     actiondata.industrytype = INDUSTRY.CoalMine;
+
+                                    // TODO: check if moving coal to market and flipping
+                                    // add this to actiondata (coalMoved, willFlip)
                                 }
                             }
                         }
@@ -344,6 +337,9 @@ var app = new Vue({
                                     actiondata.locationid = card.locationid;
                                     actiondata.spaceid = availablespaceid;
                                     actiondata.industrytype = INDUSTRY.IronWorks;
+
+                                    // TODO: check if moving iron to market and flipping
+                                    // add this to actiondata (ironMoved, willFlip)
                                 }
                             }
                         }
@@ -388,17 +384,126 @@ var app = new Vue({
                         }
                     } else {
                         // if industry card, try sellable goods in adjacent locations
-                        let adjacentIndustryLocations = this.findAdjacentIndustryLocations(card.locationid); 
+                        let adjacentIndustryLocations = this.findAdjacentIndustryLocationsForAI(othercard.locationid);
+                        let availablespaceid = null;
+                        
+                        let self = this;
+                        _.forEach(adjacentIndustryLocations, function (l) {
+                            if (!build) {
+                                // then try pottery
+                                availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.Pottery, false);
+    
+                                if (availablespaceid) {
+                                    build = true;
+        
+                                    actiondata.locationid = l.id;
+                                    actiondata.spaceid = availablespaceid;
+                                    actiondata.industrytype = INDUSTRY.Pottery;
+                                }
+                            }
+    
+                            if (!build) {
+                                // then try cotton mill
+                                availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.CottonMill, false);
+    
+                                if (availablespaceid) {
+                                    build = true;
+        
+                                    actiondata.locationid = l.id;
+                                    actiondata.spaceid = availablespaceid;
+                                    actiondata.industrytype = INDUSTRY.CottonMill;
+                                }
+                            }
+    
+                            if (!build) {
+                                // then try manufactured goods
+                                availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.Manufacturer, false);
+    
+                                if (availablespaceid) {
+                                    build = true;
+        
+                                    actiondata.locationid = l.id;
+                                    actiondata.spaceid = availablespaceid;
+                                    actiondata.industrytype = INDUSTRY.Manufacturer;
+                                }
+                            }
+
+                            if (build) {
+                                return false;
+                            }
+                        });
                     }
 
                     if (build) {
-                        // TODO: NETWORK
+                        // Find tile to place from player board
+                        let industrytile = this.findNextTileFromPlayerBoard(player_type, actiondata.industrytype);
+                        actiondata.industrytile = industrytile;
 
-                        // TODO: consumption
+                        // Calculate network
+                        let addVPNoLink = 5;
+                        let addVPRailEra = 5;
+                        let closestWithPath = null; // closest unconnected
+                        actiondata.addVP = 0;
+                        // if brewery, coal mine, or iron works
+                        if (actiondata.industrytype === 0 || actiondata.industrytype === 4 || actiondata.industrytype === 5) {
+                            closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type);
+
+                            if (!closestWithPath) {
+                                actiondata.addVP = addVPNoLink;
+                            } 
+                        }
+                        
+                        // if pottery, cotton mill, or manufactured goods
+                        if (actiondata.industrytype === 1 || actiondata.industrytype === 2 || actiondata.industrytype === 3) {
+                            closestWithPath = this.findClosestUnconnectedMerchantWithPath(actiondata.locationid, actiondata.industryptype, player_type);
+
+                            if (!closestWithPath) {
+                                actiondata.addVP = addVPNoLink;
+                            } 
+                        }
+
+                        // find tile to lay (first missing tile along the path)
+                        if (closestWithPath) {
+                            let path = closestWithPath.path;
+                            for (let i=0;i<path.length;i++) {
+                                let currentlocation = path[i];
+                                let nexttargetlocation = path[i+1];
+
+                                let edges = null;
+                                if (this.currentEra === ERA.Canal) {
+                                    edges = currentlocation.edgesCanal;
+                                } else {
+                                    edges = currentlocation.edgesRail;
+                                }
+
+                                // check if there is a tile on this portion of the path
+                                let edge = _.find(edges, function (e) {
+                                    return e.toId === nexttargetlocation.id;
+                                });
+
+                                if (!edge.tile) {
+                                    actiondata.linktargetlocationid1 = currentlocation.id;
+                                    actiondata.linktargetlocationid2 = nexttargetlocation.id;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // if we are linking in the rail era, a coal will be needed (plus 5VP for every network action)
+                        if (actiondata.linktargetlocationid && this.currentEra === ERA.Rail) {
+                            actiondata.addVP = actiondata.addVP + addVPRailEra;
+                            actiondata.neededCoal = actiondata.neededCoal + 1;
+                        }
+
+                        // TODO: calculate consumption
+                    }
+
+                    if (build) {
+                        break;
                     }
                 }
 
-                // if neither card could be built, sell
+                // if built, set the nextaction 
                 if (build) {
                     action = AI_ACTION.BuildAndNetwork;
                     
@@ -407,6 +512,7 @@ var app = new Vue({
                         actiondata: actiondata
                     };
                 } else {
+                    // if neither card could be built, sell
                     sell = true;
                 }
             }
@@ -414,16 +520,17 @@ var app = new Vue({
             // SELL
             if (sell) {
                 action = AI_ACTION.Sell;
+
+                // TODO: flip sellable market-connected industries
             }
+
+            console.log(actiondata);
         },
         executeNextAction: function () {
             // use 'currentPlayer'
         },
-        executeAIBuild: function (player_type) {
+        executeAIBuildAndNetwork: function (player_type) {
             
-        },
-        executeAINetwork: function (player_type) {
-
         },
         executeAISell: function (player_type) {
 
@@ -907,7 +1014,7 @@ var app = new Vue({
 
             return _.uniqBy(locationsInPlayerNetwork, 'id');
         },
-        findAdjacentIndustryLocations: function (locationid) {
+        findAdjacentIndustryLocationsForAI: function (locationid) {
             let location = this.findLocationById(locationid);
             let edges = [];
             let adjacentIndustryLocations = [];
@@ -920,10 +1027,12 @@ var app = new Vue({
 
             let self = this;
             _.forEach(edges, function (e) {
-                let adjacentlocation = self.findLocationById(e.toId);
+                if (!(self.numberOfPlayers == '2' && e.toId < 8)) { // AI in two-player game ignores everything north of Stafford
+                    let adjacentlocation = self.findLocationById(e.toId);
 
-                if (adjacentlocation.type === LOCATIONTYPE.Industries) {
-                    adjacentIndustryLocations.push(adjacentlocation);
+                    if (adjacentlocation.type === LOCATIONTYPE.Industries) {
+                        adjacentIndustryLocations.push(adjacentlocation);
+                    }
                 }
             });
 
@@ -1064,6 +1173,22 @@ var app = new Vue({
                 return o.id === id;
             });
         },
+        findNextTileFromPlayerBoard: function (player_type, industrytype) {
+            let player = this.getPlayerFromType(player_type);
+
+            return _.find(player.board, function (t) {
+                return t.industrytype === industrytype;
+            });
+        },
+        findAllNextTilesFromPlayerBoard: function (player_type) {
+            let allNextTiles = [];
+
+            for (let i=0;i<5;i++) {
+                allNextTiles.push(this.findNextTileFromPlayerBoard(player_type, i));
+            }
+
+            return allNextTiles;
+        },
         getPlayerFromType: function (player_type) {
             switch (player_type) {
                 case PLAYER_TYPE.Human: return this.humanPlayer;
@@ -1079,7 +1204,7 @@ var app = new Vue({
             return _.cloneDeep(card);
         },
         industryTileToString: function (tile) {
-            return industryStringMap[tile.industryType] + ' ' + romanize(tile.level);
+            return industryStringMap[tile.industrytype] + ' (Level ' + romanize(tile.level) + ')';
         },
         // -- end Supporting logical methods
 

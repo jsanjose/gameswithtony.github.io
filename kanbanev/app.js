@@ -127,6 +127,7 @@ var app = new Vue({
       difficultyCards: [
           { id: 0, include: false }, { id: 1, include: false }, { id: 2, include: false }, { id: 3, include: false }, { id: 4, include: false }, { id: 5, include: false }, { id: 6, include: false }, { id: 7, include: false }, { id: 8, include: false }
       ],
+      useDEArt: false,
       undoState: {}
     },
     mounted: function() {
@@ -161,6 +162,10 @@ var app = new Vue({
 
             if (gameState.undoState) {
                 this.undoState = _.cloneDeep(gameState.undoState);
+            }
+
+            if (gameState.hasOwnProperty('useDEArt')) {
+                this.useDEArt = gameState.useDEArt;
             }
         }
         else {
@@ -685,19 +690,19 @@ var app = new Vue({
       deptImage: function (dept) {
         switch (dept) {
             case 0:
-                return "randd.png";
+                return this.useDEArt ? "de_randd.png" : "randd.png";
                 break;
             case 1:
-                return "assembly.png";
+                return this.useDEArt ? "de_assembly.png" : "assembly.png";
                 break;
             case 2:
-                return "logistics.png";
+                return this.useDEArt ? "de_logistics.png" : "logistics.png";
                 break;
             case 3:
-                return "design.png"
+                return this.useDEArt ? "de_design.png" : "design.png"
                 break;
             case 4:
-                return "admin.png"
+                return this.useDEArt ? "de_admin.png" : "admin.png"
                 break;
         }
       },
@@ -809,6 +814,7 @@ var app = new Vue({
         this.difficultyCards = [
             { id: 0, include: false }, { id: 1, include: false }, { id: 2, include: false }, { id: 3, include: false }, { id: 4, include: false }, { id: 5, include: false }, { id: 6, include: false }, { id: 7, include: false }, { id: 8, include: false }
         ];
+        this.useDEArt = false;
         this.undoState = {};
         this.saveGameState();
       },
@@ -828,6 +834,7 @@ var app = new Vue({
         gameState.lacerdaTrainingTrack = this.lacerdaTrainingTrack;
         gameState.turcziTrainingTrack = this.turcziTrainingTrack;
         gameState.difficultyCards = this.difficultyCards;
+        gameState.useDEArt = this.useDEArt;
         gameState.undoState = this.undoState;
         localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
 
