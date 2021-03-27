@@ -152,19 +152,14 @@ var app = new Vue({
         this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
         this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);
         this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 0);
-        this.layIndustryTile(PLAYER_TYPE.Human, 34, 23, 0);
+        this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 37, 23, 0);
+        this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 23, 26);
 
         let closestUnconnectedUnflippedIndustryWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(21, PLAYER_TYPE.Human);
         console.log(closestUnconnectedUnflippedIndustryWithPath);
 
         let closestUnconnectedMerchantWithPath = this.findClosestUnconnectedMerchantWithPath(21, null, PLAYER_TYPE.Human);
         console.log(closestUnconnectedMerchantWithPath);
-
-        let allNextTiles = this.findAllNextTilesFromPlayerBoard(PLAYER_TYPE.Human);
-        let self = this;
-        _.forEach(allNextTiles, function (t) {
-            console.log(self.industryTileToString(t));
-        });
 
         this.calculateAIAction(PLAYER_TYPE.Eliza_AI);
     },
@@ -276,7 +271,7 @@ var app = new Vue({
             let sell = false;
 
             // if both cards are industry (non-null industry type) then SELL
-            if (player.currentCard1.industrytype && player.currentCard2.industrytype) {
+            if (!player.currentCard1.locationid && !player.currentCard2.locationid) {
                 sell = true;
             }
             else {
@@ -292,7 +287,7 @@ var app = new Vue({
                     let othercard = actioncards[othercardi];
 
                     // if location card
-                    if (!card.industrytype) {
+                    if (card.locationid) {
                         let availablespaceid = null;
 
                         // first try brewery
@@ -431,6 +426,7 @@ var app = new Vue({
                                 }
                             }
 
+                            // once we found a build, no more searching needed
                             if (build) {
                                 return false;
                             }
@@ -524,12 +520,20 @@ var app = new Vue({
             if (sell) {
                 action = AI_ACTION.Sell;
 
-                // TODO: flip sellable market-connected industries
+                // find sellable market-connected industries
+                let playerunflippedsellableindustriesconnectedtomarket = this.findPlayerUnflippedSellableIndustriesConnectedToMarket(player_type);
+
+                actiondata.industriestosell = playerunflippedsellableindustriesconnectedtomarket;
 
                 // TODO: calculate beer consumption
+
+                player.nextAction = {
+                    action: action,
+                    actiondata: actiondata
+                };
             }
 
-            console.log(actiondata);
+            console.log(player.nextAction);
         },
         executeNextAction: function () {
             // use 'currentPlayer'
@@ -737,42 +741,45 @@ var app = new Vue({
 
             return chosenLocationWithPath;
         },
-        findPlayerUnflippedIndustries: function (player_type) {
+        findPlayerUnflippedSellableIndustries: function (player_type) {
             // for: Sell, step 1
             let player = this.getPlayerFromType(player_type);
 
-            let playerUnflippedIndustryLocations = [];
-
-            playerUnflippedIndustryLocations = _.filter(this.board.locations, function(o) {
-                let spaces = _.find(o.spaces, function(p) {
-                    if (p.tile && p.tile.color === player.color) {
-                        return !p.tile.flipped;
-                    }
-                    return false;
-                });
-                return o.type === LOCATIONTYPE.Industries && spaces;
-            });
-
-            return playerUnflippedIndustryLocations;
-        },
-        findPlayerUnflippedIndustriesConnectedToMarket: function (player_type) {
-            // for: Sell, step 1 and 2
-            // use "findAllConnectedMarkets" for each unflipped industry
-
-            let playerUnflippedIndustryLocations = this.findPlayerUnflippedIndustries(player_type);
-
-            let playerUnflippedIndustriesConnectedToMarket = [];
+            let playerUnflippedSellableIndustryLocations = [];
 
             let self = this;
-            _.forEach(playerUnflippedIndustryLocations, function (l) {
-                let connectedMarkets = self.findAllConnectedMarkets(l.id, player_type);
-
-                if (connectedMarkets && connectedMarkets.length > 0) {
-                    playerUnflippedIndustriesConnectedToMarket.push(l);
+            _.forEach(self.board.locations, function(o) {
+                if (o.type === LOCATIONTYPE.Industries) {
+                    o.spaceids = [];
+                    _.forEach(o.spaces, function(p) {
+                        if (p.tile && p.tile.color === player.color && !p.tile.flipped && (p.tile.industrytype === INDUSTRY.Manufacturer || p.tile.industrytype === INDUSTRY.CottonMill || p.tile.industrytype === INDUSTRY.Pottery)) {
+                            o.spaceids.push(p.id);
+                            playerUnflippedSellableIndustryLocations.push(o);
+                        }
+                    });
                 }
             });
 
-            return playerUnflippedIndustriesConnectedToMarket;
+            return playerUnflippedSellableIndustryLocations;
+        },
+        findPlayerUnflippedSellableIndustriesConnectedToMarket: function (player_type) {
+            // for: Sell, step 1 and 2
+            // use "findAllConnectedMarkets" for each unflipped industry
+
+            let playerUnflippedSellableIndustryLocations = this.findPlayerUnflippedSellableIndustries(player_type);
+
+            let playerUnflippedSellableIndustriesConnectedToMarket = [];
+
+            let self = this;
+            _.forEach(playerUnflippedSellableIndustryLocations, function (l) {
+                let connectedMarkets = self.findAllConnectedMarkets(l.id, player_type);
+
+                if (connectedMarkets && connectedMarkets.length > 0) {
+                    playerUnflippedSellableIndustriesConnectedToMarket.push(l);
+                }
+            });
+
+            return playerUnflippedSellableIndustriesConnectedToMarket;
         },
         findAllUnflippedIndustries: function () {
             let unflippedIndustryLocations = [];
