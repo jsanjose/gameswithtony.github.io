@@ -3,6 +3,12 @@ const LOCALSTORAGENAME = 'elizagamestate';
 const PLAYER_TYPE = { Human: 0, Eliza_AI: 1, Eleanor_AI: 2 };
 
 const PLAYER_COLOR = { LightBlue: 0, Blue: 1, Red: 2, Yellow: 3 };
+const colorMap = {
+    0: "Light Blue",
+    1: "Blue",
+    2: "Red",
+    3: "Yellow"
+ };
 
 const GAME_STEPS = {
     Setup: 0,
@@ -32,7 +38,7 @@ const eraStringMap = {
 const INDUSTRY = { Brewery: 0, Manufacturer: 1, CottonMill: 2, Pottery: 3, CoalMine: 4, IronWorks: 5 };
 const industryStringMap = {
     0: "Brewery",
-    1: "Manufacturer",
+    1: "Manufactured Goods",
     2: "Cotton Mill",
     3: "Pottery",
     4: "Coal Mine",

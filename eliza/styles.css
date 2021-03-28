@@ -144,3 +144,33 @@ a, a:visited, a:hover {
     margin-bottom: .25rem;
     font-size: 0.9rem;
 }
+
+/* --- Board State --- */
+.boardstate {
+    font-size: 0.95rem;
+}
+
+.boardstate h2 {
+    font-size: 1rem;
+    text-align: left;
+}
+
+.boardstate__locations {
+    list-style: none;
+    text-align: left;
+}
+
+.boardstate__location {
+    border: solid 1px #ccc;
+    padding: .5rem;
+    margin-bottom: 1rem;
+}
+
+.boardstate__industrytiles {
+    list-style: none;
+}
+
+.boardstate__adjacentlocations {
+    list-style: none;
+    border-top: dashed 1px #ccc;
+}

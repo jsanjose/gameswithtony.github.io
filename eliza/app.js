@@ -81,6 +81,7 @@ const HUMAN_PLAYER = {
     color: null,
     board: _.cloneDeep(INITIAL_HUMAN_BOARD),
     linktiles: _.cloneDeep(LINK_TILES),
+    amountSpent: 0, // to calculate turn order
     turnOrder: 0,
     currentTurnIndex: 0, // human player takes two actions
     nextAction: null // intended action
@@ -94,6 +95,7 @@ const ELIZA = {
     color: null,
     board: _.cloneDeep(INITIAL_AI_BOARD),
     linktiles: _.cloneDeep(LINK_TILES),
+    amountSpent: 0, // to calculate turn order
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
     currentCard1: null,
@@ -111,6 +113,7 @@ const ELEANOR = {
     color: null,
     board: _.cloneDeep(INITIAL_AI_BOARD),
     linktiles: _.cloneDeep(LINK_TILES),
+    amountSpent: 0, // to calculate turn order
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
     currentCard1: null,
@@ -154,12 +157,6 @@ var app = new Vue({
         this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 0);
         this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 37, 23, 0);
         this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 23, 26);
-
-        let closestUnconnectedUnflippedIndustryWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(21, PLAYER_TYPE.Human);
-        console.log(closestUnconnectedUnflippedIndustryWithPath);
-
-        let closestUnconnectedMerchantWithPath = this.findClosestUnconnectedMerchantWithPath(21, null, PLAYER_TYPE.Human);
-        console.log(closestUnconnectedMerchantWithPath);
 
         this.calculateAIAction(PLAYER_TYPE.Eliza_AI);
     },
@@ -241,9 +238,6 @@ var app = new Vue({
             this.eliza.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
             this.eleanor.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
         },
-        nextGameStep: function () {
-            this.currentGameStep = this.currentGameStep + 1;
-        },
         
         // Primary action functions
         calculateAIAction: function (player_type) {
@@ -264,7 +258,6 @@ var app = new Vue({
             // draw two cards
             player.currentCard1 = this.findCardById(player.cards.shift());
             player.currentCard2 = this.findCardById(player.cards.shift());
-            console.log('--------------');
             console.log(player.currentCard1.name);
             console.log(player.currentCard2.name);
 
@@ -540,14 +533,30 @@ var app = new Vue({
         },
         executeAIBuildAndNetwork: function (player_type) {
             
+            // TODO: At end, add amount spent
         },
         executeAISell: function (player_type) {
 
+            // TODO: At end, add amount spent
         },
         tryHumanBuildAction: function (locationid, spaceid, tile) {
 
+            // TODO: At end, add amount spent
         },
         tryHumanNetworkAction: function (locationid1, locationid2, tile) {
+
+            // TODO: At end, add amount spent
+        },
+        setHumanActionType: function (type) {
+
+        },
+        setHumanLocationId: function (locationid) {
+
+        },
+        setHumanTargetLocationId: function (locationid) {
+
+        },
+        setHumanConsumption: function (consumedata) {
 
         },
         // end: Primary action functions
@@ -624,6 +633,9 @@ var app = new Vue({
 
             edge1.tile = linktile1;
             edge2.tile = linktile2;
+        },
+        updateTurnOrder: function () {
+            // TODO: Calculate turn order based on amount spent
         },
 
         // -- Eliza rule support
@@ -1201,12 +1213,64 @@ var app = new Vue({
 
             return allNextTiles;
         },
+        findMainBoardIndustryTileById: function(locationid, tileid) {
+            let self = this;
+            let location = this.findLocationById(locationid);
+            let space = _.find(location.spaces, function (s) {
+                return s.tile && s.tile.id === tileid;
+            });
+
+            return space.tile;
+        },
+        findSpacesWithTiles: function (spaces) {
+            return _.filter(spaces, function (s) {
+                return s.tile;s
+            });
+        },
+        reportAdjacentLocations: function (locationid) {
+            let location = this.findLocationById(locationid);
+
+            let edges = [];
+            let adjacentIndustryLocations = [];
+
+            if (this.currentEra === ERA.Canal) {
+                edges = location.edgesCanal;
+            } else {
+                edges = location.edgesRail;
+            }
+
+            let self = this;
+            _.forEach(edges, function (e) {
+                if (e.tile) {
+                    let adjacentlocation = self.findLocationById(e.toId);
+                    adjacentIndustryLocations.push(adjacentlocation);
+                }
+            });
+
+            return adjacentIndustryLocations;
+        },
         getPlayerFromType: function (player_type) {
             switch (player_type) {
                 case PLAYER_TYPE.Human: return this.humanPlayer;
                 case PLAYER_TYPE.Eliza_AI: return this.eliza;
                 case PLAYER_TYPE.Eleanor_AI: return this.eleanor;
             }
+        },
+        getPlayerStringFromColor: function (color) {
+            if (color === this.humanPlayer.color) {
+                return 'Your';
+            }
+
+            if (color === this.eliza.color) {
+                return 'Eliza';
+            }
+
+            if (color === this.eleanor.color) {
+                return 'Eleanor';
+            }
+        },
+        colorString: function (color) {
+            return colorMap[color];
         },
         findCardById: function (id) {
             let card = _.find(CARDS, function(c) {
@@ -1215,11 +1279,39 @@ var app = new Vue({
 
             return _.cloneDeep(card);
         },
+        boardIndustryTileToString: function (locationid, tileid) {
+            let tile = this.findMainBoardIndustryTileById(locationid, tileid);
+            return this.industryTileToString(tile);
+        },
         industryTileToString: function (tile) {
             return industryStringMap[tile.industrytype] + ' (Level ' + romanize(tile.level) + ')';
         },
+        boardIndustryTileToStringWithResources: function (locationid, tileid) {
+            let tile = this.findMainBoardIndustryTileById(locationid, tileid);
+            let tilestring = industryStringMap[tile.industrytype] + ' (Level ' + romanize(tile.level) + ')';
+
+            if (tile.availableCoal > 0) {
+                tilestring = tilestring + ' [' + tile.availableCoal + ' coal left]';
+            }
+
+            if (tile.availableIron > 0) {
+                tilestring = tilestring + ' [' + tile.availableIron + ' iron left]';
+            }
+
+            if (tile.availableBeer > 0) {
+                tilestring = tilestring + ' [' + tile.availableBeer + ' beer left]';
+            }
+
+            tilestring = tilestring + (tile.flipped ? '[Flipped]' : '[Unflipped]');
+
+            return tilestring;
+        },
         // -- end Supporting logical methods
 
+        toggleShowBoardState: function () {
+            this.showBoardState = this.showBoardState ? false : true;
+            return false;
+        },
         reset: function () {
             this.numberOfPlayers = 2;
             this.gameHasStarted = false;

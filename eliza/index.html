@@ -87,9 +87,30 @@
             <section v-if="currentGameStep === 3">
                 Eleanor
             </section>
-            <a href="#">View Board State</a>
+            <a href="#" v-on:click="toggleShowBoardState">View Board State</a>
             <section class="button-container">
-                <button class="button" v-on:click="nextGameStep">Next >></button>
+                <button class="button">Next >></button>
+            </section>
+            <section class="boardstate" v-if="showBoardState">
+                <h2>Board State</h2>
+                <a href="#" v-on:click="toggleShowBoardState">(X) Close</a>
+                <p>"X :" - a space with an industry tile</p>
+                <p>"-->" - a link tile</p>
+                <ul class="boardstate__locations">
+                    <li class="boardstate__location" v-for="location in board.locations" :key="location.id">
+                        {{ location.name }}
+                        <ul class="boardstate__industrytiles">
+                            <li v-for="space in findSpacesWithTiles(location.spaces)" :key="location.id">
+                                <p v-if="space.tile">{{ space.id + 1 }} : [{{ colorString(space.tile.color) }}] {{ boardIndustryTileToStringWithResources(location.id, space.tile.id) }}</p>
+                            </li>
+                        </ul>
+                        <ul class="boardstate__adjacentlocations">
+                            <li v-for="adjacentLocation in reportAdjacentLocations(location.id)" :key="location.id">
+                                <p>--> {{ adjacentLocation.name }}</p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </section>
         </section>
     </main>
