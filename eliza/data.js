@@ -90,8 +90,10 @@ const MERCHANT_TILES = [
 // adjacency listed in clockface order
 const INITIAL_BOARD = {
     market: {
-        usedCoal: 1,
-        usedIron: 1
+        coalInMarket: 12,
+        ironInMarket: 9,
+        totalPossibleCoal: 14,
+        totalPossibleIron: 10
     },
     locations: [
         {
