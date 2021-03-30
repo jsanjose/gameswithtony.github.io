@@ -148,6 +148,20 @@ a, a:visited, a:hover {
 /* --- Board State --- */
 .boardstate {
     font-size: 0.95rem;
+    max-width: 500px;
+    min-height: 100vh;
+    z-index: 1;
+    background-color: white;
+    position: absolute;
+    border: solid 1px black;
+    padding: 1rem;
+}
+
+.boardstate_close {
+    display: block;
+    width: 100%;
+    text-align: right;
+    margin-bottom: 1rem;
 }
 
 .boardstate h2 {
@@ -155,15 +169,30 @@ a, a:visited, a:hover {
     text-align: left;
 }
 
+.boardstate__instructions {
+    margin: 0;
+}
+
+.boardstate__marketspaces {
+    font-weight: bold;
+}
+
 .boardstate__locations {
     list-style: none;
     text-align: left;
+    padding-left: 0;
 }
 
 .boardstate__location {
     border: solid 1px #ccc;
     padding: .5rem;
     margin-bottom: 1rem;
+    box-shadow: 3px 3px 3px #ccc;
+}
+
+.boardstate__locationname {
+    font-weight: bold;
+    margin: 0;
 }
 
 .boardstate__industrytiles {
@@ -173,4 +202,8 @@ a, a:visited, a:hover {
 .boardstate__adjacentlocations {
     list-style: none;
     border-top: dashed 1px #ccc;
+}
+
+.boardstate__adjacentlocation {
+    font-style: italic;
 }

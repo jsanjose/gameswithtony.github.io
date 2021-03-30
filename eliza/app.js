@@ -84,6 +84,9 @@ var app = new Vue({
     data: {
         computedUpdater: 0,
         numberOfPlayers: 2,
+        useTurnOrder: false,
+        soldInCanalEra: false,
+        soldInRailEra: false,
         gameHasStarted: false,
         currentRound: 0,
         currentGameStep: GAME_STEPS.Setup,
@@ -101,19 +104,6 @@ var app = new Vue({
 
         this.startGame();
 
-        // TEMPORARY (remove this later): setup board state
-        this.layIndustryTile(PLAYER_TYPE.Human, 0, 21, 0);
-        this.layNetworkTile(PLAYER_TYPE.Human, 21, 18);
-        this.layNetworkTile(PLAYER_TYPE.Human, 21, 14);
-        this.layNetworkTile(PLAYER_TYPE.Human, 14, 15);
-        this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 15, 18);
-        this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
-        this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
-        this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);
-        this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 1);
-        this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 37, 23, 0);
-        this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 23, 26);
-
         let connectedCoal = this.findAllConnectedCoal(15, PLAYER_TYPE.Human);
         console.log(connectedCoal);
 
@@ -123,6 +113,12 @@ var app = new Vue({
         this.calculateAIAction(PLAYER_TYPE.Eliza_AI);
     },
     computed: {
+        totalEmptyMarketCoalSpaces: function () {
+            return this.board.market.totalPossibleCoal - this.board.market.coalInMarket;
+        },
+        totalEmptyMarketIronSpaces: function () {
+            return this.board.market.totalPossibleIron - this.board.market.ironInMarket;
+        },
         validHumanBuildLocations: function () {
             let locations = [];
             let self = this;
@@ -152,7 +148,6 @@ var app = new Vue({
             return _.sortBy(locations, 'name');
         },
         validHumanNetworkLocations: function() {
-            this.computedUpdater++;
             let locations = this.findAllLocationsInNetwork(PLAYER_TYPE.Human);
 
             if (locations.length === 0) {
@@ -169,7 +164,6 @@ var app = new Vue({
         startGame: function() {
             this.gameHasStarted = true;
 
-            // TODO: This will be replaced with a start screen for deck types, color choice, and number of players
             this.humanPlayer.color = PLAYER_COLOR.LightBlue;
             this.eliza.color = PLAYER_COLOR.Red;
             this.eleanor.color = PLAYER_COLOR.Yellow;
@@ -200,7 +194,11 @@ var app = new Vue({
             this.eliza.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
             this.eleanor.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
 
-            // TODO: Setup merchant tiles (displayed to user as initial setup)
+            // Setup merchant tiles
+            this.setupMerchantTiles();
+
+            // TEMPORARY: Setup board
+            this.debugSetupTestBoard();
         },
         
         // Primary action functions
@@ -216,7 +214,8 @@ var app = new Vue({
                 round: this.currentRound,
                 neededCoal: 0,
                 neededIron: 0,
-                neededBeer: 0
+                neededBeer: 0,
+                consumedata: {}
             };
 
             // draw two cards
@@ -426,6 +425,9 @@ var app = new Vue({
                         // Find tile to place from player board
                         let industrytile = this.findNextTileFromPlayerBoard(player_type, actiondata.industrytype);
                         actiondata.industrytile = industrytile;
+                    
+                        actiondata.neededCoal = actiondata.neededCoal + industrytile.coalCost;
+                        actiondata.neededIron = actiondata.neededIron + industrytile.ironCost;
 
                         // Calculate network
                         let addVPNoLink = 5;
@@ -483,7 +485,19 @@ var app = new Vue({
                             actiondata.neededCoal = actiondata.neededCoal + 1;
                         }
 
-                        // TODO: calculate iron and coal consumption
+                        // calculate iron and coal consumption
+                        let coalConsumption = null;
+                        let ironConsumption = null;
+
+                        if (actiondata.neededCoal > 0) {
+                            coalConsumption = this.generateAICoalConsumption(actiondata.locationid, player_type, actiondata.neededCoal);
+                            actiondata.consumedata.coalConsumption = coalConsumption;
+                        }
+
+                        if (actiondata.neededIron > 0) {
+                            ironConsumption = this.generateAIIronConsumption(actiondata.locationid, player_type, actiondata.neededIron);
+                            actiondata.consumedata.ironConsumption = ironConsumption;
+                        }
                     }
 
                     if (build) {
@@ -557,7 +571,27 @@ var app = new Vue({
         },
         // end: Primary action functions
 
+        getMerchantLocationIds: function () {
+            let merchantLocationIds = [13, 24, 26];
+    
+            if (this.numberOfPlayers === 3) {
+                merchantLocationIds.push(0);
+            }
 
+            if (this.numberOfPlayers === 4) {
+                merchantLocationIds.push(7);
+            }
+
+            return _.sortBy(merchantLocationIds);
+        },
+        setupMerchantTiles: function () {
+            let merchantTiles = _.shuffle(_.filter(MERCHANT_TILES, function (t) {
+                return t.minPlayers <= this.numberOfPlayers;
+            }));
+
+            // lay tiles in each merchant location
+            let merchantLocationIds = this.getMerchantLocationIds();
+        },
         layIndustryTile: function (player_type, tileid, locationid, spaceid) {
             // This function does no error checking. 'tryHumanBuildAction' does error checking, and is otherwise used by the AI bots directly.
 
@@ -631,7 +665,10 @@ var app = new Vue({
             edge2.tile = linktile2;
         },
         updateTurnOrder: function () {
-            // TODO: Calculate turn order based on amount spent
+            // Calculate turn order based on amount spent
+            if (this.useTurnOrder) {
+
+            }
         },
 
         // -- Eliza rule support
@@ -899,6 +936,21 @@ var app = new Vue({
                             coalConsumption.push(spaceConsumeData);
                         }
                     });
+
+                    // whatever is left take from market
+                    if (neededCoal > consumedCoal) {
+                        let spaceConsumeData = {
+                            locationid: -1,
+                            spaceid: -1,
+                            coalConsumed: 0,
+                            willFlip: false
+                        }
+                        for (let i=0; i < neededCoal - consumedCoal; i++) {
+                            spaceConsumeData.coalConsumed = spaceConsumeData.coalConsumed + 1;
+                            consumedCoal++;
+                        }
+                        coalConsumption.push(spaceConsumeData);
+                    }
                 });
             });
 
@@ -907,9 +959,80 @@ var app = new Vue({
         generateAIIronConsumption: function (locationid, player_type, neededIron) {
             // for Build
 
-            // start with player iron (closest to flipping first)
+            let player = this.getPlayerFromType(player_type);
+            let consumedIron = 0;
+            let ironConsumption = [];
 
-            // continue with opponent iron (furthest from flipping first)
+            let unflippedIronLocations = this.findAllUnflippedIronWorks(locationid, player_type);
+
+            _.forEach(unflippedIronLocations, function (l) {
+                let playerIronSpaces = _.filter(l.ironspaces, function (pis) {
+                    return pis.tile.color === player.color;
+                });
+                let sortedPlayerIronSpaces = _.sortBy(playerIronSpaces, function (s) {
+                    return s.tile.availableIron;
+                });
+
+                let opponentIronSpaces = _.filter(l.ironspaces, function (pis) {
+                    return pis.tile.color !== player.color;
+                });
+                let sortedOpponentIronSpaces = _.orderBy(opponentIronSpaces, [function (s) { return s.tile.availableIron }], ['desc']);
+
+                _.forEach(sortedPlayerIronSpaces, function (pcs) {
+                    if (neededIron > consumedIron) {
+                        let spaceConsumeData = {
+                            locationid: l.id,
+                            spaceid: pis.id,
+                            ironConsumed: 0,
+                            willFlip: false
+                        };
+                        
+                        for (let i=0; i < pis.tile.availableIron; i++) {
+                            if (neededIron > consumedIron) {
+                                spaceConsumeData.ironConsumed = spaceConsumeData.ironConsumed + 1;
+                                consumedIron++;
+                            }
+                        }
+                        spaceConsumeData.willFlip = (spaceConsumeData.ironConsumed === pis.tile.availableIron);
+                        ironConsumption.push(spaceConsumeData);
+                    }
+                });
+
+                _.forEach(sortedOpponentIronSpaces, function (ois) {
+                    if (neededIron > consumedIron) {
+                        let spaceConsumeData = {
+                            locationid: l.id,
+                            spaceid: ois.id,
+                            ironConsumed: 0,
+                            willFlip: false
+                        };
+                        
+                        for (let i=0; i < ois.tile.availableIron; i++) {
+                            if (neededIron > consumedIron) {
+                                spaceConsumeData.ironConsumed = spaceConsumeData.ironConsumed + 1;
+                                consumedIron++;
+                            }
+                        }
+                        spaceConsumeData.willFlip = (spaceConsumeData.ironConsumed === ois.tile.availableIron);
+                        ironConsumption.push(spaceConsumeData);
+                    }
+                });
+
+                // whatever is left take from market
+                if (neededIron > consumedIron) {
+                    let spaceConsumeData = {
+                        locationid: -1,
+                        spaceid: -1,
+                        ironConsumed: 0,
+                        willFlip: false
+                    }
+                    for (let i=0; i < neededIron - consumedIron; i++) {
+                        spaceConsumeData.ironConsumed = spaceConsumeData.ironConsumed + 1;
+                        consumedIron++;
+                    }
+                    ironConsumption.push(spaceConsumeData);
+                }
+            });
         },
         generateAIBeerConsumption: function (locationid, player_type, neededBeer, industryTypes) {
             // for: Sell, step 2
@@ -984,7 +1107,7 @@ var app = new Vue({
                         return false;
                     });
 
-                    if (coalSpaces.length > 0) {
+                    if (coalSpaces && coalSpaces.length > 0) {
                         o.coalspaces = coalSpaces;
                         connectedCoalLocations.push(o);
                     }
@@ -1004,7 +1127,7 @@ var app = new Vue({
                     return false;
                 });
 
-                if (ironSpaces.length > 0) {
+                if (ironSpaces && ironSpaces.length > 0) {
                     o.ironspaces = ironSpaces;
                     playerIronWorksLocations.push(o);
                 }
@@ -1081,7 +1204,6 @@ var app = new Vue({
             return false;
         },
         findAllLocationsInNetwork: function (player_type) {
-            // TODO: when the human chooses to network, use this to show list of possible starting points
             let player = this.getPlayerFromType(player_type);
             let locationsInPlayerNetwork = [];
 
@@ -1280,7 +1402,7 @@ var app = new Vue({
         },
         findSpacesWithTiles: function (spaces) {
             return _.filter(spaces, function (s) {
-                return s.tile;s
+                return s.tile;
             });
         },
         reportAdjacentLocations: function (locationid) {
@@ -1299,6 +1421,8 @@ var app = new Vue({
             _.forEach(edges, function (e) {
                 if (e.tile) {
                     let adjacentlocation = self.findLocationById(e.toId);
+                    adjacentlocation.color = e.tile.color;
+                    adjacentlocation.colorString = self.colorString(e.tile.color);
                     adjacentIndustryLocations.push(adjacentlocation);
                 }
             });
@@ -1347,18 +1471,18 @@ var app = new Vue({
             let tilestring = industryStringMap[tile.industrytype] + ' (Level ' + romanize(tile.level) + ')';
 
             if (tile.availableCoal > 0) {
-                tilestring = tilestring + ' [' + tile.availableCoal + ' coal left]';
+                tilestring = tilestring + ' | ' + tile.availableCoal + ' coal left';
             }
 
             if (tile.availableIron > 0) {
-                tilestring = tilestring + ' [' + tile.availableIron + ' iron left]';
+                tilestring = tilestring + ' | ' + tile.availableIron + ' iron left';
             }
 
             if (tile.availableBeer > 0) {
-                tilestring = tilestring + ' [' + tile.availableBeer + ' beer left]';
+                tilestring = tilestring + ' | ' + tile.availableBeer + ' beer left';
             }
 
-            tilestring = tilestring + (tile.flipped ? ' [Flipped]' : ' [Unflipped]');
+            tilestring = tilestring + (tile.flipped ? ' (Flipped)' : ' (Unflipped)');
 
             return tilestring;
         },
@@ -1371,6 +1495,9 @@ var app = new Vue({
         reset: function () {
             this.numberOfPlayers = 2;
             this.gameHasStarted = false;
+            this.useTurnOrder = false;
+            this.soldInCanalEra = false;
+            this.soldInRailEra = false;
             this.currentRound = 0;
             this.currentGameStep = GAME_STEPS.Setup;
             this.currentEra = ERA.Canal;
@@ -1390,6 +1517,20 @@ var app = new Vue({
         },
 
 
+        debugSetupTestBoard: function () {
+            // TEMPORARY (remove this later): setup board state
+            this.layIndustryTile(PLAYER_TYPE.Human, 0, 21, 0);
+            this.layNetworkTile(PLAYER_TYPE.Human, 21, 18);
+            this.layNetworkTile(PLAYER_TYPE.Human, 21, 14);
+            this.layNetworkTile(PLAYER_TYPE.Human, 14, 15);
+            this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 15, 18);
+            this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
+            this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
+            this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);
+            this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 1);
+            this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 37, 23, 0);
+            this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 23, 26);
+        },
         // --- BEGIN: may not truly need these ---
         findCoalClosestToFlipping: function (locationid, player_type) {
             let connectedCoalLocations = this.findAllConnectedCoal(locationid, player_type);
