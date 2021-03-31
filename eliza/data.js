@@ -68,7 +68,9 @@ function createMerchantTile(id, minPlayers, industryTypes) {
     return {
         id: id,
         minPlayers: minPlayers,
-        industryTypes: industryTypes
+        industryTypes: industryTypes,
+        totalBeer: 0,
+        isMerchantTile: true
     };
 }
 
@@ -105,12 +107,10 @@ const INITIAL_BOARD = {
             spaces: [
                 {
                     id: 0,
-                    totalBeer: 0,
                     tile: null
                 },
                 {
                     id: 1,
-                    totalBeer: 0,
                     tile: null
                 }
             ],
@@ -430,12 +430,10 @@ const INITIAL_BOARD = {
             spaces: [
                 {
                     id: 0,
-                    totalBeer: 0,
                     tile: null
                 },
                 {
                     id: 1,
-                    totalBeer: 0,
                     tile: null
                 }
             ],
@@ -704,12 +702,6 @@ const INITIAL_BOARD = {
             spaces: [
                 {
                     id: 0,
-                    totalBeer: 0,
-                    tile: null
-                },
-                {
-                    id: 1,
-                    totalBeer: 0,
                     tile: null
                 }
             ],
@@ -1285,12 +1277,10 @@ const INITIAL_BOARD = {
             spaces: [
                 {
                     id: 0,
-                    totalBeer: 0,
                     tile: null
                 },
                 {
                     id: 1,
-                    totalBeer: 0,
                     tile: null
                 }
             ],
@@ -1381,12 +1371,10 @@ const INITIAL_BOARD = {
             spaces: [
                 {
                     id: 0,
-                    totalBeer: 0,
                     tile: null
                 },
                 {
                     id: 1,
-                    totalBeer: 0,
                     tile: null
                 }
             ],

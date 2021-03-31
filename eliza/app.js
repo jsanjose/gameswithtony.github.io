@@ -102,15 +102,8 @@ var app = new Vue({
     mounted: function() {
         this.computedUpdater++;
 
-        this.startGame();
-
-        let connectedCoal = this.findAllConnectedCoal(15, PLAYER_TYPE.Human);
-        console.log(connectedCoal);
-
-        let coalconsumption = this.generateAICoalConsumption(15, PLAYER_TYPE.Eliza_AI, 4);
-        console.log(coalconsumption);
-
-        this.calculateAIAction(PLAYER_TYPE.Eliza_AI);
+        // TODO: Load state if available otherwise set player color
+        this.setPlayerColor(0);
     },
     computed: {
         totalEmptyMarketCoalSpaces: function () {
@@ -199,6 +192,15 @@ var app = new Vue({
 
             // TEMPORARY: Setup board
             this.debugSetupTestBoard();
+
+            // TEMPORARY: Test functions
+            let connectedCoal = this.findAllConnectedCoal(15, PLAYER_TYPE.Human);
+            console.log(connectedCoal);
+
+            let coalconsumption = this.generateAICoalConsumption(15, PLAYER_TYPE.Eliza_AI, 4);
+            console.log(coalconsumption);
+
+            this.calculateAIAction(PLAYER_TYPE.Eliza_AI);
         },
         
         // Primary action functions
@@ -574,23 +576,38 @@ var app = new Vue({
         getMerchantLocationIds: function () {
             let merchantLocationIds = [13, 24, 26];
     
-            if (this.numberOfPlayers === 3) {
+            if (this.numberOfPlayers == 3) {
                 merchantLocationIds.push(0);
             }
 
-            if (this.numberOfPlayers === 4) {
+            if (this.numberOfPlayers == 4) {
                 merchantLocationIds.push(7);
             }
 
             return _.sortBy(merchantLocationIds);
         },
         setupMerchantTiles: function () {
+            let self = this;
             let merchantTiles = _.shuffle(_.filter(MERCHANT_TILES, function (t) {
-                return t.minPlayers <= this.numberOfPlayers;
+                return t.minPlayers <= self.numberOfPlayers;
             }));
 
             // lay tiles in each merchant location
             let merchantLocationIds = this.getMerchantLocationIds();
+
+            _.forEach(merchantLocationIds, function (id) {
+                let location = self.findLocationById(id);
+
+                // lay merchant tile
+                _.forEach(location.spaces, function (s) {
+                    let merchantTile = merchantTiles.shift();
+                    s.tile = merchantTile;
+
+                    if (merchantTile.industryTypes) {
+                        s.tile.totalBeer = 1;
+                    }
+                });
+            });
         },
         layIndustryTile: function (player_type, tileid, locationid, spaceid) {
             // This function does no error checking. 'tryHumanBuildAction' does error checking, and is otherwise used by the AI bots directly.
@@ -809,7 +826,6 @@ var app = new Vue({
         },
         findPlayerUnflippedSellableIndustriesConnectedToMarket: function (player_type) {
             // for: Sell, step 1 and 2
-            // use "findAllConnectedMarkets" for each unflipped industry
 
             let playerUnflippedSellableIndustryLocations = this.findPlayerUnflippedSellableIndustries(player_type);
 
@@ -1038,10 +1054,13 @@ var app = new Vue({
             // for: Sell, step 2
 
             // start with merchant beer (using matching industry types)
+            let allConnectedMarkets = this.findAllConnectedMarkets(locationid, player_type);
 
             // continue with player beer (connected or not, closest to flipping first)
+            let playerUnflippedBreweries = this.findPlayerUnflippedBreweries(player_type);
 
             // continue with opponent beer (connected, furthest from flipping first)
+            let connectedOpponentBeerLocations = this.findOpponentConnectedBeer(locationid, player_type);
         },
         findPlayerUnflippedBreweries: function (player_type) {
             let player = this.getPlayerFromType(player_type);
@@ -1160,8 +1179,6 @@ var app = new Vue({
            return connectedOpponentBeerLocations;
         },
         findConsumableBeer: function (locationid, player_type) {
-            let connectedLocations = this.findAllConnectedLocations(locationid, player_type);
-            let player = this.getPlayerFromType(player_type);
             let consumableBeerLocations = [];
 
             // connected opponent beer
@@ -1466,23 +1483,53 @@ var app = new Vue({
         industryTileToString: function (tile) {
             return industryStringMap[tile.industrytype] + ' (Level ' + romanize(tile.level) + ')';
         },
-        boardIndustryTileToStringWithResources: function (locationid, tileid) {
+        boardIndustryTileToStringWithResources: function (locationid, tileid, includeTotalBeerOnMerchantTile) {
             let tile = this.findMainBoardIndustryTileById(locationid, tileid);
-            let tilestring = industryStringMap[tile.industrytype] + ' (Level ' + romanize(tile.level) + ')';
+            let tilestring = '';
 
-            if (tile.availableCoal > 0) {
-                tilestring = tilestring + ' | ' + tile.availableCoal + ' coal left';
+            if (tile.isMerchantTile) {
+
+                if (tile.industryTypes) {
+
+                    tilestring = tilestring + 'Merchant Tile [';
+
+                    _.forEach(tile.industryTypes, function (i, index, arr) {
+                        tilestring = tilestring + industryStringMap[i];
+
+                        if (index !== arr.length - 1) {
+                            tilestring = tilestring + ', ';
+                        }
+                    });
+
+                    tilestring = tilestring + ']';
+
+                    if (includeTotalBeerOnMerchantTile) {
+                        tilestring = tilestring + ' (' + tile.totalBeer + ' beer left)';
+                    }
+
+                } else {
+                    tilestring = tilestring + 'Merchant Tile (Empty)';
+                }
+
+            } else {
+
+                tilestring = industryStringMap[tile.industrytype] + ' (Level ' + romanize(tile.level) + ')';
+
+                if (tile.availableCoal > 0) {
+                    tilestring = tilestring + ' | ' + tile.availableCoal + ' coal left';
+                }
+
+                if (tile.availableIron > 0) {
+                    tilestring = tilestring + ' | ' + tile.availableIron + ' iron left';
+                }
+
+                if (tile.availableBeer > 0) {
+                    tilestring = tilestring + ' | ' + tile.availableBeer + ' beer left';
+                }
+
+                tilestring = tilestring + (tile.flipped ? ' (Flipped)' : ' (Unflipped)');
+
             }
-
-            if (tile.availableIron > 0) {
-                tilestring = tilestring + ' | ' + tile.availableIron + ' iron left';
-            }
-
-            if (tile.availableBeer > 0) {
-                tilestring = tilestring + ' | ' + tile.availableBeer + ' beer left';
-            }
-
-            tilestring = tilestring + (tile.flipped ? ' (Flipped)' : ' (Unflipped)');
 
             return tilestring;
         },

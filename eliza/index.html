@@ -104,7 +104,7 @@
                         <p class="boardstate__locationname">{{ location.name }}</p>
                         <ul class="boardstate__industrytiles">
                             <li v-for="space in findSpacesWithTiles(location.spaces)" :key="location.id">
-                                <p v-if="space.tile">{{ space.id + 1 }} : {{ colorString(space.tile.color) }} | {{ boardIndustryTileToStringWithResources(location.id, space.tile.id) }}</p>
+                                <p v-if="space.tile"><span v-if="!space.tile.isMerchantTile">{{ space.id + 1 }} : {{ colorString(space.tile.color) }} | </span>{{ boardIndustryTileToStringWithResources(location.id, space.tile.id, true) }}</p>
                             </li>
                         </ul>
                         <ul class="boardstate__adjacentlocations">
