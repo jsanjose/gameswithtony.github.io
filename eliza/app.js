@@ -40,6 +40,7 @@ const HUMAN_PLAYER = {
     amountSpent: 0, // to calculate turn order
     turnOrder: 0,
     currentTurnIndex: 0, // human player takes two actions
+    actionStep: null, // guides showing appropriate UI for the chosen action
     nextAction: null // intended action
 };
 
@@ -48,7 +49,7 @@ const ELIZA = {
     id: 1,
     name: "Eliza",
     player_type: PLAYER_TYPE.Eliza_AI,
-    color: null,
+    color: PLAYER_COLOR.Gray,
     board: _.cloneDeep(INITIAL_AI_BOARD),
     linktiles: _.cloneDeep(LINK_TILES),
     amountSpent: 0, // to calculate turn order
@@ -66,7 +67,7 @@ const ELEANOR = {
     id: 2,
     name: "Eleanor",
     player_type: PLAYER_TYPE.Eleanor_AI,
-    color: null,
+    color: PLAYER_COLOR.Yellow,
     board: _.cloneDeep(INITIAL_AI_BOARD),
     linktiles: _.cloneDeep(LINK_TILES),
     amountSpent: 0, // to calculate turn order
@@ -91,7 +92,7 @@ var app = new Vue({
         currentRound: 0,
         currentGameStep: GAME_STEPS.Setup,
         currentEra: ERA.Canal,
-        currentPlayer: PLAYER_TYPE.Human,
+        currentPlayer: null,
         board: _.cloneDeep(INITIAL_BOARD),
         humanPlayer: _.cloneDeep(HUMAN_PLAYER),
         eliza: _.cloneDeep(ELIZA),
@@ -150,37 +151,47 @@ var app = new Vue({
         }
     },
     methods: {
+        next: function () {
+
+            // if starting game
+            if (this.currentGameStep === 0) {
+                this.currentGameStep = GAME_STEPS.Round;
+            }
+        },
         setPlayerColor: function (color) {
             this.humanPlayer.color = color;
             this.saveGameState();
         },
         startGame: function() {
+            if (!this.humanPlayer.color) {
+                alert("You must choose a color.");
+                return false;
+            }
+
             this.gameHasStarted = true;
+            this.currentPlayer = this.humanPlayer;
 
-            this.humanPlayer.color = PLAYER_COLOR.LightBlue;
-            this.eliza.color = PLAYER_COLOR.Red;
-            this.eleanor.color = PLAYER_COLOR.Yellow;
-
-            // TEMPORARY (CHANGE THIS TO PLAYER CHOICE): set player colors
+            // Set link and tile colors
+            let self = this;
             _.forEach(this.humanPlayer.linktiles, function(p) {
-                p.color = PLAYER_COLOR.LightBlue;
+                p.color = self.humanPlayer.color;
             });
             _.forEach(this.humanPlayer.board, function(p) {
-                p.color = PLAYER_COLOR.LightBlue;
+                p.color = self.humanPlayer.color;
             });
 
             _.forEach(this.eliza.linktiles, function(p) {
-                p.color = PLAYER_COLOR.Red;
+                p.color = self.eliza.color;
             });
             _.forEach(this.eliza.board, function(p) {
-                p.color = PLAYER_COLOR.Red;
+                p.color = self.eliza.color;
             });
 
             _.forEach(this.eleanor.linktiles, function(p) {
-                p.color = PLAYER_COLOR.Yellow;
+                p.color = self.eleanor.color;
             });
             _.forEach(this.eleanor.board, function(p) {
-                p.color = PLAYER_COLOR.Yellow;
+                p.color = self.eleanor.color;
             });
 
             // shuffle cards
@@ -190,10 +201,12 @@ var app = new Vue({
             // Setup merchant tiles
             this.setupMerchantTiles();
 
-            // TEMPORARY: Setup board
+
+            // --- TEMPORARY
+            // Setup board
             this.debugSetupTestBoard();
 
-            // TEMPORARY: Test functions
+            // Test functions
             let connectedCoal = this.findAllConnectedCoal(15, PLAYER_TYPE.Human);
             console.log(connectedCoal);
 
@@ -201,6 +214,7 @@ var app = new Vue({
             console.log(coalconsumption);
 
             this.calculateAIAction(PLAYER_TYPE.Eliza_AI);
+            // --- END TEMPORARY
         },
         
         // Primary action functions

@@ -24,15 +24,15 @@ a, a:visited, a:hover {
 .player-color-options {
     list-style: none;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 0rem .25rem 2rem .25rem;
     margin-bottom: 0;
     max-width: 300px;
 }
 
 .player-color-option {
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,9 +72,9 @@ a, a:visited, a:hover {
     background-color: #00d0ff;
 }
 
-.lightblue {
-    fill: #a253ac;
-    background-color: lightblue;
+.gray {
+    fill: #9DA4B0;
+    background-color: #9DA4B0;
     color: #47443f;
 }
 

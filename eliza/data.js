@@ -2,9 +2,9 @@ const LOCALSTORAGENAME = 'elizagamestate';
 
 const PLAYER_TYPE = { Human: 0, Eliza_AI: 1, Eleanor_AI: 2 };
 
-const PLAYER_COLOR = { LightBlue: 0, Blue: 1, Red: 2, Yellow: 3 };
+const PLAYER_COLOR = { Gray: 0, Blue: 1, Red: 2, Yellow: 3 };
 const colorMap = {
-    0: "Light Blue",
+    0: "Gray",
     1: "Blue",
     2: "Red",
     3: "Yellow"
@@ -20,8 +20,9 @@ const GAME_STEPS = {
 const HUMAN_ACTION = {
     Build: 0,
     Network: 1,
-    Develop: 2,
-    ScoutOrLoan: 3
+    Sell: 2,
+    Develop: 3,
+    ScoutOrLoan: 4
 }
 
 const AI_ACTION = {
@@ -92,8 +93,8 @@ const MERCHANT_TILES = [
 // adjacency listed in clockface order
 const INITIAL_BOARD = {
     market: {
-        coalInMarket: 12,
-        ironInMarket: 9,
+        coalInMarket: 13,
+        ironInMarket: 8,
         totalPossibleCoal: 14,
         totalPossibleIron: 10
     },

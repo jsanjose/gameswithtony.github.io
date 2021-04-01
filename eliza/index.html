@@ -29,14 +29,19 @@
                 Select your player color
             </p>
             <ul class="player-color-options text-centered">
-                <li class="player-color-option lightblue" v-on:click="setPlayerColor(0)"
-                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 0 }">LB</li>
+                <!--
+                <li class="player-color-option gray" v-on:click="setPlayerColor(0)"
+                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 0 }">G</li>
+                -->
                 <li class="player-color-option blue" v-on:click="setPlayerColor(1)"
-                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 1 }">B</li>
-                <li class="player-color-option yellow" v-on:click="setPlayerColor(2)"
-                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 2 }">Y</li>
-                <li class="player-color-option red" v-on:click="setPlayerColor(3)"
-                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 3 }">R</li>
+                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 1 }">Blue</li>
+                
+                <li class="player-color-option red" v-on:click="setPlayerColor(2)"
+                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 2 }">Red</li>
+                <!--
+                <li class="player-color-option yellow" v-on:click="setPlayerColor(3)"
+                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 3 }">Y</li>
+                    -->
             </ul>
             <ul class="player-color-options playerColorOptionTrack numberOfPlayers text-centered">
                 <li class="player-color-option"><input type="radio" name="numberOfPlayers" id="2" value="2" v-model="numberOfPlayers" /> <label for="2">2-player</label></li>
@@ -65,7 +70,7 @@
                 <h1>Game Setup</h1>
 
                 <p>1) Setup your player board and the game board as normal.</p>
-                <p>2) Setup the following merchant tiles (these have been chosen randomly) along with their beer as normal:</p>
+                <p>2) Setup the following merchant tiles along with their beer as normal. </p>
                 <ul>
                     <li v-for="location in findAllMerchantsWithTiles()" :key="location.id">
                         {{ location.name }}
@@ -77,77 +82,104 @@
                         </ul>
                     </li>
                 </ul>
+                <p style="font-style: italic;">NOTE: These merchant tiles have been chosen randomly. If you don't like the setup try starting a new game and you'll get a new random setup!</p>
                 <p>3) Setup a deck for a normal {{ numberOfPlayers }}-player game. Place <em>half</em> of the cards on board, and leave the other half out of the game for now. You will use only half of the cards each era.</p>
-                <p>4) Setup Eliza's player board. Do not place Level 1 industries on her player board and do not place the Level 2 manufactured goods either. These are all considered already developed.</p>
-                <p v-if="numberOfPlayers == '3'">5) Setup Eleanor's player board. Do not place Level 1 industries on her player board and do not place the Level 2 manufactured goods either. These are all considered already developed.</p>
+                <p>4) Setup Eliza's player board (use Gray tiles). Do not place Level 1 industries on her player board and do not place the Level 2 manufactured goods either. These are all considered already developed.</p>
+                <p v-if="numberOfPlayers == '3'">5) Setup Eleanor's player board (use Yellow tiles). Do not place Level 1 industries on her player board and do not place the Level 2 manufactured goods either. These are all considered already developed.</p>
                 <p>When you are done with setup, click 'Next' to begin the game!</p>
             </section>
             <section v-if="currentGameStep === 1">
-                <section v-if="currentPlayer === 0">
-                    Your first action
-                    Your second action
+                <section v-if="currentPlayer.player_type === 0">
+                    <p v-if="currentPlayer.currentTurnIndex === 0">Your first action</p>
+                    <p v-if="currentPlayer.currentTurnIndex === 1">Your second action</p>
                     
-                    <p>Choose an action:</p> 
-                    <ul>
-                        <li>
-                            Build
-                        </li>
-                        <li>
-                            Network
-                        </li>
-                        <li>
-                            Sell
-                        </li>
-                        <li>
-                            Develop
-                        </li>
-                        <li>
-                            Scout or Loan
-                        </li>
-                    </ul>
-
-                    <p>What industry are you building?</p> 
-                    <ul>
-                        <li>
-                            Industry Tile String
-                        </li>
-                    </ul>
-
-                    <p>Where are you building?</p> 
-                    <ul>
-                        <li v-for="location in validHumanBuildLocations()" :key="location.id">
-                            {{ location.name }}
-                        </li>
-                    </ul>
-
-                    <p>Where are you networking from?</p> 
-                    <ul>
-                        <li v-for="location in validHumanNetworkLocations()" :key="location.id">
-                            {{ location.name }}
-                        </li>
-                    </ul>
+                    <section v-if="!currentPlayer.actionStep">
+                        <p>Choose an action:</p> 
+                        <ul>
+                            <li>
+                                Build
+                            </li>
+                            <li>
+                                Network
+                            </li>
+                            <li>
+                                Sell
+                            </li>
+                            <li>
+                                Develop
+                            </li>
+                            <li>
+                                Scout or Loan
+                            </li>
+                        </ul>
                     </section>
 
-                    <p>What industries are you selling?</p> 
-                    <ul>
-                        <li>
-                            Industry Tile String
-                        </li>
-                    </ul>
+                    <section v-if="currentPlayer.actionStep === '00'">
+                        <p>What industry are you building?</p> 
+                        <ul>
+                            <li>
+                                Industry Tile String
+                            </li>
+                        </ul>
+                    </section>
 
-                    <p>What industry are you developing?</p> 
-                    <ul>
-                        <li>
-                            Industry Tile String
-                        </li>
-                    </ul>
+                    <section v-if="currentPlayer.actionStep === '01'">
+                        <p>Where are you building?</p> 
+                        <ul>
+                            <li v-for="location in validHumanBuildLocations" :key="location.id">
+                                {{ location.name }}
+                            </li>
+                        </ul>
+                    </section>
 
-                    <p>Where are you consuming X Resource from?</p> 
-                    <ul>
-                        <li>
-                            Location Name
-                        </li>
-                    </ul>
+                    <section v-if="currentPlayer.actionStep === '10'">
+                        <p>Where are you networking from?</p> 
+                        <ul>
+                            <li v-for="location in validHumanNetworkLocations" :key="location.id">
+                                {{ location.name }}
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section v-if="currentPlayer.actionStep === '11'">
+                        <p>Where are you networking to?</p> 
+                        <ul>
+                            <li>
+                                
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section v-if="currentPlayer.actionStep === '20'">
+                        <p>What industries are you selling?</p> 
+                        <ul>
+                            <li>
+                                Industry Tile String
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section v-if="currentPlayer.actionStep === '30'">
+                        <p>What industry are you developing?</p> 
+                        <ul>
+                            <li>
+                                Industry Tile String
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section v-if="currentPlayer.actionStep === '02' || currentPlayer.actionStep === '12' || currentPlayer.actionStep === '31'">
+                        <p>Where are you consuming X Resource from?</p> 
+                        <ul>
+                            <li>
+                                Location Name
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section v-if="currentPlayer.actionStep === '40'">
+                        <p>Click 'Next' when you have finished your Scout or Loan action.</p> 
+                    </section>
                 </section>
 
                 <section v-if="currentPlayer === 1 || currentPlayer === 2">
@@ -173,16 +205,17 @@
                 Eliza
                 Eleanor
             </section>
-            <section class="button-container">
-                <button class="button">Next >></button>
+            <section class="button-container" v-if="gameHasStarted && !showBoardState">
+                <button class="button" v-if="currentGameStep === 0" v-on:click="next()">Start Game</button>
+                <button class="button" v-if="currentGameStep !== 0" v-on:click="next()">Next >></button>
             </section>
             <section class="boardstate" v-if="showBoardState">
                 <a href="#" class="boardstate_close" v-on:click="toggleShowBoardState">[ Close Board State ]</a>
                 <p class="boardstate__instructions">"X :" - a space with an industry tile</p>
                 <p class="boardstate__instructions">"-->" - a link tile</p>
                 <p class="boardstate__marketspaces">
-                    Coal Spaces Open in Market: {{ totalEmptyMarketCoalSpaces }}<br />
-                    Iron Spaces Open in Market: {{ totalEmptyMarketIronSpaces }}
+                    Empty Coal Spaces in Market: {{ totalEmptyMarketCoalSpaces }}<br />
+                    Empty Iron Spaces in Market: {{ totalEmptyMarketIronSpaces }}
                 </p>
                 <ul class="boardstate__locations">
                     <li class="boardstate__location" v-for="location in board.locations" :key="location.id">
