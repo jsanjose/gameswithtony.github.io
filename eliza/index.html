@@ -19,16 +19,16 @@
 <body>
     <main id="eliza">
         <section v-if="!gameHasStarted" class="playerArea">
-            <h1 class="starttitle">
+            <h1 class="starttitle text-centered">
                 Eliza
             </h1>
-            <h2>
+            <h2 class="text-centered">
                 Brass: Birmingham Solo Mode
             </h2>
             <p class="startmessage">
                 Select your player color
             </p>
-            <ul class="player-color-options">
+            <ul class="player-color-options text-centered">
                 <li class="player-color-option lightblue" v-on:click="setPlayerColor(0)"
                     v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 0 }">LB</li>
                 <li class="player-color-option blue" v-on:click="setPlayerColor(1)"
@@ -38,17 +38,17 @@
                 <li class="player-color-option red" v-on:click="setPlayerColor(3)"
                     v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 3 }">R</li>
             </ul>
-            <ul class="player-color-options playerColorOptionTrack numberOfPlayers">
+            <ul class="player-color-options playerColorOptionTrack numberOfPlayers text-centered">
                 <li class="player-color-option"><input type="radio" name="numberOfPlayers" id="2" value="2" v-model="numberOfPlayers" /> <label for="2">2-player</label></li>
                 <li class="player-color-option"><input type="radio" name="numberOfPlayers" id="3" value="3" v-model="numberOfPlayers" /> <label for="3">3-player</label></li>
             </ul>
-            <div>
+            <div class="text-centered">
                 Eliza Deck Type:
                 <select v-model="eliza.deckType">
                     <option value="0">Balanced</option>
                 </select>
             </div>
-            <div v-if="numberOfPlayers === '3'">
+            <div class="text-centered" v-if="numberOfPlayers === '3'">
                 Eleanor Deck Type:
                 <select v-model="eleanor.deckType">
                     <option value="0">Balanced</option>
@@ -58,11 +58,29 @@
             <button class="button" v-on:click="startGame">Proceed to Setup</button>
         </section>
         <section class="playerArea" v-if="gameHasStarted">
-            <section class="start-new">
-                <a href="#" v-on:click="if (confirm('Are you sure you want to start a NEW GAME?')) { reset(); }">Start a New Game</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="if (confirm('Are you sure you want to UNDO?')) { loadUndoState }">Undo</a>
+            <section class="start-new text-centered">
+                <a href="#" v-on:click="if (confirm('Are you sure you want to start a NEW GAME?')) { reset(); }">New Game</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="if (confirm('Are you sure you want to UNDO?')) { loadUndoState }">Undo</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="toggleShowBoardState">View Board State</a>
             </section>
             <section v-if="currentGameStep === 0">
-                <h1>Setup</h1>
+                <h1>Game Setup</h1>
+
+                <p>1) Setup your player board and the game board as normal.</p>
+                <p>2) Setup the following merchant tiles (these have been chosen randomly) along with their beer as normal:</p>
+                <ul>
+                    <li v-for="location in findAllMerchantsWithTiles()" :key="location.id">
+                        {{ location.name }}
+                        
+                        <ul>
+                            <li v-for="space in location.spaces" :key="space.id">
+                                <p v-if="space.tile">{{ boardIndustryTileToStringWithResources(location.id, space.tile.id, false) }}</p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>3) Setup a deck for a normal {{ numberOfPlayers }}-player game. Place <em>half</em> of the cards on board, and leave the other half out of the game for now. You will use only half of the cards each era.</p>
+                <p>4) Setup Eliza's player board. Do not place Level 1 industries on her player board and do not place the Level 2 manufactured goods either. These are all considered already developed.</p>
+                <p v-if="numberOfPlayers == '3'">5) Setup Eleanor's player board. Do not place Level 1 industries on her player board and do not place the Level 2 manufactured goods either. These are all considered already developed.</p>
+                <p>When you are done with setup, click 'Next' to begin the game!</p>
             </section>
             <section v-if="currentGameStep === 1">
                 <section v-if="currentPlayer === 0">
@@ -97,14 +115,14 @@
 
                     <p>Where are you building?</p> 
                     <ul>
-                        <li v-for="location in validHumanBuildLocations" :key="location.id">
+                        <li v-for="location in validHumanBuildLocations()" :key="location.id">
                             {{ location.name }}
                         </li>
                     </ul>
 
                     <p>Where are you networking from?</p> 
                     <ul>
-                        <li v-for="location in validHumanNetworkLocations" :key="location.id">
+                        <li v-for="location in validHumanNetworkLocations()" :key="location.id">
                             {{ location.name }}
                         </li>
                     </ul>
@@ -155,7 +173,6 @@
                 Eliza
                 Eleanor
             </section>
-            <a href="#" v-on:click="toggleShowBoardState">View Board State</a>
             <section class="button-container">
                 <button class="button">Next >></button>
             </section>

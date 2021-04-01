@@ -866,6 +866,20 @@ var app = new Vue({
 
             return merchantLocations;
         },
+        findAllMerchantsWithTiles: function () {
+             let merchantLocations = _.filter(this.board.locations, function(o) {
+                return o.type === LOCATIONTYPE.Merchants;
+            });
+
+            let merchantLocationsWithTiles = _.filter(merchantLocations, function (l) {
+                let spacesWithTiles = _.filter(l.spaces, function (s) {
+                    return s.tile;
+                });
+                return spacesWithTiles.length > 0;
+            });
+
+            return merchantLocationsWithTiles;
+        },
         findOptimalAIPathBetweenUnconnectedLocations: function (locationid, targetlocationid, player_type) {
 
             let self = this;
