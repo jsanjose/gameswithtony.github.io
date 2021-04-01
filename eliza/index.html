@@ -65,26 +65,94 @@
                 <h1>Setup</h1>
             </section>
             <section v-if="currentGameStep === 1">
-                Choose your action:
+                <section v-if="currentPlayer === 0">
+                    Your first action
+                    Your second action
+                    
+                    <p>Choose an action:</p> 
+                    <ul>
+                        <li>
+                            Build
+                        </li>
+                        <li>
+                            Network
+                        </li>
+                        <li>
+                            Sell
+                        </li>
+                        <li>
+                            Develop
+                        </li>
+                        <li>
+                            Scout or Loan
+                        </li>
+                    </ul>
 
-                <p>Where are you building (only valid locations shown)?</p> 
-                <ul>
-                    <li v-for="location in validHumanBuildLocations" :key="location.id">
-                        {{ location.name }}
-                    </li>
-                </ul>
+                    <p>What industry are you building?</p> 
+                    <ul>
+                        <li>
+                            Industry Tile String
+                        </li>
+                    </ul>
 
-                <p>Where are you networking from (only valid locations shown)?</p> 
-                <ul>
-                    <li v-for="location in validHumanNetworkLocations" :key="location.id">
-                        {{ location.name }}
-                    </li>
-                </ul>
+                    <p>Where are you building?</p> 
+                    <ul>
+                        <li v-for="location in validHumanBuildLocations" :key="location.id">
+                            {{ location.name }}
+                        </li>
+                    </ul>
+
+                    <p>Where are you networking from?</p> 
+                    <ul>
+                        <li v-for="location in validHumanNetworkLocations" :key="location.id">
+                            {{ location.name }}
+                        </li>
+                    </ul>
+                    </section>
+
+                    <p>What industries are you selling?</p> 
+                    <ul>
+                        <li>
+                            Industry Tile String
+                        </li>
+                    </ul>
+
+                    <p>What industry are you developing?</p> 
+                    <ul>
+                        <li>
+                            Industry Tile String
+                        </li>
+                    </ul>
+
+                    <p>Where are you consuming X Resource from?</p> 
+                    <ul>
+                        <li>
+                            Location Name
+                        </li>
+                    </ul>
+                </section>
+
+                <section v-if="currentPlayer === 1 || currentPlayer === 2">
+                    Eliza Eleanor
+
+                    <ul>
+                        <li>
+                            <label>
+                                <input type="checkbox" />
+                                AI next action
+                            </label>
+                        </li>
+                    </ul>
+                </section>
             </section>
             <section v-if="currentGameStep === 2">
-                Eliza
+                Rail Era Begins
+                Rail Era Instructions
             </section>
             <section v-if="currentGameStep === 3">
+                Final Score
+                You
+                Eliza
                 Eleanor
             </section>
             <a href="#" v-on:click="toggleShowBoardState">View Board State</a>
