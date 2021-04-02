@@ -89,7 +89,7 @@ var app = new Vue({
         soldInCanalEra: false,
         soldInRailEra: false,
         gameHasStarted: false,
-        currentRound: 0,
+        currentRound: 1,
         currentGameStep: GAME_STEPS.Setup,
         currentEra: ERA.Canal,
         currentPlayer: null,
@@ -215,6 +215,11 @@ var app = new Vue({
 
             this.calculateAIAction(PLAYER_TYPE.Eliza_AI);
             // --- END TEMPORARY
+        },
+
+        // UI functions
+        setHumanAction(actionStep) {
+            this.currentPlayer.actionStep = actionStep;
         },
         
         // Primary action functions
@@ -1573,7 +1578,7 @@ var app = new Vue({
             this.useTurnOrder = false;
             this.soldInCanalEra = false;
             this.soldInRailEra = false;
-            this.currentRound = 0;
+            this.currentRound = 1;
             this.currentGameStep = GAME_STEPS.Setup;
             this.currentEra = ERA.Canal;
             this.currentPlayer = PLAYER_TYPE.Human;

@@ -90,26 +90,26 @@
             </section>
             <section v-if="currentGameStep === 1">
                 <section v-if="currentPlayer.player_type === 0">
-                    <p v-if="currentPlayer.currentTurnIndex === 0">Your first action</p>
-                    <p v-if="currentPlayer.currentTurnIndex === 1">Your second action</p>
+                    <h2 class="section-title" v-if="currentPlayer.currentTurnIndex === 0">Your First Action</h2>
+                    <h2 class="section-title" v-if="currentPlayer.currentTurnIndex === 1">Your Second Action</h2>
+                    <p class="section-detail">Round {{ currentRound }}</p>
                     
                     <section v-if="!currentPlayer.actionStep">
-                        <p>Choose an action:</p> 
-                        <ul>
-                            <li>
-                                Build
+                        <ul class="cards">
+                            <li class="card card--clickable" v-on:click="setHumanAction('00')">
+                                <p class="card__name">Build</p>
                             </li>
-                            <li>
-                                Network
+                            <li class="card card--clickable" v-on:click="setHumanAction('10')">
+                                <p class="card__name">Network</p>
                             </li>
-                            <li>
-                                Sell
+                            <li class="card card--clickable" v-on:click="setHumanAction('20')">
+                                <p class="card__name">Sell</p>
                             </li>
-                            <li>
-                                Develop
+                            <li class="card card--clickable" v-on:click="setHumanAction('30')">
+                                <p class="card__name">Develop</p>
                             </li>
-                            <li>
-                                Scout or Loan
+                            <li class="card card--clickable" v-on:click="setHumanAction('40')">
+                                <p class="card__name">Scout or Loan</p>
                             </li>
                         </ul>
                     </section>
