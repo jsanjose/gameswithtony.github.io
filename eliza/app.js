@@ -41,7 +41,7 @@ const HUMAN_PLAYER = {
     turnOrder: 0,
     currentTurnIndex: 0, // human player takes two actions
     actionStep: null, // guides showing appropriate UI for the chosen action
-    nextAction: { action: null, actiondata: {} } // intended action
+    nextAction: { action: null, actiondata: { consumedata: [] }} // intended action
 };
 
 // AI player 1
@@ -221,6 +221,11 @@ var app = new Vue({
         setHumanAction(actionStep) {
             this.currentPlayer.actionStep = actionStep;
         },
+        showNextButton() {
+            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || this.currentPlayer.actionStep === '03'));
+        },
+
+        // UI: Build
         setHumanBuildIndustryType(industrytype) {
             this.currentPlayer.nextAction.actiondata.buildindustrytype = industrytype;
             this.setHumanAction('01');
@@ -240,15 +245,17 @@ var app = new Vue({
                             // prefer single spaces
                             spacesWithLocations.push({
                                 locationid: l.id,
-                                space: s.id + 1,
-                                name: l.name
+                                spaceid: s.id + 1,
+                                name: l.name,
+                                industrytype: industrytype
                             });
                         } else {
                             if (!singleSpaceAvailable) {
                                 spacesWithLocations.push({
                                     locationid: l.id,
-                                    space: s.id + 1,
-                                    name: l.name
+                                    spaceid: s.id + 1,
+                                    name: l.name,
+                                    industrytype: industrytype
                                 });
                             }
                         }
@@ -257,6 +264,39 @@ var app = new Vue({
             });
 
             return _.sortBy(spacesWithLocations, 'name', 'space');
+        },
+        setHumanBuildIndustryType(industrytype, tileid) {
+            this.currentPlayer.nextAction.actiondata.buildindustrytype = industrytype;
+            this.currentPlayer.nextAction.actiondata.tileid = tileid;
+            this.setHumanAction('01');
+        },
+        setHumanBuildLocationAndSpace(locationid, spaceid) {
+            this.currentPlayer.nextAction.actiondata.buildlocationid = locationid;
+            this.currentPlayer.nextAction.actiondata.buildspaceid = spaceid - 1;
+            this.setHumanAction('02');
+            console.log(this.currentPlayer.nextAction);
+        },
+
+        // UI: Network
+
+        // UI: Sell
+
+        // UI: Develop
+
+        // UI: Consume
+        setHumanConsume(locationid, spaceid, totalCoalConsumed, totalIronConsumed, totalBeerConsumed) {
+
+            // TODO: remove the locationid/spaceid combo
+
+            
+            this.currentPlayer.nextAction.actiondata.consumedata.push({
+                locationid: locationid,
+                spaceid: spaceid,
+                totalCoalConsumed: totalCoalConsumed,
+                totalIronConsumed: totalIronConsumed,
+                totalBeerConsumed: totalBeerConsumed
+            });
+            console.log(this.currentPlayer.nextAction);
         },
         
         // Primary action functions

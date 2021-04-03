@@ -117,7 +117,7 @@
                     <section v-if="currentPlayer.actionStep === '00'">
                         <p class="action-header">What industry are you building?</p> 
                         <ul class="cards">
-                            <li v-for="tile in findAllNextTilesFromPlayerBoard(0)" class="card card--clickable" v-on:click="setHumanBuildIndustryType(tile.industrytype)">
+                            <li v-for="tile in findAllNextTilesFromPlayerBoard(0)" class="card card--clickable" v-on:click="setHumanBuildIndustryType(tile.industrytype, tile.id)">
                                 <p class="card__name">{{ tile.tileToString() }}</p>
                             </li>
                         </ul>
@@ -126,10 +126,14 @@
                     <section v-if="currentPlayer.actionStep === '01'">
                         <p class="action-header">Where are you building?</p> 
                         <ul class="cards">
-                            <li v-for="location in validHumanBuildLocationsForIndustryType(currentPlayer.nextAction.actiondata.buildindustrytype)" :key="location.id" class="card card--clickable" v-on:click="setHumanBuild(0)">
-                                <p class="card__name">{{ location.name }} (Space {{ location.space }})</p>
+                            <li v-for="location in validHumanBuildLocationsForIndustryType(currentPlayer.nextAction.actiondata.buildindustrytype)" :key="location.id" class="card card--clickable" v-on:click="setHumanBuildLocationAndSpace(location.locationid, location.spaceid)">
+                                <p class="card__name">{{ location.name }} (Space {{ location.spaceid }})</p>
                             </li>
                         </ul>
+                    </section>
+
+                    <section v-if="currentPlayer.actionStep === '03'">
+                        <p class="action-header">BUILD:</p>
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '10'">
@@ -205,9 +209,9 @@
                 Eliza
                 Eleanor
             </section>
-            <section class="button-container" v-if="gameHasStarted && !showBoardState">
+            <section class="button-container" v-if="showNextButton()">
                 <button class="button" v-if="currentGameStep === 0" v-on:click="next()">Start Game</button>
-                <button class="button" v-if="currentGameStep !== 0" v-on:click="next()">Next >></button>
+                <button class="button" v-if="currentGameStep === 1" v-on:click="next()">Next >></button>
             </section>
             <section class="boardstate" v-if="showBoardState">
                 <a href="#" class="boardstate_close" v-on:click="toggleShowBoardState">[ Close Board State ]</a>
