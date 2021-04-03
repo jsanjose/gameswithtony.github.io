@@ -1474,7 +1474,10 @@ function createIndustryTile(id, industrytype, canalOnly, level, poundsCost, coal
         availableIron: availableIron,
         availableBeer: availableBeer,
         color: null,
-        flipped: false
+        flipped: false,
+        tileToString: function () {
+            return industryStringMap[this.industrytype] + ' (Level ' + romanize(this.level) + ')';
+        }
     };
 }
 

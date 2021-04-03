@@ -159,6 +159,10 @@ a, a:visited, a:hover {
     margin-top: 0;
 }
 
+.action-header {
+    font-weight: bold;
+}
+
 /* --- Cards --- */
 .cards {
     list-style: none;

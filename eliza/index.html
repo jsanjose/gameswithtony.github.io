@@ -115,25 +115,25 @@
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '00'">
-                        <p>What industry are you building?</p> 
-                        <ul>
-                            <li>
-                                Industry Tile String
+                        <p class="action-header">What industry are you building?</p> 
+                        <ul class="cards">
+                            <li v-for="tile in findAllNextTilesFromPlayerBoard(0)" class="card card--clickable" v-on:click="setHumanBuildIndustryType(tile.industrytype)">
+                                <p class="card__name">{{ tile.tileToString() }}</p>
                             </li>
                         </ul>
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '01'">
-                        <p>Where are you building?</p> 
-                        <ul>
-                            <li v-for="location in validHumanBuildLocations" :key="location.id">
-                                {{ location.name }}
+                        <p class="action-header">Where are you building?</p> 
+                        <ul class="cards">
+                            <li v-for="location in validHumanBuildLocationsForIndustryType(currentPlayer.nextAction.actiondata.buildindustrytype)" :key="location.id" class="card card--clickable" v-on:click="setHumanBuild(0)">
+                                <p class="card__name">{{ location.name }} (Space {{ location.space }})</p>
                             </li>
                         </ul>
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '10'">
-                        <p>Where are you networking from?</p> 
+                        <p class="action-header">Where are you networking from?</p> 
                         <ul>
                             <li v-for="location in validHumanNetworkLocations" :key="location.id">
                                 {{ location.name }}
@@ -142,7 +142,7 @@
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '11'">
-                        <p>Where are you networking to?</p> 
+                        <p class="action-header">Where are you networking to?</p> 
                         <ul>
                             <li>
                                 
@@ -151,7 +151,7 @@
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '20'">
-                        <p>What industries are you selling?</p> 
+                        <p class="action-header">What industries are you selling?</p> 
                         <ul>
                             <li>
                                 Industry Tile String
@@ -160,7 +160,7 @@
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '30'">
-                        <p>What industry are you developing?</p> 
+                        <p class="action-header">What industry are you developing?</p> 
                         <ul>
                             <li>
                                 Industry Tile String
@@ -169,7 +169,7 @@
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '02' || currentPlayer.actionStep === '12' || currentPlayer.actionStep === '31'">
-                        <p>Where are you consuming X Resource from?</p> 
+                        <p class="action-header">Where are you consuming X Resource from?</p> 
                         <ul>
                             <li>
                                 Location Name
@@ -178,7 +178,7 @@
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '40'">
-                        <p>Click 'Next' when you have finished your Scout or Loan action.</p> 
+                        <p class="action-header">You do not need to enter anything into the app for Scout or Loan. Click 'Next' when you have finished your Scout or Loan action.</p> 
                     </section>
                 </section>
 

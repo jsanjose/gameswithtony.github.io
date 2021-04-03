@@ -41,7 +41,7 @@ const HUMAN_PLAYER = {
     turnOrder: 0,
     currentTurnIndex: 0, // human player takes two actions
     actionStep: null, // guides showing appropriate UI for the chosen action
-    nextAction: null // intended action
+    nextAction: { action: null, actiondata: {} } // intended action
 };
 
 // AI player 1
@@ -220,6 +220,43 @@ var app = new Vue({
         // UI functions
         setHumanAction(actionStep) {
             this.currentPlayer.actionStep = actionStep;
+        },
+        setHumanBuildIndustryType(industrytype) {
+            this.currentPlayer.nextAction.actiondata.buildindustrytype = industrytype;
+            this.setHumanAction('01');
+        },
+        validHumanBuildLocationsForIndustryType: function (industrytype) {
+            let spacesWithLocations = [];
+            let self = this;
+
+            locations = _.forEach(this.validHumanBuildLocations, function (l) {
+                let singleSpaceAvailable = (_.filter(l.spaces, function (s) {
+                    return !s.tile && _.includes(s.types, industrytype) && s.types.length === 1;
+                })).length > 0;
+
+                _.forEach(l.spaces, function (s) {
+                    if (!s.tile && _.includes(s.types, industrytype)) {
+                        if (s.types.length === 1) {
+                            // prefer single spaces
+                            spacesWithLocations.push({
+                                locationid: l.id,
+                                space: s.id + 1,
+                                name: l.name
+                            });
+                        } else {
+                            if (!singleSpaceAvailable) {
+                                spacesWithLocations.push({
+                                    locationid: l.id,
+                                    space: s.id + 1,
+                                    name: l.name
+                                });
+                            }
+                        }
+                    }
+                });
+            });
+
+            return _.sortBy(spacesWithLocations, 'name', 'space');
         },
         
         // Primary action functions
@@ -1434,12 +1471,14 @@ var app = new Vue({
         },
         findAllNextTilesFromPlayerBoard: function (player_type) {
             let allNextTiles = [];
-
-            for (let i=0;i<5;i++) {
+            
+            for (let i=0;i<6;i++) {
                 allNextTiles.push(this.findNextTileFromPlayerBoard(player_type, i));
             }
 
-            return allNextTiles;
+            return _.sortBy(allNextTiles, function (t) {
+                return t.tileToString();
+            });
         },
         findMainBoardIndustryTileById: function(locationid, tileid) {
             let self = this;
@@ -1511,10 +1550,7 @@ var app = new Vue({
         },
         boardIndustryTileToString: function (locationid, tileid) {
             let tile = this.findMainBoardIndustryTileById(locationid, tileid);
-            return this.industryTileToString(tile);
-        },
-        industryTileToString: function (tile) {
-            return industryStringMap[tile.industrytype] + ' (Level ' + romanize(tile.level) + ')';
+            return tile.tileToString();
         },
         boardIndustryTileToStringWithResources: function (locationid, tileid, includeTotalBeerOnMerchantTile) {
             let tile = this.findMainBoardIndustryTileById(locationid, tileid);
