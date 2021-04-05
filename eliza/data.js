@@ -1454,6 +1454,10 @@ function getAIDeck(type, numberOfPlayers) {
     if (type === AI_DECK_TYPES.Balanced && numberOfPlayers === 2) {
         return [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24];
     }
+
+    if (type === AI_DECK_TYPES.Balanced && numberOfPlayers === 3) {
+        return [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 3, 20, 4, 21, 22, 22, 23, 23, 5, 24];
+    }
 }
 
 // INDUSTRY TILES

@@ -196,7 +196,7 @@ var app = new Vue({
 
             // shuffle cards
             this.eliza.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
-            this.eleanor.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
+            this.eleanor.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eleanor.deckType, 2)));
 
             // Setup merchant tiles
             this.setupMerchantTiles();
@@ -226,11 +226,16 @@ var app = new Vue({
         },
 
         // UI: Build
-        setHumanBuildIndustryType(industrytype) {
+        setHumanBuildIndustryType: function(industrytype) {
             this.currentPlayer.nextAction.actiondata.buildindustrytype = industrytype;
             this.setHumanAction('01');
         },
-        validHumanBuildLocationsForIndustryType: function (industrytype) {
+        prevHumanBuildIndustryType: function() {
+            this.currentPlayer.nextAction.actiondata.buildindustrytype = null;
+            this.setHumanAction('00');
+            return false;
+        },
+        validHumanBuildLocationsForIndustryType: function (industrytype, tileid) {
             let spacesWithLocations = [];
             let self = this;
 
@@ -239,28 +244,51 @@ var app = new Vue({
                     return !s.tile && _.includes(s.types, industrytype) && s.types.length === 1;
                 })).length > 0;
 
-                _.forEach(l.spaces, function (s) {
-                    if (!s.tile && _.includes(s.types, industrytype)) {
-                        if (s.types.length === 1) {
-                            // prefer single spaces
-                            spacesWithLocations.push({
-                                locationid: l.id,
-                                spaceid: s.id + 1,
-                                name: l.name,
-                                industrytype: industrytype
-                            });
-                        } else {
-                            if (!singleSpaceAvailable) {
+                let resourcesAvailable = true;
+                let tile = self.findPlayerBoardIndustryTileById(self.humanPlayer.player_type, self.currentPlayer.nextAction.actiondata.tileid);
+
+                let isConnectedToMarket = self.isConnectedToMarket(l.id, self.humanPlayer.player_type);
+
+                if (tile.coalCost > 0) {
+                    let allConnectedCoal = self.findAllConnectedCoal(l.id, self.humanPlayer.player_type);
+
+                    if (!isConnectedToMarket && (!allConnectedCoal.length || allConnectedCoal.length === 0)) {
+                        resourcesAvailable = false;
+                    }
+                }
+
+                if (tile.ironCost > 0) {
+                    let allUnflippedIron = self.findAllUnflippedIronWorks();
+
+                    if (!isConnectedToMarket && (!allUnflippedIron.length || allUnflippedIron.length === 0)) {
+                        resourcesAvailable = false;
+                    }
+                }
+
+                if (resourcesAvailable) {
+                    _.forEach(l.spaces, function (s) {
+                        if (!s.tile && _.includes(s.types, industrytype)) {
+                            if (s.types.length === 1) {
+                                // prefer single spaces
                                 spacesWithLocations.push({
                                     locationid: l.id,
                                     spaceid: s.id + 1,
                                     name: l.name,
                                     industrytype: industrytype
                                 });
+                            } else {
+                                if (!singleSpaceAvailable) {
+                                    spacesWithLocations.push({
+                                        locationid: l.id,
+                                        spaceid: s.id + 1,
+                                        name: l.name,
+                                        industrytype: industrytype
+                                    });
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
             });
 
             return _.sortBy(spacesWithLocations, 'name', 'space');
@@ -273,6 +301,13 @@ var app = new Vue({
         setHumanBuildLocationAndSpace(locationid, spaceid) {
             this.currentPlayer.nextAction.actiondata.buildlocationid = locationid;
             this.currentPlayer.nextAction.actiondata.buildspaceid = spaceid - 1;
+
+            // determine needed consumption
+            let tile = this.findPlayerBoardIndustryTileById(this.humanPlayer.player_type, this.currentPlayer.nextAction.actiondata.tileid);
+
+            // get consumption options
+            let consumeLocations = this.humanConsumeLocations(locationid, tile.coalCost, tile.ironCost, null);
+            this.currentPlayer.nextAction.actiondata.consumelocations = consumeLocations;
             this.setHumanAction('02');
             console.log(this.currentPlayer.nextAction);
         },
@@ -284,19 +319,60 @@ var app = new Vue({
         // UI: Develop
 
         // UI: Consume
-        setHumanConsume(locationid, spaceid, totalCoalConsumed, totalIronConsumed, totalBeerConsumed) {
+        humanConsumeLocations(locationid, totalCoalNeeded, totalIronNeeded, totalBeerNeeded) {
+            let consumeLocations = {};
 
-            // TODO: remove the locationid/spaceid combo
+            if (totalCoalNeeded && totalCoalNeeded > 0) {
+                consumeLocations.coal = {
+                    coalNeeded: totalCoalNeeded,
+                    coalLocations: []
+                };
 
-            
-            this.currentPlayer.nextAction.actiondata.consumedata.push({
-                locationid: locationid,
-                spaceid: spaceid,
-                totalCoalConsumed: totalCoalConsumed,
-                totalIronConsumed: totalIronConsumed,
-                totalBeerConsumed: totalBeerConsumed
-            });
-            console.log(this.currentPlayer.nextAction);
+                let allConnectedCoal = this.findAllConnectedCoal(locationid, this.currentPlayer.player_type);
+
+                let totalCoalAvailable = 0;
+                _.forEach(allConnectedCoal, function (ccl) {
+                    _.forEach(ccl, function (l) {
+                        _.forEach(l.coalspaces, function (pcs) {
+                            if (totalCoalAvailable < totalCoalNeeded) {
+                                consumeLocations.coal.coalLocations.push({
+                                    locationid: l.id,
+                                    name: l.name,
+                                    spaceid: pcs.id + 1,
+                                    coalAvailable: pcs.availableCoal
+                                });
+
+                                totalCoalAvailable = totalCoalAvailable + pcs.availableCoal;
+                            }
+                        });
+                    });
+                });
+            }
+
+            if (totalIronNeeded && totalIronNeeded > 0) {
+                consumeLocations.iron = {
+                    ironNeeded: totalIronNeeded,
+                    ironLocations: []
+                };
+
+                let allUnflippedIron = this.findAllUnflippedIronWorks(locationid);
+            }
+
+            if (totalBeerNeeded && totalBeerNeeded > 0) {
+                consumeLocations.beer = {
+                    beerNeeded: totalBeerNeeded,
+                    beerLocations: []
+                };
+            }
+
+            return consumeLocations;
+        },
+        setPrevConsume: function() {
+            if (this.currentPlayer.nextAction.actiondata.buildindustrytype) {
+                this.currentPlayer.nextAction.actiondata.buildlocationid = null;
+                this.currentPlayer.nextAction.actiondata.buildspaceid = null;
+                this.setHumanAction('01');
+            }
         },
         
         // Primary action functions

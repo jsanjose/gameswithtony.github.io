@@ -124,6 +124,7 @@
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '01'">
+                        <a href="#" v-on:click="prevHumanBuildIndustryType()">< Go Back</a>
                         <p class="action-header">Where are you building?</p> 
                         <ul class="cards">
                             <li v-for="location in validHumanBuildLocationsForIndustryType(currentPlayer.nextAction.actiondata.buildindustrytype)" :key="location.id" class="card card--clickable" v-on:click="setHumanBuildLocationAndSpace(location.locationid, location.spaceid)">
@@ -173,12 +174,31 @@
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '02' || currentPlayer.actionStep === '12' || currentPlayer.actionStep === '31'">
-                        <p class="action-header">Where are you consuming X Resource from?</p> 
-                        <ul>
-                            <li>
-                                Location Name
-                            </li>
-                        </ul>
+
+                        <section v-if="currentPlayer.nextAction.actiondata.consumelocations.coal">
+                            <a href="#" v-on:click="setPrevConsume()">< Go Back</a>
+                            <p class="action-header">For your action you need {{ currentPlayer.nextAction.actiondata.consumelocations.coal.coalNeeded }} Coal.</p> 
+                            <p class="action-message">Indicate below how much coal you are taking from each location.</p>
+                            <ul class="cards">
+                                <li v-for="location in currentPlayer.nextAction.actiondata.consumelocations.coal.coalLocations" class="card card--clickable">
+                                    <p class="card__name">{{ location.name }} (Space {{ location.spaceid }})</p>
+                                    <div class="card__area">
+                                        <label>
+                                            <input type="radio" />0
+                                        </label>
+                                        <label>
+                                            <input type="radio" />1
+                                        </label>
+                                        <label>
+                                            <input type="radio" />2
+                                        </label>
+                                        <label>
+                                            <input type="radio" />3
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </section>
                     </section>
 
                     <section v-if="currentPlayer.actionStep === '40'">
