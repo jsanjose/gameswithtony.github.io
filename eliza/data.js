@@ -24,11 +24,22 @@ const HUMAN_ACTION = {
     Develop: 3,
     ScoutOrLoan: 4
 }
+const humanActionStringMap = {
+    0: "Build",
+    1: "Network",
+    2: "Sell",
+    3: "Develop",
+    4: "Scout Or Loan"
+ };
 
 const AI_ACTION = {
     BuildAndNetwork: 0,
     Sell: 1
 }
+const AIActionStringMap = {
+    0: "Build and Network",
+    1: "Sell"
+};
 
 const ERA = { Canal: 0, Rail: 1 };
 const eraStringMap = {

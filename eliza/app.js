@@ -41,7 +41,7 @@ const HUMAN_PLAYER = {
     turnOrder: 0,
     currentTurnIndex: 0, // human player takes two actions
     actionStep: null, // guides showing appropriate UI for the chosen action
-    nextAction: { action: null, actiondata: { consumedata: [] }} // intended action
+    nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
 };
 
 // AI player 1
@@ -59,7 +59,7 @@ const ELIZA = {
     currentCard2: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice,
     turnOrder: 1,
-    nextAction: null // intended action
+    nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
 }
 
 // optional AI player 2
@@ -77,7 +77,7 @@ const ELEANOR = {
     currentCard2: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice,
     turnOrder: 2,
-    nextAction: null // intended action
+    nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
 }
 
 var app = new Vue({
@@ -92,21 +92,43 @@ var app = new Vue({
         currentRound: 1,
         currentGameStep: GAME_STEPS.Setup,
         currentEra: ERA.Canal,
-        currentPlayer: null,
+        currentPlayerType: null,
         board: _.cloneDeep(INITIAL_BOARD),
         humanPlayer: _.cloneDeep(HUMAN_PLAYER),
         eliza: _.cloneDeep(ELIZA),
         eleanor: _.cloneDeep(ELEANOR),
         showBoardState: false,
+        humanActionStringMap: _.cloneDeep(humanActionStringMap),
         undoState: {}
     },
     mounted: function() {
-        this.computedUpdater++;
+        if (localStorage.getItem(LOCALSTORAGENAME)) {
+            let gameState = JSON.parse(localStorage.getItem(LOCALSTORAGENAME));
+            this.numberOfPlayers = gameState.numberOfPlayers;
+            this.gameHasStarted = gameState.gameHasStarted;
+            this.useTurnOrder = gameState.useTurnOrder;
+            this.soldInCanalEra = gameState.soldInCanalEra;
+            this.soldInRailEra = gameState.soldInRailEra;
+            this.currentRound = gameState.currentRound;
+            this.currentGameStep = gameState.currentGameStep;
+            this.currentEra = gameState.currentEra;
+            this.currentPlayerType = gameState.currentPlayerType;
+            this.board = gameState.board;
+            this.humanPlayer = gameState.humanPlayer;
+            this.eliza = gameState.eliza;
+            this.eleanor = gameState.eleanor;
+            this.showBoardState = gameState.showBoardState;
+            this.undoState = gameState.undoState;
 
-        // TODO: Load state if available otherwise set player color
-        this.setPlayerColor(0);
+        } else {
+            this.setPlayerColor(0);
+        }
     },
     computed: {
+        currentPlayer: function () {
+            let player = this.getPlayerFromType(this.currentPlayerType);
+            return player;
+        },
         totalEmptyMarketCoalSpaces: function () {
             return this.board.market.totalPossibleCoal - this.board.market.coalInMarket;
         },
@@ -118,7 +140,7 @@ var app = new Vue({
             let self = this;
             if (this.currentEra === ERA.Canal) {
                 // locations where the player hasn't built
-                locations = _.filter(this.board.locations, function (l) {
+                locations = _.filter(self.board.locations, function (l) {
                     let canBuildHere = true;
                     _.forEach(l.spaces, function (s) {
                         if (s.tile && s.tile.color === self.humanPlayer.color) {
@@ -139,16 +161,70 @@ var app = new Vue({
                 });
             }
 
-            return _.sortBy(locations, 'name');
-        },
-        validHumanNetworkLocations: function() {
-            let locations = this.findAllLocationsInNetwork(PLAYER_TYPE.Human);
+            let sortedLocations = _.sortBy(locations, 'name');
 
-            if (locations.length === 0) {
-                return _.sortBy(this.board.locations, 'name');
-            }
-            return _.sortBy(locations, 'name');
-        }
+            return sortedLocations;
+        },
+        validHumanBuildLocationsForIndustryType: function () {
+            let spacesWithLocations = [];
+            let self = this;
+            let industrytype = this.humanPlayer.nextAction.actiondata.buildindustrytype;
+
+            _.forEach(self.validHumanBuildLocations, function (l) {
+                let singleSpaceAvailable = (_.filter(l.spaces, function (s) {
+                    return !s.tile && _.includes(s.types, industrytype) && s.types.length === 1;
+                })).length > 0;
+
+                let resourcesAvailable = true;
+                let tile = self.humanPlayer.nextAction.actiondata.buildtile;
+
+                let isConnectedToMarket = self.isConnectedToMarket(l.id, PLAYER_TYPE.Human);
+
+                if (tile.coalCost > 0) {
+                    let allConnectedCoal = self.findAllConnectedCoal(l.id, PLAYER_TYPE.Human);
+
+                    if (!isConnectedToMarket && (!allConnectedCoal.length || allConnectedCoal.length === 0)) {
+                        resourcesAvailable = false;
+                    }
+                }
+
+                if (tile.ironCost > 0) {
+                    let allUnflippedIron = self.findAllUnflippedIronWorks();
+
+                    if (!isConnectedToMarket && (!allUnflippedIron.length || allUnflippedIron.length === 0)) {
+                        resourcesAvailable = false;
+                    }
+                }
+
+                if (resourcesAvailable) {
+                    _.forEach(l.spaces, function (s) {
+                        if (!s.tile && _.includes(s.types, industrytype)) {
+                            if (s.types.length === 1) {
+                                // prefer single spaces
+                                spacesWithLocations.push({
+                                    locationid: l.id,
+                                    spaceid: s.id + 1,
+                                    name: l.name,
+                                    industrytype: industrytype
+                                });
+                            } else {
+                                if (!singleSpaceAvailable) {
+                                    spacesWithLocations.push({
+                                        locationid: l.id,
+                                        spaceid: s.id + 1,
+                                        name: l.name,
+                                        industrytype: industrytype
+                                    });
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+
+            let sortedSpacesWithLocations = _.sortBy(spacesWithLocations, 'name', 'space');
+            return sortedSpacesWithLocations;
+        },
     },
     methods: {
         next: function () {
@@ -169,7 +245,7 @@ var app = new Vue({
             }
 
             this.gameHasStarted = true;
-            this.currentPlayer = this.humanPlayer;
+            this.currentPlayerType = PLAYER_TYPE.Human;
 
             // Set link and tile colors
             let self = this;
@@ -215,104 +291,62 @@ var app = new Vue({
 
             this.calculateAIAction(PLAYER_TYPE.Eliza_AI);
             // --- END TEMPORARY
+
+            this.saveGameState();
         },
 
         // UI functions
         setHumanAction(actionStep) {
             this.currentPlayer.actionStep = actionStep;
+            this.saveGameState();
         },
         showNextButton() {
             return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || this.currentPlayer.actionStep === '03'));
         },
 
         // UI: Build
-        setHumanBuildIndustryType: function(industrytype) {
-            this.currentPlayer.nextAction.actiondata.buildindustrytype = industrytype;
+        prevSetHumanAction: function () {
+            this.setHumanAction(null);
+        },
+        setHumanBuildIndustryType: function(industrytype, tileid) {
+            this.humanPlayer.nextAction.action = HUMAN_ACTION.Build;
+            this.humanPlayer.nextAction.actiondata.buildindustrytype = industrytype;
+            let tile = this.findPlayerBoardIndustryTileById(this.humanPlayer.player_type, tileid);
+            this.humanPlayer.nextAction.actiondata.buildtile = tile; 
             this.setHumanAction('01');
         },
         prevHumanBuildIndustryType: function() {
-            this.currentPlayer.nextAction.actiondata.buildindustrytype = null;
+            this.humanPlayer.nextAction.action = null;
+            this.humanPlayer.nextAction.actiondata.buildindustrytype = null;
+            this.humanPlayer.nextAction.actiondata.buildtile = null;
             this.setHumanAction('00');
             return false;
         },
-        validHumanBuildLocationsForIndustryType: function (industrytype, tileid) {
-            let spacesWithLocations = [];
-            let self = this;
-
-            locations = _.forEach(this.validHumanBuildLocations, function (l) {
-                let singleSpaceAvailable = (_.filter(l.spaces, function (s) {
-                    return !s.tile && _.includes(s.types, industrytype) && s.types.length === 1;
-                })).length > 0;
-
-                let resourcesAvailable = true;
-                let tile = self.findPlayerBoardIndustryTileById(self.humanPlayer.player_type, self.currentPlayer.nextAction.actiondata.tileid);
-
-                let isConnectedToMarket = self.isConnectedToMarket(l.id, self.humanPlayer.player_type);
-
-                if (tile.coalCost > 0) {
-                    let allConnectedCoal = self.findAllConnectedCoal(l.id, self.humanPlayer.player_type);
-
-                    if (!isConnectedToMarket && (!allConnectedCoal.length || allConnectedCoal.length === 0)) {
-                        resourcesAvailable = false;
-                    }
-                }
-
-                if (tile.ironCost > 0) {
-                    let allUnflippedIron = self.findAllUnflippedIronWorks();
-
-                    if (!isConnectedToMarket && (!allUnflippedIron.length || allUnflippedIron.length === 0)) {
-                        resourcesAvailable = false;
-                    }
-                }
-
-                if (resourcesAvailable) {
-                    _.forEach(l.spaces, function (s) {
-                        if (!s.tile && _.includes(s.types, industrytype)) {
-                            if (s.types.length === 1) {
-                                // prefer single spaces
-                                spacesWithLocations.push({
-                                    locationid: l.id,
-                                    spaceid: s.id + 1,
-                                    name: l.name,
-                                    industrytype: industrytype
-                                });
-                            } else {
-                                if (!singleSpaceAvailable) {
-                                    spacesWithLocations.push({
-                                        locationid: l.id,
-                                        spaceid: s.id + 1,
-                                        name: l.name,
-                                        industrytype: industrytype
-                                    });
-                                }
-                            }
-                        }
-                    });
-                }
-            });
-
-            return _.sortBy(spacesWithLocations, 'name', 'space');
-        },
-        setHumanBuildIndustryType(industrytype, tileid) {
-            this.currentPlayer.nextAction.actiondata.buildindustrytype = industrytype;
-            this.currentPlayer.nextAction.actiondata.tileid = tileid;
-            this.setHumanAction('01');
-        },
         setHumanBuildLocationAndSpace(locationid, spaceid) {
-            this.currentPlayer.nextAction.actiondata.buildlocationid = locationid;
-            this.currentPlayer.nextAction.actiondata.buildspaceid = spaceid - 1;
+            let location = this.findLocationById(locationid);
+            this.humanPlayer.nextAction.actiondata.buildlocationid = locationid;
+            this.humanPlayer.nextAction.actiondata.buildspaceid = spaceid - 1;
+            this.humanPlayer.nextAction.actiondata.buildlocationname = location.name;
 
             // determine needed consumption
-            let tile = this.findPlayerBoardIndustryTileById(this.humanPlayer.player_type, this.currentPlayer.nextAction.actiondata.tileid);
+            let tile = this.humanPlayer.nextAction.actiondata.buildtile;
 
             // get consumption options
             let consumeLocations = this.humanConsumeLocations(locationid, tile.coalCost, tile.ironCost, null);
-            this.currentPlayer.nextAction.actiondata.consumelocations = consumeLocations;
+            this.humanPlayer.nextAction.actiondata.consumelocations = consumeLocations;
             this.setHumanAction('02');
-            console.log(this.currentPlayer.nextAction);
+            console.log(this.humanPlayer.nextAction);
         },
 
         // UI: Network
+        validHumanNetworkLocations: function() {
+            let locations = this.findAllLocationsInNetwork(PLAYER_TYPE.Human);
+
+            if (locations.length === 0) {
+                return _.sortBy(this.board.locations, 'name');
+            }
+            return _.sortBy(locations, 'name');
+        },
 
         // UI: Sell
 
@@ -368,9 +402,10 @@ var app = new Vue({
             return consumeLocations;
         },
         setPrevConsume: function() {
-            if (this.currentPlayer.nextAction.actiondata.buildindustrytype) {
-                this.currentPlayer.nextAction.actiondata.buildlocationid = null;
-                this.currentPlayer.nextAction.actiondata.buildspaceid = null;
+            if (this.humanPlayer.nextAction.actiondata.buildindustrytype !== null && this.humanPlayer.nextAction.actiondata.buildindustrytype !== undefined) {
+                this.humanPlayer.nextAction.actiondata.buildlocationid = null;
+                this.humanPlayer.nextAction.actiondata.buildspaceid = null;
+                this.humanPlayer.nextAction.actiondata.buildlocationname = null;
                 this.setHumanAction('01');
             }
         },
@@ -683,10 +718,8 @@ var app = new Vue({
                 if (build) {
                     action = AI_ACTION.BuildAndNetwork;
                     
-                    player.nextAction = {
-                        action: action,
-                        actiondata: actiondata
-                    };
+                    player.nextAction.action = action;
+                    player.nextAction.actiondata = actiondata;
                 } else {
                     // if neither card could be built, sell
                     sell = true;
@@ -704,10 +737,8 @@ var app = new Vue({
 
                 // TODO: calculate beer consumption
 
-                player.nextAction = {
-                    action: action,
-                    actiondata: actiondata
-                };
+                player.nextAction.action = action;
+                player.nextAction.actiondata = actiondata;
             }
 
             console.log(player.nextAction);
@@ -1319,7 +1350,8 @@ var app = new Vue({
                 });
            }
 
-           return _.groupBy(connectedCoalLocations, 'distance');
+           let groupedConnectedLocations = _.groupBy(connectedCoalLocations, 'distance');
+           return groupedConnectedLocations;
         },
         findAllUnflippedIronWorks: function () {
             let playerIronWorksLocations = [];
@@ -1555,7 +1587,8 @@ var app = new Vue({
             return connectedMarketLocations;
         },
         isConnectedToMarket: function (locationid, player_type) {
-            return this.findAllConnectedMarkets(locationid, player_type).length > 0;
+            let isConnected = this.findAllConnectedMarkets(locationid, player_type).length > 0;
+            return isConnected;
         },
         findLocationsByIndustry: function (industry) {
             // find locations that have a particular industry type
@@ -1592,8 +1625,9 @@ var app = new Vue({
                 allNextTiles.push(this.findNextTileFromPlayerBoard(player_type, i));
             }
 
+            let self = this;
             return _.sortBy(allNextTiles, function (t) {
-                return t.tileToString();
+                return self.tileToString(t);
             });
         },
         findMainBoardIndustryTileById: function(locationid, tileid) {
@@ -1666,7 +1700,10 @@ var app = new Vue({
         },
         boardIndustryTileToString: function (locationid, tileid) {
             let tile = this.findMainBoardIndustryTileById(locationid, tileid);
-            return tile.tileToString();
+            return this.tileToString(tile);
+        },
+        tileToString: function (tile) {
+            return industryStringMap[tile.industrytype] + ' (Level ' + romanize(tile.level) + ')';
         },
         boardIndustryTileToStringWithResources: function (locationid, tileid, includeTotalBeerOnMerchantTile) {
             let tile = this.findMainBoardIndustryTileById(locationid, tileid);
@@ -1733,7 +1770,7 @@ var app = new Vue({
             this.currentRound = 1;
             this.currentGameStep = GAME_STEPS.Setup;
             this.currentEra = ERA.Canal;
-            this.currentPlayer = PLAYER_TYPE.Human;
+            this.currentPlayerType = PLAYER_TYPE.Human;
             this.board = _.cloneDeep(INITIAL_BOARD);
             this.humanPlayer = _.cloneDeep(HUMAN_PLAYER);
             this.eliza = _.cloneDeep(ELIZA);
@@ -1741,11 +1778,33 @@ var app = new Vue({
             this.showBoardState = false;
             this.undoState = {};
         },
+        newGame: function () {
+            if (confirm('Are you sure you want to start a NEW GAME?')) { this.reset(); };
+        },
         loadUndoState: function() {
 
         },
+        undo: function () {
+            if (confirm('Are you sure you want to UNDO?')) { this.loadUndoState(); }
+        },
         saveGameState: function () {
-
+            let gameState = {};
+            gameState.numberOfPlayers = this.numberOfPlayers;
+            gameState.gameHasStarted = this.gameHasStarted;
+            gameState.useTurnOrder = this.useTurnOrder;
+            gameState.soldInCanalEra = this.soldInCanalEra;
+            gameState.soldInRailEra = this.soldInRailEra;
+            gameState.currentRound = this.currentRound;
+            gameState.currentGameStep = this.currentGameStep;
+            gameState.currentEra = this.currentEra;
+            gameState.currentPlayerType = this.currentPlayerType;
+            gameState.board = this.board;
+            gameState.humanPlayer = this.humanPlayer;
+            gameState.eliza = this.eliza;
+            gameState.eleanor = this.eleanor;
+            gameState.showBoardState = this.showBoardState;
+            gameState.undoState = this.undoState;
+            localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
         },
 
 

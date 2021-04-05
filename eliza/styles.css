@@ -161,6 +161,8 @@ a, a:visited, a:hover {
 
 .action-header {
     font-weight: bold;
+    padding: 1rem;
+    background-color: #efefef;
 }
 
 .action-message {
@@ -204,6 +206,10 @@ a, a:visited, a:hover {
     margin-top: 0.5rem;
     padding: 0.5rem;
     justify-content: space-around;
+}
+
+.important {
+    color: red;
 }
 
 

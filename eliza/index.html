@@ -9,7 +9,7 @@
     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
     <meta http-equiv="pragma" content="no-cache" />
     <link rel="shortcut icon" href="images/favicon.ico">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -64,7 +64,7 @@
         </section>
         <section class="playerArea" v-if="gameHasStarted">
             <section class="start-new text-centered">
-                <a href="#" v-on:click="if (confirm('Are you sure you want to start a NEW GAME?')) { reset(); }">New Game</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="if (confirm('Are you sure you want to UNDO?')) { loadUndoState }">Undo</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="toggleShowBoardState">View Board State</a>
+                <a href="#" v-on:click="newGame()">New Game</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="undo()">Undo</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="toggleShowBoardState">View Board State</a>
             </section>
             <section v-if="currentGameStep === 0">
                 <h1>Game Setup</h1>
@@ -89,12 +89,12 @@
                 <p>When you are done with setup, click 'Next' to begin the game!</p>
             </section>
             <section v-if="currentGameStep === 1">
-                <section v-if="currentPlayer.player_type === 0">
-                    <h2 class="section-title" v-if="currentPlayer.currentTurnIndex === 0">Your First Action</h2>
-                    <h2 class="section-title" v-if="currentPlayer.currentTurnIndex === 1">Your Second Action</h2>
+                <section v-if="humanPlayer.player_type === 0">
+                    <h2 class="section-title" v-if="humanPlayer.currentTurnIndex === 0">Your First Action</h2>
+                    <h2 class="section-title" v-if="humanPlayer.currentTurnIndex === 1">Your Second Action</h2>
                     <p class="section-detail">Round {{ currentRound }}</p>
                     
-                    <section v-if="!currentPlayer.actionStep">
+                    <section v-if="!humanPlayer.actionStep">
                         <ul class="cards">
                             <li class="card card--clickable" v-on:click="setHumanAction('00')">
                                 <p class="card__name">Build</p>
@@ -114,39 +114,41 @@
                         </ul>
                     </section>
 
-                    <section v-if="currentPlayer.actionStep === '00'">
+                    <section v-if="humanPlayer.actionStep === '00'">
+                        <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
                         <p class="action-header">What industry are you building?</p> 
                         <ul class="cards">
                             <li v-for="tile in findAllNextTilesFromPlayerBoard(0)" class="card card--clickable" v-on:click="setHumanBuildIndustryType(tile.industrytype, tile.id)">
-                                <p class="card__name">{{ tile.tileToString() }}</p>
+                                <p class="card__name">{{ tileToString(tile) }}</p>
                             </li>
                         </ul>
                     </section>
 
-                    <section v-if="currentPlayer.actionStep === '01'">
-                        <a href="#" v-on:click="prevHumanBuildIndustryType()">< Go Back</a>
-                        <p class="action-header">Where are you building?</p> 
+                    <section v-if="humanPlayer.actionStep === '01'">
+                        <a href="#" v-on:click="prevHumanBuildIndustryType">< Go Back</a>
+                        <p class="action-header">Where are you building your {{ tileToString(humanPlayer.nextAction.actiondata.buildtile) }}?</p> 
                         <ul class="cards">
-                            <li v-for="location in validHumanBuildLocationsForIndustryType(currentPlayer.nextAction.actiondata.buildindustrytype)" :key="location.id" class="card card--clickable" v-on:click="setHumanBuildLocationAndSpace(location.locationid, location.spaceid)">
-                                <p class="card__name">{{ location.name }} (Space {{ location.spaceid }})</p>
+                            <li v-for="loc in validHumanBuildLocationsForIndustryType" :key="loc.id" class="card card--clickable" v-on:click="setHumanBuildLocationAndSpace(loc.locationid, loc.spaceid)">
+                                <p class="card__name">{{ loc.name }} (Space {{ loc.spaceid }})</p>
                             </li>
                         </ul>
                     </section>
 
-                    <section v-if="currentPlayer.actionStep === '03'">
+                    <section v-if="humanPlayer.actionStep === '03'">
                         <p class="action-header">BUILD:</p>
                     </section>
 
-                    <section v-if="currentPlayer.actionStep === '10'">
+                    <section v-if="humanPlayer.actionStep === '10'">
+                        <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
                         <p class="action-header">Where are you networking from?</p> 
                         <ul>
-                            <li v-for="location in validHumanNetworkLocations" :key="location.id">
+                            <li v-for="location in validHumanNetworkLocations()" :key="location.id">
                                 {{ location.name }}
                             </li>
                         </ul>
                     </section>
 
-                    <section v-if="currentPlayer.actionStep === '11'">
+                    <section v-if="humanPlayer.actionStep === '11'">
                         <p class="action-header">Where are you networking to?</p> 
                         <ul>
                             <li>
@@ -155,7 +157,8 @@
                         </ul>
                     </section>
 
-                    <section v-if="currentPlayer.actionStep === '20'">
+                    <section v-if="humanPlayer.actionStep === '20'">
+                        <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
                         <p class="action-header">What industries are you selling?</p> 
                         <ul>
                             <li>
@@ -164,7 +167,8 @@
                         </ul>
                     </section>
 
-                    <section v-if="currentPlayer.actionStep === '30'">
+                    <section v-if="humanPlayer.actionStep === '30'">
+                        <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
                         <p class="action-header">What industry are you developing?</p> 
                         <ul>
                             <li>
@@ -173,14 +177,13 @@
                         </ul>
                     </section>
 
-                    <section v-if="currentPlayer.actionStep === '02' || currentPlayer.actionStep === '12' || currentPlayer.actionStep === '31'">
-
-                        <section v-if="currentPlayer.nextAction.actiondata.consumelocations.coal">
-                            <a href="#" v-on:click="setPrevConsume()">< Go Back</a>
-                            <p class="action-header">For your action you need {{ currentPlayer.nextAction.actiondata.consumelocations.coal.coalNeeded }} Coal.</p> 
+                    <section v-if="humanPlayer.actionStep === '02' || humanPlayer.actionStep === '12' || humanPlayer.actionStep === '31'">
+                        <a href="#" v-on:click="setPrevConsume()">< Go Back</a>
+                        <section v-if="humanPlayer.nextAction.actiondata.consumelocations.coal">
+                            <p class="action-header">Your {{ humanActionStringMap[humanPlayer.nextAction.action] }} action consumes <span class="important">{{ humanPlayer.nextAction.actiondata.consumelocations.coal.coalNeeded }} Coal</span>.<br /><span v-if="humanPlayer.nextAction.action === 0">Your {{ tileToString(humanPlayer.nextAction.actiondata.buildtile) }} in {{ humanPlayer.nextAction.actiondata.buildlocationname }} also costs &pound;{{ humanPlayer.nextAction.actiondata.buildtile.poundsCost }}.</span></p> 
                             <p class="action-message">Indicate below how much coal you are taking from each location.</p>
                             <ul class="cards">
-                                <li v-for="location in currentPlayer.nextAction.actiondata.consumelocations.coal.coalLocations" class="card card--clickable">
+                                <li v-for="location in humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations" class="card">
                                     <p class="card__name">{{ location.name }} (Space {{ location.spaceid }})</p>
                                     <div class="card__area">
                                         <label>
@@ -201,7 +204,8 @@
                         </section>
                     </section>
 
-                    <section v-if="currentPlayer.actionStep === '40'">
+                    <section v-if="humanPlayer.actionStep === '40'">
+                        <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
                         <p class="action-header">You do not need to enter anything into the app for Scout or Loan. Click 'Next' when you have finished your Scout or Loan action.</p> 
                     </section>
                 </section>
