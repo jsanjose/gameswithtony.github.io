@@ -132,6 +132,7 @@
                                 <p class="card__name">{{ loc.name }} (Space {{ loc.spaceid }})</p>
                             </li>
                         </ul>
+                        <p v-if="validHumanBuildLocationsForIndustryType.length === 0">This tile cannot be built currently.</p>
                     </section>
 
                     <section v-if="humanPlayer.actionStep === '03'">

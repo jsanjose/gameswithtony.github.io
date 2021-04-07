@@ -224,7 +224,7 @@ var app = new Vue({
 
             let sortedSpacesWithLocations = _.sortBy(spacesWithLocations, 'name', 'space');
             return sortedSpacesWithLocations;
-        },
+        }
     },
     methods: {
         next: function () {
@@ -1809,6 +1809,7 @@ var app = new Vue({
             this.eleanor = _.cloneDeep(ELEANOR);
             this.showBoardState = false;
             this.undoState = {};
+            this.saveGameState();
         },
         newGame: function () {
             if (confirm('Are you sure you want to start a NEW GAME?')) { this.reset(); };
