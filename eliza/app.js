@@ -166,6 +166,7 @@ var app = new Vue({
             return sortedLocations;
         },
         validHumanBuildLocationsForIndustryType: function () {
+            this.computedUpdater++;
             let spacesWithLocations = [];
             let self = this;
             let industrytype = this.humanPlayer.nextAction.actiondata.buildindustrytype;
@@ -313,6 +314,7 @@ var app = new Vue({
             this.humanPlayer.nextAction.actiondata.buildindustrytype = industrytype;
             let tile = this.findPlayerBoardIndustryTileById(this.humanPlayer.player_type, tileid);
             this.humanPlayer.nextAction.actiondata.buildtile = tile; 
+            this.computedUpdater++;
             this.setHumanAction('01');
         },
         prevHumanBuildIndustryType: function() {
