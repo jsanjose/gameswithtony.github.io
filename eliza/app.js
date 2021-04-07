@@ -301,7 +301,7 @@ var app = new Vue({
             this.saveGameState();
         },
         showNextButton() {
-            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || this.currentPlayer.actionStep === '03'));
+            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '31')));
         },
 
         // UI: Build
