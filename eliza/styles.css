@@ -183,6 +183,10 @@ input[type="radio"]:checked + span {
     font-weight: bold;
 }
 
+.action-desc + .action-desc {
+    margin-top: 0.875rem;
+}
+
 /* --- Cards --- */
 .cards {
     list-style: none;

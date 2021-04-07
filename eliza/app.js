@@ -234,6 +234,58 @@ var app = new Vue({
             if (this.currentGameStep === 0) {
                 this.currentGameStep = GAME_STEPS.Round;
             }
+
+            // NOTE: Actions handled in opposite order since actionStep is incremented
+
+            // if executing human action
+            if (this.currentPlayer.actionStep === '03') {
+                this.executeNextHumanAction();
+            }
+
+            // if human consumption
+            if (this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '31') {
+                if (this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
+                    let totalChosenCoal = _.sumBy(this.humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations, function (l) {
+                        return l.chosenCoal;
+                    });
+
+                    if (this.humanPlayer.nextAction.actiondata.consumelocations.coal.coalNeeded > totalChosenCoal) {
+                        alert("You have not chosen enough coal.");
+                        return;
+                    }
+
+                    if (this.humanPlayer.nextAction.actiondata.consumelocations.coal.coalNeeded < totalChosenCoal) {
+                        alert("You have chosen too much coal.");
+                        return;
+                    }
+                }
+
+                if (this.humanPlayer.nextAction.actiondata.consumelocations.iron) {
+                    let totalChosenIron = _.sumBy(this.humanPlayer.nextAction.actiondata.consumelocations.iron.ironLocations, function (l) {
+                        return l.chosenIron;
+                    });
+
+                    if (this.humanPlayer.nextAction.actiondata.consumelocations.iron.ironNeeded > totalChosenIron) {
+                        alert("You have not chosen enough iron.");
+                        return;
+                    }
+
+                    if (this.humanPlayer.nextAction.actiondata.consumelocations.iron.ironNeeded < totalChosenIron) {
+                        alert("You have chosen too much iron.");
+                        return;
+                    }
+                }
+
+                // TODO: Add beer logic
+                if (this.humanPlayer.nextAction.actiondata.consumelocations.beer) {
+                }
+
+                // Move to next step
+                if (this.currentPlayer.actionStep === '02') {
+                    this.currentPlayer.actionStep = '03';
+                    this.saveGameState();
+                }
+            }
         },
         setPlayerColor: function (color) {
             this.humanPlayer.color = color;
@@ -284,12 +336,6 @@ var app = new Vue({
             this.debugSetupTestBoard();
 
             // Test functions
-            let connectedCoal = this.findAllConnectedCoal(15, PLAYER_TYPE.Human);
-            console.log(connectedCoal);
-
-            let coalconsumption = this.generateAICoalConsumption(15, PLAYER_TYPE.Eliza_AI, 4);
-            console.log(coalconsumption);
-
             this.calculateAIAction(PLAYER_TYPE.Eliza_AI);
             // --- END TEMPORARY
 
@@ -302,12 +348,23 @@ var app = new Vue({
             this.saveGameState();
         },
         showNextButton() {
-            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '31')));
+            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '31' ||this.currentPlayer.actionStep === '40')));
         },
 
         // UI: Build
         prevSetHumanAction: function () {
             this.setHumanAction(null);
+        },
+        prevBuildActionConfirm: function () {
+            let tile = this.humanPlayer.nextAction.actiondata.buildtile;
+
+            // get consumption options
+            if (tile.coalCost > 0 || tile.ironCost > 0) {
+                this.setHumanAction('02');
+            } else {
+                this.setHumanAction('01');
+                this.saveGameState();
+            }
         },
         setHumanBuildIndustryType: function(industrytype, tileid) {
             this.humanPlayer.nextAction.action = HUMAN_ACTION.Build;
@@ -334,10 +391,14 @@ var app = new Vue({
             let tile = this.humanPlayer.nextAction.actiondata.buildtile;
 
             // get consumption options
-            let consumeLocations = this.humanConsumeLocations(locationid, tile.coalCost, tile.ironCost, null);
-            this.humanPlayer.nextAction.actiondata.consumelocations = consumeLocations;
-            this.setHumanAction('02');
-            console.log(this.humanPlayer.nextAction);
+            if (tile.coalCost > 0 || tile.ironCost > 0) {
+                let consumeLocations = this.humanConsumeLocations(locationid, tile.coalCost, tile.ironCost, null);
+                this.humanPlayer.nextAction.actiondata.consumelocations = consumeLocations;
+                this.setHumanAction('02');
+            } else {
+                this.humanPlayer.nextAction.actiondata.consumelocations = {};
+                this.setHumanAction('03');
+            }
         },
 
         // UI: Network
@@ -348,6 +409,12 @@ var app = new Vue({
                 return _.sortBy(this.board.locations, 'name');
             }
             return _.sortBy(locations, 'name');
+        },
+        setNetworkLocationFrom: function (locationid) {
+
+        },
+        setNetworkLocationTo: function (locationid) {
+
         },
 
         // UI: Sell
@@ -443,8 +510,128 @@ var app = new Vue({
                 this.setHumanAction('01');
             }
         },
+        // human action description
+        getHumanActionDescription: function () {
+            let actions = [];
+
+            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Build) {
+                let actionstring = '';
+
+                // If Build
+                let location = this.findLocationById(this.humanPlayer.nextAction.actiondata.buildlocationid);
+                actionstring = actionstring + 'Build ' + this.tileToString(this.humanPlayer.nextAction.actiondata.buildtile) + ' in ' + location.name + ' (Space ' + (this.humanPlayer.nextAction.actiondata.buildspaceid + 1) + ').';
+
+                actions.push({
+                    actionDone: false,
+                    actionDesc: actionstring
+                });
+
+                actionstring = 'Pay £' + this.humanPlayer.nextAction.actiondata.buildtile.poundsCost + '.';
+                actions.push({
+                    actionDone: false,
+                    actionDesc: actionstring
+                });
+
+                // TODO: Check move of coal to market
+
+                // TODO: Check move of iron to market
+            }
+
+            // If Coal consumption
+            if (this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
+                var self = this;
+                let actionstring = '';
+
+                _.forEach(this.humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations, function (l) {
+                    if (l.chosenCoal > 0) {
+                        actionstring = actionstring + 'Consume ' + l.chosenCoal + ' coal from ' + l.name + ' (Space ' + (l.spaceid - 1) + ')';
+
+                        if (l.coalAvailable === l.chosenCoal) {
+                            actionstring = actionstring + ' [Flip the tile]';
+                        }
+
+                        actionstring = actionstring + '.'
+
+                        actions.push({
+                            actionDone: false,
+                            actionDesc: actionstring
+                        });
+                    }
+                });
+            }
+
+            // If iron consumption
+            if (this.humanPlayer.nextAction.actiondata.consumelocations.iron) {
+                let actionstring = '';
+
+                _.forEach(this.humanPlayer.nextAction.actiondata.consumelocations.iron.ironLocations, function (l) {
+                    if (l.chosenIron > 0) {
+                        actionstring = actionstring + 'Consume ' + l.chosenIron + ' iron from ' + l.name + ' (Space ' + (l.spaceid - 1) + ')';
+
+                        if (l.ironAvailable === l.chosenIron) {
+                            actionstring = actionstring + ' [Flip the tile]';
+                        }
+
+                        actionstring = actionstring + '.'
+
+                        actions.push({
+                            actionDone: false,
+                            actionDesc: actionstring
+                        });
+                    }
+                });
+            }
+
+            // TODO: Add beer consumption action strings
+            if (this.humanPlayer.nextAction.actiondata.consumelocations.beer) {
+            }
+
+            return actions;
+        },
+        executeNextHumanAction: function () {
+            let self = this; 
+
+            // BUILD
+            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Build) {
+                this.layIndustryTile(PLAYER_TYPE.Human, this.humanPlayer.nextAction.actiondata.buildtile.id, this.humanPlayer.nextAction.actiondata.buildlocationid, this.humanPlayer.nextAction.actiondata.buildspaceid);
+
+                // TODO: Move coal to market
+
+                // TODO: Move iron to market
+            }
+
+            // NETWORK
+
+            // SELL
+
+            // DEVELOP
+
+            // CONSUME
+            if (this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
+                _.forEach(self.humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations, function (l) {
+                    let location = self.findLocationById(l.locationid);
+                    let tile = location.spaces[l.spaceid - 1].tile;
+                    tile.availableCoal = tile.availableCoal - l.chosenCoal;
+                });
+            }
+
+            if (this.humanPlayer.nextAction.actiondata.consumelocations.iron) {
+                _.forEach(self.humanPlayer.nextAction.actiondata.consumelocations.iron.ironLocations, function (l) {
+                    let location = self.findLocationById(l.locationid);
+                    let tile = location.spaces[l.spaceid - 1].tile;
+                    tile.availableIron = tile.availableIron - l.chosenIron;
+                });
+            }
+
+            if (this.humanPlayer.nextAction.actiondata.consumelocations.beer) {
+
+            }
+        },
         
         // Primary action functions
+        calculateNextPlayer: function () {
+
+        },
         calculateAIAction: function (player_type) {
             // this function builds the 'nextAction' object attached to the player object. It does not execute any actions.
 
@@ -777,36 +964,8 @@ var app = new Vue({
 
             console.log(player.nextAction);
         },
-        executeNextAction: function () {
+        executeNextAIAction: function () {
             // use 'currentPlayer'
-        },
-        executeAIBuildAndNetwork: function (player_type) {
-            
-            // TODO: At end, add amount spent
-        },
-        executeAISell: function (player_type) {
-
-            // TODO: At end, add amount spent
-        },
-        tryHumanBuildAction: function (locationid, spaceid, tile) {
-
-            // TODO: At end, add amount spent
-        },
-        tryHumanNetworkAction: function (locationid1, locationid2, tile) {
-
-            // TODO: At end, add amount spent
-        },
-        setHumanActionType: function (type) {
-
-        },
-        setHumanLocationId: function (locationid) {
-
-        },
-        setHumanTargetLocationId: function (locationid) {
-
-        },
-        setHumanConsumption: function (consumedata) {
-
         },
         // end: Primary action functions
 

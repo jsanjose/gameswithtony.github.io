@@ -136,15 +136,21 @@
                     </section>
 
                     <section v-if="humanPlayer.actionStep === '03'">
-                        <p class="action-header">BUILD:</p>
+                        <a href="#" v-on:click="prevBuildActionConfirm()">< Go Back</a>
+                        <p class="action-header">Confirm Your Action<br /><span class="action-message">Click 'Next' to confirm.</span></p>
+                        <ul>
+                            <li class="action-desc" v-for="action in getHumanActionDescription()">
+                                {{ action.actionDesc }}
+                            </li>
+                        </ul>
                     </section>
 
                     <section v-if="humanPlayer.actionStep === '10'">
                         <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
                         <p class="action-header">Where are you networking from?</p> 
-                        <ul>
-                            <li v-for="location in validHumanNetworkLocations()" :key="location.id">
-                                {{ location.name }}
+                        <ul class="cards">
+                            <li class="card card--clickable" v-for="location in validHumanNetworkLocations()" :key="location.id">
+                                <p class="card__name">{{ location.name }}</p>
                             </li>
                         </ul>
                     </section>
@@ -170,7 +176,7 @@
 
                     <section v-if="humanPlayer.actionStep === '30'">
                         <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
-                        <p class="action-header">What industry are you developing?</p> 
+                        <p class="action-header">What industries are you developing?<br /><span class="action-message">Choose up to two.</span></p> 
                         <ul>
                             <li>
                                 Industry Tile String
@@ -213,7 +219,7 @@
 
                     <section v-if="humanPlayer.actionStep === '40'">
                         <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
-                        <p class="action-header">You do not need to enter anything into the app for Scout or Loan. Click 'Next' when you have finished your Scout or Loan action.</p> 
+                        <p class="action-header">You do not need to enter anything into the app for Scout or Loan.<br /><span class="action-message">Click 'Next' when you have finished your Scout or Loan action.</span></p> 
                     </section>
                 </section>
 
@@ -253,15 +259,15 @@
                     Empty Iron Spaces in Market: {{ totalEmptyMarketIronSpaces }}
                 </p>
                 <ul class="boardstate__locations">
-                    <li class="boardstate__location" v-for="location in board.locations" :key="location.id">
+                    <li class="boardstate__location" v-for="location in board.locations">
                         <p class="boardstate__locationname">{{ location.name }}</p>
                         <ul class="boardstate__industrytiles">
-                            <li v-for="space in findSpacesWithTiles(location.spaces)" :key="location.id">
+                            <li v-for="space in findSpacesWithTiles(location.spaces)">
                                 <p v-if="space.tile"><span v-if="!space.tile.isMerchantTile">{{ space.id + 1 }} : {{ colorString(space.tile.color) }} | </span>{{ boardIndustryTileToStringWithResources(location.id, space.tile.id, true) }}</p>
                             </li>
                         </ul>
                         <ul class="boardstate__adjacentlocations">
-                            <li v-for="adjacentLocation in reportAdjacentLocations(location.id)" :key="location.id">
+                            <li v-for="adjacentLocation in reportAdjacentLocations(location.id)">
                                 <p class="boardstate__adjacentlocation">--> {{ adjacentLocation.name }} ({{ adjacentLocation.colorString }})</p>
                             </li>
                         </ul>
