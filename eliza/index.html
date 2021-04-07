@@ -179,24 +179,28 @@
 
                     <section v-if="humanPlayer.actionStep === '02' || humanPlayer.actionStep === '12' || humanPlayer.actionStep === '31'">
                         <a href="#" v-on:click="setPrevConsume()">< Go Back</a>
-                        <section v-if="humanPlayer.nextAction.actiondata.consumelocations.coal">
-                            <p class="action-header">Your {{ humanActionStringMap[humanPlayer.nextAction.action] }} action consumes <span class="important">{{ humanPlayer.nextAction.actiondata.consumelocations.coal.coalNeeded }} Coal</span>.<br /><span v-if="humanPlayer.nextAction.action === 0">Your {{ tileToString(humanPlayer.nextAction.actiondata.buildtile) }} in {{ humanPlayer.nextAction.actiondata.buildlocationname }} also costs &pound;{{ humanPlayer.nextAction.actiondata.buildtile.poundsCost }}.</span></p> 
-                            <p class="action-message">Indicate below how much coal you are taking from each location.</p>
+                        <p class="action-message"><span v-if="humanPlayer.nextAction.action === 0">Building your {{ tileToString(humanPlayer.nextAction.actiondata.buildtile) }} in {{ humanPlayer.nextAction.actiondata.buildlocationname }} costs &pound;{{ humanPlayer.nextAction.actiondata.buildtile.poundsCost }}.</span></p>
+                        <section class="consume-section" v-if="humanPlayer.nextAction.actiondata.consumelocations.coal">
+                            <p class="action-header">Your {{ humanActionStringMap[humanPlayer.nextAction.action] }} action consumes <span class="important">{{ humanPlayer.nextAction.actiondata.consumelocations.coal.coalNeeded }} Coal</span>.<br /><span class="small">Indicate below how much coal you are taking from each location.</span></p> 
                             <ul class="cards">
                                 <li v-for="location in humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations" class="card">
                                     <p class="card__name">{{ location.name }} (Space {{ location.spaceid }})</p>
                                     <div class="card__area">
-                                        <label>
-                                            <input type="radio" />0
+                                        <label v-for="resource in location.resourceArray">
+                                            <input type="radio" v-bind:value="resource" v-model="location.chosenCoal" />{{ resource }}
                                         </label>
-                                        <label>
-                                            <input type="radio" />1
-                                        </label>
-                                        <label>
-                                            <input type="radio" />2
-                                        </label>
-                                        <label>
-                                            <input type="radio" />3
+                                    </div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="consume-section" v-if="humanPlayer.nextAction.actiondata.consumelocations.iron">
+                            <p class="action-header">Your {{ humanActionStringMap[humanPlayer.nextAction.action] }} action consumes <span class="important">{{ humanPlayer.nextAction.actiondata.consumelocations.iron.ironNeeded }} Iron</span>.<br /><span class="small">Indicate below how much iron you are taking from each location.</span></p>
+                            <ul class="cards">
+                                <li v-for="location in humanPlayer.nextAction.actiondata.consumelocations.iron.ironLocations" class="card">
+                                    <p class="card__name">{{ location.name }} (Space {{ location.spaceid }})</p>
+                                    <div class="card__area">
+                                        <label v-for="resource in location.resourceArray">
+                                            <input type="radio" v-bind:value="resource" v-model="location.chosenIron" />{{ resource }}
                                         </label>
                                     </div>
                                 </li>

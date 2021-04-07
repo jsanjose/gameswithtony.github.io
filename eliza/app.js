@@ -369,18 +369,27 @@ var app = new Vue({
                     _.forEach(ccl, function (l) {
                         _.forEach(l.coalspaces, function (pcs) {
                             if (totalCoalAvailable < totalCoalNeeded) {
+                                let resourceArray = [];
+                                for (let i=0;i<=pcs.tile.availableCoal;i++) {
+                                    resourceArray.push(i);
+                                }
+
                                 consumeLocations.coal.coalLocations.push({
                                     locationid: l.id,
                                     name: l.name,
                                     spaceid: pcs.id + 1,
-                                    coalAvailable: pcs.availableCoal
+                                    coalAvailable: pcs.tile.availableCoal,
+                                    chosenCoal: 0,
+                                    resourceArray: resourceArray
                                 });
 
-                                totalCoalAvailable = totalCoalAvailable + pcs.availableCoal;
+                                totalCoalAvailable = totalCoalAvailable + pcs.tile.availableCoal;
                             }
                         });
                     });
                 });
+
+                // TODO: Include market
             }
 
             if (totalIronNeeded && totalIronNeeded > 0) {
@@ -390,6 +399,27 @@ var app = new Vue({
                 };
 
                 let allUnflippedIron = this.findAllUnflippedIronWorks(locationid);
+
+                let totalIronAvailable = 0;
+                _.forEach(allUnflippedIron, function (l) {
+                    _.forEach(l.ironspaces, function (is) {
+                        let resourceArray = [];
+                        for (let i=0;i<=is.tile.availableIron;i++) {
+                            resourceArray.push(i);
+                        }
+
+                        consumeLocations.iron.ironLocations.push({
+                            locationid: l.id,
+                            name: l.name,
+                            spaceid: is.id + 1,
+                            ironAvailable: is.tile.availableIron,
+                            chosenIron: 0,
+                            resourceArray: resourceArray
+                        });
+                    });
+                });
+
+                // TODO: Include market
             }
 
             if (totalBeerNeeded && totalBeerNeeded > 0) {
@@ -397,6 +427,8 @@ var app = new Vue({
                     beerNeeded: totalBeerNeeded,
                     beerLocations: []
                 };
+
+                // TODO: Get beer consumption
             }
 
             return consumeLocations;
@@ -1357,7 +1389,7 @@ var app = new Vue({
             let playerIronWorksLocations = [];
 
             _.forEach(this.board.locations, function(o) {
-                let ironSpaces = _.find(o.spaces, function(p) {
+                let ironSpaces = _.filter(o.spaces, function(p) {
                     if (p.tile) {
                         return p.tile.industrytype === INDUSTRY.IronWorks && p.tile.availableIron > 0;
                     }
@@ -1810,7 +1842,16 @@ var app = new Vue({
 
         debugSetupTestBoard: function () {
             // TEMPORARY (remove this later): setup board state
-            this.layIndustryTile(PLAYER_TYPE.Human, 0, 21, 0);
+            this.layIndustryTile(PLAYER_TYPE.Human, 0, 14, 2);
+            this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 1);
+            this.layIndustryTile(PLAYER_TYPE.Human, 7, 23, 1);
+            this.layIndustryTile(PLAYER_TYPE.Human, 23, 25, 0);
+            this.layIndustryTile(PLAYER_TYPE.Human, 24, 25, 1);
+            this.layIndustryTile(PLAYER_TYPE.Human, 25, 2, 0);
+            this.layIndustryTile(PLAYER_TYPE.Human, 26, 3, 0);
+            this.layIndustryTile(PLAYER_TYPE.Human, 27, 6, 0);
+            this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 37, 23, 0);
+            this.layNetworkTile(PLAYER_TYPE.Human, 14, 21);
             this.layNetworkTile(PLAYER_TYPE.Human, 21, 18);
             this.layNetworkTile(PLAYER_TYPE.Human, 21, 14);
             this.layNetworkTile(PLAYER_TYPE.Human, 14, 15);
@@ -1818,8 +1859,6 @@ var app = new Vue({
             this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
             this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
             this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);
-            this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 1);
-            this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 37, 23, 0);
             this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 23, 26);
         },
         // --- BEGIN: may not truly need these ---

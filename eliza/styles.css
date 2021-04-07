@@ -169,6 +169,16 @@ a, a:visited, a:hover {
     font-size: 0.9rem;
 }
 
+.small {
+    font-size: 0.85rem;
+}
+
+.consume-section + .consume-section {
+    margin-top: 2rem;
+    padding-top: 0.5rem;
+    border-top: dashed 1px #ccc;
+}
+
 /* --- Cards --- */
 .cards {
     list-style: none;
