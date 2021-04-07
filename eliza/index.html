@@ -188,7 +188,8 @@
                                     <p class="card__name">{{ location.name }} (Space {{ location.spaceid }})</p>
                                     <div class="card__area">
                                         <label v-for="resource in location.resourceArray">
-                                            <input type="radio" v-bind:value="resource" v-model="location.chosenCoal" /><span>{{ resource }}</span>
+                                            <input type="radio" v-bind:value="resource"
+                                            v-bind:value="location.id" v-model="location.chosenCoal" /><span>{{ resource }}</span>
                                         </label>
                                     </div>
                                 </li>
@@ -201,7 +202,8 @@
                                     <p class="card__name">{{ location.name }} (Space {{ location.spaceid }})</p>
                                     <div class="card__area">
                                         <label v-for="resource in location.resourceArray">
-                                            <input type="radio" v-bind:value="resource" v-model="location.chosenIron" /><span>{{ resource }}</span>
+                                            <input type="radio" v-bind:value="resource"
+                                            v-bind:value="location.id"  v-model="location.chosenIron" /><span>{{ resource }}</span>
                                         </label>
                                     </div>
                                 </li>
