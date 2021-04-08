@@ -262,11 +262,7 @@ const INITIAL_BOARD = {
             ],
             edgesCanal: [
                 {
-                    toId: 2,
-                    tile: null
-                },
-                {
-                    toId: 7,
+                    toId: 6,
                     tile: null
                 }
             ],
@@ -276,7 +272,7 @@ const INITIAL_BOARD = {
                     tile: null
                 },
                 {
-                    toId: 7,
+                    toId: 6,
                     tile: null
                 }
             ]

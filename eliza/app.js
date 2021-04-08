@@ -404,14 +404,30 @@ var app = new Vue({
         // UI: Network
         validHumanNetworkLocations: function() {
             let locations = this.findAllLocationsInNetwork(PLAYER_TYPE.Human);
+            let self = this;
 
-            if (locations.length === 0) {
-                return _.sortBy(this.board.locations, 'name');
-            }
-            return _.sortBy(locations, 'name');
+            let validLocations = _.filter(locations, function (l) {
+                let edges = [];
+                if (self.currentEra === ERA.Canal) {
+                    edges = l.edgesCanal;
+                } else {
+                    edges = l.edgesRail;
+                }
+
+                return _.filter(edges, function (e) {
+                    return !e.tile;
+                }).length > 0;
+            });
+            
+            return _.sortBy(validLocations, 'name');
         },
         setNetworkLocationFrom: function (locationid) {
-
+            this.humanPlayer.nextAction.actiondata.networkfromlocationid = locationid;
+            this.setHumanAction('11');
+        },
+        prevNetworkLocationFrom: function () {
+            this.humanPlayer.nextAction.actiondata.networkfromlocationid = null;
+            this.setHumanAction('10');
         },
         setNetworkLocationTo: function (locationid) {
 
@@ -1667,6 +1683,28 @@ var app = new Vue({
             });
 
             return adjacentIndustryLocations;
+        },
+        findAdjacentIndustryLocationsForHumanNetwork: function (locationid) {
+            let location = this.findLocationById(locationid);
+            let edges = [];
+            let adjacentIndustryLocations = [];
+
+            if (this.currentEra === ERA.Canal) {
+                edges = location.edgesCanal;
+            } else {
+                edges = location.edgesRail;
+            }
+
+            let self = this;
+            _.forEach(edges, function (e) {
+                let adjacentlocation = self.findLocationById(e.toId);
+
+                if (!e.tile) {
+                    adjacentIndustryLocations.push(adjacentlocation);
+                }
+            });
+
+            return _.sortBy(adjacentIndustryLocations, 'name');
         },
         findAllPathsBetweenLocations: function (locationid1, targetlocationid, requireLinks, player_type) {
             // do a depth-first search to connect all locations
