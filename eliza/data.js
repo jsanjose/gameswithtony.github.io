@@ -1174,7 +1174,8 @@ const INITIAL_BOARD = {
                 },
                 {
                     toId: 22,
-                    tile: null
+                    tile: null,
+                    isToSouthernFarm: true
                 }
             ],
             edgesRail: [
@@ -1192,7 +1193,8 @@ const INITIAL_BOARD = {
                 },
                 {
                     toId: 22,
-                    tile: null
+                    tile: null,
+                    isToSouthernFarm: true
                 }
             ]
         },
@@ -1200,6 +1202,7 @@ const INITIAL_BOARD = {
             id: 22,
             type: LOCATIONTYPE.Industries,
             name: "Southern Farm Brewery (near Kidderminster)",
+            isSouthernFarm: true,
             spaces: [
                 {
                     id: 0,
@@ -1336,7 +1339,8 @@ const INITIAL_BOARD = {
             edgesCanal: [
                 {
                     toId: 22,
-                    tile: null
+                    tile: null,
+                    isToSouthernFarm: true
                 },
                 {
                     toId: 21,
@@ -1354,7 +1358,8 @@ const INITIAL_BOARD = {
             edgesRail: [
                 {
                     toId: 22,
-                    tile: null
+                    tile: null,
+                    isToSouthernFarm: true
                 },
                 {
                     toId: 21,
@@ -1561,6 +1566,6 @@ function createLinkTile(id) {
 }
 const LINK_TILES = [];
 
-for (let i=0; i<=13; i++) {
+for (let i=0; i<=20; i++) {
     LINK_TILES[i] = createLinkTile(i);
 }

@@ -163,8 +163,18 @@
                         <a href="#" v-on:click="prevNetworkLocationFrom()">< Go Back</a>
                         <p class="action-header">Where are you networking to?</p> 
                         <ul class="cards">
-                            <li class="card card--clickable" v-for="location in findAdjacentIndustryLocationsForHumanNetwork(humanPlayer.nextAction.actiondata.networkfromlocationid)" :key="location.id">
+                            <li class="card card--clickable" v-for="location in findAdjacentIndustryLocationsForHumanNetwork(humanPlayer.nextAction.actiondata.networkfromlocationid)" :key="location.id" v-on:click="setNetworkLocationTo(location.id)">
                                 <p class="card__name">{{ location.name }}</p>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section v-if="humanPlayer.actionStep === '13'">
+                        <a href="#" v-on:click="prevNetworkActionConfirm()">< Go Back</a>
+                        <p class="action-header">Confirm Your Action<br /><span class="action-message">Click 'Next' to confirm.</span></p>
+                        <ul>
+                            <li class="action-desc" v-for="action in getHumanActionDescription()">
+                                {{ action.actionDesc }}
                             </li>
                         </ul>
                     </section>
@@ -192,7 +202,7 @@
                     <section v-if="humanPlayer.actionStep === '02' || humanPlayer.actionStep === '12' || humanPlayer.actionStep === '31'">
                         <a href="#" v-on:click="setPrevConsume()">< Go Back</a>
                         <p class="action-message"><span v-if="humanPlayer.nextAction.action === 0">Building your {{ tileToString(humanPlayer.nextAction.actiondata.buildtile) }} in {{ humanPlayer.nextAction.actiondata.buildlocationname }} costs &pound;{{ humanPlayer.nextAction.actiondata.buildtile.poundsCost }}.</span></p>
-                        <section class="consume-section" v-if="humanPlayer.nextAction.actiondata.consumelocations.coal">
+                        <section class="consume-section" v-if="humanPlayer.nextAction.actiondata.consumelocations && humanPlayer.nextAction.actiondata.consumelocations.coal">
                             <p class="action-header">Your {{ humanActionStringMap[humanPlayer.nextAction.action] }} action consumes <span class="important">{{ humanPlayer.nextAction.actiondata.consumelocations.coal.coalNeeded }} Coal</span>.<br /><span class="small">Indicate below how much coal you are taking from each location.</span></p> 
                             <ul class="cards">
                                 <li v-for="location in humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations" class="card">
@@ -206,7 +216,7 @@
                                 </li>
                             </ul>
                         </section>
-                        <section class="consume-section" v-if="humanPlayer.nextAction.actiondata.consumelocations.iron">
+                        <section class="consume-section" v-if="humanPlayer.nextAction.actiondata.consumelocations && humanPlayer.nextAction.actiondata.consumelocations.iron">
                             <p class="action-header">Your {{ humanActionStringMap[humanPlayer.nextAction.action] }} action consumes <span class="important">{{ humanPlayer.nextAction.actiondata.consumelocations.iron.ironNeeded }} Iron</span>.<br /><span class="small">Indicate below how much iron you are taking from each location.</span></p>
                             <ul class="cards">
                                 <li v-for="location in humanPlayer.nextAction.actiondata.consumelocations.iron.ironLocations" class="card">
@@ -224,7 +234,8 @@
 
                     <section v-if="humanPlayer.actionStep === '40'">
                         <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
-                        <p class="action-header">You do not need to enter anything into the app for Scout or Loan.<br /><span class="action-message">Click 'Next' when you have finished your Scout or Loan action.</span></p> 
+                        <p class="action-header">You do not need to enter anything into the app for Scout or Loan.</p> 
+                        <p>Click 'Next' when you have finished your Scout or Loan action.</p>
                     </section>
                 </section>
 

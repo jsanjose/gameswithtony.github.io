@@ -348,7 +348,7 @@ var app = new Vue({
             this.saveGameState();
         },
         showNextButton() {
-            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '31' ||this.currentPlayer.actionStep === '40')));
+            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' ||this.currentPlayer.actionStep === '40')));
         },
 
         // UI: Build
@@ -415,13 +415,14 @@ var app = new Vue({
                 }
 
                 return _.filter(edges, function (e) {
-                    return !e.tile;
+                    return !e.tile && !e.isToSouthernFarm;
                 }).length > 0;
             });
             
             return _.sortBy(validLocations, 'name');
         },
         setNetworkLocationFrom: function (locationid) {
+            this.humanPlayer.nextAction.action = HUMAN_ACTION.Network;
             this.humanPlayer.nextAction.actiondata.networkfromlocationid = locationid;
             this.setHumanAction('11');
         },
@@ -430,7 +431,15 @@ var app = new Vue({
             this.setHumanAction('10');
         },
         setNetworkLocationTo: function (locationid) {
+            this.humanPlayer.nextAction.actiondata.networktolocationid = locationid;
 
+            // TODO: Set coal consumption and move to consumption ('12') if in rail era
+
+            this.setHumanAction('13');
+        },
+        prevNetworkActionConfirm: function () {
+            this.humanPlayer.nextAction.actiondata.networktolocationid = null;
+            this.setHumanAction('11');
         },
 
         // UI: Sell
@@ -553,8 +562,22 @@ var app = new Vue({
                 // TODO: Check move of iron to market
             }
 
+            // If Network
+            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Network) {
+                let actionstring = '';
+                let locationfrom = this.findLocationById(this.humanPlayer.nextAction.actiondata.networkfromlocationid);
+                let locationto = this.findLocationById(this.humanPlayer.nextAction.actiondata.networktolocationid);
+
+                actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
+                
+                actions.push({
+                    actionDone: false,
+                    actionDesc: actionstring
+                });
+            }
+
             // If Coal consumption
-            if (this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
+            if (this.humanPlayer.nextAction.actiondata.consumelocations && this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
                 var self = this;
                 let actionstring = '';
 
@@ -577,7 +600,7 @@ var app = new Vue({
             }
 
             // If iron consumption
-            if (this.humanPlayer.nextAction.actiondata.consumelocations.iron) {
+            if (this.humanPlayer.nextAction.actiondata.consumelocations && this.humanPlayer.nextAction.actiondata.consumelocations.iron) {
                 let actionstring = '';
 
                 _.forEach(this.humanPlayer.nextAction.actiondata.consumelocations.iron.ironLocations, function (l) {
@@ -599,7 +622,7 @@ var app = new Vue({
             }
 
             // TODO: Add beer consumption action strings
-            if (this.humanPlayer.nextAction.actiondata.consumelocations.beer) {
+            if (this.humanPlayer.nextAction.actiondata.consumelocations && this.humanPlayer.nextAction.actiondata.consumelocations.beer) {
             }
 
             return actions;
@@ -617,6 +640,9 @@ var app = new Vue({
             }
 
             // NETWORK
+            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Network) {
+                this.layNetworkTile(PLAYER_TYPE.Human, this.humanPlayer.nextAction.actiondata.networkfromlocationid, this.humanPlayer.nextAction.actiondata.networktolocationid);
+            }
 
             // SELL
 
@@ -1050,9 +1076,7 @@ var app = new Vue({
                 });
             }
         },
-        layNetworkTile: function (player_type, locationid1, locationid2) {
-            // This function does no error checking. 'tryHumanNetworkAction' does error checking, and is otherwise used by the AI bots directly.
-
+        layNetworkTileBase: function (player_type, locationid1, locationid2) {
             let player = this.getPlayerFromType(player_type);
 
             let linktile = player.linktiles.pop();
@@ -1092,6 +1116,21 @@ var app = new Vue({
 
             edge1.tile = linktile1;
             edge2.tile = linktile2;
+        },
+        layNetworkTile: function (player_type, locationid1, locationid2) {
+            this.layNetworkTileBase(player_type, locationid1, locationid2);
+
+            // TODO: (human selection) if id is 21 to 25 or 25 to 21, also add the links to the Southern Farm (id 22)
+            // TODO: (AI selection) if id is 22, also add to 25 or 21
+
+            if ((locationid1 === 21 && locationid2 === 25) || (locationid1 === 25 && locationid2 === 21)) {
+                this.layNetworkTileBase(player_type, 21, 22);
+                this.layNetworkTileBase(player_type, 25, 22);
+            }
+
+            if (locationid1 === 22 || locationid2 === 22) {
+                this.layNetworkTileBase(player_type, 21, 25);
+            }
         },
         updateTurnOrder: function () {
             // Calculate turn order based on amount spent
@@ -1699,7 +1738,7 @@ var app = new Vue({
             _.forEach(edges, function (e) {
                 let adjacentlocation = self.findLocationById(e.toId);
 
-                if (!e.tile) {
+                if (!adjacentlocation.isSouthernFarm && !e.tile) {
                     adjacentIndustryLocations.push(adjacentlocation);
                 }
             });
