@@ -60,7 +60,7 @@ const ELIZA = {
     difficulty: DIFFICULTY_LEVEL.Apprentice,
     turnOrder: 1,
     lastRoundComplete: 0,
-    amountSpentThisRound: 0,
+    amountSpentThisRound: null,
     nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
 }
 
@@ -79,7 +79,7 @@ const ELEANOR = {
     difficulty: DIFFICULTY_LEVEL.Apprentice,
     turnOrder: 2,
     lastRoundComplete: 0,
-    amountSpentThisRound: 0,
+    amountSpentThisRound: null,
     nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
 }
 

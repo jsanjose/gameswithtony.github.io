@@ -95,7 +95,12 @@
                         <section class="player-name">
                             <h2 class="section-title" v-if="humanPlayer.currentTurnIndex === 0">Your First Action</h2>
                             <h2 class="section-title" v-if="humanPlayer.currentTurnIndex === 1">Your Second Action</h2>
-                            <p class="section-detail">Round {{ currentRound }}</p>
+                            <p class="section-detail">
+                                Round {{ currentRound }}
+                            </p>
+                            <p class="text-tiny">
+                                Eliza: &pound;{{ eliza.amountSpentThisRound }}<span>&nbsp;&nbsp;/&nbsp;&nbsp;Eleanor: &pound;{{ eleanor.amountSpentThisRound }}</span>
+                            </p>
                         </section>
                     </section>
                     <section v-if="!humanPlayer.actionStep">
@@ -196,7 +201,7 @@
                         <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
                         <p class="action-header">Which industries are you developing (choose up to two)?<br /><span class="action-message">Below are the top 2 tiles of each type of industry on your board.</span></p>
                         <section v-for="industry in this.humanPlayer.nextAction.actiondata.developabletiles">
-                            {{ industry.industrytypename }}
+                            <span class="highlight-text">{{ industry.industrytypename }}</span>
                             <ul class="cards">
                                 <li class="card card--clickable" v-for="tile in industry.tiles">
                                     <label style="display: flex;">
@@ -219,7 +224,8 @@
                                     <div class="card__area">
                                         <label v-for="resource in location.resourceArray">
                                             <input type="radio" v-bind:value="resource"
-                                            v-bind:value="location.id" v-model="location.chosenCoal" /><span>{{ resource }}</span>
+                                            v-bind:name="location.locationid"
+                                            v-model="location.chosenCoal" /><span>{{ resource }}</span>
                                         </label>
                                     </div>
                                 </li>
@@ -233,7 +239,8 @@
                                     <div class="card__area">
                                         <label v-for="resource in location.resourceArray">
                                             <input type="radio" v-bind:value="resource"
-                                            v-bind:value="location.id"  v-model="location.chosenIron" /><span>{{ resource }}</span>
+                                            v-bind:name="location.locationid"
+                                            v-model="location.chosenIron" /><span>{{ resource }}</span>
                                         </label>
                                     </div>
                                 </li>

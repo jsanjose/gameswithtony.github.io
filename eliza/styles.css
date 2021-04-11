@@ -83,6 +83,11 @@ a, a:visited, a:hover {
     background-color: #ff8a26;
 }
 
+.highlight-text {
+    color: #003100;
+    font-weight: bold;
+}
+
 .playerArea {
     display: flex;
     flex-direction: column;
@@ -182,6 +187,12 @@ a, a:visited, a:hover {
 
 .small {
     font-size: 0.85rem;
+}
+
+.text-tiny {
+    font-size: 0.85rem;
+    flex-basis: 100%;
+    margin: 0;
 }
 
 .consume-section + .consume-section {
