@@ -37,8 +37,9 @@ const HUMAN_PLAYER = {
     color: null,
     board: _.cloneDeep(INITIAL_HUMAN_BOARD),
     linktiles: _.cloneDeep(LINK_TILES),
-    amountSpent: 0, // to calculate turn order
     turnOrder: 0,
+    lastRoundComplete: 0,
+    amountSpentThisRound: 0,
     currentTurnIndex: 0, // human player takes two actions
     actionStep: null, // guides showing appropriate UI for the chosen action
     nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
@@ -52,13 +53,14 @@ const ELIZA = {
     color: PLAYER_COLOR.Gray,
     board: _.cloneDeep(INITIAL_AI_BOARD),
     linktiles: _.cloneDeep(LINK_TILES),
-    amountSpent: 0, // to calculate turn order
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
     currentCard1: null,
     currentCard2: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice,
     turnOrder: 1,
+    lastRoundComplete: 0,
+    amountSpentThisRound: 0,
     nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
 }
 
@@ -70,13 +72,14 @@ const ELEANOR = {
     color: PLAYER_COLOR.Yellow,
     board: _.cloneDeep(INITIAL_AI_BOARD),
     linktiles: _.cloneDeep(LINK_TILES),
-    amountSpent: 0, // to calculate turn order
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
     currentCard1: null,
     currentCard2: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice,
     turnOrder: 2,
+    lastRoundComplete: 0,
+    amountSpentThisRound: 0,
     nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
 }
 
@@ -225,6 +228,73 @@ var app = new Vue({
 
             let sortedSpacesWithLocations = _.sortBy(spacesWithLocations, 'name', 'space');
             return sortedSpacesWithLocations;
+        },
+        findPlayerUnflippedSellableIndustries: function () {
+            // for: Sell, step 1
+            let player_type = this.currentPlayer.player_type;
+            let player = this.getPlayerFromType(player_type);
+
+            let playerUnflippedSellableIndustryLocations = [];
+
+            let self = this;
+            _.forEach(self.board.locations, function(o) {
+                if (o.type === LOCATIONTYPE.Industries) {
+                    o.spaceswithtiles = [];
+                    _.forEach(o.spaces, function(p) {
+                        if (p.tile && p.tile.color === player.color && !p.tile.flipped && (p.tile.industrytype === INDUSTRY.Manufacturer || p.tile.industrytype === INDUSTRY.CottonMill || p.tile.industrytype === INDUSTRY.Pottery)) {
+                            o.spaceswithtiles.push({
+                                spaceid: p.id,
+                                tile: p.tile
+                            });
+                            playerUnflippedSellableIndustryLocations.push(o);
+                        }
+                    });
+                }
+            });
+
+            return playerUnflippedSellableIndustryLocations;
+        },
+        findPlayerUnflippedSellableIndustriesConnectedToMarket: function () {
+            // for: Sell, step 1 and 2
+            let player_type = this.currentPlayer.player_type;
+            let playerUnflippedSellableIndustryLocations = this.findPlayerUnflippedSellableIndustries;
+
+            let playerUnflippedSellableIndustriesConnectedToMarket = [];
+
+            let self = this;
+            _.forEach(playerUnflippedSellableIndustryLocations, function (l) {
+                let connectedMarkets = self.findAllConnectedMarkets(l.id, player_type);
+
+                if (connectedMarkets && connectedMarkets.length > 0) {
+                    // find tiles connected to a matching market
+                    _.forEach(l.spaceswithtiles, function (t) {
+                        // check each market connected to the tile's location
+                        let isConnectedToMatchingMarket = false;
+                        _.forEach(connectedMarkets, function (m) {
+                            _.forEach(m.spaces, function (s) {
+                                if (s.tile) {
+                                    if (_.includes(s.tile.industryTypes, t.tile.industrytype)) {
+                                        isConnectedToMatchingMarket = true;
+                                    }
+                                }
+                            });
+                        });
+
+                        if (isConnectedToMatchingMarket) {
+                            playerUnflippedSellableIndustriesConnectedToMarket.push({
+                                selected: false,
+                                locationid: l.id,
+                                name: l.name,
+                                spaceid: t.spaceid,
+                                tile: t.tile,
+                                comboid: l.id + " - " + t.spaceid
+                            });
+                        }
+                    });
+                }
+            });
+
+            return _.uniqBy(playerUnflippedSellableIndustriesConnectedToMarket, "comboid");
         }
     },
     methods: {
@@ -240,6 +310,7 @@ var app = new Vue({
             // if executing human action
             if (this.currentPlayer.actionStep === '03') {
                 this.executeNextHumanAction();
+                this.calculateNextPlayer();
             }
 
             // if human consumption
@@ -334,9 +405,6 @@ var app = new Vue({
             // --- TEMPORARY
             // Setup board
             this.debugSetupTestBoard();
-
-            // Test functions
-            this.calculateAIAction(PLAYER_TYPE.Eliza_AI);
             // --- END TEMPORARY
 
             this.saveGameState();
@@ -345,10 +413,19 @@ var app = new Vue({
         // UI functions
         setHumanAction(actionStep) {
             this.currentPlayer.actionStep = actionStep;
+
+            if (actionStep === '20') {
+                this.humanPlayer.nextAction.actiondata.sellabletiles = this.findPlayerUnflippedSellableIndustriesConnectedToMarket;
+            }
+
+            if (actionStep === '30') {
+                this.humanPlayer.nextAction.actiondata.sellabletiles = this.setHumanDevelopableTiles();
+            }
+
             this.saveGameState();
         },
         showNextButton() {
-            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' ||this.currentPlayer.actionStep === '40')));
+            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '30');
         },
 
         // UI: Build
@@ -443,8 +520,15 @@ var app = new Vue({
         },
 
         // UI: Sell
+        prevSetIndustriesToSell: function () {
+            this.humanPlayer.nextAction.actiondata.sellabletiles = null;
+            this.setHumanAction('00');
+        },
 
         // UI: Develop
+        setHumanDevelopableTiles: function () {
+            this.humanPlayer.nextAction.actiondata.developabletiles = this.findAllNextDevelopableTilesFromPlayerBoard(PLAYER_TYPE.Human);
+        },
 
         // UI: Consume
         humanConsumeLocations(locationid, totalCoalNeeded, totalIronNeeded, totalBeerNeeded) {
@@ -994,7 +1078,7 @@ var app = new Vue({
                 action = AI_ACTION.Sell;
 
                 // find sellable market-connected industries
-                let playerunflippedsellableindustriesconnectedtomarket = this.findPlayerUnflippedSellableIndustriesConnectedToMarket(player_type);
+                let playerunflippedsellableindustriesconnectedtomarket = this.findPlayerUnflippedSellableIndustriesConnectedToMarket;
 
                 actiondata.industriestosell = playerunflippedsellableindustriesconnectedtomarket;
 
@@ -1253,45 +1337,6 @@ var app = new Vue({
             });
 
             return chosenLocationWithPath;
-        },
-        findPlayerUnflippedSellableIndustries: function (player_type) {
-            // for: Sell, step 1
-            let player = this.getPlayerFromType(player_type);
-
-            let playerUnflippedSellableIndustryLocations = [];
-
-            let self = this;
-            _.forEach(self.board.locations, function(o) {
-                if (o.type === LOCATIONTYPE.Industries) {
-                    o.spaceids = [];
-                    _.forEach(o.spaces, function(p) {
-                        if (p.tile && p.tile.color === player.color && !p.tile.flipped && (p.tile.industrytype === INDUSTRY.Manufacturer || p.tile.industrytype === INDUSTRY.CottonMill || p.tile.industrytype === INDUSTRY.Pottery)) {
-                            o.spaceids.push(p.id);
-                            playerUnflippedSellableIndustryLocations.push(o);
-                        }
-                    });
-                }
-            });
-
-            return playerUnflippedSellableIndustryLocations;
-        },
-        findPlayerUnflippedSellableIndustriesConnectedToMarket: function (player_type) {
-            // for: Sell, step 1 and 2
-
-            let playerUnflippedSellableIndustryLocations = this.findPlayerUnflippedSellableIndustries(player_type);
-
-            let playerUnflippedSellableIndustriesConnectedToMarket = [];
-
-            let self = this;
-            _.forEach(playerUnflippedSellableIndustryLocations, function (l) {
-                let connectedMarkets = self.findAllConnectedMarkets(l.id, player_type);
-
-                if (connectedMarkets && connectedMarkets.length > 0) {
-                    playerUnflippedSellableIndustriesConnectedToMarket.push(l);
-                }
-            });
-
-            return playerUnflippedSellableIndustriesConnectedToMarket;
         },
         findAllUnflippedIndustries: function () {
             let unflippedIndustryLocations = [];
@@ -1899,6 +1944,32 @@ var app = new Vue({
             return _.sortBy(allNextTiles, function (t) {
                 return self.tileToString(t);
             });
+        },
+        findDevelopableTilesFromPlayerBoard: function (player_type, industrytype) {
+            let player = this.getPlayerFromType(player_type);
+
+            let tiles = _.filter(player.board, function (t) {
+                return t.industrytype === industrytype;
+            });
+
+            if (tiles && tiles.length > 0) {
+                return _.take(tiles, 2);
+            }
+        },
+        findAllNextDevelopableTilesFromPlayerBoard: function (player_type) {
+            let allNextTiles = [];
+            
+            for (let i=0;i<6;i++) {
+                let tileGroup = {
+                    selected: false,
+                    industrytype: i,
+                    industrytypename: industryStringMap[i],
+                    tiles: this.findDevelopableTilesFromPlayerBoard(player_type, i)
+                };
+                allNextTiles.push(tileGroup);
+            }
+
+            return allNextTiles;
         },
         findMainBoardIndustryTileById: function(locationid, tileid) {
             let self = this;

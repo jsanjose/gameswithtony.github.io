@@ -194,6 +194,10 @@ input[type="radio"]:checked + span {
     font-weight: bold;
 }
 
+input[type="checkbox"]:checked + span {
+    font-weight: bold;
+}
+
 .action-desc + .action-desc {
     margin-top: 0.875rem;
 }

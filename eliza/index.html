@@ -71,7 +71,7 @@
 
                 <p>1) Setup your player board and the game board as normal.</p>
                 <p>2) Setup the following merchant tiles along with their beer as normal. </p>
-                <ul>
+                <ul style="background-color: #efefef; padding: 1rem 2rem;">
                     <li v-for="location in findAllMerchantsWithTiles()" :key="location.id">
                         {{ location.name }}
                         
@@ -89,7 +89,7 @@
                 <p>When you are done with setup, click 'Next' to begin the game!</p>
             </section>
             <section v-if="currentGameStep === 1">
-                <section v-if="humanPlayer.player_type === 0">
+                <section v-if="currentPlayerType === 0">
                     <section class="player-header">
                         <svg class="player-icon player-icon-blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"><g id="Layer_2" data-name="Layer 2"><g><path class="cls-1" d="M400,0C179.44,0,0,179.44,0,400S179.44,800,400,800,800,620.56,800,400,620.56,0,400,0Zm0,727.27a325.43,325.43,0,0,1-134.13-28.76l31-32.94L445.11,656l190.1-121.21L610.8,501.69l-152.53,52L339.48,558l-1.28-19.71,96.62-11,2.53-36.71L260.2,489.44,150.61,611.66A325.74,325.74,0,0,1,72.73,400C72.73,219.54,219.54,72.73,400,72.73S727.27,219.54,727.27,400,580.46,727.27,400,727.27Z"/><path class="cls-2" d="M460.9,354.16a37.48,37.48,0,0,1-37.44,37.44,37.92,37.92,0,0,1-6.25-.51c-5.94-1.5-10.12-3.19-17.37-7.67a100.89,100.89,0,0,0-20.18-9.59,127.71,127.71,0,0,0,8-58.28h63.78V275.07H376.72c-.46-1-.93-2-1.42-3-1.24-2.52-6.31-11.21-8.76-17-.2-.54-.4-1.09-.6-1.67a68.06,68.06,0,0,1-3.64-21,44.28,44.28,0,0,1,88.56,0H515a108.38,108.38,0,0,0-216.76,0,131.54,131.54,0,0,0,7.43,42.64H275v40.48h47.9a63.23,63.23,0,0,1-.77,28.15,62.59,62.59,0,0,1-42.52,44.68l18.75,61.3a126.33,126.33,0,0,0,20.19-8.16h0s4.16-2,5.48-2.79c8.56-5,18.19-7.65,28-6a38.8,38.8,0,0,1,16.16,6.61,94.51,94.51,0,0,0,13.56,7.43h0A101.54,101.54,0,0,0,525,354.16Z"/></g></g></svg>
                         <section class="player-name">
@@ -181,22 +181,31 @@
 
                     <section v-if="humanPlayer.actionStep === '20'">
                         <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
-                        <p class="action-header">What industries are you selling?</p> 
-                        <ul>
-                            <li>
-                                Industry Tile String
+                        <p class="action-header">Which industries are you selling?</p> 
+                        <ul class="cards">
+                            <li class="card card--clickable" v-for="industrytile in this.humanPlayer.nextAction.actiondata.sellabletiles">
+                                <label style="display: flex;">
+                                    <input type="checkbox" />&nbsp;
+                                    <span style="margin-left: 0.5rem;">{{ tileToString(industrytile.tile) }} on<br />{{ industrytile.name }} (Space {{ industrytile.spaceid }})</span>
+                                </label>
                             </li>
                         </ul>
                     </section>
 
                     <section v-if="humanPlayer.actionStep === '30'">
                         <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
-                        <p class="action-header">What is the first industry you are developing?<br /></p> 
-                        <ul>
-                            <li>
-                                Industry Tile String
-                            </li>
-                        </ul>
+                        <p class="action-header">Which industries are you developing (choose up to two)?<br /><span class="action-message">Below are the top 2 tiles of each type of industry on your board.</span></p>
+                        <section v-for="industry in this.humanPlayer.nextAction.actiondata.developabletiles">
+                            {{ industry.industrytypename }}
+                            <ul class="cards">
+                                <li class="card card--clickable" v-for="tile in industry.tiles">
+                                    <label style="display: flex;">
+                                        <input type="checkbox" />&nbsp;
+                                        <span style="margin-left: 0.5rem;">{{ tileToString(tile) }}</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </section>
                     </section>
 
                     <section v-if="humanPlayer.actionStep === '02' || humanPlayer.actionStep === '12' || humanPlayer.actionStep === '31'">
@@ -239,15 +248,13 @@
                     </section>
                 </section>
 
-                <section v-if="currentPlayer === 1 || currentPlayer === 2">
+                <section v-if="currentPlayerType === 1 || currentPlayerType === 2">
                     Eliza Eleanor
-
+                    <a href="#" v-on:click="prevBuildActionConfirm()">< Go Back</a>
+                    <p class="action-header">I do the following</p>
                     <ul>
-                        <li>
-                            <label>
-                                <input type="checkbox" />
-                                AI next action
-                            </label>
+                        <li class="action-desc" v-for="action in getHumanActionDescription()">
+                            {{ action.actionDesc }}
                         </li>
                     </ul>
                 </section>
