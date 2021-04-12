@@ -160,7 +160,6 @@ a, a:visited, a:hover {
 
 .section-title {
     font-size: 1rem;
-    text-align: center;
     flex-shrink: 0;
     flex-basis: 100%;
     margin: 0;
@@ -280,7 +279,7 @@ input[type="checkbox"]:checked + span {
     flex-direction: column;
 }
 
-.card--clickable {
+.card--clickable, .card--clickable label {
     cursor: pointer;
 }
 

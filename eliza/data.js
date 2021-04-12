@@ -4,10 +4,10 @@ const PLAYER_TYPE = { Human: 0, Eliza_AI: 1, Eleanor_AI: 2 };
 
 const PLAYER_COLOR = { Gray: 0, Blue: 1, Red: 2, Yellow: 3 };
 const colorMap = {
-    0: "Gray",
-    1: "Blue",
-    2: "Red",
-    3: "Yellow"
+    0: "gray",
+    1: "blue",
+    2: "red",
+    3: "yellow"
  };
 
 const GAME_STEPS = {
@@ -214,10 +214,6 @@ const INITIAL_BOARD = {
             edgesCanal: [
                 {
                     toId: 1,
-                    tile: null
-                },
-                {
-                    toId: 3,
                     tile: null
                 }
             ],
@@ -1555,6 +1551,9 @@ const INDUSTRY_TILES = [
     createIndustryTile(43, INDUSTRY.Manufacturer, false, 8, 20, 0, 2, 1, 11, 1, 1, 0, 0, 0)
 ];
 
+INDUSTRY_TILES[11].cannotDevelop = true;
+INDUSTRY_TILES[13].cannotDevelop = true;
+
 // LINK TILES
 function createLinkTile(id) {
     return {
@@ -1566,6 +1565,6 @@ function createLinkTile(id) {
 }
 const LINK_TILES = [];
 
-for (let i=0; i<=20; i++) {
+for (let i=0; i<=36; i++) {
     LINK_TILES[i] = createLinkTile(i);
 }
