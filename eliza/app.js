@@ -1206,6 +1206,46 @@ var app = new Vue({
 
             console.log(player.nextAction);
         },
+        getAIActionDescription: function () {
+            let actions = [];
+
+            if (this.currentPlayer.nextAction.action === AI_ACTION.BuildAndNetwork) {
+                let actionstring = '';
+
+                // If Build and Network
+                let location = this.findLocationById(this.currentPlayer.nextAction.actiondata.locationid);
+                actionstring = actionstring + 'Build ' + this.tileToString(this.currentPlayer.nextAction.actiondata.industrytile) + ' in ' + location.name + ' (Space ' + (this.currentPlayer.nextAction.actiondata.spaceid + 1) + ').';
+
+                actions.push({
+                    actionDone: false,
+                    actionDesc: actionstring
+                });
+
+                actionstring = 'Spends £' + this.currentPlayer.nextAction.actiondata.industrytile.poundsCost + '.';
+                actions.push({
+                    actionDone: false,
+                    actionDesc: actionstring
+                });
+
+                // TODO: Check move of coal to market
+
+                // TODO: Check move of iron to market
+
+                // Network
+                actionstring = '';
+                let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
+                let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
+
+                actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
+                
+                actions.push({
+                    actionDone: false,
+                    actionDesc: actionstring
+                });
+            }
+
+            return actions;
+        },
         executeNextAIAction: function () {
             // use 'currentPlayer'
             this.currentPlayer.currentRoundComplete = true;

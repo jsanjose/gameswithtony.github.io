@@ -22,14 +22,16 @@ const HUMAN_ACTION = {
     Network: 1,
     Sell: 2,
     Develop: 3,
-    ScoutOrLoan: 4
+    ScoutOrLoan: 4,
+    DoubleNetwork: 5
 }
 const humanActionStringMap = {
     0: "Build",
     1: "Network",
     2: "Sell",
     3: "Develop",
-    4: "Scout Or Loan"
+    4: "Scout Or Loan",
+    5: "Double Network"
  };
 
 const AI_ACTION = {

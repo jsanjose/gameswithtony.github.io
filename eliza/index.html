@@ -261,9 +261,9 @@
                 </section>
 
                 <section v-if="currentPlayerType === 1 || currentPlayerType === 2">
-                    <p class="action-header">{{ currentPlayer.name }} does the following</p>
+                    <p class="action-header">{{ currentPlayer.name }} does the following:</p>
                     <ul>
-                        <li class="action-desc" v-for="action in getHumanActionDescription()">
+                        <li class="action-desc" v-for="action in getAIActionDescription()">
                             {{ action.actionDesc }}
                         </li>
                     </ul>
