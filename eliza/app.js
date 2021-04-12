@@ -1407,7 +1407,7 @@ var app = new Vue({
             });
 
             if (sortedSpaces.length > 0) {
-                return sortedSpaces[0]; // choose single type over double
+                return sortedSpaces[0].id; // choose single type over double
             } else {
                 return null;
             }
