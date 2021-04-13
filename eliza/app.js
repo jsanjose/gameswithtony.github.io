@@ -97,7 +97,7 @@ var app = new Vue({
         gameHasStarted: false,
         currentRound: 1,
         currentGameStep: GAME_STEPS.Setup,
-        currentEra: ERA.Era,
+        currentEra: ERA.Canal,
         currentPlayerType: null,
         board: _.cloneDeep(INITIAL_BOARD),
         humanPlayer: _.cloneDeep(HUMAN_PLAYER),
@@ -700,6 +700,14 @@ var app = new Vue({
                     actionDone: false,
                     actionDesc: actionstring
                 });
+
+                actionstring = '';
+                actionstring = actionstring + 'Pay £' + (this.currentEra === ERA.Canal ? CANALERANETWORKCOST : RAILERANETWORKCOST) + '.';
+                
+                actions.push({
+                    actionDone: false,
+                    actionDesc: actionstring
+                });
             }
 
             // If Coal consumption
@@ -774,6 +782,14 @@ var app = new Vue({
             // NETWORK
             if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Network) {
                 this.layNetworkTile(PLAYER_TYPE.Human, this.humanPlayer.nextAction.actiondata.networkfromlocationid, this.humanPlayer.nextAction.actiondata.networktolocationid);
+
+                let networkcost = this.currentEra === ERA.Canal ? CANALERANETWORKCOST : RAILERANETWORKCOST;
+
+                if (!this.humanPlayer.amountSpentThisRound) {
+                    this.humanPlayer.amountSpentThisRound = networkcost;
+                } else {
+                    this.humanPlayer.amountSpentThisRound = this.humanPlayer.amountSpentThisRound + networkcost;
+                }
             }
 
             // SELL
@@ -1419,9 +1435,6 @@ var app = new Vue({
         },
         layNetworkTile: function (player_type, locationid1, locationid2) {
             this.layNetworkTileBase(player_type, locationid1, locationid2);
-
-            // TODO: (human selection) if id is 21 to 25 or 25 to 21, also add the links to the Southern Farm (id 22)
-            // TODO: (AI selection) if id is 22, also add to 25 or 21
 
             if ((locationid1 === 21 && locationid2 === 25) || (locationid1 === 25 && locationid2 === 21)) {
                 this.layNetworkTileBase(player_type, 21, 22);

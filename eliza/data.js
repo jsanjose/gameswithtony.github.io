@@ -77,6 +77,10 @@ const bonusTypeMap = {
 
 const DIFFICULTY_LEVEL = { Apprentice: 0, Professional: 1, Manager: 2, Titan: 3 };
 
+const CANALERANETWORKCOST = 3;
+const RAILERANETWORKCOST = 5;
+const RAILERADOUBLENETWORKCOST = 15;
+
 // MERCHANT TILES
 function createMerchantTile(id, minPlayers, industryTypes) {
     return {
