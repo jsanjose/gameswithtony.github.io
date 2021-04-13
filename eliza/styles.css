@@ -293,6 +293,10 @@ input[type="checkbox"]:checked + span {
     cursor: pointer;
 }
 
+.card--no-padding {
+    padding: 0 !important;
+}
+
 .card__name {
     font-weight: bold;
     margin: 0;

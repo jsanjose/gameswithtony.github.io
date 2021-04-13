@@ -13,8 +13,9 @@ const colorMap = {
 const GAME_STEPS = {
     Setup: 0,
     Round: 1,
-    SetupRailEra: 2,
-    FinalScore: 3
+    EndOfRound: 2,
+    SetupRailEra: 3,
+    FinalScore: 4
 };
 
 const HUMAN_ACTION = {

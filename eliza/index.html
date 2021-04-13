@@ -193,8 +193,8 @@
                         <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
                         <p class="action-header">Which industries are you selling?</p> 
                         <ul class="cards">
-                            <li class="card card--clickable" v-for="industrytile in this.humanPlayer.nextAction.actiondata.sellabletiles">
-                                <label style="display: flex;">
+                            <li class="card card--clickable card--no-padding" v-for="industrytile in this.humanPlayer.nextAction.actiondata.sellabletiles">
+                                <label style="display: flex; padding: 0.5rem;">
                                     <input type="checkbox" />&nbsp;
                                     <span style="margin-left: 0.5rem;">{{ tileToString(industrytile.tile) }} on<br />{{ industrytile.name }} (Space {{ industrytile.spaceid }})</span>
                                 </label>
@@ -208,10 +208,10 @@
                         <section v-for="industry in this.humanPlayer.nextAction.actiondata.developabletiles">
                             <span class="highlight-text">{{ industry.industrytypename }}</span>
                             <ul class="cards">
-                                <li class="card card--clickable" v-for="tile in industry.tiles">
-                                    <label style="display: flex;">
+                                <li class="card card--clickable card--no-padding" v-for="tile in industry.tiles">
+                                    <label style="display: flex; padding: 0.5rem;">
                                         <input type="checkbox" />&nbsp;
-                                        <span style="margin-left: 0.5rem;">{{ tileToString(tile) }}</span>
+                                        <span style="margin-left: 0.5rem;">{{ tileToString(tile.developabletile) }}</span>
                                     </label>
                                 </li>
                             </ul>
@@ -270,10 +270,26 @@
                 </section>
             </section>
             <section v-if="currentGameStep === 2">
+                <p class="action-header">ROUND {{ currentRound }}<br /><span class="action-message">Click 'Next' to continue.</span></p>
+                <ul>
+                    <li class="action-desc">
+                        Turn order has been calculated:
+                        <p class="text-tiny">
+                            <span v-for="(player, index) in playersInOrder">
+                                {{ player.name }}<span v-if="index != numberOfPlayers - 1">&nbsp;&nbsp;->&nbsp;&nbsp;</span>
+                            </span>
+                        </p>
+                    </li>
+                    <li class="action-desc">
+                        Remember to receive (or pay) your income.
+                    </li>
+                </ul>
+            </section>
+            <section v-if="currentGameStep === 3">
                 Rail Era Begins
                 Rail Era Instructions
             </section>
-            <section v-if="currentGameStep === 3">
+            <section v-if="currentGameStep === 4">
                 Final Score
                 You
                 Eliza
@@ -281,7 +297,7 @@
             </section>
             <section class="button-container" v-if="showNextButton()">
                 <button class="button" v-if="currentGameStep === 0" v-on:click="next()">Start Game</button>
-                <button class="button" v-if="currentGameStep === 1" v-on:click="next()">Next >></button>
+                <button class="button" v-if="currentGameStep === 1 || currentGameStep === 2" v-on:click="next()">Next >></button>
             </section>
             <section class="boardstate" v-if="showBoardState">
                 <a href="#" class="boardstate_close" v-on:click="toggleShowBoardState">[ Close Board State ]</a>

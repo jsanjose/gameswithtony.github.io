@@ -328,6 +328,12 @@ var app = new Vue({
                 this.currentGameStep = GAME_STEPS.Round;
             }
 
+            // if coming from new round screen
+            if (this.currentGameStep === 2) {
+                this.currentGameStep = GAME_STEPS.Round;
+                return;
+            }
+
             let wasHumanPlayer = false;
             if (this.currentPlayerType === 0) {
                 wasHumanPlayer = true;
@@ -338,6 +344,11 @@ var app = new Vue({
                 if (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '13') {
                     this.executeNextHumanAction();
                     this.calculateNextPlayer();
+                }
+
+                // if developing
+                if (this.currentPlayer.actionStep === '40') {
+
                 }
 
                 // if scout or loan
@@ -467,7 +478,7 @@ var app = new Vue({
             this.saveGameState();
         },
         showNextButton() {
-            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '30' || this.currentPlayerType === 1 || this.currentPlayerType === 2);
+            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '30' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
         },
 
         // UI: Build
@@ -522,6 +533,8 @@ var app = new Vue({
 
         // UI: Network
         validHumanNetworkLocations: function() {
+            
+
             let locations = this.findAllLocationsInNetwork(PLAYER_TYPE.Human);
             let self = this;
 
@@ -886,8 +899,8 @@ var app = new Vue({
                 if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
                     this.calculateAIAction(this.currentPlayerType);
                     this.saveGameState();
-                    return;
                 }
+                this.currentGameStep = 2;
             } else {
                 this.currentPlayerType = nextPlayer.player_type;
 
@@ -895,11 +908,6 @@ var app = new Vue({
                     this.calculateAIAction(nextPlayer.player_type);
                     this.saveGameState();
                     return;
-                } else {
-                    this.eliza.nextAction.action = null;
-                    this.eliza.nextAction.actiondata = {};
-                    this.eleanor.nextAction.action = null;
-                    this.eleanor.nextAction.actiondata = {};
                 }
             }
             this.saveGameState();
@@ -909,6 +917,9 @@ var app = new Vue({
 
             let player = this.getPlayerFromType(player_type);
             let action = null;
+
+            player.nextAction.action = null;
+            player.nextAction.actiondata = {};
 
             // data package, start with storing the current round
             // use action data to describe what the AI will do and then eventually do it
@@ -1263,11 +1274,17 @@ var app = new Vue({
 
                 // Network
                 actionstring = '';
-                let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
-                let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
 
-                actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
-                
+                // Add VP
+                if (this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
+                    actionstring = actionstring + 'Could not network, so gains ' + this.currentPlayer.nextAction.actiondata.addVP + 'VP (now has ' + (this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP) + 'VP in total).';
+                } else {
+                    let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
+                    let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
+
+                    actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
+                }
+
                 actions.push({
                     actionDone: false,
                     actionDesc: actionstring
@@ -1964,14 +1981,55 @@ var app = new Vue({
             let player = this.getPlayerFromType(player_type);
             let locationsInPlayerNetwork = [];
 
+            if (this.playerHasNoTilesOnBoard(player_type)) {
+                locationsInPlayerNetwork = this.board.locations;
+            } else {
+                let self = this;
+                _.forEach(this.board.locations, function (p) {
+                    if (self.isLocationInNetwork(p.id, player_type)) {
+                        locationsInPlayerNetwork.push(p);
+                    }
+                });
+            }
+
+            return _.uniqBy(locationsInPlayerNetwork, 'id');
+        },
+        playerHasNoTilesOnBoard: function (player_type) {
+            let player = this.getPlayerFromType(player_type);
+            let playerHasNoTiles = true;
+
             let self = this;
-            _.forEach(this.board.locations, function (p) {
-                if (self.isLocationInNetwork(p.id, player_type)) {
-                    locationsInPlayerNetwork.push(p);
+            _.forEach(this.board.locations, function (l) {
+                if (l.type === LOCATIONTYPE.Industries) {
+
+                    // check industry tiles
+                    _.forEach(l.spaces, function (s) {
+                        if (s.tile && s.tile.color === player.color) {
+                            playerHasNoTiles = false;
+                            return false;
+                        }
+                    });
+
+                    if (playerHasNoTiles) {
+                        // check links
+                        let edges = [];
+                        if (self.currentEra === ERA.Canal) {
+                            edges = l.edgesCanal;
+                        } else {
+                            edges = l.edgesRail;
+                        }
+
+                        _.forEach(edges, function (e) {
+                            if (e.tile && e.tile.color === player.color) {
+                                playerHasNoTiles = false;
+                                return false;
+                            }
+                        });
+                    }
                 }
             });
 
-            return _.uniqBy(locationsInPlayerNetwork, 'id');
+            return playerHasNoTiles;
         },
         findAdjacentIndustryLocationsForAI: function (locationid) {
             let location = this.findLocationById(locationid);
@@ -2184,11 +2242,17 @@ var app = new Vue({
             developabletiles = [];
             if (tiles && tiles.length > 0) {
                 if (!tiles[0].cannotDevelop) {
-                    developabletiles.push(tiles[0]);
+                    developabletiles.push({
+                        selected: false,
+                        developabletile: tiles[0]
+                    });
 
                     if (tiles.length > 1) {
                         if (!tiles[1].cannotDevelop) {
-                            developabletiles.push(tiles[1]);
+                            developabletiles.push({
+                                selected: false,
+                                developabletile: tiles[1]
+                            });
                         }
                     }
                 }
@@ -2201,7 +2265,6 @@ var app = new Vue({
             
             for (let i=0;i<6;i++) {
                 let tileGroup = {
-                    selected: false,
                     industrytype: i,
                     industrytypename: industryStringMap[i],
                     tiles: this.findDevelopableTilesFromPlayerBoard(player_type, i)
