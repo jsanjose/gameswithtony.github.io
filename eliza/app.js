@@ -97,7 +97,7 @@ var app = new Vue({
         gameHasStarted: false,
         currentRound: 1,
         currentGameStep: GAME_STEPS.Setup,
-        currentEra: ERA.Canal,
+        currentEra: ERA.Era,
         currentPlayerType: null,
         board: _.cloneDeep(INITIAL_BOARD),
         humanPlayer: _.cloneDeep(HUMAN_PLAYER),
@@ -806,6 +806,12 @@ var app = new Vue({
             this.humanPlayer.nextAction.actiondata = {};
             this.humanPlayer.actionStep = null;
         },
+        playerAmountSpent: function (player) {
+            if (player.currentRoundComplete) {
+                return player.amountSpentThisRound ? player.amountSpentThisRound : 0;
+            }
+            return null;
+        },
         
         // Primary action functions
         calculateNextPlayer: function () {
@@ -846,7 +852,9 @@ var app = new Vue({
                 this.currentRound = this.currentRound + 1;
 
                 // calculate new turn order
-                let newSortedPlayers = _.sortBy(players, "amountSpentThisRound");
+                let newSortedPlayers = _.sortBy(players, function (p) {
+                    return p.amountSpentThisRound ? p.amountSpentThisRound : 0;
+                });
                 _.forEach(newSortedPlayers, function (p, index) {
                     let player = self.getPlayerFromType(p.player_type);
                     player.turnOrder = index;
@@ -858,10 +866,16 @@ var app = new Vue({
                 this.resetHumanAction();
 
                 this.currentPlayerType = newSortedPlayers[0].player_type;
+
+                if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
+                    this.calculateAIAction(this.currentPlayerType);
+                    this.saveGameState();
+                    return;
+                }
             } else {
                 this.currentPlayerType = nextPlayer.player_type;
 
-                if (nextPlayer.player_type === PLAYER_TYPE.Eliza_AI || nextPlayer.player_type.Eleanor_AI) {
+                if (nextPlayer.player_type === PLAYER_TYPE.Eliza_AI || nextPlayer.player_type === PLAYER_TYPE.Eleanor_AI) {
                     this.calculateAIAction(nextPlayer.player_type);
                     this.saveGameState();
                     return;
@@ -1244,6 +1258,15 @@ var app = new Vue({
                 });
             }
 
+            if (this.currentPlayer.nextAction.action === AI_ACTION.Sell) {
+                let actionstring = 'SELL!';
+
+                actions.push({
+                    actionDone: false,
+                    actionDesc: actionstring
+                });
+            }
+
             return actions;
         },
         executeNextAIAction: function () {
@@ -1266,6 +1289,14 @@ var app = new Vue({
                 // Network
                 if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1) {
                     this.layNetworkTile(this.currentPlayer.player_type, this.currentPlayer.nextAction.actiondata.linktargetlocationid1, this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
+
+                    if (this.currentEra === ERA.Rail) {
+                        if (!this.currentPlayer.amountSpentThisRound) {
+                            this.currentPlayer.amountSpentThisRound = 5;
+                        } else {
+                            this.currentPlayer.amountSpentThisRound = this.currentPlayer.amountSpentThisRound + 5;
+                        }
+                    }
                 }
 
                 // Add VP

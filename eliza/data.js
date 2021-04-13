@@ -178,6 +178,10 @@ const INITIAL_BOARD = {
                 {
                     toId: 2,
                     tile: null
+                },
+                {
+                    toId: 4,
+                    tile: null
                 }
             ],
             edgesRail: [
@@ -187,6 +191,10 @@ const INITIAL_BOARD = {
                 },
                 {
                     toId: 2,
+                    tile: null
+                },
+                {
+                    toId: 4,
                     tile: null
                 }
             ]
