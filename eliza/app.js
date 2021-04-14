@@ -1837,18 +1837,18 @@ var app = new Vue({
                     if (neededIron > consumedIron) {
                         let spaceConsumeData = {
                             locationid: l.id,
-                            spaceid: pis.id,
+                            spaceid: pcs.id,
                             ironConsumed: 0,
                             willFlip: false
                         };
                         
-                        for (let i=0; i < pis.tile.availableIron; i++) {
+                        for (let i=0; i < pcs.tile.availableIron; i++) {
                             if (neededIron > consumedIron) {
                                 spaceConsumeData.ironConsumed = spaceConsumeData.ironConsumed + 1;
                                 consumedIron++;
                             }
                         }
-                        spaceConsumeData.willFlip = (spaceConsumeData.ironConsumed === pis.tile.availableIron);
+                        spaceConsumeData.willFlip = (spaceConsumeData.ironConsumed === pcs.tile.availableIron);
                         ironConsumption.push(spaceConsumeData);
                     }
                 });
