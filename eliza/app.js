@@ -344,14 +344,9 @@ var app = new Vue({
                 // NOTE: Actions handled in opposite order since actionStep is incremented
 
                 // if executing confirmed human action
-                if (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '13') {
+                if (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '32') {
                     this.executeNextHumanAction();
                     this.calculateNextPlayer();
-                }
-
-                // if developing
-                if (this.currentPlayer.actionStep === '40') {
-
                 }
 
                 // if scout or loan
@@ -402,8 +397,45 @@ var app = new Vue({
                         this.currentPlayer.actionStep = '03';
                         this.saveGameState();
                     }
+
+                    if (this.currentPlayer.actionStep === '31') {
+                        this.currentPlayer.actionStep = '32';
+                        this.saveGameState();
+                    }
+                }
+            
+                // if developing
+                if (this.currentPlayer.actionStep === '30') {
+
+                    let developabletiles = this.humanPlayer.nextAction.actiondata.developabletiles;
+
+                    let selectedtiles = [];
+                    _.forEach(developabletiles, function (i) {
+                        _.forEach(i.tiles, function (t) {
+                            if (t.selected) {
+                                selectedtiles.push(t.developabletile);
+                            }
+                        });
+                    });
+
+                    if (selectedtiles.length === 0) {
+                        alert('You must choose at least one tile to develop.');
+                        return;
+                    }
+
+                    if (selectedtiles.length > 2) {
+                        alert('You cannot choose more than 2 tiles to develop.');
+                        return;
+                    }
+
+                    let consumeLocations = this.humanConsumeLocations(null, 0, selectedtiles.length, null);
+                    this.humanPlayer.nextAction.actiondata.consumelocations = consumeLocations;
+
+                    this.currentPlayer.actionStep = '31';
+                    this.saveGameState();
                 }
             }
+                
 
             // execute AI action if moving on from showing them
             if (!wasHumanPlayer && (this.currentPlayerType === 1 || this.currentPlayerType === 2)) {
@@ -476,7 +508,7 @@ var app = new Vue({
             this.saveGameState();
         },
         showNextButton() {
-            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '30' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
+            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '30'  || this.currentPlayer.actionStep === '32' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
         },
 
         // UI: Build
@@ -580,7 +612,15 @@ var app = new Vue({
 
         // UI: Develop
         setHumanDevelopableTiles: function () {
+            this.humanPlayer.nextAction.action = HUMAN_ACTION.Develop;
             this.humanPlayer.nextAction.actiondata.developabletiles = this.findAllNextDevelopableTilesFromPlayerBoard(PLAYER_TYPE.Human);
+        },
+        prevDevelopAction: function () {
+            this.humanPlayer.nextAction.actiondata.developabletiles = null;
+            this.setHumanAction(null);
+        },
+        prevDevelopActionConfirm: function () {
+            this.setHumanAction('30');
         },
 
         // UI: Consume
@@ -629,7 +669,7 @@ var app = new Vue({
                     ironLocations: []
                 };
 
-                let allUnflippedIron = this.findAllUnflippedIronWorks(locationid);
+                let allUnflippedIron = this.findAllUnflippedIronWorks();
 
                 let totalIronAvailable = 0;
                 _.forEach(allUnflippedIron, function (l) {
@@ -671,10 +711,15 @@ var app = new Vue({
                 this.humanPlayer.nextAction.actiondata.buildlocationname = null;
                 this.setHumanAction('01');
             }
+
+            if (this.humanPlayer.nextAction.actiondata.developabletiles) {
+                this.setHumanAction('30');
+            }
         },
         // human action description
         getHumanActionDescription: function () {
             let actions = [];
+            let self = this;
 
             if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Build) {
                 let actionstring = '';
@@ -721,9 +766,29 @@ var app = new Vue({
                 });
             }
 
+            // If Develop
+            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Develop) {
+                let developabletiles = this.humanPlayer.nextAction.actiondata.developabletiles;
+
+                let selectedtiles = [];
+                _.forEach(developabletiles, function (i) {
+                    _.forEach(i.tiles, function (t) {
+                        if (t.selected) {
+                            let actionstring = '';
+
+                            actionstring = actionstring + 'Develop ' + self.tileToString(t.developabletile) + '.';
+
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+                        }
+                    });
+                });
+            }
+
             // If Coal consumption
             if (this.humanPlayer.nextAction.actiondata.consumelocations && this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
-                var self = this;
                 let actionstring = '';
 
                 _.forEach(this.humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations, function (l) {
@@ -806,6 +871,22 @@ var app = new Vue({
             // SELL
 
             // DEVELOP
+            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Develop) {
+                let developabletiles = this.humanPlayer.nextAction.actiondata.developabletiles;
+
+                let selectedtiles = [];
+                _.forEach(developabletiles, function (i) {
+                    _.forEach(i.tiles, function (t) {
+                        if (t.selected) {
+                            let developabletile = t.developabletile;
+
+                            _.remove(self.humanPlayer.board, function (t) {
+                                return t.id === developabletile.id;
+                            });
+                        }
+                    });
+                });
+            }
 
             // CONSUME
             if (this.humanPlayer.nextAction.actiondata.consumelocations && this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
@@ -1737,7 +1818,7 @@ var app = new Vue({
             let consumedIron = 0;
             let ironConsumption = [];
 
-            let unflippedIronLocations = this.findAllUnflippedIronWorks(locationid, player_type);
+            let unflippedIronLocations = this.findAllUnflippedIronWorks();
 
             _.forEach(unflippedIronLocations, function (l) {
                 let playerIronSpaces = _.filter(l.ironspaces, function (pis) {
