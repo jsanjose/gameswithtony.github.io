@@ -1472,16 +1472,20 @@ const CARDS = [
     createCard(24, null, INDUSTRY.Brewery, 'Brewery', 2, CARD_TYPES.Industry),
 ];
 
-const AI_DECK_TYPES = { Balanced: 0 };
+const AI_DECK_TYPES = { Balanced: 0, Birmingham: 1 };
 function getAIDeck(type, numberOfPlayers) {
     if (type === AI_DECK_TYPES.Balanced && numberOfPlayers === 2) {
-        return [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24];
+        return [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 24];
     }
 
     if (type === AI_DECK_TYPES.Balanced && numberOfPlayers === 3) {
-        return [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 3, 20, 4, 21, 22, 22, 23, 23, 5, 24];
+        // removes Cannock, Tamworth, and Dudley
+        return [3, 4, 5, 6, 7, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
     }
 }
+
+const TOTAL_ROUNDS_2PLAYER = 10;
+const TOTAL_ROUNDS_3PLAYER = 9;
 
 // INDUSTRY TILES
 function createIndustryTile(id, industrytype, canalOnly, level, poundsCost, coalCost, ironCost, beerCost, VPs, LinkVPs, income, availableCoal, availableIron, availableBeer) {

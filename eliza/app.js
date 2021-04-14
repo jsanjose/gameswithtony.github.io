@@ -796,7 +796,7 @@ var app = new Vue({
                         actionstring = actionstring + 'Consume ' + l.chosenCoal + ' coal from ' + l.name + ' (Space ' + (l.spaceid - 1) + ')';
 
                         if (l.coalAvailable === l.chosenCoal) {
-                            actionstring = actionstring + ' [Flip the tile]';
+                            actionstring = actionstring + ' [[Flips the tile!]]';
                         }
 
                         actionstring = actionstring + '.'
@@ -818,7 +818,7 @@ var app = new Vue({
                         actionstring = actionstring + 'Consume ' + l.chosenIron + ' iron from ' + l.name + ' (Space ' + (l.spaceid - 1) + ')';
 
                         if (l.ironAvailable === l.chosenIron) {
-                            actionstring = actionstring + ' [Flip the tile]';
+                            actionstring = actionstring + ' [[Flips the tile!]]';
                         }
 
                         actionstring = actionstring + '.'
