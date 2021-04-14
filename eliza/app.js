@@ -36,7 +36,8 @@ const HUMAN_PLAYER = {
     player_type: PLAYER_TYPE.Human,
     color: null,
     board: _.cloneDeep(INITIAL_HUMAN_BOARD),
-    linktiles: _.cloneDeep(LINK_TILES),
+    linktile: _.cloneDeep(LINK_TILE),
+    nextLinkTileId: 0,
     totalVP: 0,
     turnOrder: 0,
     currentRoundComplete: false,
@@ -53,7 +54,8 @@ const ELIZA = {
     player_type: PLAYER_TYPE.Eliza_AI,
     color: PLAYER_COLOR.Gray,
     board: _.cloneDeep(INITIAL_AI_BOARD),
-    linktiles: _.cloneDeep(LINK_TILES),
+    linktile: _.cloneDeep(LINK_TILE),
+    nextLinkTileId: 0,
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
     currentCard1: null,
@@ -73,7 +75,8 @@ const ELEANOR = {
     player_type: PLAYER_TYPE.Eleanor_AI,
     color: PLAYER_COLOR.Yellow,
     board: _.cloneDeep(INITIAL_AI_BOARD),
-    linktiles: _.cloneDeep(LINK_TILES),
+    linktile: _.cloneDeep(LINK_TILE),
+    nextLinkTileId: 0,
     deckType: AI_DECK_TYPES.Balanced,
     cards: null,
     currentCard1: null,
@@ -426,23 +429,18 @@ var app = new Vue({
 
             // Set link and tile colors
             let self = this;
-            _.forEach(this.humanPlayer.linktiles, function(p) {
-                p.color = self.humanPlayer.color;
-            });
+            this.humanPlayer.linktile.color = self.humanPlayer.color;
+            
             _.forEach(this.humanPlayer.board, function(p) {
                 p.color = self.humanPlayer.color;
             });
 
-            _.forEach(this.eliza.linktiles, function(p) {
-                p.color = self.eliza.color;
-            });
+            this.eliza.linktile.color = self.eliza.color;
             _.forEach(this.eliza.board, function(p) {
                 p.color = self.eliza.color;
             });
 
-            _.forEach(this.eleanor.linktiles, function(p) {
-                p.color = self.eleanor.color;
-            });
+            this.eleanor.linktile.color = self.eleanor.color;
             _.forEach(this.eleanor.board, function(p) {
                 p.color = self.eleanor.color;
             });
@@ -1410,7 +1408,7 @@ var app = new Vue({
         layNetworkTileBase: function (player_type, locationid1, locationid2) {
             let player = this.getPlayerFromType(player_type);
 
-            let linktile = player.linktiles.pop();
+            let linktile = player.linktile;
 
             // add the tile to the edges
             let location1 = this.findLocationById(locationid1);
@@ -1438,10 +1436,14 @@ var app = new Vue({
 
             // update both edges and remove the tile from the player
             let linktile1 = _.cloneDeep(linktile);
+            linktile1.id = player.nextLinkTileId;
+            player.nextLinkTileId = player.nextLinkTileId + 1;
             linktile1.toId1 = locationid1;
             linktile1.toId2 = locationid2;
 
             let linktile2 = _.cloneDeep(linktile);
+            linktile2.id = player.nextLinkTileId;
+            player.nextLinkTileId = player.nextLinkTileId + 1;
             linktile2.toId1 = locationid2;
             linktile2.toId2 = locationid1;
 

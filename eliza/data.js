@@ -1578,8 +1578,4 @@ function createLinkTile(id) {
         toId2: null
     };
 }
-const LINK_TILES = [];
-
-for (let i=0; i<=36; i++) {
-    LINK_TILES[i] = createLinkTile(i);
-}
+const LINK_TILE = createLinkTile(0);
