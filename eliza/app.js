@@ -461,18 +461,18 @@ var app = new Vue({
 
             // Set link and tile colors
             let self = this;
-            this.humanPlayer.linktile.color = self.humanPlayer.color;
+            this.humanPlayer.linktile.color = this.humanPlayer.color;
             
             _.forEach(this.humanPlayer.board, function(p) {
                 p.color = self.humanPlayer.color;
             });
 
-            this.eliza.linktile.color = self.eliza.color;
+            this.eliza.linktile.color = this.eliza.color;
             _.forEach(this.eliza.board, function(p) {
                 p.color = self.eliza.color;
             });
 
-            this.eleanor.linktile.color = self.eleanor.color;
+            this.eleanor.linktile.color = this.eleanor.color;
             _.forEach(this.eleanor.board, function(p) {
                 p.color = self.eleanor.color;
             });
