@@ -450,6 +450,9 @@ var app = new Vue({
         currentPlayerColorClass: function () {
             return "player-icon-" + this.colorString(this.currentPlayer.color);
         },
+        roundsPerEra: function () {
+            return this.numberOfPlayers === 2 ? TOTAL_ROUNDS_2PLAYER : TOTAL_ROUNDS_3PLAYER;
+        },
         startGame: function() {
             if (!this.humanPlayer.color) {
                 alert("You must choose a color.");
@@ -796,7 +799,7 @@ var app = new Vue({
                         actionstring = actionstring + 'Consume ' + l.chosenCoal + ' coal from ' + l.name + ' (Space ' + (l.spaceid - 1) + ')';
 
                         if (l.coalAvailable === l.chosenCoal) {
-                            actionstring = actionstring + ' [[Flips the tile!]]';
+                            actionstring = actionstring + ' [[ Flips the tile! ]]';
                         }
 
                         actionstring = actionstring + '.'
@@ -818,7 +821,7 @@ var app = new Vue({
                         actionstring = actionstring + 'Consume ' + l.chosenIron + ' iron from ' + l.name + ' (Space ' + (l.spaceid - 1) + ')';
 
                         if (l.ironAvailable === l.chosenIron) {
-                            actionstring = actionstring + ' [[Flips the tile!]]';
+                            actionstring = actionstring + ' [[ Flips the tile! ]]';
                         }
 
                         actionstring = actionstring + '.'
