@@ -296,11 +296,16 @@ var app = new Vue({
                     _.forEach(l.spaceswithtiles, function (t) {
                         // check each market connected to the tile's location
                         let isConnectedToMatchingMarket = false;
+                        let connectedMarketsWithTiles = [];
                         _.forEach(connectedMarkets, function (m) {
                             _.forEach(m.spaces, function (s) {
                                 if (s.tile) {
                                     if (_.includes(s.tile.industryTypes, t.tile.industrytype)) {
                                         isConnectedToMatchingMarket = true;
+                                        connectedMarketsWithTiles.push({
+                                            market: m,
+                                            tile: s.tile
+                                        });
                                     }
                                 }
                             });
@@ -313,7 +318,8 @@ var app = new Vue({
                                 name: l.name,
                                 spaceid: t.spaceid,
                                 tile: t.tile,
-                                comboid: l.id + " - " + t.spaceid
+                                comboid: l.id + " - " + t.spaceid,
+                                connectedMarketsWithTiles: connectedMarketsWithTiles
                             });
                         }
                     });
@@ -499,16 +505,30 @@ var app = new Vue({
 
             if (actionStep === '20') {
                 this.humanPlayer.nextAction.actiondata.sellabletiles = this.findPlayerUnflippedSellableIndustriesConnectedToMarket;
+                console.log(this.humanPlayer.nextAction.actiondata.sellabletiles);
             }
 
             if (actionStep === '30') {
-                this.humanPlayer.nextAction.actiondata.sellabletiles = this.setHumanDevelopableTiles();
+                this.setHumanDevelopableTiles();
             }
 
             this.saveGameState();
         },
         showNextButton() {
             return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '30'  || this.currentPlayer.actionStep === '32' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
+        },
+        prevHumanAction: function () {
+            if (this.humanPlayer.actionStep === '03') {
+                this.prevBuildActionConfirm();
+            }
+
+            if (this.humanPlayer.actionStep === '13') {
+                this.prevNetworkActionConfirm();
+            }
+
+            if (this.humanPlayer.actionStep === '32') {
+                this.prevDevelopActionConfirm();
+            }
         },
 
         // UI: Build

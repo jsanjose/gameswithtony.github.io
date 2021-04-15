@@ -147,8 +147,8 @@
                         <p v-if="validHumanBuildLocationsForIndustryType.length === 0">This tile cannot be built currently.</p>
                     </section>
 
-                    <section v-if="humanPlayer.actionStep === '03'">
-                        <a href="#" v-on:click="prevBuildActionConfirm()">< Go Back</a>
+                    <section v-if="humanPlayer.actionStep === '03' || humanPlayer.actionStep === '13' || humanPlayer.actionStep === '32'">
+                        <a href="#" v-on:click="prevHumanAction()">< Go Back</a>
                         <p class="action-header" v-if="currentRound > 1 && humanPlayer.currentTurnIndex === 0">Confirm Your Action<br /><span class="action-message">Click 'Next' to confirm.</span></p>
                         <p class="action-header" v-if="(currentRound === 1) || (currentRound > 1 && humanPlayer.currentTurnIndex === 1)">Complete Your Turn<br /><span class="action-message">Click 'Next' to confirm your <span v-if="currentRound > 1 && humanPlayer.currentTurnIndex === 1">second </span> action and complete your turn.</span></p>
                         <ul>
@@ -174,17 +174,6 @@
                         <ul class="cards">
                             <li class="card card--clickable" v-for="location in findAdjacentIndustryLocationsForHumanNetwork(humanPlayer.nextAction.actiondata.networkfromlocationid)" :key="location.id" v-on:click="setNetworkLocationTo(location.id)">
                                 <p class="card__name">{{ location.name }}</p>
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section v-if="humanPlayer.actionStep === '13'">
-                        <a href="#" v-on:click="prevNetworkActionConfirm()">< Go Back</a>
-                        <p class="action-header" v-if="currentRound > 1 && humanPlayer.currentTurnIndex === 0">Confirm Your Action<br /><span class="action-message">Click 'Next' to confirm.</span></p>
-                        <p class="action-header" v-if="(currentRound === 1) || (currentRound > 1 && humanPlayer.currentTurnIndex === 1)">Complete Your Turn<br /><span class="action-message">Click 'Next' to confirm your <span v-if="currentRound > 1 && humanPlayer.currentTurnIndex === 1">second </span> action and complete your turn.</span></p>
-                        <ul>
-                            <li class="action-desc" v-for="action in getHumanActionDescription()">
-                                {{ action.actionDesc }}
                             </li>
                         </ul>
                     </section>
@@ -216,17 +205,6 @@
                                 </li>
                             </ul>
                         </section>
-                    </section>
-                    
-                    <section v-if="humanPlayer.actionStep === '32'">
-                        <a href="#" v-on:click="prevDevelopActionConfirm()">< Go Back</a>
-                        <p class="action-header" v-if="currentRound > 1 && humanPlayer.currentTurnIndex === 0">Confirm Your Action<br /><span class="action-message">Click 'Next' to confirm.</span></p>
-                        <p class="action-header" v-if="(currentRound === 1) || (currentRound > 1 && humanPlayer.currentTurnIndex === 1)">Complete Your Turn<br /><span class="action-message">Click 'Next' to confirm your <span v-if="currentRound > 1 && humanPlayer.currentTurnIndex === 1">second </span> action and complete your turn.</span></p>
-                        <ul>
-                            <li class="action-desc" v-for="action in getHumanActionDescription()">
-                                {{ action.actionDesc }}
-                            </li>
-                        </ul>
                     </section>
 
                     <section v-if="humanPlayer.actionStep === '02' || humanPlayer.actionStep === '12' || humanPlayer.actionStep === '31'">

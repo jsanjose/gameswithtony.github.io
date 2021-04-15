@@ -884,10 +884,6 @@ const INITIAL_BOARD = {
                     tile: null
                 },
                 {
-                    toId: 12,
-                    tile: null
-                },
-                {
                     toId: 19,
                     tile: null
                 },
