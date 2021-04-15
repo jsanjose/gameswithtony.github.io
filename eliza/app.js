@@ -456,6 +456,9 @@ var app = new Vue({
         currentPlayerColorClass: function () {
             return "player-icon-" + this.colorString(this.currentPlayer.color);
         },
+        roundsPerEra: function () {
+            return this.numberOfPlayers === 2 ? TOTAL_ROUNDS_2PLAYER : TOTAL_ROUNDS_3PLAYER;
+        },
         startGame: function() {
             if (!this.humanPlayer.color) {
                 alert("You must choose a color.");
@@ -467,18 +470,18 @@ var app = new Vue({
 
             // Set link and tile colors
             let self = this;
-            this.humanPlayer.linktile.color = self.humanPlayer.color;
+            this.humanPlayer.linktile.color = this.humanPlayer.color;
             
             _.forEach(this.humanPlayer.board, function(p) {
                 p.color = self.humanPlayer.color;
             });
 
-            this.eliza.linktile.color = self.eliza.color;
+            this.eliza.linktile.color = this.eliza.color;
             _.forEach(this.eliza.board, function(p) {
                 p.color = self.eliza.color;
             });
 
-            this.eleanor.linktile.color = self.eleanor.color;
+            this.eleanor.linktile.color = this.eleanor.color;
             _.forEach(this.eleanor.board, function(p) {
                 p.color = self.eleanor.color;
             });
@@ -816,7 +819,7 @@ var app = new Vue({
                         actionstring = actionstring + 'Consume ' + l.chosenCoal + ' coal from ' + l.name + ' (Space ' + (l.spaceid - 1) + ')';
 
                         if (l.coalAvailable === l.chosenCoal) {
-                            actionstring = actionstring + ' [Flip the tile]';
+                            actionstring = actionstring + ' [[ Flips the tile! ]]';
                         }
 
                         actionstring = actionstring + '.'
@@ -838,7 +841,7 @@ var app = new Vue({
                         actionstring = actionstring + 'Consume ' + l.chosenIron + ' iron from ' + l.name + ' (Space ' + (l.spaceid - 1) + ')';
 
                         if (l.ironAvailable === l.chosenIron) {
-                            actionstring = actionstring + ' [Flip the tile]';
+                            actionstring = actionstring + ' [[ Flips the tile! ]]';
                         }
 
                         actionstring = actionstring + '.'
@@ -1857,18 +1860,18 @@ var app = new Vue({
                     if (neededIron > consumedIron) {
                         let spaceConsumeData = {
                             locationid: l.id,
-                            spaceid: pis.id,
+                            spaceid: pcs.id,
                             ironConsumed: 0,
                             willFlip: false
                         };
                         
-                        for (let i=0; i < pis.tile.availableIron; i++) {
+                        for (let i=0; i < pcs.tile.availableIron; i++) {
                             if (neededIron > consumedIron) {
                                 spaceConsumeData.ironConsumed = spaceConsumeData.ironConsumed + 1;
                                 consumedIron++;
                             }
                         }
-                        spaceConsumeData.willFlip = (spaceConsumeData.ironConsumed === pis.tile.availableIron);
+                        spaceConsumeData.willFlip = (spaceConsumeData.ironConsumed === pcs.tile.availableIron);
                         ironConsumption.push(spaceConsumeData);
                     }
                 });
