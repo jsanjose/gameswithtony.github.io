@@ -64,7 +64,7 @@
         </section>
         <section class="playerArea" v-if="gameHasStarted">
             <section class="start-new text-centered">
-                <a href="#" v-on:click="newGame()">New Game</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="undo()">Undo</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="toggleShowBoardState">View Board State</a>
+                <a href="#" v-on:click="newGame()">New Game</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="undo()">Undo</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="toggleShowBoardState">View Board State</a>
             </section>
             <section v-if="currentGameStep === 0">
                 <h1>Game Setup</h1>
@@ -214,7 +214,7 @@
                             <p class="action-header">Your {{ humanActionStringMap[humanPlayer.nextAction.action] }} action consumes <span class="important">{{ humanPlayer.nextAction.actiondata.consumelocations.coal.coalNeeded }} Coal</span>.<br /><span class="small">Indicate below how much coal you are taking from each location.</span></p> 
                             <ul class="cards">
                                 <li v-for="location in humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations" class="card">
-                                    <p class="card__name">{{ location.name }} (Space {{ location.spaceid }})</p>
+                                    <p class="card__name">{{ location.name }} <span v-if="location.spaceid != -1">(Space {{ location.spaceid }})</span></p>
                                     <div class="card__area">
                                         <label v-for="resource in location.resourceArray">
                                             <input type="radio" v-bind:value="resource"
@@ -229,7 +229,7 @@
                             <p class="action-header">Your {{ humanActionStringMap[humanPlayer.nextAction.action] }} action consumes <span class="important">{{ humanPlayer.nextAction.actiondata.consumelocations.iron.ironNeeded }} Iron</span>.<br /><span class="small">Indicate below how much iron you are taking from each location.</span></p>
                             <ul class="cards">
                                 <li v-for="location in humanPlayer.nextAction.actiondata.consumelocations.iron.ironLocations" class="card">
-                                    <p class="card__name">{{ location.name }} (Space {{ location.spaceid }})</p>
+                                    <p class="card__name">{{ location.name }} <span v-if="location.spaceid != -1">(Space {{ location.spaceid }})</span></p>
                                     <div class="card__area">
                                         <label v-for="resource in location.resourceArray">
                                             <input type="radio" v-bind:value="resource"

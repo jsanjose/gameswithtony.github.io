@@ -683,7 +683,22 @@ var app = new Vue({
                     });
                 });
 
-                // TODO: Include market
+                // Include market
+                if (totalCoalAvailable < totalCoalNeeded) {
+                    let resourceArray = [];
+                    for (let i=0;i<=totalCoalNeeded - totalCoalAvailable;i++) {
+                        resourceArray.push(i);
+                    }
+
+                    consumeLocations.coal.coalLocations.push({
+                        locationid: -1,
+                        name: "Coal Market",
+                        spaceid: -1,
+                        coalAvailable: totalCoalNeeded - totalCoalAvailable,
+                        chosenCoal: 0,
+                        resourceArray: resourceArray
+                    });
+                }
             }
 
             if (totalIronNeeded && totalIronNeeded > 0) {
@@ -708,12 +723,31 @@ var app = new Vue({
                             spaceid: is.id + 1,
                             ironAvailable: is.tile.availableIron,
                             chosenIron: 0,
-                            resourceArray: resourceArray
+                            resourceArray: resourceArray,
+                            isMarket: true
                         });
+
+                        totalIronAvailable = totalIronAvailable + is.tile.availableIron;
                     });
                 });
 
-                // TODO: Include market
+                // Include market
+                if (totalIronAvailable < totalIronNeeded) {
+                    let resourceArray = [];
+                    for (let i=0;i<=totalIronNeeded - totalIronAvailable;i++) {
+                        resourceArray.push(i);
+                    }
+
+                    consumeLocations.iron.ironLocations.push({
+                        locationid: -2,
+                        name: "Iron Market",
+                        spaceid: -1,
+                        coalAvailable: totalIronNeeded - totalIronAvailable,
+                        chosenCoal: 0,
+                        resourceArray: resourceArray,
+                        isMarket: true
+                    });
+                }
             }
 
             if (totalBeerNeeded && totalBeerNeeded > 0) {
@@ -762,9 +796,55 @@ var app = new Vue({
                     actionDesc: actionstring
                 });
 
-                // TODO: Check move of coal to market
+                // Note coal moving to market
+                if (this.humanPlayer.nextAction.actiondata.buildtile.industrytype === INDUSTRY.CoalMine) {
+                    if (this.totalEmptyMarketCoalSpaces > 0 && this.isConnectedToMarket(this.humanPlayer.nextAction.actiondata.buildlocationid, PLAYER_TYPE.Human)) {
+                        let coalMoved = this.humanPlayer.nextAction.actiondata.buildtile.availableCoal - this.totalEmptyMarketCoalSpaces;
+                        actionstring = 'Move ' + coalMoved + ' coal to the market (leaving ' + (this.humanPlayer.nextAction.actiondata.buildtile.availableCoal - coalMoved) + ' coal on the tile.)';
 
-                // TODO: Check move of iron to market
+                        if (coalMoved === this.humanPlayer.nextAction.actiondata.buildtile.availableCoal) {
+                            actionstring = actionstring + ' [[ Flips the tile! ]]';
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+
+                            actionstring = '';
+                            actionstring = actionstring + 'Increase your income by ' + this.humanPlayer.nextAction.actiondata.buildtile.income;
+                            this.humanPlayer.nextAction.actiondata.flipIncomeIncrease = this.humanPlayer.nextAction.actiondata.buildtile.income;
+                        }
+
+                        actions.push({
+                            actionDone: false,
+                            actionDesc: actionstring
+                        });        
+                    }
+                }
+
+                // Note iron moving to market
+                if (this.humanPlayer.nextAction.actiondata.buildtile.industrytype === INDUSTRY.IronWorks) {
+                    if (this.totalEmptyMarketIronSpaces > 0 && this.isConnectedToMarket(this.humanPlayer.nextAction.actiondata.buildlocationid, PLAYER_TYPE.Human)) {
+                        let ironMoved = this.humanPlayer.nextAction.actiondata.buildtile.availableIron - this.totalEmptyMarketIronSpaces;
+                        actionstring = 'Move ' + ironMoved + ' iron to the market (leaving ' + (this.humanPlayer.nextAction.actiondata.buildtile.availableIron - ironMoved) + ' iron on the tile.)';
+
+                        if (ironMoved === this.humanPlayer.nextAction.actiondata.buildtile.availableIron) {
+                            actionstring = actionstring + ' [[ Flips the tile! ]]';
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+
+                            actionstring = '';
+                            actionstring = actionstring + 'Increase your income by ' + this.humanPlayer.nextAction.actiondata.buildtile.income;
+                            this.humanPlayer.nextAction.actiondata.flipIncomeIncrease = this.humanPlayer.nextAction.actiondata.buildtile.income;
+                        }
+
+                        actions.push({
+                            actionDone: false,
+                            actionDesc: actionstring
+                        });        
+                    }
+                }
             }
 
             // If Network
@@ -773,7 +853,7 @@ var app = new Vue({
                 let locationfrom = this.findLocationById(this.humanPlayer.nextAction.actiondata.networkfromlocationid);
                 let locationto = this.findLocationById(this.humanPlayer.nextAction.actiondata.networktolocationid);
 
-                actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
+                actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name + '.';
                 
                 actions.push({
                     actionDone: false,
@@ -816,7 +896,12 @@ var app = new Vue({
 
                 _.forEach(this.humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations, function (l) {
                     if (l.chosenCoal > 0) {
-                        actionstring = actionstring + 'Consume ' + l.chosenCoal + ' coal from ' + l.name + ' (Space ' + (l.spaceid - 1) + ')';
+                        actionstring = '';
+                        actionstring = actionstring + 'Consume ' + l.chosenCoal + ' coal from ' + l.name;
+                        
+                        if (l.spaceid != -1) {
+                            actionstring = actionstring + ' (Space ' + (l.spaceid) + ')';
+                        }
 
                         if (l.coalAvailable === l.chosenCoal) {
                             actionstring = actionstring + ' [[ Flips the tile! ]]';
@@ -838,7 +923,12 @@ var app = new Vue({
 
                 _.forEach(this.humanPlayer.nextAction.actiondata.consumelocations.iron.ironLocations, function (l) {
                     if (l.chosenIron > 0) {
-                        actionstring = actionstring + 'Consume ' + l.chosenIron + ' iron from ' + l.name + ' (Space ' + (l.spaceid - 1) + ')';
+                        actionstring = '';
+                        actionstring = actionstring + 'Consume ' + l.chosenIron + ' iron from ' + l.name;
+                        
+                        if (l.spaceid != -1) {
+                            actionstring = actionstring + ' (Space ' + (l.spaceid) + ')';
+                        }
 
                         if (l.ironAvailable === l.chosenIron) {
                             actionstring = actionstring + ' [[ Flips the tile! ]]';
@@ -867,10 +957,6 @@ var app = new Vue({
             if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Build) {
                 this.layIndustryTile(PLAYER_TYPE.Human, this.humanPlayer.nextAction.actiondata.buildtile.id, this.humanPlayer.nextAction.actiondata.buildlocationid, this.humanPlayer.nextAction.actiondata.buildspaceid);
 
-                // TODO: Move coal to market
-
-                // TODO: Move iron to market
-
                 if (!this.humanPlayer.amountSpentThisRound) {
                     this.humanPlayer.amountSpentThisRound = this.humanPlayer.nextAction.actiondata.buildtile.poundsCost;
                 } else {
@@ -892,6 +978,7 @@ var app = new Vue({
             }
 
             // SELL
+            // TODO: Execute sell action (flip tiles, merchant actions, consume is below)
 
             // DEVELOP
             if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Develop) {
@@ -914,17 +1001,39 @@ var app = new Vue({
             // CONSUME
             if (this.humanPlayer.nextAction.actiondata.consumelocations && this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
                 _.forEach(self.humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations, function (l) {
-                    let location = self.findLocationById(l.locationid);
-                    let tile = location.spaces[l.spaceid - 1].tile;
-                    tile.availableCoal = tile.availableCoal - l.chosenCoal;
+                    if (l.locationid === -2) {
+                        // market
+                        let coalInMarket = self.board.market.coalInMarket;
+
+                        if (l.chosenCoal > coalInMarket) {
+                            self.board.market.coalInMarket = 0;
+                        } else {
+                            self.board.market.coalInMarket = coalInMarket - l.chosenCoal;
+                        }
+                    } else {
+                        let location = self.findLocationById(l.locationid);
+                        let tile = location.spaces[l.spaceid - 1].tile;
+                        tile.availableCoal = tile.availableCoal - l.chosenCoal;
+                    }
                 });
             }
 
             if (this.humanPlayer.nextAction.actiondata.consumelocations && this.humanPlayer.nextAction.actiondata.consumelocations.iron) {
                 _.forEach(self.humanPlayer.nextAction.actiondata.consumelocations.iron.ironLocations, function (l) {
-                    let location = self.findLocationById(l.locationid);
-                    let tile = location.spaces[l.spaceid - 1].tile;
-                    tile.availableIron = tile.availableIron - l.chosenIron;
+                    if (l.locationid === -2) {
+                        // market
+                        let ironInMarket = self.board.market.ironInMarket;
+
+                        if (l.chosenIron > ironInMarket) {
+                            self.board.market.ironInMarket = 0;
+                        } else {
+                            self.board.market.ironInMarket = ironInMarket - l.chosenIron;
+                        }
+                    } else {
+                        let location = self.findLocationById(l.locationid);
+                        let tile = location.spaces[l.spaceid - 1].tile;
+                        tile.availableIron = tile.availableIron - l.chosenIron;
+                    }
                 });
             }
 
@@ -1352,6 +1461,8 @@ var app = new Vue({
         getAIActionDescription: function () {
             let actions = [];
 
+            console.log(this.currentPlayer.nextAction.actiondata);
+
             if (this.currentPlayer.nextAction.action === AI_ACTION.BuildAndNetwork) {
                 let actionstring = '';
 
@@ -1364,19 +1475,82 @@ var app = new Vue({
                     actionDesc: actionstring
                 });
 
-                actionstring = 'Spends £' + this.currentPlayer.nextAction.actiondata.industrytile.poundsCost + '.';
+                /*actionstring = 'Spends £' + this.currentPlayer.nextAction.actiondata.industrytile.poundsCost + '.';
                 actions.push({
                     actionDone: false,
                     actionDesc: actionstring
-                });
+                });*/
 
-                // TODO: Check move of coal to market
+                // Note move of coal to market
+                if (this.currentPlayer.nextAction.actiondata.coalMoved && this.currentPlayer.nextAction.actiondata.coalMoved > 0) {
+                    actionstring = '';
+                    actionstring = 'Move ' + this.currentPlayer.nextAction.actiondata.coalMoved + ' coal to the market (leaving ' + (this.currentPlayer.nextAction.actiondata.industrytile.availableIron - this.currentPlayer.nextAction.actiondata.coalMoved) + ' coal on the tile.)';
 
-                // TODO: Check move of iron to market
+                    if (this.currentPlayer.nextAction.actiondata.willFlip) {
+                        actionstring = actionstring + ' [[ Flips the tile! ]]';
+                    }
+                    
+                    actions.push({
+                        actionDone: false,
+                        actionDesc: actionstring
+                    });
+                }
+
+                // Note move of iron to market
+                if (this.currentPlayer.nextAction.actiondata.ironMoved && this.currentPlayer.nextAction.actiondata.ironMoved > 0) {
+                    actionstring = '';
+                    actionstring = 'Move ' + this.currentPlayer.nextAction.actiondata.ironMoved + ' iron to the market (leaving ' + (this.currentPlayer.nextAction.actiondata.industrytile.availableIron - this.currentPlayer.nextAction.actiondata.ironMoved) + ' iron on the tile.)';
+
+                    if (this.currentPlayer.nextAction.actiondata.willFlip) {
+                        actionstring = actionstring + ' [[ Flips the tile! ]]';
+                    }
+                    
+                    actions.push({
+                        actionDone: false,
+                        actionDesc: actionstring
+                    });
+                }
+
+                // Coal consumption
+                if (this.currentPlayer.nextAction.actiondata.consumedata && this.currentPlayer.nextAction.actiondata.consumedata.coalConsumption) {
+                    _.forEach(this.currentPlayer.nextAction.actiondata.consumedata.coalConsumption, function (c) {
+                        actionstring = '';
+                        actionstring = actionstring + 'Consume ' + c.coalConsumed + ' coal from ' + c.locationname;
+                        
+                        if (c.spaceid != -1) {
+                            actionstring = actionstring + ' (Space ' + (c.spaceid + 1) + ')';
+                        }
+
+                        actionstring = actionstring + '.';
+
+                        actions.push({
+                            actionDone: false,
+                            actionDesc: actionstring
+                        });
+                    });
+                }
+
+                // Iron consumption
+                if (this.currentPlayer.nextAction.actiondata.consumedata && this.currentPlayer.nextAction.actiondata.consumedata.ironConsumption) {
+                    _.forEach(this.currentPlayer.nextAction.actiondata.consumedata.ironConsumption, function (c) {
+                        actionstring = '';
+                        actionstring = actionstring + 'Consume ' + c.ironConsumed + ' coal from ' + c.locationname;
+
+                        if (c.spaceid != -1) {
+                            actionstring = actionstring + ' (Space ' + (c.spaceid + 1) + ')';
+                        }
+
+                        actionstring = actionstring + '.';
+
+                        actions.push({
+                            actionDone: false,
+                            actionDesc: actionstring
+                        });
+                    });
+                }
 
                 // Network
                 actionstring = '';
-
                 // Add VP
                 if (this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
                     actionstring = actionstring + 'Could not network, so gains ' + this.currentPlayer.nextAction.actiondata.addVP + 'VP (now has ' + (this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP) + 'VP in total).';
@@ -1384,7 +1558,7 @@ var app = new Vue({
                     let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
                     let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
 
-                    actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
+                    actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name + '.';
                 }
 
                 actions.push({
@@ -1405,6 +1579,7 @@ var app = new Vue({
             return actions;
         },
         executeNextAIAction: function () {
+            let self = this;
             // use 'currentPlayer'
             this.currentPlayer.currentRoundComplete = true;
 
@@ -1434,10 +1609,56 @@ var app = new Vue({
                     }
                 }
 
-                // Add VP
-                if (this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
-                    this.currentPlayer.totalVP = this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP;
-                }
+                // Moving coal and iron to market is handled inside LayIndustryTile
+            }
+
+            // TODO: Execute AI sell action (flip tiles)
+
+            // Coal consumption
+            if (this.currentPlayer.nextAction.actiondata.consumedata && this.currentPlayer.nextAction.actiondata.consumedata.coalConsumption) {
+                _.forEach(this.currentPlayer.nextAction.actiondata.consumedata.coalConsumption, function (c) {
+                    if (c.spaceid != -1) {
+                        // consume from tile
+                        let location = self.findLocationById(c.locationid);
+                        let tile = location.spaces[c.spaceid].tile;
+                        tile.availableCoal = tile.availableCoal - c.coalConsumed;                            
+                    } else {
+                        // market
+                        let coalInMarket = self.board.market.coalInMarket;
+
+                        if (c.coalConsumed > coalInMarket) {
+                            self.board.market.coalInMarket = 0;
+                        } else {
+                            self.board.market.coalInMarket = coalInMarket - c.coalConsumed;
+                        }
+                    }
+                });
+            }
+            
+            // Iron consumption
+            if (this.currentPlayer.nextAction.actiondata.consumedata && this.currentPlayer.nextAction.actiondata.consumedata.ironConsumption) {
+                _.forEach(this.currentPlayer.nextAction.actiondata.consumedata.ironConsumption, function (c) {
+                    if (c.spaceid != -1) {
+                        // consume from tile
+                        let location = self.findLocationById(c.locationid);
+                        let tile = location.spaces[c.spaceid].tile;
+                        tile.availableIron = tile.availableIron - c.ironConsumed;                            
+                    } else {
+                        // market
+                        let ironInMarket = self.board.market.ironInMarket;
+
+                        if (c.coalConsumed > ironInMarket) {
+                            self.board.market.ironInMarket = 0;
+                        } else {
+                            self.board.market.ironInMarket = ironInMarket - c.ironConsumed;
+                        }
+                    }
+                });
+            }
+
+            // Add VP
+            if (this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
+                this.currentPlayer.totalVP = this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP;
             }
         },
         // end: Primary action functions
@@ -1499,6 +1720,36 @@ var app = new Vue({
                 // If building beer, update availableBeer to 2 if in Rail Era
                 if (space.tile.industryType === INDUSTRY.Brewery && this.currentEra === ERA.Rail) {
                     space.tile.availableBeer = 2;
+                }
+
+                // Move coal to market (if applicable)
+                if (space.tile.industrytype === INDUSTRY.CoalMine) {
+                    if (this.totalEmptyMarketCoalSpaces > 0 && this.isConnectedToMarket(locationid, player_type)) {
+                        let coalMoved = space.tile.availableCoal - this.totalEmptyMarketCoalSpaces;
+                        
+                        space.tile.availableCoal = space.tile.availableCoal - coalMoved;
+
+                        if (coalMoved === space.tile.availableCoal) {
+                            space.tile.flipped = true;
+                        }
+                        
+                        this.board.market.coalInMarket = this.board.market.coalInMarket + coalMoved;
+                    }
+                }
+
+                // Move iron to market (if applicable)
+                if (space.tile.industrytype === INDUSTRY.IronWorks) {
+                    if (this.totalEmptyMarketIronSpaces > 0 && this.isConnectedToMarket(locationid, player_type)) {
+                        let ironMoved = space.tile.availableIron - this.totalEmptyMarketIronSpaces;
+                        
+                        space.tile.availableIron = space.tile.availableIron - ironMoved;
+
+                        if (ironMoved === space.tile.availableIron) {
+                            space.tile.flipped = true;
+                        } 
+                        
+                        this.board.market.ironInMarket = this.board.market.ironInMarket + ironMoved;
+                    }
                 }
 
                 // remove the tile from the player's board
@@ -1779,6 +2030,7 @@ var app = new Vue({
                         if (neededCoal > consumedCoal) {
                             let spaceConsumeData = {
                                 locationid: l.id,
+                                locationname: l.name,
                                 spaceid: pcs.id,
                                 coalConsumed: 0,
                                 willFlip: false
@@ -1799,6 +2051,7 @@ var app = new Vue({
                         if (neededCoal > consumedCoal) {
                             let spaceConsumeData = {
                                 locationid: l.id,
+                                locationname: l.name,
                                 spaceid: ocs.id,
                                 coalConsumed: 0,
                                 willFlip: false
@@ -1814,23 +2067,24 @@ var app = new Vue({
                             coalConsumption.push(spaceConsumeData);
                         }
                     });
-
-                    // whatever is left take from market
-                    if (neededCoal > consumedCoal) {
-                        let spaceConsumeData = {
-                            locationid: -1,
-                            spaceid: -1,
-                            coalConsumed: 0,
-                            willFlip: false
-                        }
-                        for (let i=0; i < neededCoal - consumedCoal; i++) {
-                            spaceConsumeData.coalConsumed = spaceConsumeData.coalConsumed + 1;
-                            consumedCoal++;
-                        }
-                        coalConsumption.push(spaceConsumeData);
-                    }
                 });
             });
+
+            // whatever is left take from market
+            if (neededCoal > consumedCoal) {
+                let spaceConsumeData = {
+                    locationid: -1,
+                    locationname: 'Coal Market',
+                    spaceid: -1,
+                    coalConsumed: 0,
+                    willFlip: false
+                }
+                for (let i=0; i < neededCoal - consumedCoal; i++) {
+                    spaceConsumeData.coalConsumed = spaceConsumeData.coalConsumed + 1;
+                    consumedCoal++;
+                }
+                coalConsumption.push(spaceConsumeData);
+            }
 
             return coalConsumption;
         },
@@ -1860,6 +2114,7 @@ var app = new Vue({
                     if (neededIron > consumedIron) {
                         let spaceConsumeData = {
                             locationid: l.id,
+                            locationame: l.name,
                             spaceid: pcs.id,
                             ironConsumed: 0,
                             willFlip: false
@@ -1880,6 +2135,7 @@ var app = new Vue({
                     if (neededIron > consumedIron) {
                         let spaceConsumeData = {
                             locationid: l.id,
+                            locationname: 'Iron Market',
                             spaceid: ois.id,
                             ironConsumed: 0,
                             willFlip: false
@@ -1895,22 +2151,24 @@ var app = new Vue({
                         ironConsumption.push(spaceConsumeData);
                     }
                 });
-
-                // whatever is left take from market
-                if (neededIron > consumedIron) {
-                    let spaceConsumeData = {
-                        locationid: -1,
-                        spaceid: -1,
-                        ironConsumed: 0,
-                        willFlip: false
-                    }
-                    for (let i=0; i < neededIron - consumedIron; i++) {
-                        spaceConsumeData.ironConsumed = spaceConsumeData.ironConsumed + 1;
-                        consumedIron++;
-                    }
-                    ironConsumption.push(spaceConsumeData);
-                }
             });
+
+            // whatever is left take from market
+            if (neededIron > consumedIron) {
+                let spaceConsumeData = {
+                    locationid: -1,
+                    spaceid: -1,
+                    ironConsumed: 0,
+                    willFlip: false
+                }
+                for (let i=0; i < neededIron - consumedIron; i++) {
+                    spaceConsumeData.ironConsumed = spaceConsumeData.ironConsumed + 1;
+                    consumedIron++;
+                }
+                ironConsumption.push(spaceConsumeData);
+            }
+
+            return ironConsumption;
         },
         generateAIBeerConsumption: function (locationid, player_type, neededBeer, industryTypes) {
             // for: Sell, step 2
@@ -2563,6 +2821,15 @@ var app = new Vue({
 
         debugSetupTestBoard: function () {
             // TEMPORARY (remove this later): setup board state
+            
+            /*this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
+            this.layNetworkTile(PLAYER_TYPE.Human, 14, 21);
+            this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
+            this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);
+            this.layNetworkTile(PLAYER_TYPE.Human, 25, 19);
+            this.layNetworkTile(PLAYER_TYPE.Human, 19, 20);
+            this.layIndustryTile(PLAYER_TYPE.Human, 0, 14, 2);*/
+
             this.layIndustryTile(PLAYER_TYPE.Human, 0, 14, 2);
             this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 1);
             this.layIndustryTile(PLAYER_TYPE.Human, 7, 23, 1);
@@ -2580,7 +2847,6 @@ var app = new Vue({
             this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
             this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
             this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);
-            this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 23, 26);
         },
         // --- BEGIN: may not truly need these ---
         findCoalClosestToFlipping: function (locationid, player_type) {
