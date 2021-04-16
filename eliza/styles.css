@@ -23,6 +23,7 @@ a, a:visited, a:hover {
 
 .simple-list {
     list-style: none;
+    padding-left: 0;
 }
 
 .player-color-options {
