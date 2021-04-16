@@ -26,6 +26,10 @@ a, a:visited, a:hover {
     padding-left: 0;
 }
 
+.simple-list label {
+    cursor: pointer;
+}
+
 .player-color-options {
     list-style: none;
     display: flex;
