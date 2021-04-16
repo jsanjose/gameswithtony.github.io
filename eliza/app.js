@@ -807,7 +807,7 @@ var app = new Vue({
                             coalMoved = this.totalEmptyMarketCoalSpaces;
                         }
 
-                        actionstring = 'Move ' + coalMoved + ' coal to the market (leaving ' + (this.humanPlayer.nextAction.actiondata.buildtile.availableCoal - coalMoved) + ' coal on the tile.)';
+                        actionstring = 'Move ' + coalMoved + ' coal to the market (leaving ' + (this.humanPlayer.nextAction.actiondata.buildtile.availableCoal - coalMoved) + ' coal on the tile).';
 
                         if (coalMoved === this.humanPlayer.nextAction.actiondata.buildtile.availableCoal) {
                             actionstring = actionstring + ' [[ Flips the tile! ]]';
@@ -839,7 +839,7 @@ var app = new Vue({
                             ironMoved = this.totalEmptyMarketIronSpaces;
                         }
 
-                        actionstring = 'Move ' + ironMoved + ' iron to the market (leaving ' + (this.humanPlayer.nextAction.actiondata.buildtile.availableIron - ironMoved) + ' iron on the tile.)';
+                        actionstring = 'Move ' + ironMoved + ' iron to the market (leaving ' + (this.humanPlayer.nextAction.actiondata.buildtile.availableIron - ironMoved) + ' iron on the tile).';
 
                         if (ironMoved === this.humanPlayer.nextAction.actiondata.buildtile.availableIron) {
                             actionstring = actionstring + ' [[ Flips the tile! ]]';
@@ -1519,7 +1519,7 @@ var app = new Vue({
                 // Note move of iron to market
                 if (this.currentPlayer.nextAction.actiondata.ironMoved && this.currentPlayer.nextAction.actiondata.ironMoved > 0) {
                     actionstring = '';
-                    actionstring = 'Move ' + this.currentPlayer.nextAction.actiondata.ironMoved + ' iron to the market (leaving ' + (this.currentPlayer.nextAction.actiondata.industrytile.availableIron - this.currentPlayer.nextAction.actiondata.ironMoved) + ' iron on the tile.)';
+                    actionstring = 'Move ' + this.currentPlayer.nextAction.actiondata.ironMoved + ' iron to the market (leaving ' + (this.currentPlayer.nextAction.actiondata.industrytile.availableIron - this.currentPlayer.nextAction.actiondata.ironMoved) + ' iron on the tile).';
 
                     if (this.currentPlayer.nextAction.actiondata.willFlip) {
                         actionstring = actionstring + ' [[ Flips the tile! ]]';

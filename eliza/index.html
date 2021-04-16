@@ -100,7 +100,7 @@
                         </p>
                         <p class="text-tiny">
                             <span v-for="(player, index) in playersInOrder">
-                                {{ player.name }}: &pound;{{ playerAmountSpent(player) }}<span v-if="index != numberOfPlayers - 1">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+                                <span v-bind:class="{ bold: player.player_type === currentPlayerType }">{{ player.name }}: &pound;{{ playerAmountSpent(player) }}<span v-if="index != numberOfPlayers - 1">&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
                             </span>
                         </p>
                     </section>
@@ -254,9 +254,12 @@
 
                 <section v-if="currentPlayerType === 1 || currentPlayerType === 2">
                     <p class="action-header">{{ currentPlayer.name }} does the following:</p>
-                    <ul>
+                    <ul class="simple-list">
                         <li class="action-desc" v-for="action in getAIActionDescription()">
-                            {{ action.actionDesc }}
+                            <label style="display: flex; padding: 0.5rem;">
+                                <input type="checkbox" class="checkbox-strike" v-model="action.selected" />&nbsp;
+                                <span style="margin-left: 0.5rem;">
+                            {{ action.actionDesc }}</span> </label>
                         </li>
                     </ul>
                 </section>

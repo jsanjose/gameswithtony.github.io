@@ -21,6 +21,10 @@ a, a:visited, a:hover {
     text-decoration: none;
 }
 
+.simple-list {
+    list-style: none;
+}
+
 .player-color-options {
     list-style: none;
     display: flex;
@@ -85,6 +89,10 @@ a, a:visited, a:hover {
 
 .highlight-text {
     color: #003100;
+    font-weight: bold;
+}
+
+.bold {
     font-weight: bold;
 }
 
@@ -216,6 +224,11 @@ input[type="radio"]:checked + span {
 
 input[type="checkbox"]:checked + span {
     font-weight: bold;
+}
+
+input[type="checkbox"].checkbox-strike:checked + span {
+    font-weight: normal;
+    text-decoration: line-through;
 }
 
 .action-desc + .action-desc {
