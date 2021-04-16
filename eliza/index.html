@@ -64,7 +64,7 @@
         </section>
         <section class="playerArea" v-if="gameHasStarted">
             <section class="start-new text-centered">
-                <a href="#" v-on:click="newGame()">New Game</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="undo()">Undo</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="toggleShowBoardState">View Board State</a>
+                <a href="#" v-on:click="newGame()">New Game</a>&nbsp;&nbsp;&nbsp;<span v-if="undoState">|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="undo()">Undo</a>&nbsp;&nbsp;&nbsp;</span>|&nbsp;&nbsp;&nbsp;<a href="#" v-on:click="toggleShowBoardState">View Board State</a>
             </section>
             <section v-if="currentGameStep === 0">
                 <h1>Game Setup</h1>
@@ -112,7 +112,10 @@
                                 <p class="card__name">Build</p>
                             </li>
                             <li class="card card--clickable" v-on:click="setHumanAction('10')">
-                                <p class="card__name">Network</p>
+                                <p class="card__name"><span v-if="currentEra === 1">Single </span>Network</p>
+                            </li>
+                            <li class="card card--clickable" v-if="currentEra === 1" v-on:click="setHumanAction('50')">
+                                <p class="card__name">Double Network</p>
                             </li>
                             <li class="card card--clickable" v-on:click="setHumanAction('20')">
                                 <p class="card__name">Sell</p>
@@ -290,7 +293,7 @@
             </section>
             <section class="boardstate" v-if="showBoardState">
                 <a href="#" class="boardstate_close" v-on:click="toggleShowBoardState">[ Close Board State ]</a>
-                <p class="boardstate__instructions">"X :" - a space with an industry tile</p>
+                <p class="boardstate__instructions">"X: " - a space with an industry tile</p>
                 <p class="boardstate__instructions">"-->" - a link tile</p>
                 <p class="boardstate__marketspaces">
                     Empty Coal Spaces in Market: {{ totalEmptyMarketCoalSpaces }}<br />
@@ -301,7 +304,7 @@
                         <p class="boardstate__locationname">{{ location.name }}</p>
                         <ul class="boardstate__industrytiles">
                             <li v-for="space in findSpacesWithTiles(location.spaces)">
-                                <p v-if="space.tile"><span v-if="!space.tile.isMerchantTile">{{ space.id + 1 }} : {{ colorString(space.tile.color) }} | </span>{{ boardIndustryTileToStringWithResources(location.id, space.tile.id, true) }}</p>
+                                <p v-if="space.tile"><span v-if="!space.tile.isMerchantTile">{{ space.id + 1 }}:&nbsp;&nbsp;{{ colorString(space.tile.color) }} | </span>{{ boardIndustryTileToStringWithResources(location.id, space.tile.id, true) }}</p>
                             </li>
                         </ul>
                         <ul class="boardstate__adjacentlocations">

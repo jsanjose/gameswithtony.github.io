@@ -108,7 +108,7 @@ var app = new Vue({
         eleanor: _.cloneDeep(ELEANOR),
         showBoardState: false,
         humanActionStringMap: _.cloneDeep(humanActionStringMap),
-        undoState: {}
+        undoState: null
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -965,6 +965,8 @@ var app = new Vue({
             return actions;
         },
         executeNextHumanAction: function () {
+            this.saveUndoState();
+            
             let self = this; 
 
             // BUILD
@@ -1552,7 +1554,7 @@ var app = new Vue({
                 if (this.currentPlayer.nextAction.actiondata.consumedata && this.currentPlayer.nextAction.actiondata.consumedata.ironConsumption) {
                     _.forEach(this.currentPlayer.nextAction.actiondata.consumedata.ironConsumption, function (c) {
                         actionstring = '';
-                        actionstring = actionstring + 'Consume ' + c.ironConsumed + ' coal from ' + c.locationname;
+                        actionstring = actionstring + 'Consume ' + c.ironConsumed + ' iron from ' + c.locationname;
 
                         if (c.spaceid != -1) {
                             actionstring = actionstring + ' (Space ' + (c.spaceid + 1) + ')';
@@ -1597,6 +1599,8 @@ var app = new Vue({
             return actions;
         },
         executeNextAIAction: function () {
+            this.saveUndoState();
+
             let self = this;
             // use 'currentPlayer'
             this.currentPlayer.currentRoundComplete = true;
@@ -1736,7 +1740,7 @@ var app = new Vue({
                 space.tile = _.cloneDeep(tile);
 
                 // If building beer, update availableBeer to 2 if in Rail Era
-                if (space.tile.industryType === INDUSTRY.Brewery && this.currentEra === ERA.Rail) {
+                if (space.tile.industrytype === INDUSTRY.Brewery && this.currentEra === ERA.Rail) {
                     space.tile.availableBeer = 2;
                 }
 
@@ -2159,7 +2163,7 @@ var app = new Vue({
                     if (neededIron > consumedIron) {
                         let spaceConsumeData = {
                             locationid: l.id,
-                            locationname: 'Iron Market',
+                            locationname: l.name,
                             spaceid: ois.id,
                             ironConsumed: 0,
                             willFlip: false
@@ -2181,6 +2185,7 @@ var app = new Vue({
             if (neededIron > consumedIron) {
                 let spaceConsumeData = {
                     locationid: -1,
+                    locationname: 'Iron Market',
                     spaceid: -1,
                     ironConsumed: 0,
                     willFlip: false
@@ -2604,15 +2609,25 @@ var app = new Vue({
         findNextTileFromPlayerBoard: function (player_type, industrytype) {
             let player = this.getPlayerFromType(player_type);
 
-            return _.find(player.board, function (t) {
+            let nextTile = _.find(player.board, function (t) {
                 return t.industrytype === industrytype;
             });
+
+            if (!(this.currentEra === ERA.Rail && nextTile.canalOnly)) {
+                return nextTile;
+            } else {
+                return null;
+            }
         },
         findAllNextTilesFromPlayerBoard: function (player_type) {
             let allNextTiles = [];
             
             for (let i=0;i<6;i++) {
-                allNextTiles.push(this.findNextTileFromPlayerBoard(player_type, i));
+                let nextTile = this.findNextTileFromPlayerBoard(player_type, i);
+
+                if (nextTile) {
+                    allNextTiles.push(nextTile);
+                }
             }
 
             let self = this;
@@ -2810,17 +2825,51 @@ var app = new Vue({
             this.eliza = _.cloneDeep(ELIZA);
             this.eleanor = _.cloneDeep(ELEANOR);
             this.showBoardState = false;
-            this.undoState = {};
+            this.undoState = null;
             this.saveGameState();
         },
         newGame: function () {
             if (confirm('Are you sure you want to start a NEW GAME?')) { this.reset(); };
         },
+        saveUndoState: function () {
+            let undoState = {};
+            undoState.numberOfPlayers = this.numberOfPlayers;
+            undoState.gameHasStarted = this.gameHasStarted;
+            undoState.useTurnOrder = this.useTurnOrder;
+            undoState.soldInCanalEra = this.soldInCanalEra;
+            undoState.soldInRailEra = this.soldInRailEra;
+            undoState.currentRound = this.currentRound;
+            undoState.currentGameStep = this.currentGameStep;
+            undoState.currentEra = this.currentEra;
+            undoState.currentPlayerType = this.currentPlayerType;
+            undoState.board = _.cloneDeep(this.board);
+            undoState.humanPlayer = _.cloneDeep(this.humanPlayer);
+            undoState.eliza = _.cloneDeep(this.eliza);
+            undoState.eleanor = _.cloneDeep(this.eleanor);
+            undoState.showBoardState = this.showBoardState;
+            undoState.undoState = null;
+            this.undoState = undoState;
+        },
         loadUndoState: function() {
-
+            this.numberOfPlayers = this.undoState.numberOfPlayers;
+            this.gameHasStarted = this.undoState.gameHasStarted;
+            this.useTurnOrder = this.undoState.useTurnOrder;
+            this.soldInCanalEra = this.undoState.soldInCanalEra;
+            this.soldInRailEra = this.undoState.soldInRailEra;
+            this.currentRound = this.undoState.currentRound;
+            this.currentGameStep = this.undoState.currentGameStep;
+            this.currentEra = this.undoState.currentEra;
+            this.currentPlayerType = this.undoState.currentPlayerType;
+            this.board = _.cloneDeep(this.undoState.board);
+            this.humanPlayer = _.cloneDeep(this.undoState.humanPlayer);
+            this.eliza = _.cloneDeep(this.undoState.eliza);
+            this.eleanor = _.cloneDeep(this.undoState.eleanor);
+            this.showBoardState = this.undoState.showBoardState;
+            this.undoState = null;
+            this.saveGameState();
         },
         undo: function () {
-            if (confirm('Are you sure you want to UNDO?')) { this.loadUndoState(); }
+            if (confirm('Are you sure you want to UNDO?\nThis will take you back to the previous action\'s confirm screen.')) { this.loadUndoState(); }
         },
         saveGameState: function () {
             let gameState = {};
