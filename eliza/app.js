@@ -100,7 +100,7 @@ var app = new Vue({
         gameHasStarted: false,
         currentRound: 1,
         currentGameStep: GAME_STEPS.Setup,
-        currentEra: ERA.Canal,
+        currentEra: ERA.Rail,
         currentPlayerType: null,
         board: _.cloneDeep(INITIAL_BOARD),
         humanPlayer: _.cloneDeep(HUMAN_PLAYER),
@@ -2834,7 +2834,7 @@ var app = new Vue({
             this.soldInRailEra = false;
             this.currentRound = 1;
             this.currentGameStep = GAME_STEPS.Setup;
-            this.currentEra = ERA.Canal;
+            this.currentEra = ERA.Rail;
             this.currentPlayerType = PLAYER_TYPE.Human;
             this.board = _.cloneDeep(INITIAL_BOARD);
             this.humanPlayer = _.cloneDeep(HUMAN_PLAYER);

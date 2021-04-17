@@ -161,9 +161,9 @@
                         </ul>
                     </section>
 
-                    <section v-if="humanPlayer.actionStep === '10'">
+                    <section v-if="humanPlayer.actionStep === '10' || humanPlayer.actionStep === '50'">
                         <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
-                        <p class="action-header">Where are you networking from?</p> 
+                        <p class="action-header"><span v-if="humanPlayer.actionStep === '50'">1st link: </span>Where are you networking from?</p> 
                         <ul class="cards">
                             <li class="card card--clickable" v-for="location in validHumanNetworkLocations()" :key="location.id" v-on:click="setNetworkLocationFrom(location.id)">
                                 <p class="card__name">{{ location.name }}</p>
