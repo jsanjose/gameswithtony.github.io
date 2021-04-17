@@ -674,7 +674,8 @@ var app = new Vue({
                                     spaceid: pcs.id + 1,
                                     coalAvailable: pcs.tile.availableCoal,
                                     chosenCoal: 0,
-                                    resourceArray: resourceArray
+                                    resourceArray: resourceArray,
+                                    id: l.id + '-' + pcs.id
                                 });
 
                                 totalCoalAvailable = totalCoalAvailable + pcs.tile.availableCoal;
@@ -724,7 +725,7 @@ var app = new Vue({
                             ironAvailable: is.tile.availableIron,
                             chosenIron: 0,
                             resourceArray: resourceArray,
-                            isMarket: true
+                            id: l.id + '-' + is.id
                         });
 
                         totalIronAvailable = totalIronAvailable + is.tile.availableIron;
@@ -1482,6 +1483,7 @@ var app = new Vue({
         },
         getAIActionDescription: function () {
             let actions = [];
+            let actionid = new Number((this.currentPlayerType + 1) + '0' + this.currentRound);
 
             if (this.currentPlayer.nextAction.action === AI_ACTION.BuildAndNetwork) {
                 let actionstring = '';
@@ -1491,9 +1493,11 @@ var app = new Vue({
                 actionstring = actionstring + 'Build ' + this.tileToString(this.currentPlayer.nextAction.actiondata.industrytile) + ' in ' + location.name + ' (Space ' + (this.currentPlayer.nextAction.actiondata.spaceid + 1) + ').';
 
                 actions.push({
+                    id: actionid,
                     actionDone: false,
                     actionDesc: actionstring
                 });
+                actionid = actionid + 1;
 
                 /*actionstring = 'Spends £' + this.currentPlayer.nextAction.actiondata.industrytile.poundsCost + '.';
                 actions.push({
@@ -1511,9 +1515,11 @@ var app = new Vue({
                     }
                     
                     actions.push({
+                        id: actionid,
                         actionDone: false,
                         actionDesc: actionstring
                     });
+                    actionid = actionid + 1;
                 }
 
                 // Note move of iron to market
@@ -1526,9 +1532,11 @@ var app = new Vue({
                     }
                     
                     actions.push({
+                        id: actionid,
                         actionDone: false,
                         actionDesc: actionstring
                     });
+                    actionid = actionid + 1;
                 }
 
                 // Coal consumption
@@ -1544,9 +1552,11 @@ var app = new Vue({
                         actionstring = actionstring + '.';
 
                         actions.push({
+                            id: actionid,
                             actionDone: false,
                             actionDesc: actionstring
                         });
+                        actionid = actionid + 1;
                     });
                 }
 
@@ -1563,9 +1573,11 @@ var app = new Vue({
                         actionstring = actionstring + '.';
 
                         actions.push({
+                            id: actionid,
                             actionDone: false,
                             actionDesc: actionstring
                         });
+                        actionid = actionid + 1;
                     });
                 }
 
@@ -1582,18 +1594,22 @@ var app = new Vue({
                 }
 
                 actions.push({
+                    id: actionid,
                     actionDone: false,
                     actionDesc: actionstring
                 });
+                actionid = actionid + 1;
             }
 
             if (this.currentPlayer.nextAction.action === AI_ACTION.Sell) {
                 let actionstring = 'SELL!';
 
                 actions.push({
+                    id: actionid,
                     actionDone: false,
                     actionDesc: actionstring
                 });
+                actionid = actionid + 1;
             }
 
             return actions;

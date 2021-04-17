@@ -221,7 +221,7 @@
                                     <div class="card__area">
                                         <label v-for="resource in location.resourceArray">
                                             <input type="radio" v-bind:value="resource"
-                                            v-bind:name="location.locationid"
+                                            v-bind:name="location.id"
                                             v-model="location.chosenCoal" /><span>{{ resource }}</span>
                                         </label>
                                     </div>
@@ -236,7 +236,7 @@
                                     <div class="card__area">
                                         <label v-for="resource in location.resourceArray">
                                             <input type="radio" v-bind:value="resource"
-                                            v-bind:name="location.locationid"
+                                            v-bind:name="location.id"
                                             v-model="location.chosenIron" /><span>{{ resource }}</span>
                                         </label>
                                     </div>
@@ -255,7 +255,7 @@
                 <section v-if="currentPlayerType === 1 || currentPlayerType === 2">
                     <p class="action-header">{{ currentPlayer.name }} does the following:</p>
                     <ul class="simple-list">
-                        <li class="action-desc" v-for="action in getAIActionDescription()">
+                        <li class="action-desc" v-for="action in getAIActionDescription()" :key="action.id">
                             <label style="display: flex; padding: 0.5rem;">
                                 <input type="checkbox" class="checkbox-strike" />&nbsp;
                                 <span style="margin-left: 0.5rem;">
