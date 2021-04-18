@@ -187,7 +187,7 @@
                         <ul class="cards">
                             <li class="card card--clickable card--no-padding" v-for="industrytile in this.humanPlayer.nextAction.actiondata.sellabletiles">
                                 <label style="display: flex; padding: 0.5rem;">
-                                    <input type="checkbox" />&nbsp;
+                                    <input type="checkbox" v-model="industrytile.selected" />&nbsp;
                                     <span style="margin-left: 0.5rem;">{{ tileToString(industrytile.tile) }} on<br />{{ industrytile.name }} (Space {{ industrytile.spaceid + 1 }})</span>
                                 </label>
                             </li>

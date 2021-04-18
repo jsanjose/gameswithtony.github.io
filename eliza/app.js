@@ -375,6 +375,11 @@ var app = new Vue({
                     this.calculateNextPlayer();
                 }
 
+                // if sell
+                if (this.currentPlayer.actionStep === '20') {
+                    this.setSelectedTilesToSell();
+                }
+
                 // if human choosing consumption
                 if (this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '54') {
                     if (this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
@@ -740,6 +745,15 @@ var app = new Vue({
         },
 
         // UI: Sell
+        setSelectedTilesToSell: function () {
+            let selectedTiles = _.filter(this.humanPlayer.nextAction.actiondata.sellabletiles, function (t) {
+                return t.selected;
+            });
+
+            let locationids = _.uniqBy(_.map(selectedTiles, "locationid"), "locationid");
+
+            // TODO: Finish getting beer locations
+        },
         prevSetIndustriesToSell: function () {
             this.humanPlayer.nextAction.actiondata.sellabletiles = null;
             this.setHumanAction('00');
