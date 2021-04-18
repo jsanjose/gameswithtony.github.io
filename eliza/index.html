@@ -210,7 +210,7 @@
                         </section>
                     </section>
 
-                    <section v-if="humanPlayer.actionStep === '02' || humanPlayer.actionStep === '12' || humanPlayer.actionStep === '31' ||humanPlayer.actionStep === '54'">
+                    <section v-if="humanPlayer.actionStep === '02' || humanPlayer.actionStep === '12' || humanPlayer.actionStep === '21' || humanPlayer.actionStep === '31' ||humanPlayer.actionStep === '54'">
                         <a href="#" v-on:click="setPrevConsume()">< Go Back</a>
                         <p class="action-message"><span v-if="humanPlayer.nextAction.action === 0">Building your {{ tileToString(humanPlayer.nextAction.actiondata.buildtile) }} in {{ humanPlayer.nextAction.actiondata.buildlocationname }} costs &pound;{{ humanPlayer.nextAction.actiondata.buildtile.poundsCost }}.</span></p>
                         <section class="consume-section" v-if="humanPlayer.nextAction.actiondata.consumelocations && humanPlayer.nextAction.actiondata.consumelocations.coal">

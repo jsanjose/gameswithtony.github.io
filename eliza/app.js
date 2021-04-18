@@ -574,6 +574,7 @@ var app = new Vue({
             this.currentPlayer.actionStep = actionStep;
 
             if (actionStep === '20') {
+                this.humanPlayer.nextAction.action = HUMAN_ACTION.Sell;
                 this.humanPlayer.nextAction.actiondata.sellabletiles = this.findPlayerUnflippedSellableIndustriesConnectedToMarket;
                 console.log(this.humanPlayer.nextAction.actiondata.sellabletiles);
             }
@@ -752,7 +753,16 @@ var app = new Vue({
 
             let locationids = _.uniqBy(_.map(selectedTiles, "locationid"), "locationid");
 
-            // TODO: Finish getting beer locations
+            let totalBeerNeeded = _.sumBy(selectedTiles, function (t) {
+                return t.tile.beerCost;
+            });
+            
+            this.humanPlayer.nextAction.actiondata.consumelocations = this.humanConsumeLocations(locationids, 0, 0, totalBeerNeeded);
+
+            this.setHumanAction('21');
+        },
+        prevSelectedTilesToSell: function () {
+            this.setHumanAction('20');
         },
         prevSetIndustriesToSell: function () {
             this.humanPlayer.nextAction.actiondata.sellabletiles = null;
@@ -918,9 +928,18 @@ var app = new Vue({
                     });
                 });
 
-                // TODO: Include merchant beer
                 if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Sell) {
-                    
+                    let selectedTiles = _.filter(this.humanPlayer.nextAction.actiondata.sellabletiles, function (t) {
+                        return t.selected;
+                    });
+
+                    let marketsWithBeer = [];
+                    let marketsWithTiles = [];
+                    _.forEach(selectedTiles, function (t) {
+                        marketsWithBeer.push(t.connectedMarketsWithTiles);
+                    });
+
+                    // TODO: Finish including merchant beer
                 }
             }
 
@@ -946,6 +965,10 @@ var app = new Vue({
                 } else {
                     this.setHumanAction('11');
                 }
+            }
+
+            if (this.humanPlayer.nextAction.actiondata.sellabletiles) {
+                this.setHumanAction('20');
             }
         },
         // human action description
@@ -3107,7 +3130,7 @@ var app = new Vue({
             this.soldInRailEra = false;
             this.currentRound = 1;
             this.currentGameStep = GAME_STEPS.Setup;
-            this.currentEra = ERA.Rail;
+            this.currentEra = ERA.Canal;
             this.currentPlayerType = PLAYER_TYPE.Human;
             this.board = _.cloneDeep(INITIAL_BOARD);
             this.humanPlayer = _.cloneDeep(HUMAN_PLAYER);
