@@ -384,11 +384,17 @@ var app = new Vue({
 
                         if (this.humanPlayer.nextAction.actiondata.consumelocations.coal.coalNeeded > totalChosenCoal) {
                             alert("You have not chosen enough coal.");
+                            setTimeout(() => {
+                                this.isDisabledButton = false;
+                            }, 1000);
                             return;
                         }
 
                         if (this.humanPlayer.nextAction.actiondata.consumelocations.coal.coalNeeded < totalChosenCoal) {
                             alert("You have chosen too much coal.");
+                            setTimeout(() => {
+                                this.isDisabledButton = false;
+                            }, 1000);
                             return;
                         }
                     }
@@ -400,11 +406,17 @@ var app = new Vue({
 
                         if (this.humanPlayer.nextAction.actiondata.consumelocations.iron.ironNeeded > totalChosenIron) {
                             alert("You have not chosen enough iron.");
+                            setTimeout(() => {
+                                this.isDisabledButton = false;
+                            }, 1000);
                             return;
                         }
 
                         if (this.humanPlayer.nextAction.actiondata.consumelocations.iron.ironNeeded < totalChosenIron) {
                             alert("You have chosen too much iron.");
+                            setTimeout(() => {
+                                this.isDisabledButton = false;
+                            }, 1000);
                             return;
                         }
                     }
@@ -416,11 +428,17 @@ var app = new Vue({
 
                         if (this.humanPlayer.nextAction.actiondata.consumelocations.beer.beerNeeded > totalChosenBeer) {
                             alert("You have not chosen enough beer.");
+                            setTimeout(() => {
+                                this.isDisabledButton = false;
+                            }, 1000);
                             return;
                         }
 
                         if (this.humanPlayer.nextAction.actiondata.consumelocations.beer.beerNeeded < totalChosenBeer) {
                             alert("You have chosen too much beer.");
+                            setTimeout(() => {
+                                this.isDisabledButton = false;
+                            }, 1000);
                             return;
                         }
                     }
@@ -741,7 +759,7 @@ var app = new Vue({
         },
 
         // UI: Consume
-        humanConsumeLocations(locationids, totalCoalNeeded, totalIronNeeded, totalBeerNeeded, beerMerchantIds) {
+        humanConsumeLocations(locationids, totalCoalNeeded, totalIronNeeded, totalBeerNeeded) {
             let locationid = null;
             if (!locationids.length) {
                 locationid = locationids;
@@ -868,7 +886,7 @@ var app = new Vue({
                 let consumableBeer = this.findConsumableBeer(locationids, PLAYER_TYPE.Human);
 
                 _.forEach(consumableBeer, function (l) {
-                    _.forEach(l.beerSpaces, function (bs) {
+                    _.forEach(l.beerspaces, function (bs) {
                         let resourceArray = [];
                         for (let i=0;i<=bs.tile.availableBeer;i++) {
                             resourceArray.push(i);
@@ -887,6 +905,9 @@ var app = new Vue({
                 });
 
                 // TODO: Include merchant beer
+                if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Sell) {
+                    
+                }
             }
 
             return consumeLocations;
@@ -3158,6 +3179,7 @@ var app = new Vue({
             this.layIndustryTile(PLAYER_TYPE.Human, 0, 14, 2);*/
 
             this.layIndustryTile(PLAYER_TYPE.Human, 0, 14, 2);
+            this.layIndustryTile(PLAYER_TYPE.Human, 16, 14, 0);
             this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 1);
             this.layIndustryTile(PLAYER_TYPE.Human, 7, 23, 1);
             this.layIndustryTile(PLAYER_TYPE.Human, 23, 25, 0);
@@ -3169,7 +3191,6 @@ var app = new Vue({
             this.layNetworkTile(PLAYER_TYPE.Human, 14, 21);
             this.layNetworkTile(PLAYER_TYPE.Human, 21, 18);
             this.layNetworkTile(PLAYER_TYPE.Human, 21, 14);
-            this.layNetworkTile(PLAYER_TYPE.Human, 14, 15);
             this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 15, 18);
             this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
             this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
