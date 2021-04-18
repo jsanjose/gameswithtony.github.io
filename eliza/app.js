@@ -106,7 +106,7 @@ var app = new Vue({
         gameHasStarted: false,
         currentRound: 1,
         currentGameStep: GAME_STEPS.Setup,
-        currentEra: ERA.Rail,
+        currentEra: ERA.Canal,
         currentPlayerType: null,
         board: _.cloneDeep(INITIAL_BOARD),
         humanPlayer: _.cloneDeep(HUMAN_PLAYER),
@@ -114,7 +114,8 @@ var app = new Vue({
         eleanor: _.cloneDeep(ELEANOR),
         showBoardState: false,
         humanActionStringMap: _.cloneDeep(humanActionStringMap),
-        undoState: null
+        undoState: null,
+        isDisabledButton: false
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -337,6 +338,8 @@ var app = new Vue({
     },
     methods: {
         next: function () {
+            if (this.isDisabledButton) return;
+            this.isDisabledButton = true;
 
             // if starting game
             if (this.currentGameStep === 0) {
@@ -346,6 +349,12 @@ var app = new Vue({
             // if coming from new round screen
             if (this.currentGameStep === 2) {
                 this.currentGameStep = GAME_STEPS.Round;
+                this.saveGameState();
+                window.scrollTo(0,0);
+
+                setTimeout(() => {
+                    this.isDisabledButton = false;
+                }, 1000);
                 return;
             }
 
@@ -356,7 +365,7 @@ var app = new Vue({
                 // NOTE: Actions handled in opposite order since actionStep is incremented
 
                 // if executing confirmed human action
-                if (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '32') {
+                if (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '32' || this.currentPlayer.actionStep === '55') {
                     this.executeNextHumanAction();
                     this.calculateNextPlayer();
                 }
@@ -367,7 +376,7 @@ var app = new Vue({
                 }
 
                 // if human choosing consumption
-                if (this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '31') {
+                if (this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '54') {
                     if (this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
                         let totalChosenCoal = _.sumBy(this.humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations, function (l) {
                             return l.chosenCoal;
@@ -400,8 +409,20 @@ var app = new Vue({
                         }
                     }
 
-                    // TODO: Add beer logic
                     if (this.humanPlayer.nextAction.actiondata.consumelocations.beer) {
+                        let totalChosenBeer = _.sumBy(this.humanPlayer.nextAction.actiondata.consumelocations.beer.beerLocations, function (l) {
+                            return l.chosenBeer;
+                        });
+
+                        if (this.humanPlayer.nextAction.actiondata.consumelocations.beer.beerNeeded > totalChosenBeer) {
+                            alert("You have not chosen enough beer.");
+                            return;
+                        }
+
+                        if (this.humanPlayer.nextAction.actiondata.consumelocations.beer.beerNeeded < totalChosenBeer) {
+                            alert("You have chosen too much beer.");
+                            return;
+                        }
                     }
 
                     // Move to next step
@@ -417,6 +438,11 @@ var app = new Vue({
 
                     if (this.currentPlayer.actionStep === '31') {
                         this.currentPlayer.actionStep = '32';
+                        this.saveGameState();
+                    }
+
+                    if (this.currentPlayer.actionStep === '54') {
+                        this.currentPlayer.actionStep = '55';
                         this.saveGameState();
                     }
                 }
@@ -459,6 +485,13 @@ var app = new Vue({
                 this.executeNextAIAction();
                 this.calculateNextPlayer();
             }
+
+            this.saveGameState();
+            window.scrollTo(0,0);
+
+            setTimeout(() => {
+                this.isDisabledButton = false;
+            }, 1000);
         },
         setPlayerColor: function (color) {
             this.humanPlayer.color = color;
@@ -529,14 +562,14 @@ var app = new Vue({
             this.saveGameState();
         },
         showNextButton() {
-            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '30' || this.currentPlayer.actionStep === '32' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
+            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '30' || this.currentPlayer.actionStep === '32' || this.currentPlayer.actionStep === '54' || this.currentPlayer.actionStep === '55' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
         },
         prevHumanAction: function () {
             if (this.humanPlayer.actionStep === '03') {
                 this.prevBuildActionConfirm();
             }
 
-            if (this.humanPlayer.actionStep === '13') {
+            if (this.humanPlayer.actionStep === '13' || this.humanPlayer.actionStep === '55') {
                 this.prevNetworkActionConfirm();
             }
 
@@ -547,7 +580,11 @@ var app = new Vue({
 
         // UI: Build
         prevSetHumanAction: function () {
-            this.setHumanAction(null);
+            if (this.humanPlayer.actionStep === '52') {
+                this.setHumanAction('51')
+            } else {
+                this.setHumanAction(null);
+            }
         },
         prevBuildActionConfirm: function () {
             let tile = this.humanPlayer.nextAction.actiondata.buildtile;
@@ -597,8 +634,6 @@ var app = new Vue({
 
         // UI: Network
         validHumanNetworkLocations: function() {
-            
-
             let locations = this.findAllLocationsInNetwork(PLAYER_TYPE.Human);
             let self = this;
 
@@ -618,33 +653,72 @@ var app = new Vue({
             return _.sortBy(validLocations, 'name');
         },
         setNetworkLocationFrom: function (locationid) {
-            this.humanPlayer.nextAction.action = HUMAN_ACTION.Network;
-            this.humanPlayer.nextAction.actiondata.networkfromlocationid = locationid;
-            this.setHumanAction('11');
+            if (this.currentPlayer.actionStep === '50') {
+                this.humanPlayer.nextAction.action = HUMAN_ACTION.DoubleNetwork;
+                this.humanPlayer.nextAction.actiondata.networkfromlocationid = locationid;
+                this.setHumanAction('51');
+            } else if (this.currentPlayer.actionStep === '52') {
+                this.humanPlayer.nextAction.actiondata.networkfromlocationid2 = locationid;
+                this.setHumanAction('53');
+            } else {
+                this.humanPlayer.nextAction.action = HUMAN_ACTION.Network;
+                this.humanPlayer.nextAction.actiondata.networkfromlocationid = locationid;
+                this.setHumanAction('11');
+            }
         },
         prevNetworkLocationFrom: function () {
-            this.humanPlayer.nextAction.actiondata.networkfromlocationid = null;
-            this.setHumanAction('10');
+            if (this.currentPlayer.actionStep === '51') {
+                this.humanPlayer.nextAction.actiondata.networkfromlocationid = null;
+                this.setHumanAction('50');
+            } else if (this.currentPlayer.actionStep === '53') {
+                this.humanPlayer.nextAction.actiondata.networkfromlocationid2 = null;
+                this.setHumanAction('52');
+            } else {
+                this.humanPlayer.nextAction.actiondata.networkfromlocationid = null;
+                this.setHumanAction('10');
+            }
         },
         setNetworkLocationTo: function (locationid) {
-            this.humanPlayer.nextAction.actiondata.networktolocationid = locationid;
+            if (this.currentPlayer.actionStep === '51') {
+                this.humanPlayer.nextAction.actiondata.networktolocationid = locationid;
+                this.setHumanAction('52');
+            } else if (this.currentPlayer.actionStep === '53') {
+                this.humanPlayer.nextAction.actiondata.networktolocationid2 = locationid;
 
-            if (this.currentEra === ERA.Rail) {
                 let locationids = [
                     this.humanPlayer.nextAction.actiondata.networkfromlocationid,
-                    this.humanPlayer.nextAction.actiondata.networktolocationid = locationid
+                    this.humanPlayer.nextAction.actiondata.networktolocationid,
+                    this.humanPlayer.nextAction.actiondata.networkfromlocationid2,
+                    this.humanPlayer.nextAction.actiondata.networktolocationid2
                 ];
-                let consumeLocations = this.humanConsumeLocations(locationids, 1, null, null);
+                let consumeLocations = this.humanConsumeLocations(locationids, 2, null, 1);
                 this.humanPlayer.nextAction.actiondata.consumelocations = consumeLocations;
-                this.setHumanAction('12');
-                return;
-            }
+                this.setHumanAction('54');
+            } else {
+                this.humanPlayer.nextAction.actiondata.networktolocationid = locationid;
 
-            this.setHumanAction('13');
+                if (this.currentEra === ERA.Rail) {
+                    let locationids = [
+                        this.humanPlayer.nextAction.actiondata.networkfromlocationid,
+                        this.humanPlayer.nextAction.actiondata.networktolocationid = locationid
+                    ];
+                    let consumeLocations = this.humanConsumeLocations(locationids, 1, null, null);
+                    this.humanPlayer.nextAction.actiondata.consumelocations = consumeLocations;
+                    this.setHumanAction('12');
+                    return;
+                }
+    
+                this.setHumanAction('13');
+            }
         },
         prevNetworkActionConfirm: function () {
-            this.humanPlayer.nextAction.actiondata.networktolocationid = null;
-            this.setHumanAction('11');
+            if (this.currentPlayer.actionStep === '55') {
+                this.humanPlayer.nextAction.actiondata.networktolocationid2 = null;
+                this.setHumanAction('54');
+            } else {
+                this.humanPlayer.nextAction.actiondata.networktolocationid = null;
+                this.setHumanAction('11');
+            }
         },
 
         // UI: Sell
@@ -686,7 +760,8 @@ var app = new Vue({
                 _.forEach(allConnectedCoal, function (ccl) {
                     _.forEach(ccl, function (l) {
                         _.forEach(l.coalspaces, function (pcs) {
-                            if (totalCoalAvailable < totalCoalNeeded) {
+                            // if still need coal, or this is a double network
+                            if ((totalCoalAvailable < totalCoalNeeded) || (locationids.length && locationids.length === 4)) {
                                 let resourceArray = [];
                                 for (let i=0;i<=pcs.tile.availableCoal;i++) {
                                     resourceArray.push(i);
@@ -709,10 +784,16 @@ var app = new Vue({
                 });
 
                 // Include market
-                if (totalCoalAvailable < totalCoalNeeded) {
+                if ((totalCoalAvailable < totalCoalNeeded) || (locationids.length && locationids.length === 4)) {
                     let resourceArray = [];
-                    for (let i=0;i<=totalCoalNeeded - totalCoalAvailable;i++) {
-                        resourceArray.push(i);
+                    if (locationids.length && locationids.length === 4) {
+                        for (let i=0;i<=2;i++) {
+                            resourceArray.push(i);
+                        }
+                    } else {
+                        for (let i=0;i<=totalCoalNeeded - totalCoalAvailable;i++) {
+                            resourceArray.push(i);
+                        }
                     }
 
                     consumeLocations.coal.coalLocations.push({
@@ -721,7 +802,9 @@ var app = new Vue({
                         spaceid: -1,
                         coalAvailable: totalCoalNeeded - totalCoalAvailable,
                         chosenCoal: 0,
-                        resourceArray: resourceArray
+                        resourceArray: resourceArray,
+                        isMarket: true,
+                        id: -1000
                     });
                 }
             }
@@ -770,7 +853,8 @@ var app = new Vue({
                         coalAvailable: totalIronNeeded - totalIronAvailable,
                         chosenCoal: 0,
                         resourceArray: resourceArray,
-                        isMarket: true
+                        isMarket: true,
+                        id: -2000
                     });
                 }
             }
@@ -794,8 +878,8 @@ var app = new Vue({
                             locationid: l.id,
                             name: l.name,
                             spaceid: bs.id + 1,
-                            ironAvailable: bs.tile.availableBeer,
-                            chosenIron: 0,
+                            beerAvailable: bs.tile.availableBeer,
+                            chosenBeer: 0,
                             resourceArray: resourceArray,
                             id: l.id + '-' + bs.id
                         });
@@ -820,7 +904,13 @@ var app = new Vue({
             }
 
             if (this.humanPlayer.nextAction.actiondata.networkfromlocationid) {
-                this.setHumanAction('11');
+                if (this.humanPlayer.actionStep === '31') {
+                    this.setHumanAction('30');
+                } else if (this.humanPlayer.actionStep === '54') {
+                    this.setHumanAction('53');
+                } else {
+                    this.setHumanAction('11');
+                }
             }
         },
         // human action description
@@ -1000,7 +1090,7 @@ var app = new Vue({
                             actionstring = actionstring + ' (Space ' + (l.spaceid) + ')';
                         }
 
-                        if (l.coalAvailable === l.chosenCoal) {
+                        if (l.coalAvailable === l.chosenCoal && !l.isMarket) {
                             actionstring = actionstring + ' [[ Flips the tile! ]]';
                         }
 
@@ -1076,6 +1166,21 @@ var app = new Vue({
                 }
             }
 
+            // DOUBLE NETWORK
+            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.DoubleNetwork) {
+                this.layNetworkTile(PLAYER_TYPE.Human, this.humanPlayer.nextAction.actiondata.networkfromlocationid, this.humanPlayer.nextAction.actiondata.networktolocationid);
+
+                this.layNetworkTile(PLAYER_TYPE.Human, this.humanPlayer.nextAction.actiondata.networkfromlocationid2, this.humanPlayer.nextAction.actiondata.networktolocationid2);
+
+                let networkcost = RAILERADOUBLENETWORKCOST;
+
+                if (!this.humanPlayer.amountSpentThisRound) {
+                    this.humanPlayer.amountSpentThisRound = networkcost;
+                } else {
+                    this.humanPlayer.amountSpentThisRound = this.humanPlayer.amountSpentThisRound + networkcost;
+                }
+            }
+
             // SELL
             // TODO: Execute sell action (flip tiles, merchant actions, consume is below)
 
@@ -1100,7 +1205,7 @@ var app = new Vue({
             // CONSUME
             if (this.humanPlayer.nextAction.actiondata.consumelocations && this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
                 _.forEach(self.humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations, function (l) {
-                    if (l.locationid === -2) {
+                    if (l.locationid === -1) {
                         // market
                         let coalInMarket = self.board.market.coalInMarket;
 
@@ -2313,8 +2418,8 @@ var app = new Vue({
             let player = this.getPlayerFromType(player_type);
             let playerUnflippedBreweryLocations = [];
 
-            _.forEach(connectedLocations, function(o) {
-                let beerSpaces = _.find(o.spaces, function(p) {
+            _.forEach(this.board.locations, function(o) {
+                let beerSpaces = _.filter(o.spaces, function(p) {
                     if (p.tile) {
                         return p.tile.industrytype === INDUSTRY.Brewery && p.tile.availableBeer > 0 && p.tile.color === player.color;
                     }
@@ -2433,11 +2538,14 @@ var app = new Vue({
             if (!locationids.length) {
                 connectedLocations = this.findAllConnectedLocations(locationid, player_type);
             } else {
-                // support looking for beer from either end of a placed link
-                let connectedLocations1 = this.findAllConnectedLocations(locationids[0], player_type);
-                let connectedLocations2 = this.findAllConnectedLocations(locationids[1], player_type);
+                // support looking for beer from either end of a placed link and for multiple sell locations
+                let allLocations = [];
+                for (let i=0;i<locationids.length;i++) {
+                    let connectedLocations1 = this.findAllConnectedLocations(locationids[i], player_type);
+                    allLocations = _.union(connectedLocations1, allLocations)
+                }
 
-                connectedLocations = _.uniqBy(_.union(connectedLocations1, connectedLocations2), "id");
+                connectedLocations = _.uniqBy(allLocations, "id");
             }
 
             let player = this.getPlayerFromType(player_type);
@@ -2445,7 +2553,7 @@ var app = new Vue({
 
             if (connectedLocations && connectedLocations.length > 0) {
                 _.forEach(connectedLocations, function(o) {
-                    let beerSpaces = _.find(o.spaces, function(p) {
+                    let beerSpaces = _.filter(o.spaces, function(p) {
                         if (p.tile) {
                             return p.tile.industrytype === INDUSTRY.Brewery && p.tile.availableBeer > 0 && p.tile.color !== player.color;
                         }
@@ -2586,7 +2694,15 @@ var app = new Vue({
 
             return adjacentIndustryLocations;
         },
-        findAdjacentIndustryLocationsForHumanNetwork: function (locationid) {
+        findAdjacentIndustryLocationsForHumanNetwork: function () {
+
+            let locationid = null;
+            if (this.humanPlayer.actionStep === '53') {
+                locationid = this.humanPlayer.nextAction.actiondata.networkfromlocationid2;
+            } else {
+                locationid = this.humanPlayer.nextAction.actiondata.networkfromlocationid;
+            }
+
             let location = this.findLocationById(locationid);
             let edges = [];
             let adjacentIndustryLocations = [];

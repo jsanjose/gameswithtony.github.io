@@ -150,7 +150,7 @@
                         <p v-if="validHumanBuildLocationsForIndustryType.length === 0">This tile cannot be built currently.</p>
                     </section>
 
-                    <section v-if="humanPlayer.actionStep === '03' || humanPlayer.actionStep === '13' || humanPlayer.actionStep === '32'">
+                    <section v-if="humanPlayer.actionStep === '03' || humanPlayer.actionStep === '13' || humanPlayer.actionStep === '32' || humanPlayer.actionStep === '55'">
                         <a href="#" v-on:click="prevHumanAction()">< Go Back</a>
                         <p class="action-header" v-if="currentRound > 1 && humanPlayer.currentTurnIndex === 0">Confirm Your Action<br /><span class="action-message">Click 'Next' to confirm.</span></p>
                         <p class="action-header" v-if="(currentRound === 1) || (currentRound > 1 && humanPlayer.currentTurnIndex === 1)">Complete Your Turn<br /><span class="action-message">Click 'Next' to confirm your <span v-if="currentRound > 1 && humanPlayer.currentTurnIndex === 1">second </span> action and complete your turn.</span></p>
@@ -161,9 +161,9 @@
                         </ul>
                     </section>
 
-                    <section v-if="humanPlayer.actionStep === '10' || humanPlayer.actionStep === '50'">
+                    <section v-if="humanPlayer.actionStep === '10' || humanPlayer.actionStep === '50' || humanPlayer.actionStep === '52'">
                         <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
-                        <p class="action-header"><span v-if="humanPlayer.actionStep === '50'">1st link: </span>Where are you networking from?</p> 
+                        <p class="action-header"><span v-if="humanPlayer.actionStep === '50'">1st link: </span><span v-if="humanPlayer.actionStep === '52'">2nd link: </span>Where are you networking from?</p> 
                         <ul class="cards">
                             <li class="card card--clickable" v-for="location in validHumanNetworkLocations()" :key="location.id" v-on:click="setNetworkLocationFrom(location.id)">
                                 <p class="card__name">{{ location.name }}</p>
@@ -171,11 +171,11 @@
                         </ul>
                     </section>
 
-                    <section v-if="humanPlayer.actionStep === '11'">
+                    <section v-if="humanPlayer.actionStep === '11' || humanPlayer.actionStep === '51' || humanPlayer.actionStep === '53'">
                         <a href="#" v-on:click="prevNetworkLocationFrom()">< Go Back</a>
-                        <p class="action-header">Where are you networking to?</p> 
+                        <p class="action-header"><span v-if="humanPlayer.actionStep === '51'">1st link: </span><span v-if="humanPlayer.actionStep === '53'">2nd link: </span>Where are you networking to?</p> 
                         <ul class="cards">
-                            <li class="card card--clickable" v-for="location in findAdjacentIndustryLocationsForHumanNetwork(humanPlayer.nextAction.actiondata.networkfromlocationid)" :key="location.id" v-on:click="setNetworkLocationTo(location.id)">
+                            <li class="card card--clickable" v-for="location in findAdjacentIndustryLocationsForHumanNetwork()" :key="location.id" v-on:click="setNetworkLocationTo(location.id)">
                                 <p class="card__name">{{ location.name }}</p>
                             </li>
                         </ul>
@@ -210,7 +210,7 @@
                         </section>
                     </section>
 
-                    <section v-if="humanPlayer.actionStep === '02' || humanPlayer.actionStep === '12' || humanPlayer.actionStep === '31'">
+                    <section v-if="humanPlayer.actionStep === '02' || humanPlayer.actionStep === '12' || humanPlayer.actionStep === '31' ||humanPlayer.actionStep === '54'">
                         <a href="#" v-on:click="setPrevConsume()">< Go Back</a>
                         <p class="action-message"><span v-if="humanPlayer.nextAction.action === 0">Building your {{ tileToString(humanPlayer.nextAction.actiondata.buildtile) }} in {{ humanPlayer.nextAction.actiondata.buildlocationname }} costs &pound;{{ humanPlayer.nextAction.actiondata.buildtile.poundsCost }}.</span></p>
                         <section class="consume-section" v-if="humanPlayer.nextAction.actiondata.consumelocations && humanPlayer.nextAction.actiondata.consumelocations.coal">
@@ -238,6 +238,21 @@
                                             <input type="radio" v-bind:value="resource"
                                             v-bind:name="location.id"
                                             v-model="location.chosenIron" /><span>{{ resource }}</span>
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="consume-section" v-if="humanPlayer.nextAction.actiondata.consumelocations && humanPlayer.nextAction.actiondata.consumelocations.beer">
+                            <p class="action-header">Your {{ humanActionStringMap[humanPlayer.nextAction.action] }} action consumes <span class="important">{{ humanPlayer.nextAction.actiondata.consumelocations.beer.beerNeeded }} Beer</span>.<br /><span class="small">Indicate below how much beer you are taking from each location.</span></p>
+                            <ul class="cards">
+                                <li v-for="location in humanPlayer.nextAction.actiondata.consumelocations.beer.beerLocations" class="card">
+                                    <p class="card__name">{{ location.name }} <span v-if="location.spaceid != -1">(Space {{ location.spaceid }})</span></p>
+                                    <div class="card__area">
+                                        <label v-for="resource in location.resourceArray">
+                                            <input type="radio" v-bind:value="resource"
+                                            v-bind:name="location.id"
+                                            v-model="location.chosenBeer" /><span>{{ resource }}</span>
                                         </label>
                                     </div>
                                 </li>
