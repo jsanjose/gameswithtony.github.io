@@ -83,9 +83,9 @@
                     </li>
                 </ul>
                 <p style="font-style: italic;">NOTE: These merchant tiles have been chosen randomly. If you don't like the setup try starting a new game and you'll get a new random setup!</p>
-                <p>3) Setup a deck for a normal {{ numberOfPlayers }}-player game. Place <em>half</em> of the cards on board, and leave the other half out of the game for now. You will use only half of the cards each era.</p>
-                <p>4) Setup Eliza's player board (use Gray tiles). Do not place Level 1 industries on her player board and do not place the Level 2 manufactured goods either. These are all considered already developed.</p>
-                <p v-if="numberOfPlayers == '3'">5) Setup Eleanor's player board (use Yellow tiles). Do not place Level 1 industries on her player board and do not place the Level 2 manufactured goods either. These are all considered already developed.</p>
+                <p>3) Setup a deck for a normal {{ numberOfPlayers }}-player game. <span v-if="numberOfPlayers == '2'">Take <em>half</em> of the cards (20 cards)</span><span v-if="numberOfPlayers == '3'">Take <em>one third</em> of the cards (18 cards)</span>, and leave the rest out of the game for now. Deal yourself 8 cards and place the remaining <span v-if="numberOfPlayers == '2'">12</span><span v-if="numberOfPlayers == '3'">10</span> cards on the board.</p>
+                <p>4) Place Eliza's tiles (use Gray tiles) next to the board. You may setup a player board for her if you wish, but it is not necessary. Eliza does not use Level 1 industries nor Level 2 manufactured goods. These are all considered already developed.</p>
+                <p v-if="numberOfPlayers == '3'">5) Place Eleanor's tiles (use Yellow tiles) next to the board. You may setup a player board for her if you wish, but it is not necessary. Eleanor does not use Level 1 industries nor Level 2 manufactured goods. These are all considered already developed.</p>
                 <p>When you are done with setup, click 'Next' to begin the game!</p>
             </section>
             <section v-if="currentGameStep === 1">
@@ -296,8 +296,18 @@
                 </ul>
             </section>
             <section v-if="currentGameStep === 3">
-                Rail Era Begins
-                Rail Era Instructions
+                <p class="action-header">Rail Era Begins<br /><span class="action-message">Click 'Next' to continue.</span></p>
+                <ul>
+                    <li class="action-desc">
+                        Setup the Rail Era as normal (remove link tiles and level 1 industries and reset merchant beer). 
+                    </li>
+                    <li class="action-desc">
+                        Reshuffle your discard pile along with the cards you set aside during setup. <span v-if="numberOfPlayers == '2'">Again, take <em>half</em> of the cards (20 cards)</span><span v-if="numberOfPlayers == '3'">Again, take <em>one third</em> of the cards (18 cards)</span> to form your deck for this round.
+                    </li>
+                    <li class="action-desc">
+                        Deal yourself 8 cards, and place the remaining <span v-if="numberOfPlayers == '2'">12</span><span v-if="numberOfPlayers == '3'">10</span> cards on the board.
+                    </li>
+                </ul>
             </section>
             <section v-if="currentGameStep === 4">
                 Final Score

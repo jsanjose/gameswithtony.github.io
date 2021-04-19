@@ -38,8 +38,11 @@ const HUMAN_PLAYER = {
     board: _.cloneDeep(INITIAL_HUMAN_BOARD),
     linktile: _.cloneDeep(LINK_TILE),
     nextLinkTileId: 0,
-    canalVP: 0,
-    railVP: 0,
+    canalTileVP: 0,
+    canalLinkVP: 0,
+    railTileVP: 0,
+    railLinkVP: 0,
+    canalTotalVP: 0,
     totalVP: 0,
     turnOrder: 0,
     currentRoundComplete: false,
@@ -63,8 +66,11 @@ const ELIZA = {
     currentCard1: null,
     currentCard2: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice,
-    canalVP: 0,
-    railVP: 0,
+    canalTileVP: 0,
+    canalLinkVP: 0,
+    railTileVP: 0,
+    railLinkVP: 0,
+    canalTotalVP: 0,
     totalVP: 0,
     turnOrder: 1,
     currentRoundComplete: false,
@@ -86,8 +92,11 @@ const ELEANOR = {
     currentCard1: null,
     currentCard2: null,
     difficulty: DIFFICULTY_LEVEL.Apprentice,
-    canalVP: 0,
-    railVP: 0,
+    canalTileVP: 0,
+    canalLinkVP: 0,
+    railTileVP: 0,
+    railLinkVP: 0,
+    canalTotalVP: 0,
     totalVP: 0,
     turnOrder: 2,
     currentRoundComplete: false,
@@ -153,7 +162,7 @@ var app = new Vue({
         playersInOrder: function () {
             let players = [];
 
-            if (this.numberOfPlayers === 2) {
+            if (this.numberOfPlayers == '2') {
                 players = [
                     this.humanPlayer,
                     this.eliza
@@ -1508,7 +1517,6 @@ var app = new Vue({
                 let self = this;
                 _.forEach(this.humanPlayer.nextAction.actiondata.consumelocations.beer.beerLocations, function (l) {
                     if (l.chosenBeer > 0) {
-                        // TODO: consume beer
                         let location = self.findLocationById(l.locationid);
                         let tile = location.spaces[l.spaceid - 1].tile;
 
@@ -2194,6 +2202,11 @@ var app = new Vue({
             }
         },
         calculateScore: function () {
+
+            let playerScores = [];
+            _.forEach(this.playersInOrder, function (p) {
+
+            });
 
         },
         setupRailEra: function () {
