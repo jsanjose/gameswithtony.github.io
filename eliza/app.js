@@ -1431,9 +1431,11 @@ var app = new Vue({
                     tile.flipped = true;
                 });
             }
+            // check free develop
+            let freedevelops = this.humanPlayer.nextAction.actiondata.freedevelops ? this.humanPlayer.nextAction.actiondata.freedevelops.length : 0;
 
             // DEVELOP
-            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Develop) {
+            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Develop || freedevelops > 0) {
                 let developabletiles = this.humanPlayer.nextAction.actiondata.developabletiles;
 
                 let selectedtiles = [];
@@ -1496,36 +1498,28 @@ var app = new Vue({
             }
 
             if (this.humanPlayer.nextAction.actiondata.consumelocations && this.humanPlayer.nextAction.actiondata.consumelocations.beer) {
+                let self = this;
                 _.forEach(this.humanPlayer.nextAction.actiondata.consumelocations.beer.beerLocations, function (l) {
                     if (l.chosenBeer > 0) {
+                        // TODO: consume beer
                         let location = self.findLocationById(l.locationid);
                         let tile = location.spaces[l.spaceid - 1].tile;
-                        
-                        actionstring = actionstring + 'Consume ' + l.chosenBeer + ' beer from ' + l.name;
-                        
-                        actionstring = actionstring + ' (Space ' + (l.spaceid) + ')';
+
+                        if (location.type === LOCATIONTYPE.Merchants) {
+                            tile.totalBeer = tile.totalBeer - l.chosenBeer;
+                        } else {
+                            tile.availableBeer = tile.availableBeer - l.chosenBeer;
+                        }
 
                         if (!l.isMerchant) {
                             if (l.beerAvailable === l.chosenBeer) {
-                                actionstring = actionstring + ' [[ Flips the tile! ]]';
+                                tile.flipped = true;
                             }
                         }
 
                         if (l.isMerchant) {
-                            if (l.bonusType === BONUSTYPE.Pounds) {
-                                actionstring = actionstring + '£' + l.bonus + '.';
-                            }
-
                             if (l.bonusType === BONUSTYPE.VPs) {
-                                actionstring = actionstring + l.bonus + 'VPs.';
-                            }
-
-                            if (l.bonusType === BONUSTYPE.Income) {
-                                actionstring = actionstring + l.bonus + ' income steps.';
-                            }
-                            
-                            if (l.bonusType === BONUSTYPE.Develop) {
-                                actionstring = actionstring + l.bonus + ' free develop.';
+                                self.currentPlayer.totalVP = self.currentPlayer.totalVP + l.bonus;
                             }
                         }
                     }

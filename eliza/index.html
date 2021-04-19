@@ -314,6 +314,14 @@
                 <p class="boardstate__instructions">"X: " - a space with an industry tile</p>
                 <p class="boardstate__instructions">"-->" - a link tile</p>
                 <p class="boardstate__marketspaces">
+                    You: {{ humanPlayer.totalVP }}VPs<br />
+                    Eliza: {{ eliza.totalVP }}VPs
+                    <span v-if="numberOfPlayers == 3">
+                    <br />
+                    Eleanor: {{ eleanor.totalVP }}VPs
+                    </span>
+                </p>
+                <p class="boardstate__marketspaces">
                     Empty Coal Spaces in Market: {{ totalEmptyMarketCoalSpaces }}<br />
                     Empty Iron Spaces in Market: {{ totalEmptyMarketIronSpaces }}
                 </p>
