@@ -74,6 +74,8 @@ const ELIZA = {
     totalVP: 0,
     turnOrder: 1,
     currentRoundComplete: false,
+    soldInCanalEra: false,
+    soldInRailEra: false,
     amountSpentThisRound: null,
     nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
 }
@@ -100,6 +102,8 @@ const ELEANOR = {
     totalVP: 0,
     turnOrder: 2,
     currentRoundComplete: false,
+    soldInCanalEra: false,
+    soldInRailEra: false,
     amountSpentThisRound: null,
     nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
 }
@@ -110,8 +114,6 @@ var app = new Vue({
         computedUpdater: 0,
         numberOfPlayers: 2,
         useTurnOrder: false,
-        soldInCanalEra: false,
-        soldInRailEra: false,
         gameHasStarted: false,
         currentRound: 1,
         currentGameStep: GAME_STEPS.Setup,
@@ -1971,8 +1973,30 @@ var app = new Vue({
                 let playerunflippedsellableindustriesconnectedtomarket = this.findPlayerUnflippedSellableIndustriesConnectedToMarket;
 
                 actiondata.industriestosell = playerunflippedsellableindustriesconnectedtomarket;
+console.log(playerunflippedsellableindustriesconnectedtomarket);
+                let neededBeer = _.sumBy(playerunflippedsellableindustriesconnectedtomarket, function (m) {
+                    return m.tile.beerCost;
+                });
 
-                // TODO: calculate beer consumption
+                if (neededBeer > 0) {
+                    let marketsWithBeer = [];
+                    let marketsWithTiles = [];
+                    _.forEach(playerunflippedsellableindustriesconnectedtomarket, function (t) {
+                        marketsWithBeer = _.union(marketsWithBeer, t.connectedMarketsWithTiles);
+                    });
+
+                    marketsWithTiles = _.uniqBy(marketsWithBeer, function (m) {
+                        return m.market.id + '-' + m.space.id;
+                    });
+
+                    let locationids = _.uniqBy(_.map(playerunflippedsellableindustriesconnectedtomarket, "locationid"), "locationid");
+                    let beerConsumption = this.generateAIBeerConsumption(locationids, player_type, neededBeer, marketsWithTiles);
+                    actiondata.consumedata.beerConsumption = beerConsumption;
+                }
+
+                if (playerunflippedsellableindustriesconnectedtomarket.length === 0) {
+                    actiondata.addVP = 5;
+                }
 
                 player.nextAction.action = action;
                 player.nextAction.actiondata = actiondata;
@@ -1984,6 +2008,7 @@ var app = new Vue({
             //console.log(player.nextAction);
         },
         getAIActionDescription: function () {
+            let self = this;
             let actions = [];
             let actionid = new Number((this.currentPlayerType + 1) + '0' + this.currentRound).valueOf();
 
@@ -2086,7 +2111,7 @@ var app = new Vue({
                 // Network
                 actionstring = '';
                 // Add VP
-                if (this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
+                if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 && this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
                     actionstring = actionstring + 'Could not network, so gains ' + this.currentPlayer.nextAction.actiondata.addVP + 'VP (now has ' + (this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP) + 'VP in total).';
                 } else {
                     let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
@@ -2104,14 +2129,50 @@ var app = new Vue({
             }
 
             if (this.currentPlayer.nextAction.action === AI_ACTION.Sell) {
-                let actionstring = 'SELL!';
+                _.forEach(this.currentPlayer.nextAction.actiondata.industriestosell, function (l) {
+                    let actionstring = '';
 
-                actions.push({
-                    id: actionid,
-                    actionDone: false,
-                    actionDesc: actionstring
+                    actionstring = actionstring + 'Sell ' + self.tileToString(l.tile) + ' in ' + l.name + ' (Space' + l.spaceid + ').';
+                    actions.push({
+                        id: actionid,
+                        actionDone: false,
+                        actionDesc: actionstring
+                    });
+                    actionid = actionid + 1;
                 });
-                actionid = actionid + 1;
+
+                if (this.currentPlayer.nextAction.actiondata.industriestosell.length === 0) {
+                    let actionstring = '';
+
+                    actionstring = actionstring + 'Could not sell, so gains ' + this.currentPlayer.nextAction.actiondata.addVP + 'VP (now has ' + (this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP) + 'VP in total).';
+                    actions.push({
+                        id: actionid,
+                        actionDone: false,
+                        actionDesc: actionstring
+                    });
+                    actionid = actionid + 1;
+                }
+            }
+
+            // Beer consumption
+            if (this.currentPlayer.nextAction.actiondata.consumedata.beerConsumption && this.currentPlayer.nextAction.actiondata.consumedata.beerConsumption.length > 0) {
+                _.forEach(this.currentPlayer.nextAction.actiondata.consumedata.beerConsumption, function (c) {
+                    actionstring = '';
+                    actionstring = actionstring + 'Consume ' + c.beerConsumed + ' beer from ' + c.name;
+
+                    if (c.spaceid != -1) {
+                        actionstring = actionstring + ' (Space ' + (c.spaceid) + ')';
+                    }
+
+                    actionstring = actionstring + '.';
+
+                    actions.push({
+                        id: actionid,
+                        actionDone: false,
+                        actionDesc: actionstring
+                    });
+                    actionid = actionid + 1;
+                });
             }
 
             return actions;
@@ -2152,7 +2213,45 @@ var app = new Vue({
                 // Moving coal and iron to market is handled inside LayIndustryTile
             }
 
-            // TODO: Execute AI sell action (flip tiles)
+            // SELL
+            if (this.currentPlayer.nextAction.action === AI_ACTION.Sell) {
+                // flip tiles
+                _.forEach(this.currentPlayer.nextAction.actiondata.industriestosell, function (t) {
+                    let location = self.findLocationById(t.locationid);
+                    let tile = location.spaces[t.spaceid].tile;
+                    tile.flipped = true;
+                });
+
+                // consume beer
+                if (this.currentPlayer.nextAction.actiondata.consumedata && this.currentPlayer.nextAction.actiondata.consumedata.beerConsumption) {
+                    let self = this;
+                    _.forEach(this.currentPlayer.nextAction.actiondata.consumedata.beerConsumption, function (l) {
+                        if (l.beerConsumed > 0) {
+                            let location = self.findLocationById(l.locationid);
+                            let tile = location.spaces[l.spaceid - 1].tile;
+    
+                            if (location.type === LOCATIONTYPE.Merchants) {
+                                tile.totalBeer = tile.totalBeer - l.beerConsumed;
+                            } else {
+                                tile.availableBeer = tile.availableBeer - l.beerConsumed;
+                            }
+    
+                            if (!l.isMerchant) {
+                                if (l.beerAvailable === l.beerConsumed) {
+                                    tile.flipped = true;
+                                }
+                            }
+    
+                            // no merchant beer bonus for AI
+                            /*if (l.isMerchant) {
+                                if (l.bonusType === BONUSTYPE.VPs) {
+                                    self.currentPlayer.totalVP = self.currentPlayer.totalVP + l.bonus;
+                                }
+                            }*/
+                        }
+                    });
+                }
+            }
 
             // Coal consumption
             if (this.currentPlayer.nextAction.actiondata.consumedata && this.currentPlayer.nextAction.actiondata.consumedata.coalConsumption) {
@@ -2768,17 +2867,84 @@ var app = new Vue({
 
             return ironConsumption;
         },
-        generateAIBeerConsumption: function (locationid, player_type, neededBeer, industryTypes) {
+        generateAIBeerConsumption: function (locationids, player_type, neededBeer, marketsWithTiles) {
             // for: Sell, step 2
 
+            let beerLocations = [];
+            let usedBeer = 0;
             // start with merchant beer (using matching industry types)
-            let allConnectedMarkets = this.findAllConnectedMarkets(locationid, player_type);
+            _.forEach(marketsWithTiles, function (m) {
+                if (usedBeer < neededBeer) {
+                    beerLocations.push({
+                        locationid: m.market.id,
+                        name: m.market.name + ' (Merchant)',
+                        spaceid: m.space.id + 1,
+                        beerAvailable: m.space.tile.totalBeer,
+                        beerConsumed: 1,
+                        id: m.market.id + '-' + m.space.id,
+                        isMerchant: true,
+                        bonus: m.market.bonus,
+                        bonusType: m.market.bonusType
+                    });
+                    usedBeer = usedBeer + 1;
+                }
+            });
 
-            // continue with player beer (connected or not, closest to flipping first)
-            let playerUnflippedBreweries = this.findPlayerUnflippedBreweries(player_type);
+            if (usedBeer < neededBeer) {
+                // continue with player and opponent beer (connected or not, closest to flipping first)
+                let playerUnflippedBreweries = this.findPlayerUnflippedBreweries(player_type);
+                
+                _.forEach(playerUnflippedBreweries, function (l) {
+                    _.forEach(l.beerspaces, function (bs) {
+                        if (usedBeer < neededBeer) {
+                            let beerConsumed = 1;
 
-            // continue with opponent beer (connected, furthest from flipping first)
-            let connectedOpponentBeerLocations = this.findOpponentConnectedBeer(locationid, player_type);
+                            if (bs.tile.availableBeer === 2 && (neededBeer - usedBeer > 1)) {
+                                beerConsumed = 2;
+                            }
+
+                            beerLocations.push({
+                                locationid: l.id,
+                                name: l.name,
+                                spaceid: bs.id + 1,
+                                beerAvailable: bs.tile.availableBeer,
+                                beerConsumed: beerConsumed,
+                                id: l.id + '-' + bs.id
+                            });
+                            usedBeer = usedBeer + 1;
+                        }
+                    });
+                });
+            }
+
+            if (usedBeer < neededBeer) {
+                // continue with opponent beer (connected, furthest from flipping first)
+                let connectedOpponentBeerLocations = this.findOpponentConnectedBeer(locationids, player_type);
+
+                _.forEach(connectedOpponentBeerLocations, function (l) {
+                    _.forEach(l.beerspaces, function (bs) {
+                        if (usedBeer < neededBeer) {
+                            let beerConsumed = 1;
+
+                            if (bs.tile.availableBeer === 2 && (neededBeer - usedBeer > 1)) {
+                                beerConsumed = 2;
+                            }
+
+                            beerLocations.push({
+                                locationid: l.id,
+                                name: l.name,
+                                spaceid: bs.id + 1,
+                                beerAvailable: bs.tile.availableBeer,
+                                beerConsumed: beerConsumed,
+                                id: l.id + '-' + bs.id
+                            });
+                            usedBeer = usedBeer + 1;
+                        }
+                    });
+                });
+            }
+            console.log(beerLocations)
+            return beerLocations;
         },
         findPlayerUnflippedBreweries: function (player_type) {
             let player = this.getPlayerFromType(player_type);
@@ -2950,7 +3116,7 @@ var app = new Vue({
             let playerUnflippedBreweries = this.findPlayerUnflippedBreweries(player_type);
 
             // union and unique select, getting all consumable beer locations
-            consumableBeerLocations = _.uniqBy(_.union(connectedOpponentBeerLocations, playerUnflippedBreweries), 'id');
+            consumableBeerLocations = _.uniqBy(_.union(playerUnflippedBreweries, connectedOpponentBeerLocations), 'id');
 
             return consumableBeerLocations;
         },
