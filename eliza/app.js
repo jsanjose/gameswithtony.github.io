@@ -365,7 +365,7 @@ var app = new Vue({
                 // NOTE: Actions handled in opposite order since actionStep is incremented
 
                 // if executing confirmed human action
-                if (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '32' || this.currentPlayer.actionStep === '55') {
+                if (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '22' || this.currentPlayer.actionStep === '32' || this.currentPlayer.actionStep === '55') {
                     this.executeNextHumanAction();
                     this.calculateNextPlayer();
                 }
@@ -651,7 +651,7 @@ var app = new Vue({
             this.saveGameState();
         },
         showNextButton() {
-            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '21' || this.currentPlayer.actionStep === '23' || this.currentPlayer.actionStep === '30' || this.currentPlayer.actionStep === '32' || this.currentPlayer.actionStep === '54' || this.currentPlayer.actionStep === '55' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
+            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '21' || this.currentPlayer.actionStep === '22' || this.currentPlayer.actionStep === '23' || this.currentPlayer.actionStep === '30' || this.currentPlayer.actionStep === '32' || this.currentPlayer.actionStep === '54' || this.currentPlayer.actionStep === '55' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
         },
         prevHumanAction: function () {
             if (this.humanPlayer.actionStep === '03') {
@@ -1420,7 +1420,17 @@ var app = new Vue({
             }
 
             // SELL
-            // TODO: Execute sell action (flip tiles, merchant actions, consume is below)
+            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Sell) {
+                let selectedTiles = _.filter(this.humanPlayer.nextAction.actiondata.sellabletiles, function (t) {
+                    return t.selected;
+                });
+
+                _.forEach(selectedTiles, function (t) {
+                    let location = self.findLocationById(t.locationid);
+                    let tile = location.spaces[t.spaceid].tile;
+                    tile.flipped = true;
+                });
+            }
 
             // DEVELOP
             if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Develop) {
@@ -1486,7 +1496,40 @@ var app = new Vue({
             }
 
             if (this.humanPlayer.nextAction.actiondata.consumelocations && this.humanPlayer.nextAction.actiondata.consumelocations.beer) {
+                _.forEach(this.humanPlayer.nextAction.actiondata.consumelocations.beer.beerLocations, function (l) {
+                    if (l.chosenBeer > 0) {
+                        let location = self.findLocationById(l.locationid);
+                        let tile = location.spaces[l.spaceid - 1].tile;
+                        
+                        actionstring = actionstring + 'Consume ' + l.chosenBeer + ' beer from ' + l.name;
+                        
+                        actionstring = actionstring + ' (Space ' + (l.spaceid) + ')';
 
+                        if (!l.isMerchant) {
+                            if (l.beerAvailable === l.chosenBeer) {
+                                actionstring = actionstring + ' [[ Flips the tile! ]]';
+                            }
+                        }
+
+                        if (l.isMerchant) {
+                            if (l.bonusType === BONUSTYPE.Pounds) {
+                                actionstring = actionstring + '£' + l.bonus + '.';
+                            }
+
+                            if (l.bonusType === BONUSTYPE.VPs) {
+                                actionstring = actionstring + l.bonus + 'VPs.';
+                            }
+
+                            if (l.bonusType === BONUSTYPE.Income) {
+                                actionstring = actionstring + l.bonus + ' income steps.';
+                            }
+                            
+                            if (l.bonusType === BONUSTYPE.Develop) {
+                                actionstring = actionstring + l.bonus + ' free develop.';
+                            }
+                        }
+                    }
+                });
             }
         },
         resetHumanAction: function () {
