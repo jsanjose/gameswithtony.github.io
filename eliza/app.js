@@ -1965,7 +1965,7 @@ var app = new Vue({
         },
         getAIActionDescription: function () {
             let actions = [];
-            let actionid = new Number((this.currentPlayerType + 1) + '0' + this.currentRound);
+            let actionid = new Number((this.currentPlayerType + 1) + '0' + this.currentRound).valueOf();
 
             if (this.currentPlayer.nextAction.action === AI_ACTION.BuildAndNetwork) {
                 let actionstring = '';
