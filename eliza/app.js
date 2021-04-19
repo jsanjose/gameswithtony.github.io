@@ -311,7 +311,7 @@ var app = new Vue({
                                         isConnectedToMatchingMarket = true;
                                         connectedMarketsWithTiles.push({
                                             market: m,
-                                            tile: s.tile
+                                            space: s
                                         });
                                     }
                                 }
@@ -375,13 +375,8 @@ var app = new Vue({
                     this.calculateNextPlayer();
                 }
 
-                // if sell
-                if (this.currentPlayer.actionStep === '20') {
-                    this.setSelectedTilesToSell();
-                }
-
                 // if human choosing consumption
-                if (this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '54') {
+                if (this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '21' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '54') {
                     if (this.humanPlayer.nextAction.actiondata.consumelocations.coal) {
                         let totalChosenCoal = _.sumBy(this.humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations, function (l) {
                             return l.chosenCoal;
@@ -459,6 +454,37 @@ var app = new Vue({
                         this.saveGameState();
                     }
 
+                    if (this.currentPlayer.actionStep === '21') {
+                        let freedevelops = [];
+                        _.forEach(this.humanPlayer.nextAction.actiondata.consumelocations.beer.beerLocations, function (l) {
+                            if (l.chosenBeer > 0) {
+                                if (l.isMerchant) {
+                                    if (l.bonusType === BONUSTYPE.Develop) {
+                                        freedevelops.push({
+                                            isFreeDevelop: true
+                                        });
+                                    }
+                                }
+                            }
+                        });
+
+                        if (freedevelops.length > 0) {
+                            this.humanPlayer.nextAction.actiondata.freedevelops = freedevelops;
+                            this.humanPlayer.nextAction.actiondata.developabletiles = this.findAllNextDevelopableTilesFromPlayerBoard(PLAYER_TYPE.Human);
+                            this.currentPlayer.actionStep = '23';
+                            this.saveGameState();
+                            window.scrollTo(0,0);
+                            setTimeout(() => {
+                                this.isDisabledButton = false;
+                            }, 1000);
+                            return;
+                        } else {
+                            this.currentPlayer.actionStep = '22';
+                        }
+                        
+                        this.saveGameState();
+                    }
+
                     if (this.currentPlayer.actionStep === '31') {
                         this.currentPlayer.actionStep = '32';
                         this.saveGameState();
@@ -469,9 +495,15 @@ var app = new Vue({
                         this.saveGameState();
                     }
                 }
+
+                // if sell
+                if (this.currentPlayer.actionStep === '20') {
+                    this.humanPlayer.nextAction.actiondata.freedevelops = null;
+                    this.setSelectedTilesToSell();
+                }
             
                 // if developing
-                if (this.currentPlayer.actionStep === '30') {
+                if (this.currentPlayer.actionStep === '30' || this.currentPlayer.actionStep === '23') {
 
                     let developabletiles = this.humanPlayer.nextAction.actiondata.developabletiles;
 
@@ -484,21 +516,52 @@ var app = new Vue({
                         });
                     });
 
-                    if (selectedtiles.length === 0) {
-                        alert('You must choose at least one tile to develop.');
-                        return;
+                    if (this.currentPlayer.actionStep === '30') {
+                        if (selectedtiles.length === 0) {
+                            alert('You must choose at least one tile to develop.');
+                            setTimeout(() => {
+                                this.isDisabledButton = false;
+                            }, 1000);
+                            return;
+                        }
+
+                        if (selectedtiles.length > 2) {
+                            alert('You cannot choose more than 2 tiles to develop.');
+                            setTimeout(() => {
+                                this.isDisabledButton = false;
+                            }, 1000);
+                            return;
+                        }
+
+                        let consumeLocations = this.humanConsumeLocations(null, 0, selectedtiles.length, null);
+                        this.humanPlayer.nextAction.actiondata.consumelocations = consumeLocations;
+
+                        this.currentPlayer.actionStep = '31';
+                        this.saveGameState();
                     }
 
-                    if (selectedtiles.length > 2) {
-                        alert('You cannot choose more than 2 tiles to develop.');
-                        return;
+                    if (this.currentPlayer.actionStep === '23') {
+
+                        if (selectedtiles.length === 0) {
+                            alert('You must choose at least one tile to develop.');
+                            setTimeout(() => {
+                                this.isDisabledButton = false;
+                            }, 1000);
+                            return;
+                        }
+
+                        let freedevelops = this.humanPlayer.nextAction.actiondata.freedevelops ? this.humanPlayer.nextAction.actiondata.freedevelops.length : 0;
+                        if (selectedtiles.length > freedevelops) {
+                            alert('You cannot choose more than ' + freedevelops + ' tiles to develop.');
+                            setTimeout(() => {
+                                this.isDisabledButton = false;
+                            }, 1000);
+                            return;
+                        }
+
+                        this.currentPlayer.actionStep = '22';
+                        this.saveGameState();
                     }
-
-                    let consumeLocations = this.humanConsumeLocations(null, 0, selectedtiles.length, null);
-                    this.humanPlayer.nextAction.actiondata.consumelocations = consumeLocations;
-
-                    this.currentPlayer.actionStep = '31';
-                    this.saveGameState();
                 }
             }
                 
@@ -575,18 +638,20 @@ var app = new Vue({
 
             if (actionStep === '20') {
                 this.humanPlayer.nextAction.action = HUMAN_ACTION.Sell;
+                this.humanPlayer.nextAction.actiondata.freedevelops = null;
                 this.humanPlayer.nextAction.actiondata.sellabletiles = this.findPlayerUnflippedSellableIndustriesConnectedToMarket;
                 console.log(this.humanPlayer.nextAction.actiondata.sellabletiles);
             }
 
             if (actionStep === '30') {
+                this.humanPlayer.nextAction.action = HUMAN_ACTION.Develop;
                 this.setHumanDevelopableTiles();
             }
 
             this.saveGameState();
         },
         showNextButton() {
-            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '30' || this.currentPlayer.actionStep === '32' || this.currentPlayer.actionStep === '54' || this.currentPlayer.actionStep === '55' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
+            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '21' || this.currentPlayer.actionStep === '23' || this.currentPlayer.actionStep === '30' || this.currentPlayer.actionStep === '32' || this.currentPlayer.actionStep === '54' || this.currentPlayer.actionStep === '55' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
         },
         prevHumanAction: function () {
             if (this.humanPlayer.actionStep === '03') {
@@ -597,8 +662,12 @@ var app = new Vue({
                 this.prevNetworkActionConfirm();
             }
 
-            if (this.humanPlayer.actionStep === '32') {
+            if (this.humanPlayer.actionStep === '32' || this.humanPlayer.actionStep === '21') {
                 this.prevDevelopActionConfirm();
+            }
+
+            if (this.humanPlayer.actionStep === '22') {
+                this.prevSellActionConfirm();
             }
         },
 
@@ -751,6 +820,11 @@ var app = new Vue({
                 return t.selected;
             });
 
+            if (selectedTiles.length === 0) {
+                alert("You must select at least one industry to sell.");
+                return;
+            }
+
             let locationids = _.uniqBy(_.map(selectedTiles, "locationid"), "locationid");
 
             let totalBeerNeeded = _.sumBy(selectedTiles, function (t) {
@@ -768,6 +842,15 @@ var app = new Vue({
             this.humanPlayer.nextAction.actiondata.sellabletiles = null;
             this.setHumanAction('00');
         },
+        prevSellActionConfirm: function () {
+            let freedevelops = this.humanPlayer.nextAction.actiondata.freedevelops ? this.humanPlayer.nextAction.actiondata.freedevelops.length : 0;
+
+            if (freedevelops > 0) {
+                this.setHumanAction('23');
+            } else {
+                this.setHumanAction('21');
+            }
+        },
 
         // UI: Develop
         setHumanDevelopableTiles: function () {
@@ -776,7 +859,12 @@ var app = new Vue({
         },
         prevDevelopAction: function () {
             this.humanPlayer.nextAction.actiondata.developabletiles = null;
-            this.setHumanAction(null);
+            if (this.humanPlayer.actionStep === '30') {
+                this.setHumanAction(null);
+            }
+            if (this.humanPlayer.actionStep === '23') {
+                this.setHumanAction('21');
+            }
         },
         prevDevelopActionConfirm: function () {
             this.setHumanAction('30');
@@ -785,7 +873,7 @@ var app = new Vue({
         // UI: Consume
         humanConsumeLocations(locationids, totalCoalNeeded, totalIronNeeded, totalBeerNeeded) {
             let locationid = null;
-            if (!locationids.length) {
+            if (locationids && !locationids.length) {
                 locationid = locationids;
             }
             let consumeLocations = {};
@@ -936,10 +1024,32 @@ var app = new Vue({
                     let marketsWithBeer = [];
                     let marketsWithTiles = [];
                     _.forEach(selectedTiles, function (t) {
-                        marketsWithBeer.push(t.connectedMarketsWithTiles);
+                        marketsWithBeer = _.union(marketsWithBeer, t.connectedMarketsWithTiles);
                     });
 
-                    // TODO: Finish including merchant beer
+                    marketsWithTiles = _.uniqBy(marketsWithBeer, function (m) {
+                        return m.market.id + '-' + m.space.id;
+                    });
+
+                    _.forEach(marketsWithTiles, function (m) {
+                        let resourceArray = [];
+                        for (let i=0;i<=m.space.tile.totalBeer;i++) {
+                            resourceArray.push(i);
+                        }
+
+                        consumeLocations.beer.beerLocations.push({
+                            locationid: m.market.id,
+                            name: m.market.name + ' (Merchant)',
+                            spaceid: m.space.id + 1,
+                            beerAvailable: m.space.tile.totalBeer,
+                            chosenBeer: 0,
+                            resourceArray: resourceArray,
+                            id: m.market.id + '-' + m.space.id,
+                            isMerchant: true,
+                            bonus: m.market.bonus,
+                            bonusType: m.market.bonusType
+                        });
+                    });
                 }
             }
 
@@ -954,7 +1064,11 @@ var app = new Vue({
             }
 
             if (this.humanPlayer.nextAction.actiondata.developabletiles) {
-                this.setHumanAction('30');
+                if (this.humanPlayer.actionStep === '31') {
+                    this.setHumanAction('30');
+                } else if (this.humanPlayer.actionStep === '21') {
+                    this.setHumanAction('20');
+                }
             }
 
             if (this.humanPlayer.nextAction.actiondata.networkfromlocationid) {
@@ -967,8 +1081,10 @@ var app = new Vue({
                 }
             }
 
-            if (this.humanPlayer.nextAction.actiondata.sellabletiles) {
-                this.setHumanAction('20');
+            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Sell) {
+                if (this.humanPlayer.actionStep === '21') {
+                    this.setHumanAction('20');
+                }
             }
         },
         // human action description
@@ -1114,6 +1230,25 @@ var app = new Vue({
                 });
             }
 
+            // If Sell
+            if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Sell) {
+                let self = this;
+                let selectedTiles = _.filter(this.humanPlayer.nextAction.actiondata.sellabletiles, function (t) {
+                    return t.selected;
+                });
+                let actionstring = '';
+
+                _.forEach(selectedTiles, function (t) {
+                    actionstring = '';
+                    actionstring = actionstring + 'Sell ' + t.name + ' (Space ' + (t.spaceid + 1) + ').'
+
+                    actions.push({
+                        actionDone: false,
+                        actionDesc: actionstring
+                    });
+                });
+            }
+
             // If Develop
             if (this.humanPlayer.nextAction.action === HUMAN_ACTION.Develop) {
                 let developabletiles = this.humanPlayer.nextAction.actiondata.developabletiles;
@@ -1189,8 +1324,53 @@ var app = new Vue({
                 });
             }
 
-            // TODO: Add beer consumption action strings
+            // If beer consumption
             if (this.humanPlayer.nextAction.actiondata.consumelocations && this.humanPlayer.nextAction.actiondata.consumelocations.beer) {
+                _.forEach(this.humanPlayer.nextAction.actiondata.consumelocations.beer.beerLocations, function (l) {
+                    if (l.chosenBeer > 0) {
+                        actionstring = '';
+                        actionstring = actionstring + 'Consume ' + l.chosenBeer + ' beer from ' + l.name;
+                        
+                        actionstring = actionstring + ' (Space ' + (l.spaceid) + ')';
+
+                        if (!l.isMerchant) {
+                            if (l.beerAvailable === l.chosenBeer) {
+                                actionstring = actionstring + ' [[ Flips the tile! ]]';
+                            }
+                        }
+
+                        actionstring = actionstring + '.'
+
+                        actions.push({
+                            actionDone: false,
+                            actionDesc: actionstring
+                        });
+
+                        if (l.isMerchant) {
+                            actionstring = 'Merchant Beer Bonus: ';
+                            if (l.bonusType === BONUSTYPE.Pounds) {
+                                actionstring = actionstring + '£' + l.bonus + '.';
+                            }
+
+                            if (l.bonusType === BONUSTYPE.VPs) {
+                                actionstring = actionstring + l.bonus + 'VPs.';
+                            }
+
+                            if (l.bonusType === BONUSTYPE.Income) {
+                                actionstring = actionstring + l.bonus + ' income steps.';
+                            }
+                            
+                            if (l.bonusType === BONUSTYPE.Develop) {
+                                actionstring = actionstring + l.bonus + ' free develop.';
+                            }
+
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+                        }
+                    }
+                });
             }
 
             return actions;
@@ -2529,7 +2709,7 @@ var app = new Vue({
         // -- Human player consumption support
         findAllConnectedCoal: function (locationids, player_type) {
             let locationid = null;
-            if (!locationids.length) {
+            if (locationids && !locationids.length) {
                 locationid = locationids;
             }
 
@@ -2587,13 +2767,13 @@ var app = new Vue({
         },
         findOpponentConnectedBeer: function (locationids, player_type) {
             let locationid = null;
-            if (!locationids.length) {
+            if (locationids && !locationids.length) {
                 locationid = locationids;
             }
 
             let connectedLocations = [];
 
-            if (!locationids.length) {
+            if (locationids && !locationids.length) {
                 connectedLocations = this.findAllConnectedLocations(locationid, player_type);
             } else {
                 // support looking for beer from either end of a placed link and for multiple sell locations
@@ -2629,7 +2809,7 @@ var app = new Vue({
         },
         findConsumableBeer: function (locationids, player_type) {
             let locationid = null;
-            if (!locationids.length) {
+            if (locationids && !locationids.length) {
                 locationid = locationids;
             }
 

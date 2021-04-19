@@ -128,7 +128,6 @@
                             </li>
                         </ul>
                     </section>
-
                     <section v-if="humanPlayer.actionStep === '00'">
                         <a href="#" v-on:click="prevSetHumanAction()">< Go Back</a>
                         <p class="action-header">What industry are you building?</p> 
@@ -150,7 +149,7 @@
                         <p v-if="validHumanBuildLocationsForIndustryType.length === 0">This tile cannot be built currently.</p>
                     </section>
 
-                    <section v-if="humanPlayer.actionStep === '03' || humanPlayer.actionStep === '13' || humanPlayer.actionStep === '32' || humanPlayer.actionStep === '55'">
+                    <section v-if="humanPlayer.actionStep === '03' || humanPlayer.actionStep === '13' || humanPlayer.actionStep === '22' || humanPlayer.actionStep === '32' || humanPlayer.actionStep === '55'">
                         <a href="#" v-on:click="prevHumanAction()">< Go Back</a>
                         <p class="action-header" v-if="currentRound > 1 && humanPlayer.currentTurnIndex === 0">Confirm Your Action<br /><span class="action-message">Click 'Next' to confirm.</span></p>
                         <p class="action-header" v-if="(currentRound === 1) || (currentRound > 1 && humanPlayer.currentTurnIndex === 1)">Complete Your Turn<br /><span class="action-message">Click 'Next' to confirm your <span v-if="currentRound > 1 && humanPlayer.currentTurnIndex === 1">second </span> action and complete your turn.</span></p>
@@ -194,9 +193,10 @@
                         </ul>
                     </section>
 
-                    <section v-if="humanPlayer.actionStep === '30'">
+                    <section v-if="humanPlayer.actionStep === '30' || humanPlayer.actionStep === '23'">
                         <a href="#" v-on:click="prevDevelopAction()">< Go Back</a>
-                        <p class="action-header">Which industries are you developing (choose up to two)?<br /><span class="action-message">Below are the top 2 tiles of each type of developable industry on your board.</span></p>
+                        <p v-if="humanPlayer.actionStep === '30'" class="action-header">Which industries are you developing (choose up to two)?<br /><span class="action-message">Below are the top 2 tiles of each type of developable industry on your board.</span></p>
+                        <p v-if="humanPlayer.actionStep === '23'" class="action-header">Gloucester Merchant Beer Bonus (Develop)<br /><span class="action-message">Choose industries to develop.</span></p>
                         <section v-for="industry in this.humanPlayer.nextAction.actiondata.developabletiles">
                             <span class="highlight-text">{{ industry.industrytypename }}</span>
                             <ul class="cards">
@@ -210,7 +210,7 @@
                         </section>
                     </section>
 
-                    <section v-if="humanPlayer.actionStep === '02' || humanPlayer.actionStep === '12' || humanPlayer.actionStep === '21' || humanPlayer.actionStep === '31' ||humanPlayer.actionStep === '54'">
+                    <section v-if="humanPlayer.actionStep === '02' || humanPlayer.actionStep === '12' || humanPlayer.actionStep === '21' || humanPlayer.actionStep === '31' || humanPlayer.actionStep === '54'">
                         <a href="#" v-on:click="setPrevConsume()">< Go Back</a>
                         <p class="action-message"><span v-if="humanPlayer.nextAction.action === 0">Building your {{ tileToString(humanPlayer.nextAction.actiondata.buildtile) }} in {{ humanPlayer.nextAction.actiondata.buildlocationname }} costs &pound;{{ humanPlayer.nextAction.actiondata.buildtile.poundsCost }}.</span></p>
                         <section class="consume-section" v-if="humanPlayer.nextAction.actiondata.consumelocations && humanPlayer.nextAction.actiondata.consumelocations.coal">
