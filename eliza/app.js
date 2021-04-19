@@ -651,7 +651,7 @@ var app = new Vue({
             this.saveGameState();
         },
         showNextButton() {
-            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '21' || this.currentPlayer.actionStep === '22' || this.currentPlayer.actionStep === '23' || this.currentPlayer.actionStep === '30' || this.currentPlayer.actionStep === '32' || this.currentPlayer.actionStep === '54' || this.currentPlayer.actionStep === '55' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
+            return (this.gameHasStarted && !this.showBoardState && (this.currentGameStep === 0 || this.currentGameStep === 3 || (this.currentPlayer.actionStep === '03' || this.currentPlayer.actionStep === '02' || this.currentPlayer.actionStep === '12' || this.currentPlayer.actionStep === '13' || this.currentPlayer.actionStep === '31' || this.currentPlayer.actionStep === '40') || this.currentPlayer.actionStep === '20') || this.currentPlayer.actionStep === '21' || this.currentPlayer.actionStep === '22' || this.currentPlayer.actionStep === '23' || this.currentPlayer.actionStep === '30' || this.currentPlayer.actionStep === '32' || this.currentPlayer.actionStep === '54' || this.currentPlayer.actionStep === '55' || this.currentPlayerType === 1 || this.currentPlayerType === 2 || this.currentGameStep === 2);
         },
         prevHumanAction: function () {
             if (this.humanPlayer.actionStep === '03') {
@@ -1592,11 +1592,22 @@ var app = new Vue({
 
                 this.currentPlayerType = newSortedPlayers[0].player_type;
 
-                if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
-                    this.calculateAIAction(this.currentPlayerType);
-                    this.saveGameState();
+                // check if end of era
+                if (this.currentRound > this.roundsPerEra()) {
+                    if (this.currentEra === ERA.Canal) {
+                        // TODO: Calculate canal score
+                        this.currentGameStep === GAME_STEPS.SetupRailEra;
+                    } else {
+                        // TODO: Calculate rail and final score
+                        this.currentGameStep === GAME_STEPS.FinalScore;
+                    }
+                } else {
+                    if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
+                        this.calculateAIAction(this.currentPlayerType);
+                        this.saveGameState();
+                    }
+                    this.currentGameStep = 2;
                 }
-                this.currentGameStep = 2;
             } else {
                 this.currentPlayerType = nextPlayer.player_type;
 
