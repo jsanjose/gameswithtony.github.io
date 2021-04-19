@@ -2010,7 +2010,7 @@ var app = new Vue({
                 // Note move of coal to market
                 if (this.currentPlayer.nextAction.actiondata.coalMoved && this.currentPlayer.nextAction.actiondata.coalMoved > 0) {
                     actionstring = '';
-                    actionstring = 'Move ' + this.currentPlayer.nextAction.actiondata.coalMoved + ' coal to the market (leaving ' + (this.currentPlayer.nextAction.actiondata.industrytile.availableIron - this.currentPlayer.nextAction.actiondata.coalMoved) + ' coal on the tile.)';
+                    actionstring = 'Move ' + this.currentPlayer.nextAction.actiondata.coalMoved + ' coal to the market (leaving ' + (this.currentPlayer.nextAction.actiondata.industrytile.availableCoal - this.currentPlayer.nextAction.actiondata.coalMoved) + ' coal on the tile.)';
 
                     if (this.currentPlayer.nextAction.actiondata.willFlip) {
                         actionstring = actionstring + ' [[ Flips the tile! ]]';
