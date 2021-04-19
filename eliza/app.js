@@ -147,6 +147,7 @@ var app = new Vue({
             return player;
         },
         nextButtonText: function () {
+            this.computedUpdater++;
             return this.isAIThinking ? "Thinking..." : "Next >>";
         },
         playersInOrder: function () {
@@ -350,8 +351,8 @@ var app = new Vue({
                 this.currentGameStep = GAME_STEPS.Round;
             }
 
-            // if coming from new round screen
-            if (this.currentGameStep === 2) {
+            // if coming from new round screen or setup rail era screen
+            if (this.currentGameStep === 2 || this.currentGameStep === GAME_STEPS.SetupRailEra) {
                 this.currentGameStep = GAME_STEPS.Round;
                 this.saveGameState();
                 window.scrollTo(0,0);
@@ -621,8 +622,7 @@ var app = new Vue({
             });
 
             // shuffle cards
-            this.eliza.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, 2)));
-            this.eleanor.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eleanor.deckType, 2)));
+            this.shuffleAICards();
 
             // Setup merchant tiles
             this.setupMerchantTiles();
@@ -630,7 +630,7 @@ var app = new Vue({
 
             // --- TEMPORARY
             // Setup board
-            this.debugSetupTestBoard();
+            //this.debugSetupTestBoard();
             // --- END TEMPORARY
 
             this.saveGameState();
@@ -644,7 +644,6 @@ var app = new Vue({
                 this.humanPlayer.nextAction.action = HUMAN_ACTION.Sell;
                 this.humanPlayer.nextAction.actiondata.freedevelops = null;
                 this.humanPlayer.nextAction.actiondata.sellabletiles = this.findPlayerUnflippedSellableIndustriesConnectedToMarket;
-                console.log(this.humanPlayer.nextAction.actiondata.sellabletiles);
             }
 
             if (actionStep === '30') {
@@ -1379,6 +1378,10 @@ var app = new Vue({
 
             return actions;
         },
+        // UI: Scores
+        getSortedScores: function () {
+            // TODO: Get all scores sorted by score, add a hook to winner for CSS class
+        },
         executeNextHumanAction: function () {
             this.saveUndoState();
             
@@ -1599,18 +1602,21 @@ var app = new Vue({
                 // check if end of era
                 if (this.currentRound > this.roundsPerEra()) {
                     if (this.currentEra === ERA.Canal) {
-                        // TODO: Calculate canal score
-                        this.currentGameStep === GAME_STEPS.SetupRailEra;
+                        this.calculateScore();
+                        this.setupRailEra();
+                        this.currentGameStep = GAME_STEPS.SetupRailEra;
                         if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
+                            this.computedUpdater++;
                             this.isAIThinking = true;
                             setTimeout(this.calculateAIAction(this.currentPlayerType), 0);
-                        }
+                        };
                     } else {
-                        // TODO: Calculate rail and final score
-                        this.currentGameStep === GAME_STEPS.FinalScore;
+                        this.calculateScore();
+                        this.currentGameStep = GAME_STEPS.FinalScore;
                     }
                 } else {
                     if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
+                        this.computedUpdater++;
                         this.isAIThinking = true;
                         setTimeout(this.calculateAIAction(this.currentPlayerType), 0);
                     }
@@ -1620,11 +1626,16 @@ var app = new Vue({
                 this.currentPlayerType = nextPlayer.player_type;
 
                 if (nextPlayer.player_type === PLAYER_TYPE.Eliza_AI || nextPlayer.player_type === PLAYER_TYPE.Eleanor_AI) {
+                    this.computedUpdater++;
                     this.isAIThinking = true;
                     setTimeout(this.calculateAIAction(this.currentPlayerType), 0);
                     return;
                 }
             }
+        },
+        shuffleAICards: function () {
+            this.eliza.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eliza.deckType, this.numberOfPlayers)));
+            this.eleanor.cards = _.shuffle(_.cloneDeep(getAIDeck(this.eleanor.deckType, this.numberOfPlayers)));
         },
         calculateAIAction: function (player_type) {
             // this function builds the 'nextAction' object attached to the player object. It does not execute any actions.
@@ -1960,8 +1971,9 @@ var app = new Vue({
             }
 
             this.saveGameState();
+            this.computedUpdater++;
             this.isAIThinking = false;
-            console.log(player.nextAction);
+            //console.log(player.nextAction);
         },
         getAIActionDescription: function () {
             let actions = [];
@@ -2181,6 +2193,40 @@ var app = new Vue({
                 this.currentPlayer.totalVP = this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP;
             }
         },
+        calculateScore: function () {
+
+        },
+        setupRailEra: function () {
+            this.currentEra = ERA.Rail;
+            this.currentRound = 1;
+            this.shuffleAICards();
+
+            // clear level 1 industry tiles
+            _.forEach(this.board.locations, function (l) {
+                if (l.type === LOCATIONTYPE.Industries) {
+                    _.forEach(l.spaces, function (s) {
+                        if (s.tile && s.tile.level === 1) {
+                            s.tile = null;
+                        }
+                    });
+                }
+            });
+
+            // reset merchant beer
+            _.forEach(this.board.locations, function (l) {
+                if (l.type === LOCATIONTYPE.Merchants) {
+                    _.forEach(l.spaces, function (s) {
+                        if (s.tile) {
+                            if (s.tile.industryTypes) {
+                                s.tile.totalBeer = 1;
+                            }
+                        }
+                    });
+                }
+            });
+
+            // NOTE: don't need to clear link tiles, because each era has its own array of connections
+        },
         // end: Primary action functions
 
         getMerchantLocationIds: function () {
@@ -2377,17 +2423,29 @@ var app = new Vue({
 
             let location = this.findLocationById(locationid);
             let validSpaces = [];
+            let self = this;
 
-            _.forEach(location.spaces, function (s) {
-                if (_.includes(s.types, industrytype)) {
-                    if (canOverbuild || s.tile === null) {
-                        validSpaces.push(s);
+            let canBuildHere = true;
+            if (this.currentEra === ERA.Canal) {
+                _.forEach(location.spaces, function (s) {
+                    if (s.tile && s.tile.color === self.currentPlayer.color) {
+                        canBuildHere = false;
                     }
-                }
-            });
+                });
+            }
+
+            if (canBuildHere) {
+                _.forEach(location.spaces, function (s) {
+                    if (_.includes(s.types, industrytype)) {
+                        if (canOverbuild || s.tile === null) {
+                            validSpaces.push(s);
+                        }
+                    }
+                });
+            }
 
             let sortedSpaces = _.sortBy(validSpaces, function (s) {
-                return s.length; // sort single type to the top
+                return s.types.length; // sort single type to the top
             });
 
             if (sortedSpaces.length > 0) {
@@ -2640,7 +2698,7 @@ var app = new Vue({
                     if (neededIron > consumedIron) {
                         let spaceConsumeData = {
                             locationid: l.id,
-                            locationame: l.name,
+                            locationname: l.name,
                             spaceid: pcs.id,
                             ironConsumed: 0,
                             willFlip: false
@@ -3302,6 +3360,9 @@ var app = new Vue({
         },
         tileToString: function (tile) {
             return industryStringMap[tile.industrytype] + ' (Level ' + romanize(tile.level) + ')';
+        },
+        eraToString: function (tile) {
+            return eraStringMap[this.currentEra];
         },
         boardIndustryTileToStringWithResources: function (locationid, tileid, includeTotalBeerOnMerchantTile) {
             let tile = this.findMainBoardIndustryTileById(locationid, tileid);

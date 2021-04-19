@@ -96,7 +96,7 @@
                         <h2 class="section-title" v-if="currentPlayerType === 0 && humanPlayer.currentTurnIndex === 1">Your <em>Second</em> Action</h2>
                         <h2 class="section-title" v-if="currentPlayerType === 1 || currentPlayerType === 2">{{ currentPlayer.name }}'s Action</h2>
                         <p class="section-detail">
-                            Round <span class="current-round">{{ currentRound }}</span>
+                            {{ eraToString() }} Era: Round <span class="current-round">{{ currentRound }}</span>
                         </p>
                         <p class="text-tiny">
                             <span v-for="(player, index) in playersInOrder">
@@ -307,24 +307,23 @@
             </section>
             <section class="button-container" v-if="showNextButton()">
                 <button class="button" v-if="currentGameStep === 0" v-on:click="next()">Start Game</button>
-                <button class="button" :disabled="isAIThinking" v-if="currentGameStep === 1 || currentGameStep === 2" v-on:click="next()">{{ nextButtonText }}</button>
+                <button class="button" :disabled="isAIThinking" v-if="currentGameStep === 1 || currentGameStep === 2 || currentGameStep === 3" v-on:click="next()">{{ nextButtonText }}</button>
             </section>
             <section class="boardstate" v-if="showBoardState">
                 <a href="#" class="boardstate_close" v-on:click="toggleShowBoardState">[ Close Board State ]</a>
-                <p class="boardstate__instructions">"X: " - a space with an industry tile</p>
-                <p class="boardstate__instructions">"-->" - a link tile</p>
-                <p class="boardstate__marketspaces">
-                    You: {{ humanPlayer.totalVP }}VPs<br />
+                <p class="boardstate__marketspaces" style="background-color: lightcyan;">
+                    You: {{ humanPlayer.totalVP }}VPs&nbsp;|&nbsp;
                     Eliza: {{ eliza.totalVP }}VPs
                     <span v-if="numberOfPlayers == 3">
-                    <br />
-                    Eleanor: {{ eleanor.totalVP }}VPs
+                    &nbsp;|&nbsp;Eleanor: {{ eleanor.totalVP }}VPs
                     </span>
                 </p>
                 <p class="boardstate__marketspaces">
                     Empty Coal Spaces in Market: {{ totalEmptyMarketCoalSpaces }}<br />
                     Empty Iron Spaces in Market: {{ totalEmptyMarketIronSpaces }}
                 </p>
+                <p class="boardstate__instructions">"X: " - a space with an industry tile</p>
+                <p class="boardstate__instructions">"-->" - a link tile</p>
                 <ul class="boardstate__locations">
                     <li class="boardstate__location" v-for="location in board.locations">
                         <p class="boardstate__locationname">{{ location.name }}</p>
