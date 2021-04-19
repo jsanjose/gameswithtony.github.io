@@ -115,7 +115,8 @@ var app = new Vue({
         showBoardState: false,
         humanActionStringMap: _.cloneDeep(humanActionStringMap),
         undoState: null,
-        isDisabledButton: false
+        isDisabledButton: false,
+        isAIThinking: false
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -144,6 +145,9 @@ var app = new Vue({
         currentPlayer: function () {
             let player = this.getPlayerFromType(this.currentPlayerType);
             return player;
+        },
+        nextButtonText: function () {
+            return this.isAIThinking ? "Thinking..." : "Next >>";
         },
         playersInOrder: function () {
             let players = [];
@@ -1597,14 +1601,18 @@ var app = new Vue({
                     if (this.currentEra === ERA.Canal) {
                         // TODO: Calculate canal score
                         this.currentGameStep === GAME_STEPS.SetupRailEra;
+                        if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
+                            this.isAIThinking = true;
+                            setTimeout(this.calculateAIAction(this.currentPlayerType), 0);
+                        }
                     } else {
                         // TODO: Calculate rail and final score
                         this.currentGameStep === GAME_STEPS.FinalScore;
                     }
                 } else {
                     if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
-                        this.calculateAIAction(this.currentPlayerType);
-                        this.saveGameState();
+                        this.isAIThinking = true;
+                        setTimeout(this.calculateAIAction(this.currentPlayerType), 0);
                     }
                     this.currentGameStep = 2;
                 }
@@ -1612,12 +1620,11 @@ var app = new Vue({
                 this.currentPlayerType = nextPlayer.player_type;
 
                 if (nextPlayer.player_type === PLAYER_TYPE.Eliza_AI || nextPlayer.player_type === PLAYER_TYPE.Eleanor_AI) {
-                    this.calculateAIAction(nextPlayer.player_type);
-                    this.saveGameState();
+                    this.isAIThinking = true;
+                    setTimeout(this.calculateAIAction(this.currentPlayerType), 0);
                     return;
                 }
             }
-            this.saveGameState();
         },
         calculateAIAction: function (player_type) {
             // this function builds the 'nextAction' object attached to the player object. It does not execute any actions.
@@ -1952,6 +1959,8 @@ var app = new Vue({
                 player.nextAction.actiondata = actiondata;
             }
 
+            this.saveGameState();
+            this.isAIThinking = false;
             console.log(player.nextAction);
         },
         getAIActionDescription: function () {
@@ -2764,7 +2773,7 @@ var app = new Vue({
             let connectedLocations = [];
 
             if (!locationids.length) {
-                connectedLocations = this.findAllConnectedLocations(locationid, player_type);
+                connectedLocations = this.findAllConnectedLocations(locationids, player_type);
             } else {
                 // support looking for coal from either end of a placed link
                 let connectedLocations1 = this.findAllConnectedLocations(locationids[0], player_type);
@@ -2822,7 +2831,7 @@ var app = new Vue({
             let connectedLocations = [];
 
             if (locationids && !locationids.length) {
-                connectedLocations = this.findAllConnectedLocations(locationid, player_type);
+                connectedLocations = this.findAllConnectedLocations(locationids, player_type);
             } else {
                 // support looking for beer from either end of a placed link and for multiple sell locations
                 let allLocations = [];

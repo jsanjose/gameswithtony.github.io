@@ -427,15 +427,15 @@ const INITIAL_BOARD = {
                     tile: null
                 },
                 {
-                    toId: 5,
-                    tile: null
-                },
-                {
                     toId: 7,
                     tile: null
                 },
                 {
                     toId: 9,
+                    tile: null
+                },
+                {
+                    toId: 5,
                     tile: null
                 }
             ]
