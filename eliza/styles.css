@@ -240,6 +240,15 @@ input[type="checkbox"].checkbox-strike:checked + span {
     margin-top: 0.875rem;
 }
 
+.score {
+    padding: 0 2rem;
+    border-bottom: dashed 1px #ccc;
+}
+
+.winning {
+    font-size: 1.1rem;
+}
+
 .player-header {
     display: flex;
     justify-content:space-evenly;

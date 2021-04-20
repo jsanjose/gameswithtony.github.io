@@ -2301,12 +2301,92 @@ console.log(playerunflippedsellableindustriesconnectedtomarket);
             }
         },
         calculateScore: function () {
-
-            let playerScores = [];
+            let self = this;
             _.forEach(this.playersInOrder, function (p) {
+                // calculate flipped industry tile scores
+                _.forEach(self.board.locations, function (l) {
+                    if (l.type === LOCATIONTYPE.Industries) {
+                        _.forEach(l.spaces, function (s) {
+                            if (s.tile && s.tile.color === p.color && s.tile.flipped) {
+                                if (self.currentEra === ERA.Canal) {
+                                    p.canalTileVP = p.canalTileVP + s.tile.VPs;
+                                } else {
+                                    p.railTileVP = p.railTileVP + s.tile.VPs;
+                                }
+                            }
+                        });
+                    }
+                });
 
+                if (self.currentEra === ERA.Canal) {
+                    p.totalVP = p.totalVP + p.canalTileVP;
+                } else {
+                    p.totalVP = p.totalVP + p.railTileVP;
+                }
+
+                // calculate link scores
+                _.forEach(self.board.locations, function (l) {
+                    let edges = [];
+                    if (self.currentEra === ERA.Canal) {
+                        edges = l.edgesCanal;
+                    } else {
+                        edges = l.edgesRail;
+                    }
+
+                    let locationLinkVPs = 0;
+                    if (l.type === LOCATIONTYPE.Merchants) {
+                        locationLinkVPs = 2;
+                    }
+
+                    if (l.type === LOCATIONTYPE.Industries) {
+                        _.forEach(l.spaces, function (s) {
+                            if (s.tile) {
+                                locationLinkVPs = locationLinkVPs + s.tile.LinkVPs;
+                            }
+                        });
+                    }
+
+                    _.forEach(edges, function (e) {
+                        if (e.tile && e.tile.color === p.color) {
+                            if (self.currentEra === ERA.Canal) {
+                                p.canalLinkVP = p.canalLinkVP + locationLinkVPs;
+                            } else {
+                                p.railLinkVP = p.railLinkVP + locationLinkVPs;
+                            }
+                        }
+                    });
+                });
+
+                if (self.currentEra === ERA.Canal) {
+                    p.totalVP = p.totalVP + p.canalLinkVP;
+                } else {
+                    p.totalVP = p.totalVP + p.railLinkVP;
+                }
+
+                if (self.currentEra === ERA.Canal) {
+                    p.canalTotalVP = p.totalVP;
+                }
             });
+        },
+        getPlayersWithScores: function () {
+            let players = [];
 
+            if (this.numberOfPlayers === 2) {
+                players = [
+                    this.humanPlayer,
+                    this.eliza
+                ];
+            } else {
+                players = [
+                    this.humanPlayer,
+                    this.eliza,
+                    this.eleanor
+                ];
+            }
+            
+            let finalPlayersScoreOrder = _.cloneDeep(_.orderBy(players, [function (p) { return p.totalVP }], ['desc']));
+            finalPlayersScoreOrder[0].isWinning = true;
+            return finalPlayersScoreOrder;
         },
         setupRailEra: function () {
             this.currentEra = ERA.Rail;

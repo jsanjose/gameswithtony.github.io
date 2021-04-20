@@ -296,7 +296,13 @@
                 </ul>
             </section>
             <section v-if="currentGameStep === 3">
-                <p class="action-header">Rail Era Begins<br /><span class="action-message">Click 'Next' to continue.</span></p>
+                <p class="action-header">Rail Era Begins<br /><span class="action-message">Current score and setup instructions below. Click 'Next' to continue.</span></p>
+                <section class="score">
+                    <p v-for="player in getPlayersWithScores()" v-bind:class="{ winning: player.isWinning }">
+                        {{ player.name }}: {{ player.totalVP }} VPs<br />
+                        <span class="text-tiny">VPs from Industries: {{ player.canalTileVP }}&nbsp;&nbsp;|&nbsp;&nbsp;VPs from Links: {{ player.canalLinkVP }}</span>
+                    </p>
+                </section>
                 <ul>
                     <li class="action-desc">
                         Setup the Rail Era as normal (remove link tiles and level 1 industries and reset merchant beer). 
@@ -310,10 +316,13 @@
                 </ul>
             </section>
             <section v-if="currentGameStep === 4">
-                Final Score
-                You
-                Eliza
-                Eleanor
+                <p class="action-header">Final Score<br /><span class="action-message">Hope you enjoyed the game!</span></p>
+                <section class="score">
+                    <p v-for="player in getPlayersWithScores()" v-bind:class="{ winning: player.isWinning }">
+                        {{ player.name }}: {{ player.totalVP }} VPs<br />
+                        <span class="text-tiny">VPs from Industries: {{ player.railTileVP }}&nbsp;&nbsp;|&nbsp;&nbsp;VPs from Links: {{ player.railLinkVP }}</span>
+                    </p>
+                </section>
             </section>
             <section class="button-container" v-if="showNextButton()">
                 <button class="button" v-if="currentGameStep === 0" v-on:click="next()">Start Game</button>
