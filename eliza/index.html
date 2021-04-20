@@ -61,6 +61,21 @@
             </div>
             <br />
             <button class="button" v-on:click="startGame">Proceed to Setup</button>
+            <br /><br />
+            <h3>Notes</h3>
+            <ul style="padding: 0 1rem;">
+                <li class="action-desc">
+                    The app will refer to spaces in locations by number, for example "Coalbrookdale (Space 2)". The spaces are numbered from left-to-right, top-to-bottom. See the below reference:
+                    <br />
+                    <img src="images/Birmingham_Spaces.png" style="width: 350px;" />
+                </li>
+                <li class="action-desc">
+                    The app will explain how to setup the game. You will tell the app what you are doing, and the app will tell you what the solo opponents do. We recommend telling the app what you're doing as you do it.
+                </li>
+                <li class="action-desc">
+                    If you think the app is making a mistake, use the 'View Board State' link at the top of the app to compare your physical board with the app's.
+                </li>
+            </ul>
         </section>
         <section class="playerArea" v-if="gameHasStarted">
             <section class="start-new text-centered">
