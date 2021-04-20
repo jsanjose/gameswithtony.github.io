@@ -1926,7 +1926,7 @@ var app = new Vue({
                         }
 
                         // if we are linking in the rail era, a coal will be needed (plus 5VP for every network action)
-                        if (actiondata.linktargetlocationid1 && this.currentEra === ERA.Rail) {
+                        if (actiondata.linktargetlocationid1 !== null && actiondata.linktargetlocationid1 !== undefined && this.currentEra === ERA.Rail) {
                             actiondata.addVP = actiondata.addVP + addVPRailEra;
                             actiondata.neededCoal = actiondata.neededCoal + 1;
                         }
