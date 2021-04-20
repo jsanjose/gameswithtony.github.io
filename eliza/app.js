@@ -1452,7 +1452,6 @@ var app = new Vue({
                     } else {
                         location.totalLinkVPs = location.totalLinkVPs + tile.LinkVPs;
                     }
-                    console.log(location);
                 });
             }
             // check free develop
