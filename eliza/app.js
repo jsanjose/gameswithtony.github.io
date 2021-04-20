@@ -2035,7 +2035,7 @@ var app = new Vue({
                     actionstring = '';
                     actionstring = 'Move ' + this.currentPlayer.nextAction.actiondata.coalMoved + ' coal to the market (leaving ' + (this.currentPlayer.nextAction.actiondata.industrytile.availableCoal - this.currentPlayer.nextAction.actiondata.coalMoved) + ' coal on the tile.)';
 
-                    if (this.currentPlayer.nextAction.actiondata.willFlip) {
+                    if ((this.currentPlayer.nextAction.actiondata.industrytile.availableCoal - this.currentPlayer.nextAction.actiondata.coalMoved) === 0) {
                         actionstring = actionstring + ' [[ Flips the tile! ]]';
                     }
                     
@@ -2052,7 +2052,7 @@ var app = new Vue({
                     actionstring = '';
                     actionstring = 'Move ' + this.currentPlayer.nextAction.actiondata.ironMoved + ' iron to the market (leaving ' + (this.currentPlayer.nextAction.actiondata.industrytile.availableIron - this.currentPlayer.nextAction.actiondata.ironMoved) + ' iron on the tile).';
 
-                    if (this.currentPlayer.nextAction.actiondata.willFlip) {
+                    if ((this.currentPlayer.nextAction.actiondata.industrytile.availableIron - this.currentPlayer.nextAction.actiondata.ironMoved) === 0) {
                         actionstring = actionstring + ' [[ Flips the tile! ]]';
                     }
                     
