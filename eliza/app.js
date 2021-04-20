@@ -131,7 +131,7 @@ var app = new Vue({
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
-            let gameState = JSON.parse(localStorage.getItem(LOCALSTORAGENAME));
+            let gameState = JSON.parse(LZString.decompress(localStorage.getItem(LOCALSTORAGENAME)));
             this.numberOfPlayers = gameState.numberOfPlayers;
             this.gameHasStarted = gameState.gameHasStarted;
             this.useTurnOrder = gameState.useTurnOrder;
@@ -3021,7 +3021,7 @@ var app = new Vue({
                     });
                 });
             }
-            
+
             return beerLocations;
         },
         findPlayerUnflippedBreweries: function (player_type) {
@@ -3755,7 +3755,7 @@ var app = new Vue({
             gameState.eleanor = this.eleanor;
             gameState.showBoardState = this.showBoardState;
             gameState.undoState = this.undoState;
-            localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
+            localStorage.setItem(LOCALSTORAGENAME, LZString.compress(JSON.stringify(gameState)));
         },
 
 
