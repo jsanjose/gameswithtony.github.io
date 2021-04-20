@@ -2483,7 +2483,7 @@ var app = new Vue({
                     if (this.totalEmptyMarketCoalSpaces > 0 && this.isConnectedToMarket(locationid, player_type)) {
                         let coalMoved = 0;
 
-                        if (this.totalEmptyMarketCoalSpaces > space.tile.availableCoal) {
+                        if (this.totalEmptyMarketCoalSpaces >= space.tile.availableCoal) {
                             coalMoved = space.tile.availableCoal;
                             space.tile.flipped = true;
                         } else {
@@ -2501,7 +2501,7 @@ var app = new Vue({
                     if (this.totalEmptyMarketIronSpaces > 0) {
                         let ironMoved = 0;
 
-                        if (this.totalEmptyMarketIronSpaces > space.tile.availableIron) {
+                        if (this.totalEmptyMarketIronSpaces >= space.tile.availableIron) {
                             ironMoved = space.tile.availableIron;
                             space.tile.flipped = true;
                         } else {
