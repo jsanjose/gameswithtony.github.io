@@ -1669,8 +1669,6 @@ var app = new Vue({
             // draw two cards
             player.currentCard1 = this.findCardById(player.cards.shift());
             player.currentCard2 = this.findCardById(player.cards.shift());
-            console.log(player.currentCard1.name);
-            console.log(player.currentCard2.name);
 
             let sell = false;
 
@@ -1973,7 +1971,7 @@ var app = new Vue({
                 let playerunflippedsellableindustriesconnectedtomarket = this.findPlayerUnflippedSellableIndustriesConnectedToMarket;
 
                 actiondata.industriestosell = playerunflippedsellableindustriesconnectedtomarket;
-console.log(playerunflippedsellableindustriesconnectedtomarket);
+
                 let neededBeer = _.sumBy(playerunflippedsellableindustriesconnectedtomarket, function (m) {
                     return m.tile.beerCost;
                 });
@@ -3023,7 +3021,7 @@ console.log(playerunflippedsellableindustriesconnectedtomarket);
                     });
                 });
             }
-            console.log(beerLocations)
+            
             return beerLocations;
         },
         findPlayerUnflippedBreweries: function (player_type) {
