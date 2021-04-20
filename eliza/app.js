@@ -1447,6 +1447,12 @@ var app = new Vue({
                     let location = self.findLocationById(t.locationid);
                     let tile = location.spaces[t.spaceid].tile;
                     tile.flipped = true;
+                    if (!location.totalLinkVPs) {
+                        location.totalLinkVPs = tile.LinkVPs;
+                    } else {
+                        location.totalLinkVPs = location.totalLinkVPs + tile.LinkVPs;
+                    }
+                    console.log(location);
                 });
             }
             // check free develop
@@ -1488,6 +1494,11 @@ var app = new Vue({
                         tile.availableCoal = tile.availableCoal - l.chosenCoal;
                         if (tile.availableCoal === 0) {
                             tile.flipped = true;
+                            if (!location.totalLinkVPs) {
+                                location.totalLinkVPs = tile.LinkVPs;
+                            } else {
+                                location.totalLinkVPs = location.totalLinkVPs + tile.LinkVPs;
+                            }
                         }
                     }
                 });
@@ -1510,6 +1521,11 @@ var app = new Vue({
                         tile.availableIron = tile.availableIron - l.chosenIron;
                         if (tile.availableIron === 0) {
                             tile.flipped = true;
+                            if (!location.totalLinkVPs) {
+                                location.totalLinkVPs = tile.LinkVPs;
+                            } else {
+                                location.totalLinkVPs = location.totalLinkVPs + tile.LinkVPs;
+                            }
                         }
                     }
                 });
@@ -1531,6 +1547,11 @@ var app = new Vue({
                         if (!l.isMerchant) {
                             if (l.beerAvailable === l.chosenBeer) {
                                 tile.flipped = true;
+                                if (!location.totalLinkVPs) {
+                                    location.totalLinkVPs = tile.LinkVPs;
+                                } else {
+                                    location.totalLinkVPs = location.totalLinkVPs + tile.LinkVPs;
+                                }
                             }
                         }
 
@@ -2220,6 +2241,11 @@ var app = new Vue({
                     let location = self.findLocationById(t.locationid);
                     let tile = location.spaces[t.spaceid].tile;
                     tile.flipped = true;
+                    if (!location.totalLinkVPs) {
+                        location.totalLinkVPs = tile.LinkVPs;
+                    } else {
+                        location.totalLinkVPs = location.totalLinkVPs + tile.LinkVPs;
+                    }
                 });
 
                 // consume beer
@@ -2239,6 +2265,11 @@ var app = new Vue({
                             if (!l.isMerchant) {
                                 if (l.beerAvailable === l.beerConsumed) {
                                     tile.flipped = true;
+                                    if (!location.totalLinkVPs) {
+                                        location.totalLinkVPs = tile.LinkVPs;
+                                    } else {
+                                        location.totalLinkVPs = location.totalLinkVPs + tile.LinkVPs;
+                                    }
                                 }
                             }
     
@@ -2474,6 +2505,12 @@ var app = new Vue({
                     return p.id === spaceid;
                 });
                 space.tile = _.cloneDeep(tile);
+                // increment the possible link VPs
+                if (!location.possibleLinkVPs) {
+                    location.possibleLinkVPs = tile.LinkVPs;
+                } else {
+                    location.possibleLinkVPs = location.possibleLinkVPs + tile.LinkVPs;
+                }
 
                 // If building beer, update availableBeer to 2 if in Rail Era
                 if (space.tile.industrytype === INDUSTRY.Brewery && this.currentEra === ERA.Rail) {
@@ -2488,6 +2525,11 @@ var app = new Vue({
                         if (this.totalEmptyMarketCoalSpaces >= space.tile.availableCoal) {
                             coalMoved = space.tile.availableCoal;
                             space.tile.flipped = true;
+                            if (!location.totalLinkVPs) {
+                                location.totalLinkVPs = tile.LinkVPs;
+                            } else {
+                                location.totalLinkVPs = location.totalLinkVPs + tile.LinkVPs;
+                            }
                         } else {
                             coalMoved = this.totalEmptyMarketCoalSpaces;
                         }
@@ -2506,6 +2548,11 @@ var app = new Vue({
                         if (this.totalEmptyMarketIronSpaces >= space.tile.availableIron) {
                             ironMoved = space.tile.availableIron;
                             space.tile.flipped = true;
+                            if (!location.totalLinkVPs) {
+                                location.totalLinkVPs = tile.LinkVPs;
+                            } else {
+                                location.totalLinkVPs = location.totalLinkVPs + tile.LinkVPs;
+                            }
                         } else {
                             ironMoved = this.totalEmptyMarketIronSpaces;
                         }
