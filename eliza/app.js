@@ -2112,7 +2112,7 @@ var app = new Vue({
                 if (this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
                     actionstring = actionstring + 'Could not network, so gains ' + this.currentPlayer.nextAction.actiondata.addVP + 'VP (now has ' + (this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP) + 'VP in total).';
                 } else {
-                    if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== undefined) {
+                    if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== undefined && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== undefined) {
                         let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
                         let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
 
@@ -2198,7 +2198,7 @@ var app = new Vue({
                 }
 
                 // Network
-                if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1) {
+                if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== undefined) {
                     this.layNetworkTile(this.currentPlayer.player_type, this.currentPlayer.nextAction.actiondata.linktargetlocationid1, this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
 
                     if (this.currentEra === ERA.Rail) {
