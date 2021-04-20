@@ -2109,13 +2109,15 @@ var app = new Vue({
                 // Network
                 actionstring = '';
                 // Add VP
-                if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 && this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
+                if (this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
                     actionstring = actionstring + 'Could not network, so gains ' + this.currentPlayer.nextAction.actiondata.addVP + 'VP (now has ' + (this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP) + 'VP in total).';
                 } else {
-                    let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
-                    let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
+                    if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 && this.currentPlayer.nextAction.actiondata.linktargetlocationid2) {
+                        let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
+                        let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
 
-                    actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name + '.';
+                        actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name + '.';
+                    }
                 }
 
                 actions.push({
