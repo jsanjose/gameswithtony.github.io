@@ -2132,7 +2132,7 @@ var app = new Vue({
                 _.forEach(this.currentPlayer.nextAction.actiondata.industriestosell, function (l) {
                     let actionstring = '';
 
-                    actionstring = actionstring + 'Sell ' + self.tileToString(l.tile) + ' in ' + l.name + ' (Space' + l.spaceid + ').';
+                    actionstring = actionstring + 'Sell ' + self.tileToString(l.tile) + ' in ' + l.name + ' (Space ' + l.spaceid + ').';
                     actions.push({
                         id: actionid,
                         actionDone: false,
