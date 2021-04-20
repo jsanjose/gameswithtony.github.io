@@ -1158,7 +1158,7 @@ var app = new Vue({
 
                 // Note iron moving to market
                 if (this.humanPlayer.nextAction.actiondata.buildtile.industrytype === INDUSTRY.IronWorks) {
-                    if (this.totalEmptyMarketIronSpaces > 0 && this.isConnectedToMarket(this.humanPlayer.nextAction.actiondata.buildlocationid, PLAYER_TYPE.Human)) {
+                    if (this.totalEmptyMarketIronSpaces > 0) {
                         let ironMoved = 0;
 
                         if (this.totalEmptyMarketIronSpaces > this.humanPlayer.nextAction.actiondata.buildtile.availableIron) {
@@ -2500,7 +2500,7 @@ console.log(playerunflippedsellableindustriesconnectedtomarket);
 
                 // Move iron to market (if applicable)
                 if (space.tile.industrytype === INDUSTRY.IronWorks) {
-                    if (this.totalEmptyMarketIronSpaces > 0 && this.isConnectedToMarket(locationid, player_type)) {
+                    if (this.totalEmptyMarketIronSpaces > 0) {
                         let ironMoved = 0;
 
                         if (this.totalEmptyMarketIronSpaces > space.tile.availableIron) {
