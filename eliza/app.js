@@ -127,7 +127,8 @@ var app = new Vue({
         humanActionStringMap: _.cloneDeep(humanActionStringMap),
         undoState: null,
         isDisabledButton: false,
-        isAIThinking: false
+        isAIThinking: false,
+        isCalculatingScore: false
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -1643,7 +1644,7 @@ var app = new Vue({
                         if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
                             this.computedUpdater++;
                             this.isAIThinking = true;
-                            setTimeout(function() { self.calculateAIAction(self.currentPlayerType) }, 0);
+                            setTimeout(function() { Vue.nextTick(function() { self.calculateAIAction(self.currentPlayerType) } ); }, 0);
                         };
                     } else {
                         this.calculateScore();
@@ -1653,7 +1654,7 @@ var app = new Vue({
                     if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
                         this.computedUpdater++;
                         this.isAIThinking = true;
-                        setTimeout(function() { self.calculateAIAction(self.currentPlayerType) }, 0);
+                        setTimeout(function() { Vue.nextTick(function() { self.calculateAIAction(self.currentPlayerType) } ); }, 0);
                     }
                     this.currentGameStep = 2;
                 }
@@ -1666,7 +1667,7 @@ var app = new Vue({
                     this.currentPlayer.nextAction.actiondata = {};
                     this.currentPlayer.nextAction.actiondesc = [];
                     this.isAIThinking = true;
-                    setTimeout(function() { self.calculateAIAction(self.currentPlayerType) }, 0);
+                    setTimeout(function() { Vue.nextTick(function() { self.calculateAIAction(self.currentPlayerType) } ); }, 0);
                     return;
                 }
             }
