@@ -316,7 +316,10 @@
             </section>
             <section v-if="currentGameStep === 3">
                 <p class="action-header">Rail Era Begins<br /><span class="action-message">Current score and setup instructions below. Click 'Next' to continue.</span></p>
-                <section class="score">
+                <section class="score" v-if="isCalculatingScore">
+                    <p>Please wait, calculating score...</p>
+                </section>
+                <section class="score" v-if="!isCalculatingScore">
                     <p v-for="player in getPlayersWithScores()" v-bind:class="{ winning: player.isWinning }">
                         {{ player.name }}: {{ player.totalVP }} VPs<br />
                         <span class="text-tiny">VPs from Industries: {{ player.canalTileVP }}&nbsp;&nbsp;|&nbsp;&nbsp;VPs from Links: {{ player.canalLinkVP }}</span>
@@ -336,7 +339,10 @@
             </section>
             <section v-if="currentGameStep === 4">
                 <p class="action-header">Final Score<br /><span class="action-message">Hope you enjoyed the game!</span></p>
-                <section class="score">
+                <section class="score" v-if="isCalculatingScore">
+                    <p>Please wait, calculating score...</p>
+                </section>
+                <section class="score" v-if="!isCalculatingScore">
                     <p v-for="player in getPlayersWithScores()" v-bind:class="{ winning: player.isWinning }">
                         {{ player.name }}: {{ player.totalVP }} VPs<br />
                         <span class="text-tiny">VPs from Industries: {{ player.railTileVP }}&nbsp;&nbsp;|&nbsp;&nbsp;VPs from Links: {{ player.railLinkVP }}</span>

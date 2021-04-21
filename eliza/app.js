@@ -1638,7 +1638,8 @@ var app = new Vue({
                 // check if end of era
                 if (this.currentRound > this.roundsPerEra()) {
                     if (this.currentEra === ERA.Canal) {
-                        this.calculateScore();
+                        this.isCalculatingScore = true;
+                        setTimeout(function() { Vue.nextTick(function() { self.calculateScore(); } ); }, 0);
                         this.setupRailEra();
                         this.currentGameStep = GAME_STEPS.SetupRailEra;
                         if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
@@ -1647,7 +1648,8 @@ var app = new Vue({
                             setTimeout(function() { Vue.nextTick(function() { self.calculateAIAction(self.currentPlayerType) } ); }, 0);
                         };
                     } else {
-                        this.calculateScore();
+                        this.isCalculatingScore = true;
+                        setTimeout(function() { Vue.nextTick(function() { self.calculateScore(); } ); }, 0);
                         this.currentGameStep = GAME_STEPS.FinalScore;
                     }
                 } else {
@@ -2508,6 +2510,8 @@ var app = new Vue({
                     p.canalTotalVP = p.totalVP;
                 }
             });
+
+            this.isCalculatingScore = false;
         },
         getPlayersWithScores: function () {
             let players = [];
