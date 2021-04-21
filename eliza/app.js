@@ -159,7 +159,7 @@ var app = new Vue({
         },
         nextButtonText: function () {
             this.computedUpdater++;
-            return this.isAIThinking ? "Thinking..." : "Next >>";
+            return this.isAIThinking ? "Please wait..." : "Next >>";
         },
         playersInOrder: function () {
             let players = [];
@@ -1643,7 +1643,7 @@ var app = new Vue({
                         if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
                             this.computedUpdater++;
                             this.isAIThinking = true;
-                            setTimeout(this.calculateAIAction(this.currentPlayerType), 0);
+                            setTimeout(function() { self.calculateAIAction(self.currentPlayerType) }, 0);
                         };
                     } else {
                         this.calculateScore();
@@ -1653,7 +1653,7 @@ var app = new Vue({
                     if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
                         this.computedUpdater++;
                         this.isAIThinking = true;
-                        setTimeout(this.calculateAIAction(this.currentPlayerType), 0);
+                        setTimeout(function() { self.calculateAIAction(self.currentPlayerType) }, 0);
                     }
                     this.currentGameStep = 2;
                 }
@@ -1662,8 +1662,11 @@ var app = new Vue({
 
                 if (nextPlayer.player_type === PLAYER_TYPE.Eliza_AI || nextPlayer.player_type === PLAYER_TYPE.Eleanor_AI) {
                     this.computedUpdater++;
+                    this.currentPlayer.nextAction.action = AI_ACTION.Thinking;
+                    this.currentPlayer.nextAction.actiondata = {};
+                    this.currentPlayer.nextAction.actiondesc = [];
                     this.isAIThinking = true;
-                    setTimeout(this.calculateAIAction(this.currentPlayerType), 0);
+                    setTimeout(function() { self.calculateAIAction(self.currentPlayerType) }, 0);
                     return;
                 }
             }
@@ -2114,6 +2117,16 @@ var app = new Vue({
         getAIActionDescription: function () {
             let self = this;
             let actions = [];
+
+            if (this.currentPlayer.nextAction.action === AI_ACTION.Thinking) {
+                actions.push({
+                    id: 1,
+                    actionDone: false,
+                    actionDesc: 'Thinking about it...'
+                });
+                return actions;
+            }
+
             let actionid = new Number((this.currentPlayerType + 1) + '0' + this.currentRound).valueOf();
 
             if (this.currentPlayer.nextAction.action === AI_ACTION.BuildAndNetwork || this.currentPlayer.nextAction.action === AI_ACTION.NetworkCouldntSell) {
