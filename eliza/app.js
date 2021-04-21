@@ -844,6 +844,11 @@ var app = new Vue({
             let totalBeerNeeded = _.sumBy(selectedTiles, function (t) {
                 return t.tile.beerCost;
             });
+
+            if (totalBeerNeeded === 0) {
+                this.setHumanAction('22');
+                return;
+            }
             
             this.humanPlayer.nextAction.actiondata.consumelocations = this.humanConsumeLocations(locationids, 0, 0, totalBeerNeeded);
 
@@ -2013,7 +2018,88 @@ var app = new Vue({
                 }
 
                 if (playerunflippedsellableindustriesconnectedtomarket.length === 0) {
-                    actiondata.addVP = 5;
+                    // couldn't sell, first check if can get some points networking
+
+                    let networkLocations = this.findAllLocationsInNetwork(this.currentPlayer.player_type);
+
+                    let sortedLocationsByLinkVP = [];
+                    let locationsWithPossibleVPs = _.filter(networkLocations, function (l) {
+                        return l.possibleLinkVPs;
+                    });
+                    let locationsWithTotalLinkVPs = _.filter(networkLocations, function (l) {
+                        return l.totalLinkVPs;
+                    });
+
+                    sortedLocationsByLinkVP = _.orderBy(locationsWithPossibleVPs, [function (l) { return l.possibleLinkVPs }], ['desc']);
+
+                    if (this.currentRound > 5) {
+                        // if later in the round, prefer locations with flipped industries, otherwise stick with locations with unflipped
+                        if (locationsWithTotalLinkVPs.length > 0) {
+                            sortedLocationsByLinkVP = _.orderBy(locationsWithTotalLinkVPs, [function (l) { return l.totalLinkVPs }], ['desc']);
+                        }
+                    }
+
+                    if (sortedLocationsByLinkVP.length > 0) {
+                        let locationfromid = null;
+                        let locationtoid = null;
+
+                        let l = sortedLocationsByLinkVP[0];
+                        let self2 = this;
+                        _.forEach(sortedLocationsByLinkVP, function (l) {
+                            if (locationtoid === null || locationtoid === undefined) {
+                                let edges = [];
+                                let sellAdjacentIndustryLocations = [];
+        
+                                if (self2.currentEra === ERA.Canal) {
+                                    edges = l.edgesCanal;
+                                } else {
+                                    edges = l.edgesRail;
+                                }
+        
+                                // get adjacent locations with no link
+                                _.forEach(edges, function (e) {
+                                    let adjacentlocation = self2.findLocationById(e.toId);
+        
+                                    if (!adjacentlocation.isSouthernFarm && !e.tile) {
+                                        sellAdjacentIndustryLocations.push(adjacentlocation);
+                                    }
+                                });
+
+                                // find best adjacent
+                                let sortedAdjacentLocationsByLinkVP = [];
+                                let adjacentLocationsWithPossibleVPs = _.filter(sellAdjacentIndustryLocations, function (lvp) {
+                                    return lvp.possibleLinkVPs;
+                                });
+                                let adjacentLocationsWithTotalLinkVPs = _.filter(sellAdjacentIndustryLocations, function (lvp) {
+                                    return lvp.totalLinkVPs;
+                                });
+                                
+                                sortedAdjacentLocationsByLinkVP = _.orderBy(adjacentLocationsWithPossibleVPs, [function (lvp) { return lvp.possibleLinkVPs }], ['desc']);
+
+                                if (self2.currentRound > 5) {
+                                    // if later in the round, prefer adjacent locations with flipped industries, otherwise stick with locations with unflipped
+                                    if (adjacentLocationsWithTotalLinkVPs.length > 0) {
+                                        sortedAdjacentLocationsByLinkVP = _.orderBy(adjacentLocationsWithTotalLinkVPs, [function (lvp) { return lvp.totalLinkVPs }], ['desc']);
+                                    }
+                                }
+
+                                if (sortedAdjacentLocationsByLinkVP.length > 0) {
+                                    locationfromid = l.id;
+                                    locationtoid = sortedAdjacentLocationsByLinkVP[0].id;
+                                }
+                            }
+                        });
+
+                        if (!(locationfromid === null || locationfromid === undefined) && !(locationtoid === null || locationtoid === undefined)) {
+                            action = AI_ACTION.NetworkCouldntSell;
+                            actiondata.linktargetlocationid1 = locationfromid;
+                            actiondata.linktargetlocationid2 = locationtoid;
+                        } else {
+                            actiondata.addVP = 5;
+                        }
+                    } else {
+                        actiondata.addVP = 5;
+                    }
                 }
 
                 player.nextAction.action = action;
@@ -2030,19 +2116,21 @@ var app = new Vue({
             let actions = [];
             let actionid = new Number((this.currentPlayerType + 1) + '0' + this.currentRound).valueOf();
 
-            if (this.currentPlayer.nextAction.action === AI_ACTION.BuildAndNetwork) {
+            if (this.currentPlayer.nextAction.action === AI_ACTION.BuildAndNetwork || this.currentPlayer.nextAction.action === AI_ACTION.NetworkCouldntSell) {
                 let actionstring = '';
 
-                // If Build and Network
-                let location = this.findLocationById(this.currentPlayer.nextAction.actiondata.locationid);
-                actionstring = actionstring + 'Build ' + this.tileToString(this.currentPlayer.nextAction.actiondata.industrytile) + ' in ' + location.name + ' (Space ' + (this.currentPlayer.nextAction.actiondata.spaceid + 1) + ').';
+                if (this.currentPlayer.nextAction.action === AI_ACTION.BuildAndNetwork) {
+                    // If Build and Network
+                    let location = this.findLocationById(this.currentPlayer.nextAction.actiondata.locationid);
+                    actionstring = actionstring + 'Build ' + this.tileToString(this.currentPlayer.nextAction.actiondata.industrytile) + ' in ' + location.name + ' (Space ' + (this.currentPlayer.nextAction.actiondata.spaceid + 1) + ').';
 
-                actions.push({
-                    id: actionid,
-                    actionDone: false,
-                    actionDesc: actionstring
-                });
-                actionid = actionid + 1;
+                    actions.push({
+                        id: actionid,
+                        actionDone: false,
+                        actionDesc: actionstring
+                    });
+                    actionid = actionid + 1;
+                }
 
                 /*actionstring = 'Spends £' + this.currentPlayer.nextAction.actiondata.industrytile.poundsCost + '.';
                 actions.push({
@@ -2136,7 +2224,13 @@ var app = new Vue({
                         let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
                         let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
 
-                        actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name + '.';
+                        actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
+
+                        if (this.currentEra === ERA.Rail && this.currentPlayer.nextAction.action === AI_ACTION.NetworkCouldntSell) {
+                            actionstring = actionstring + ' (no coal cost)';
+                        }
+
+                        actionstring = actionstring + '.';
                     }
                 }
 
@@ -2205,16 +2299,19 @@ var app = new Vue({
             this.currentPlayer.currentRoundComplete = true;
 
             // If Build/Network
-            if (this.currentPlayer.nextAction.action === AI_ACTION.BuildAndNetwork) {
-                let industrytile = this.currentPlayer.nextAction.actiondata.industrytile;
+            if (this.currentPlayer.nextAction.action === AI_ACTION.BuildAndNetwork || this.currentPlayer.nextAction.action === AI_ACTION.NetworkCouldntSell) {
 
-                // Build
-                this.layIndustryTile(this.currentPlayer.player_type, industrytile.id, this.currentPlayer.nextAction.actiondata.locationid, this.currentPlayer.nextAction.actiondata.spaceid);
+                if (this.currentPlayer.nextAction.action === AI_ACTION.BuildAndNetwork) {
+                    let industrytile = this.currentPlayer.nextAction.actiondata.industrytile;
 
-                if (!this.currentPlayer.amountSpentThisRound) {
-                    this.currentPlayer.amountSpentThisRound = industrytile.poundsCost;
-                } else {
-                    this.currentPlayer.amountSpentThisRound = this.currentPlayer.amountSpentThisRound + industrytile.poundsCost;
+                    // Build
+                    this.layIndustryTile(this.currentPlayer.player_type, industrytile.id, this.currentPlayer.nextAction.actiondata.locationid, this.currentPlayer.nextAction.actiondata.spaceid);
+
+                    if (!this.currentPlayer.amountSpentThisRound) {
+                        this.currentPlayer.amountSpentThisRound = industrytile.poundsCost;
+                    } else {
+                        this.currentPlayer.amountSpentThisRound = this.currentPlayer.amountSpentThisRound + industrytile.poundsCost;
+                    }
                 }
 
                 // Network

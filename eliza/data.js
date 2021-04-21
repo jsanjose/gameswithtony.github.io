@@ -37,7 +37,8 @@ const humanActionStringMap = {
 
 const AI_ACTION = {
     BuildAndNetwork: 0,
-    Sell: 1
+    Sell: 1,
+    NetworkCouldntSell: 2
 }
 const AIActionStringMap = {
     0: "Build and Network",
