@@ -1520,8 +1520,8 @@ const INDUSTRY_TILES = [
     createIndustryTile(2, INDUSTRY.CoalMine, false, 2, 7, 0, 0, null, 2, 1, 7, 3, 0, 0),
     createIndustryTile(3, INDUSTRY.CoalMine, false, 3, 8, 0, 1, null, 3, 1, 6, 4, 0, 0),
     createIndustryTile(4, INDUSTRY.CoalMine, false, 3, 8, 0, 1, null, 3, 1, 6, 4, 0, 0),
-    createIndustryTile(5, INDUSTRY.CoalMine, false, 4, 10, 0, 1, null, 4, 1, 5, 4, 0, 0),
-    createIndustryTile(6, INDUSTRY.CoalMine, false, 4, 10, 0, 1, null, 4, 1, 5, 4, 0, 0),
+    createIndustryTile(5, INDUSTRY.CoalMine, false, 4, 10, 0, 1, null, 4, 1, 5, 5, 0, 0),
+    createIndustryTile(6, INDUSTRY.CoalMine, false, 4, 10, 0, 1, null, 4, 1, 5, 5, 0, 0),
 
     // iron works
     createIndustryTile(7, INDUSTRY.IronWorks, true, 1, 5, 1, 0, null, 3, 1, 3, 0, 4, 0),
