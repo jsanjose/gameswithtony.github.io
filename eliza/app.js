@@ -1636,8 +1636,7 @@ var app = new Vue({
                 if (this.currentRound > this.roundsPerEra()) {
                     if (this.currentEra === ERA.Canal) {
                         this.isCalculatingScore = true;
-                        setTimeout(function() { Vue.nextTick(function() { self.calculateScore(); } ); }, 0);
-                        this.setupRailEra();
+                        setTimeout(function() { Vue.nextTick(function() { self.calculateScore(); this.setupRailEra(); } ); }, 0);
                         this.currentGameStep = GAME_STEPS.SetupRailEra;
                         if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
                             this.computedUpdater++;
