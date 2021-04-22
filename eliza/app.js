@@ -2486,14 +2486,14 @@ var app = new Vue({
 
                         if (l.type === LOCATIONTYPE.Industries) {
                             _.forEach(l.spaces, function (s) {
-                                if (s.tile) {
+                                if (s.tile && s.tile.flipped) {
                                     locationLinkVPs = locationLinkVPs + s.tile.LinkVPs;
                                 }
                             });
                         }
 
                         _.forEach(edges, function (e) {
-                            if (e.tile && e.tile.color === p.color) {
+                            if (e.tile && e.tile.color === p.color && !e.isToSouthernFarm) {
                                 if (self.currentEra === ERA.Canal) {
                                     p.canalLinkVP = p.canalLinkVP + locationLinkVPs;
                                 } else {
