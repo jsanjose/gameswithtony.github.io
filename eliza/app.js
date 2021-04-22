@@ -243,11 +243,8 @@ var app = new Vue({
                 }
 
                 if (tile.ironCost > 0) {
-                    let allUnflippedIron = self.findAllUnflippedIronWorks();
-
-                    if (!isConnectedToMarket && (!allUnflippedIron.length || allUnflippedIron.length === 0)) {
-                        resourcesAvailable = false;
-                    }
+                    // you don't need to be connected to the iron market
+                    // so nothing to do here!
                 }
 
                 if (resourcesAvailable) {
