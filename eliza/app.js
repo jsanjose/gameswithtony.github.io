@@ -2331,12 +2331,12 @@ var app = new Vue({
                 if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== undefined) {
                     this.layNetworkTile(this.currentPlayer.player_type, this.currentPlayer.nextAction.actiondata.linktargetlocationid1, this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
 
-                    if (this.currentEra === ERA.Rail) {
-                        if (!this.currentPlayer.amountSpentThisRound) {
-                            this.currentPlayer.amountSpentThisRound = 5;
-                        } else {
-                            this.currentPlayer.amountSpentThisRound = this.currentPlayer.amountSpentThisRound + 5;
-                        }
+                    let networkcost = this.currentEra === ERA.Canal ? CANALERANETWORKCOST : RAILERANETWORKCOST;
+
+                    if (!this.currentPlayer.amountSpentThisRound) {
+                        this.currentPlayer.amountSpentThisRound = networkcost;
+                    } else {
+                        this.currentPlayer.amountSpentThisRound = this.currentPlayer.amountSpentThisRound + networkcost;
                     }
                 }
 
