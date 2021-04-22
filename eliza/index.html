@@ -191,7 +191,10 @@
 
                     <section v-if="humanPlayer.actionStep === '11' || humanPlayer.actionStep === '51' || humanPlayer.actionStep === '53'">
                         <a href="#" v-on:click="prevNetworkLocationFrom()">< Go Back</a>
-                        <p class="action-header"><span v-if="humanPlayer.actionStep === '51'">1st link: </span><span v-if="humanPlayer.actionStep === '53'">2nd link: </span>Where are you networking to?</p> 
+                        <p class="action-header"><span v-if="humanPlayer.actionStep === '51'">1st link: </span><span v-if="humanPlayer.actionStep === '53'">2nd link: </span>Where are you networking to?</p>
+                        <p v-if="humanPlayer.nextAction.actiondata.networkfromlocationid === 22">
+                            NOTE: When networking from the Southern Farm Brewery, it does not matter if you choose Kidderminster or Worcester. Connections will be made between all 3 locations.
+                        </p>
                         <ul class="cards">
                             <li class="card card--clickable" v-for="location in findAdjacentIndustryLocationsForHumanNetwork()" :key="location.id" v-on:click="setNetworkLocationTo(location.id)">
                                 <p class="card__name">{{ location.name }}</p>
