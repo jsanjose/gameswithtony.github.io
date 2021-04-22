@@ -1584,7 +1584,7 @@ var app = new Vue({
         calculateNextPlayer: function () {
             let self = this;
             if (this.currentPlayerType === PLAYER_TYPE.Human) {
-                if (this.humanPlayer.currentTurnIndex === 0 && this.currentRound > 1) { 
+                if (this.humanPlayer.currentTurnIndex === 0 && (this.currentRound > 1 || this.currentEra === ERA.Rail)) { 
                     this.humanPlayer.currentTurnIndex = 1;
                     this.resetHumanAction();
                     this.saveGameState();
