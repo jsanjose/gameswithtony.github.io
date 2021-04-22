@@ -1526,8 +1526,8 @@ const INDUSTRY_TILES = [
     // iron works
     createIndustryTile(7, INDUSTRY.IronWorks, true, 1, 5, 1, 0, null, 3, 1, 3, 0, 4, 0),
     createIndustryTile(8, INDUSTRY.IronWorks, false, 2, 7, 1, 0, null, 5, 1, 3, 0, 4, 0),
-    createIndustryTile(9, INDUSTRY.IronWorks, false, 3, 9, 1, 0, null, 7, 1, 2, 0, 4, 0),
-    createIndustryTile(10, INDUSTRY.IronWorks, false, 4, 12, 1, 0, null, 9, 1, 1, 0, 4, 0),
+    createIndustryTile(9, INDUSTRY.IronWorks, false, 3, 9, 1, 0, null, 7, 1, 2, 0, 5, 0),
+    createIndustryTile(10, INDUSTRY.IronWorks, false, 4, 12, 1, 0, null, 9, 1, 1, 0, 6, 0),
 
     // potteries
     createIndustryTile(11, INDUSTRY.Pottery, false, 1, 17, 0, 1, 1, 10, 1, 5, 0, 0, 0),
