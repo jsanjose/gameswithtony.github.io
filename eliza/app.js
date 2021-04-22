@@ -128,7 +128,9 @@ var app = new Vue({
         undoState: null,
         isDisabledButton: false,
         isAIThinking: false,
-        isCalculatingScore: false
+        isCalculatingScore: false,
+        finishedCanalScore: false,
+        finishedRailScore: false
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -2437,72 +2439,88 @@ var app = new Vue({
         },
         calculateScore: function () {
             let self = this;
-            _.forEach(this.playersInOrder, function (p) {
-                // calculate flipped industry tile scores
-                _.forEach(self.board.locations, function (l) {
-                    if (l.type === LOCATIONTYPE.Industries) {
-                        _.forEach(l.spaces, function (s) {
-                            if (s.tile && s.tile.color === p.color && s.tile.flipped) {
+
+            let finishedScore = false;
+            if (this.currentEra === ERA.Canal) {
+                finishedScore = this.finishedCanalScore;
+            } else {
+                finishedScore = this.finishedRailScore;
+            }
+
+            if (!finishedScore) {
+                _.forEach(this.playersInOrder, function (p) {
+                    // calculate flipped industry tile scores
+                    _.forEach(self.board.locations, function (l) {
+                        if (l.type === LOCATIONTYPE.Industries) {
+                            _.forEach(l.spaces, function (s) {
+                                if (s.tile && s.tile.color === p.color && s.tile.flipped) {
+                                    if (self.currentEra === ERA.Canal) {
+                                        p.canalTileVP = p.canalTileVP + s.tile.VPs;
+                                    } else {
+                                        p.railTileVP = p.railTileVP + s.tile.VPs;
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                    if (self.currentEra === ERA.Canal) {
+                        p.totalVP = p.totalVP + p.canalTileVP;
+                    } else {
+                        p.totalVP = p.totalVP + p.railTileVP;
+                    }
+
+                    // calculate link scores
+                    _.forEach(self.board.locations, function (l) {
+                        let edges = [];
+                        if (self.currentEra === ERA.Canal) {
+                            edges = l.edgesCanal;
+                        } else {
+                            edges = l.edgesRail;
+                        }
+
+                        let locationLinkVPs = 0;
+                        if (l.type === LOCATIONTYPE.Merchants) {
+                            locationLinkVPs = 2;
+                        }
+
+                        if (l.type === LOCATIONTYPE.Industries) {
+                            _.forEach(l.spaces, function (s) {
+                                if (s.tile) {
+                                    locationLinkVPs = locationLinkVPs + s.tile.LinkVPs;
+                                }
+                            });
+                        }
+
+                        _.forEach(edges, function (e) {
+                            if (e.tile && e.tile.color === p.color) {
                                 if (self.currentEra === ERA.Canal) {
-                                    p.canalTileVP = p.canalTileVP + s.tile.VPs;
+                                    p.canalLinkVP = p.canalLinkVP + locationLinkVPs;
                                 } else {
-                                    p.railTileVP = p.railTileVP + s.tile.VPs;
+                                    p.railLinkVP = p.railLinkVP + locationLinkVPs;
                                 }
                             }
                         });
-                    }
-                });
-
-                if (self.currentEra === ERA.Canal) {
-                    p.totalVP = p.totalVP + p.canalTileVP;
-                } else {
-                    p.totalVP = p.totalVP + p.railTileVP;
-                }
-
-                // calculate link scores
-                _.forEach(self.board.locations, function (l) {
-                    let edges = [];
-                    if (self.currentEra === ERA.Canal) {
-                        edges = l.edgesCanal;
-                    } else {
-                        edges = l.edgesRail;
-                    }
-
-                    let locationLinkVPs = 0;
-                    if (l.type === LOCATIONTYPE.Merchants) {
-                        locationLinkVPs = 2;
-                    }
-
-                    if (l.type === LOCATIONTYPE.Industries) {
-                        _.forEach(l.spaces, function (s) {
-                            if (s.tile) {
-                                locationLinkVPs = locationLinkVPs + s.tile.LinkVPs;
-                            }
-                        });
-                    }
-
-                    _.forEach(edges, function (e) {
-                        if (e.tile && e.tile.color === p.color) {
-                            if (self.currentEra === ERA.Canal) {
-                                p.canalLinkVP = p.canalLinkVP + locationLinkVPs;
-                            } else {
-                                p.railLinkVP = p.railLinkVP + locationLinkVPs;
-                            }
-                        }
                     });
+
+                    if (self.currentEra === ERA.Canal) {
+                        p.totalVP = p.totalVP + p.canalLinkVP;
+                    } else {
+                        p.totalVP = p.totalVP + p.railLinkVP;
+                    }
+
+                    if (self.currentEra === ERA.Canal) {
+                        p.canalTotalVP = p.totalVP;
+                    }
                 });
 
                 if (self.currentEra === ERA.Canal) {
-                    p.totalVP = p.totalVP + p.canalLinkVP;
+                    this.finishedCanalScore = true;
                 } else {
-                    p.totalVP = p.totalVP + p.railLinkVP;
+                    this.finishedRailScore = true;
                 }
-
-                if (self.currentEra === ERA.Canal) {
-                    p.canalTotalVP = p.totalVP;
-                }
-            });
-
+            }
+            this.saveGameState();
             this.isCalculatingScore = false;
         },
         getPlayersWithScores: function () {
@@ -2553,6 +2571,8 @@ var app = new Vue({
                     });
                 }
             });
+
+            this.saveGameState();
 
             // NOTE: don't need to clear link tiles, because each era has its own array of connections
         },
@@ -3853,6 +3873,8 @@ var app = new Vue({
             this.eliza = _.cloneDeep(ELIZA);
             this.eleanor = _.cloneDeep(ELEANOR);
             this.showBoardState = false;
+            this.finishedCanalScore = false;
+            this.finishedRailScore = false;
             this.undoState = null;
             this.saveGameState();
         },
@@ -3875,6 +3897,8 @@ var app = new Vue({
             undoState.eliza = _.cloneDeep(this.eliza);
             undoState.eleanor = _.cloneDeep(this.eleanor);
             undoState.showBoardState = this.showBoardState;
+            undoState.finishedCanalScore = this.finishedCanalScore;
+            undoState.finishedRailScore = this.finishedRailScore;
             undoState.undoState = null;
             this.undoState = undoState;
         },
@@ -3893,6 +3917,8 @@ var app = new Vue({
             this.eliza = _.cloneDeep(this.undoState.eliza);
             this.eleanor = _.cloneDeep(this.undoState.eleanor);
             this.showBoardState = this.undoState.showBoardState;
+            this.finishedCanalScore = this.undoState.finishedCanalScore;
+            this.finishedRailScore = this.undoState.finishedRailScore;
             this.undoState = null;
             this.saveGameState();
         },
@@ -3916,6 +3942,9 @@ var app = new Vue({
             gameState.eleanor = this.eleanor;
             gameState.showBoardState = this.showBoardState;
             gameState.undoState = this.undoState;
+            gameState.finishedCanalScore = this.finishedCanalScore;
+            gameState.finishedRailScore = this.finishedRailScore;
+            
             localStorage.setItem(LOCALSTORAGENAME, LZString.compress(JSON.stringify(gameState)));
         },
 
