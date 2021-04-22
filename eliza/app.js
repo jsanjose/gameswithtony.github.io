@@ -754,7 +754,7 @@ var app = new Vue({
                 }
 
                 return _.filter(edges, function (e) {
-                    return !e.tile && !e.isToSouthernFarm;
+                    return l.type === LOCATIONTYPE.Industries && !l.isSouthernFarm && !e.tile && !e.isToSouthernFarm;
                 }).length > 0;
             });
             
