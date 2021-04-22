@@ -1774,7 +1774,7 @@ var app = new Vue({
                             availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.IronWorks, false);
 
                             if (availablespaceid) {
-                                // if an iron works can be built in the location, then check if AI has unflipped coal mine
+                                // if an iron works can be built in the location, then check if AI has unflipped iron works
                                 if (!this.playerHasUnflippedIronWorks(player_type)) {
                                     build = true;
     
@@ -1784,20 +1784,16 @@ var app = new Vue({
 
                                     let emptyMarketIron = this.board.market.totalPossibleIron - this.board.market.ironInMarket;
                                     if (emptyMarketIron > 0) {
-                                        let isConnectedToMarket = this.isConnectedToMarket(card.locationid, player_type);
-
-                                        if (isConnectedToMarket) {
-                                            // Find tile to place from player board
-                                            let industrytile = this.findNextTileFromPlayerBoard(player_type, actiondata.industrytype);
-                                            
-                                            if (emptyMarketIron > industrytile.availableIron) {
-                                                actiondata.ironMoved = industrytile.availableIron;
-                                                actiondata.willFlip = true;
-                                            }
-                                            else {
-                                                actiondata.ironMoved = emptyMarketIron;
-                                                actiondata.willFlip = false;
-                                            }
+                                        // Find tile to place from player board
+                                        let industrytile = this.findNextTileFromPlayerBoard(player_type, actiondata.industrytype);
+                                        
+                                        if (emptyMarketIron > industrytile.availableIron) {
+                                            actiondata.ironMoved = industrytile.availableIron;
+                                            actiondata.willFlip = true;
+                                        }
+                                        else {
+                                            actiondata.ironMoved = emptyMarketIron;
+                                            actiondata.willFlip = false;
                                         }
                                     }
                                 }
