@@ -2737,7 +2737,13 @@ var app = new Vue({
                 this.layNetworkTileBase(player_type, 25, 22);
             }
 
-            if (locationid1 === 22 || locationid2 === 22) {
+            if (locationid1 === 22) {
+                this.layNetworkTileBase(player_type, 21, 25);
+                this.layNetworkTileBase(player_type, 22, 21);
+                this.layNetworkTileBase(player_type, 22, 25);
+            }
+
+            if (locationid2 === 22) {
                 this.layNetworkTileBase(player_type, 21, 25);
             }
         },
