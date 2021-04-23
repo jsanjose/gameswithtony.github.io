@@ -1916,7 +1916,14 @@ var app = new Vue({
                                 closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
 
                                 if (!closestWithPath) {
-                                    actiondata.addVP = addVPNoLink;
+                                    //actiondata.addVP = addVPNoLink;
+                                    build = false;
+                                    sell = true;
+                                    actiondata.locationid = null;
+                                    actiondata.spaceid = null;
+                                    actiondata.industrytype = null;
+                                    actiondata.neededCoal = 0;
+                                    actiondata.neededIron = 0;
                                 }
                             } 
                         }
@@ -1932,7 +1939,14 @@ var app = new Vue({
                                     closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
 
                                     if (!closestWithPath) {
-                                        actiondata.addVP = addVPNoLink;
+                                        //actiondata.addVP = addVPNoLink;
+                                        build = false;
+                                        sell = true;
+                                        actiondata.locationid = null;
+                                        actiondata.spaceid = null;
+                                        actiondata.industrytype = null;
+                                        actiondata.neededCoal = 0;
+                                        actiondata.neededIron = 0;
                                     }
                                 }
                             } 
@@ -1987,7 +2001,7 @@ var app = new Vue({
                         }
                     }
 
-                    if (build) {
+                    if (build || sell) {
                         break;
                     }
                 }
