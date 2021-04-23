@@ -1912,7 +1912,11 @@ var app = new Vue({
                             closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type);
 
                             if (!closestWithPath) {
-                                actiondata.addVP = addVPNoLink;
+                                closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
+
+                                if (!closestWithPath) {
+                                    actiondata.addVP = addVPNoLink;
+                                }
                             } 
                         }
                         
@@ -1924,7 +1928,11 @@ var app = new Vue({
                                 closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type, true);
 
                                 if (!closestWithPath) {
-                                    actiondata.addVP = addVPNoLink;
+                                    closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
+
+                                    if (!closestWithPath) {
+                                        actiondata.addVP = addVPNoLink;
+                                    }
                                 }
                             } 
                         }
@@ -2588,6 +2596,12 @@ var app = new Vue({
                 if (l.type === LOCATIONTYPE.Industries) {
                     _.forEach(l.spaces, function (s) {
                         if (s.tile && s.tile.level === 1) {
+                            l.possibleLinkVPs = l.possibleLinkVPs - s.tile.VPs;
+
+                            if (s.tile.flipped) {
+                                l.totalLinkVPs = l.totalLinkVPs - s.tile.VPs;
+                            }
+                            
                             s.tile = null;
                         }
                     });
@@ -2888,6 +2902,34 @@ var app = new Vue({
 
             return chosenLocationWithPath;
         },
+        findClosestUnconnectedFlippedIndustryWithPath: function (locationid, player_type, findBelongingToPlayer) {
+            // for: Network (after build Coal Mine, Iron Works, or Brewery)
+            // if findBelongingToPlayer is true then only find the player's, otherwise find any other than the player's (this allows for both checks in the logic)
+            let player = this.getPlayerFromType(player_type);
+
+            let flippedIndustryLocations = this.findAllFlippedIndustries(findBelongingToPlayer);
+
+            let chosenLocationWithPath = null;
+            let tempNeededTiles = null;
+            let self = this;
+            _.forEach(flippedIndustryLocations, function (l) {
+                let path = self.findOptimalAIPathBetweenUnconnectedLocations(locationid, l.id, player_type);
+
+                // if an flipped location is unconnected, check it
+                if (path) {
+                    let location = l;
+                    l.neededTiles = path.distance - path.numberOfLinks;
+                    l.path = path;
+
+                    if (!tempNeededTiles || (l.neededTiles < tempNeededTiles)) {
+                        tempNeededTiles = l.neededTiles;
+                        chosenLocationWithPath = l;
+                    }
+                }
+            });
+
+            return chosenLocationWithPath;
+        },
         findClosestUnconnectedMerchantWithPath: function (locationid, industrytype, player_type) {
             // for: Network (after build Coal Mine, Iron Works, or Brewery)
             // for: Network (after build Pottery, Cotton Mill, or Manufacturer)
@@ -2950,6 +2992,26 @@ var app = new Vue({
             });
 
             return unflippedIndustryLocations;
+        },
+        findAllFlippedIndustries: function (findBelongingToPlayer) {
+            let flippedIndustryLocations = [];
+            let self = this;
+
+            flippedIndustryLocations = _.filter(this.board.locations, function(o) {
+                let spaces = _.find(o.spaces, function(p) {
+                    if (p.tile) {
+                        if (findBelongingToPlayer) {
+                            return p.tile.color === self.currentPlayer.color && p.tile.flipped;
+                        } else {
+                            return p.tile.flipped;
+                        }
+                    }
+                    return false;
+                });
+                return o.type === LOCATIONTYPE.Industries && spaces;
+            });
+
+            return flippedIndustryLocations;
         },
         findAllMerchants: function () {
             let merchantLocations = [];
