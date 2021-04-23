@@ -871,7 +871,7 @@ const INITIAL_BOARD = {
                     id: 1,
                     types: [
                         INDUSTRY.Manufacturer,
-                        INDUSTRY.CoalMine
+                        INDUSTRY.Brewery
                     ],
                     tile: null
                 }
