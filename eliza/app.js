@@ -1259,7 +1259,8 @@ var app = new Vue({
 
                 _.forEach(selectedTiles, function (t) {
                     actionstring = '';
-                    actionstring = actionstring + 'Sell ' + t.name + ' (Space ' + (t.spaceid + 1) + ').'
+                    actionstring = actionstring + 'Sell ' + t.name + ' (Space ' + (t.spaceid + 1) + ')'
+                    actionstring = actionstring + ' [[ Flips the tile! ]].';
 
                     actions.push({
                         actionDone: false,
@@ -1741,7 +1742,7 @@ var app = new Vue({
 
                             if (availablespaceid) {
                                 // if a coal mine can be built in the location, then check if AI has unflipped coal mine
-                                if (!this.playerHasUnflippedCoalMine(player_type)) {
+                                if (!this.playerHasUnflippedCoalMine(player_type) && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.CoalMine)) {
                                     build = true;
     
                                     actiondata.locationid = card.locationid;
@@ -1776,7 +1777,7 @@ var app = new Vue({
 
                             if (availablespaceid) {
                                 // if an iron works can be built in the location, then check if AI has unflipped iron works
-                                if (!this.playerHasUnflippedIronWorks(player_type)) {
+                                if (!this.playerHasUnflippedIronWorks(player_type) && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.IronWorks)) {
                                     build = true;
     
                                     actiondata.locationid = card.locationid;
@@ -1805,7 +1806,7 @@ var app = new Vue({
                             // then try pottery
                             availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.Pottery, false);
 
-                            if (availablespaceid) {
+                            if (availablespaceid && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.Pottery)) {
                                 build = true;
     
                                 actiondata.locationid = card.locationid;
@@ -1818,7 +1819,7 @@ var app = new Vue({
                             // then try cotton mill
                             availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.CottonMill, false);
 
-                            if (availablespaceid) {
+                            if (availablespaceid && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.CottonMill)) {
                                 build = true;
     
                                 actiondata.locationid = card.locationid;
@@ -1831,7 +1832,7 @@ var app = new Vue({
                             // then try manufactured goods
                             availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.Manufacturer, false);
 
-                            if (availablespaceid) {
+                            if (availablespaceid && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.Manufacturer)) {
                                 build = true;
     
                                 actiondata.locationid = card.locationid;
@@ -1850,7 +1851,7 @@ var app = new Vue({
                                 // then try pottery
                                 availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.Pottery, false);
     
-                                if (availablespaceid) {
+                                if (availablespaceid && self.findNextTileFromPlayerBoard(player_type, INDUSTRY.Pottery)) {
                                     build = true;
         
                                     actiondata.locationid = l.id;
@@ -1863,7 +1864,7 @@ var app = new Vue({
                                 // then try cotton mill
                                 availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.CottonMill, false);
     
-                                if (availablespaceid) {
+                                if (availablespaceid && self.findNextTileFromPlayerBoard(player_type, INDUSTRY.CottonMill)) {
                                     build = true;
         
                                     actiondata.locationid = l.id;
@@ -1876,7 +1877,7 @@ var app = new Vue({
                                 // then try manufactured goods
                                 availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.Manufacturer, false);
     
-                                if (availablespaceid) {
+                                if (availablespaceid && self.findNextTileFromPlayerBoard(player_type, INDUSTRY.Manufacturer)) {
                                     build = true;
         
                                     actiondata.locationid = l.id;
@@ -1919,7 +1920,11 @@ var app = new Vue({
                             closestWithPath = this.findClosestUnconnectedMerchantWithPath(actiondata.locationid, actiondata.industrytype, player_type);
 
                             if (!closestWithPath) {
-                                actiondata.addVP = addVPNoLink;
+                                closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type, true);
+
+                                if (!closestWithPath) {
+                                    actiondata.addVP = addVPNoLink;
+                                }
                             } 
                         }
 
@@ -2183,6 +2188,33 @@ var app = new Vue({
                     actionid = actionid + 1;
                 }
 
+                // Network
+                actionstring = '';
+                // Add VP
+                if (this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
+                    actionstring = actionstring + 'Could not network, so gains ' + this.currentPlayer.nextAction.actiondata.addVP + 'VP (now has ' + (this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP) + 'VP in total).';
+                } else {
+                    if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== undefined && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== undefined) {
+                        let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
+                        let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
+
+                        actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
+
+                        if (this.currentEra === ERA.Rail && this.currentPlayer.nextAction.action === AI_ACTION.NetworkCouldntSell) {
+                            actionstring = actionstring + ' (no coal cost)';
+                        }
+
+                        actionstring = actionstring + '.';
+                    }
+                }
+
+                actions.push({
+                    id: actionid,
+                    actionDone: false,
+                    actionDesc: actionstring
+                });
+                actionid = actionid + 1;
+
                 // Coal consumption
                 if (this.currentPlayer.nextAction.actiondata.consumedata && this.currentPlayer.nextAction.actiondata.consumedata.coalConsumption) {
                     _.forEach(this.currentPlayer.nextAction.actiondata.consumedata.coalConsumption, function (c) {
@@ -2224,33 +2256,6 @@ var app = new Vue({
                         actionid = actionid + 1;
                     });
                 }
-
-                // Network
-                actionstring = '';
-                // Add VP
-                if (this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
-                    actionstring = actionstring + 'Could not network, so gains ' + this.currentPlayer.nextAction.actiondata.addVP + 'VP (now has ' + (this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP) + 'VP in total).';
-                } else {
-                    if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== undefined && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== undefined) {
-                        let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
-                        let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
-
-                        actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
-
-                        if (this.currentEra === ERA.Rail && this.currentPlayer.nextAction.action === AI_ACTION.NetworkCouldntSell) {
-                            actionstring = actionstring + ' (no coal cost)';
-                        }
-
-                        actionstring = actionstring + '.';
-                    }
-                }
-
-                actions.push({
-                    id: actionid,
-                    actionDone: false,
-                    actionDesc: actionstring
-                });
-                actionid = actionid + 1;
             }
 
             if (this.currentPlayer.nextAction.action === AI_ACTION.Sell) {
@@ -2365,6 +2370,10 @@ var app = new Vue({
     
                             if (location.type === LOCATIONTYPE.Merchants) {
                                 tile.totalBeer = tile.totalBeer - l.beerConsumed;
+
+                                if (tile.totalBeer < 0) {
+                                    tile.totalBeer = 0;
+                                }
                             } else {
                                 tile.availableBeer = tile.availableBeer - l.beerConsumed;
                             }
@@ -2831,7 +2840,7 @@ var app = new Vue({
             // if findBelongingToPlayer is true then only find the player's, otherwise find any other than the player's (this allows for both checks in the logic)
             let player = this.getPlayerFromType(player_type);
 
-            let unflippedIndustryLocations = this.findAllUnflippedIndustries();
+            let unflippedIndustryLocations = this.findAllUnflippedIndustries(findBelongingToPlayer);
 
             let chosenLocationWithPath = null;
             let tempNeededTiles = null;
@@ -2871,7 +2880,7 @@ var app = new Vue({
                 if (industrytype) {
                     checkMerchant = false;
                     _.forEach(l.spaces, function (s) {
-                        if (s.tile && _.includes(s.tile, industrytype)) {
+                        if (s.tile && _.includes(s.tile.industryTypes, industrytype)) {
                             checkMerchant = true;
                             return false;
                         }
@@ -2897,13 +2906,18 @@ var app = new Vue({
 
             return chosenLocationWithPath;
         },
-        findAllUnflippedIndustries: function () {
+        findAllUnflippedIndustries: function (findBelongingToPlayer) {
             let unflippedIndustryLocations = [];
+            let self = this;
 
             unflippedIndustryLocations = _.filter(this.board.locations, function(o) {
                 let spaces = _.find(o.spaces, function(p) {
                     if (p.tile) {
-                        return !p.tile.flipped;
+                        if (findBelongingToPlayer) {
+                            return p.tile.color === self.currentPlayer.color && !p.tile.flipped;
+                        } else {
+                            return !p.tile.flipped;
+                        }
                     }
                     return false;
                 });
@@ -3035,7 +3049,7 @@ var app = new Vue({
                     coalConsumed: 0,
                     willFlip: false
                 }
-                for (let i=0; i < neededCoal - consumedCoal; i++) {
+                for (let i=0; i <= neededCoal - consumedCoal; i++) {
                     spaceConsumeData.coalConsumed = spaceConsumeData.coalConsumed + 1;
                     consumedCoal++;
                 }
@@ -3118,7 +3132,7 @@ var app = new Vue({
                     ironConsumed: 0,
                     willFlip: false
                 }
-                for (let i=0; i < neededIron - consumedIron; i++) {
+                for (let i=0; i <= neededIron - consumedIron; i++) {
                     spaceConsumeData.ironConsumed = spaceConsumeData.ironConsumed + 1;
                     consumedIron++;
                 }
@@ -3134,7 +3148,7 @@ var app = new Vue({
             let usedBeer = 0;
             // start with merchant beer (using matching industry types)
             _.forEach(marketsWithTiles, function (m) {
-                if (usedBeer < neededBeer) {
+                if (usedBeer < neededBeer && m.space.tile.totalBeer > 0) {
                     beerLocations.push({
                         locationid: m.market.id,
                         name: m.market.name + ' (Merchant)',
@@ -3171,7 +3185,7 @@ var app = new Vue({
                                 beerConsumed: beerConsumed,
                                 id: l.id + '-' + bs.id
                             });
-                            usedBeer = usedBeer + 1;
+                            usedBeer = usedBeer + beerConsumed;
                         }
                     });
                 });
@@ -3198,7 +3212,7 @@ var app = new Vue({
                                 beerConsumed: beerConsumed,
                                 id: l.id + '-' + bs.id
                             });
-                            usedBeer = usedBeer + 1;
+                            usedBeer = usedBeer + beerConsumed;
                         }
                     });
                 });
@@ -3658,6 +3672,10 @@ var app = new Vue({
             let nextTile = _.find(player.board, function (t) {
                 return t.industrytype === industrytype;
             });
+
+            if (!nextTile) {
+                return null;
+            }
 
             if (!(this.currentEra === ERA.Rail && nextTile.canalOnly)) {
                 return nextTile;
