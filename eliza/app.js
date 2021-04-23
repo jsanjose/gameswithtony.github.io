@@ -935,6 +935,7 @@ var app = new Vue({
 
                 // Include market
                 if ((totalCoalAvailable < totalCoalNeeded) || (locationids.length && locationids.length === 4)) {
+                    // TODO: Only show if human is connected to coal market
                     let resourceArray = [];
                     if (locationids.length && locationids.length === 4) {
                         for (let i=0;i<=2;i++) {
