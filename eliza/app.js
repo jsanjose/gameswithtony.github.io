@@ -2224,6 +2224,14 @@ var app = new Vue({
                         
                         if (c.spaceid != -1) {
                             actionstring = actionstring + ' (Space ' + (c.spaceid + 1) + ')';
+
+                            let location = self.findLocationById(c.locationid);
+                            let tile = location.spaces[c.spaceid].tile;
+                            let leftOverCoal = tile.availableCoal - c.coalConsumed;
+
+                            if (leftOverCoal === 0) {
+                                actionstring = actionstring + ' [[ Flips the tile! ]]';
+                            }
                         }
 
                         actionstring = actionstring + '.';
@@ -2245,6 +2253,14 @@ var app = new Vue({
 
                         if (c.spaceid != -1) {
                             actionstring = actionstring + ' (Space ' + (c.spaceid + 1) + ')';
+
+                            let location = self.findLocationById(c.locationid);
+                            let tile = location.spaces[c.spaceid].tile;
+                            let leftOverIron = tile.availableIron - c.ironConsumed;
+
+                            if (leftOverIron === 0) {
+                                actionstring = actionstring + ' [[ Flips the tile! ]]';
+                            }
                         }
 
                         actionstring = actionstring + '.';
@@ -2263,7 +2279,7 @@ var app = new Vue({
                 _.forEach(this.currentPlayer.nextAction.actiondata.industriestosell, function (l) {
                     let actionstring = '';
 
-                    actionstring = actionstring + 'Sell ' + self.tileToString(l.tile) + ' in ' + l.name + ' (Space ' + l.spaceid + ').';
+                    actionstring = actionstring + 'Sell ' + self.tileToString(l.tile) + ' in ' + l.name + ' (Space ' + l.spaceid + ') [[ Flips the tile! ]].';
                     actions.push({
                         id: actionid,
                         actionDone: false,
@@ -2293,6 +2309,14 @@ var app = new Vue({
 
                     if (c.spaceid != -1) {
                         actionstring = actionstring + ' (Space ' + (c.spaceid) + ')';
+
+                        let location = self.findLocationById(c.locationid);
+                        let tile = location.spaces[c.spaceid - 1].tile;
+                        let leftOverBeer = tile.availableBeer - c.beerConsumed;
+
+                        if (leftOverBeer === 0) {
+                            actionstring = actionstring + ' [[ Flips the tile! ]]';
+                        }
                     }
 
                     actionstring = actionstring + '.';
