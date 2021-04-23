@@ -130,7 +130,8 @@ var app = new Vue({
         isAIThinking: false,
         isCalculatingScore: false,
         finishedCanalScore: false,
-        finishedRailScore: false
+        finishedRailScore: false,
+        appVersion: '0.5'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
