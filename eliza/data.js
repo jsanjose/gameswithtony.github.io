@@ -1569,6 +1569,7 @@ const INDUSTRY_TILES = [
     createIndustryTile(40, INDUSTRY.Manufacturer, false, 5, 16, 1, 0, 2, 8, 2, 2, 0, 0, 0),
     createIndustryTile(41, INDUSTRY.Manufacturer, false, 6, 20, 0, 0, 1, 7, 1, 6, 0, 0, 0),
     createIndustryTile(42, INDUSTRY.Manufacturer, false, 7, 16, 1, 1, 0, 9, 0, 4, 0, 0, 0),
+    createIndustryTile(43, INDUSTRY.Manufacturer, false, 8, 20, 0, 2, 1, 11, 1, 1, 0, 0, 0),
     createIndustryTile(43, INDUSTRY.Manufacturer, false, 8, 20, 0, 2, 1, 11, 1, 1, 0, 0, 0)
 ];
 
