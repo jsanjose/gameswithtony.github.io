@@ -1487,6 +1487,7 @@ function getAIDeck(type, numberOfPlayers) {
 
 const TOTAL_ROUNDS_2PLAYER = 10;
 const TOTAL_ROUNDS_3PLAYER = 9;
+const ROUNDS_LEFT_START_GUARANTEED_SALE = 3;
 
 // INDUSTRY TILES
 function createIndustryTile(id, industrytype, canalOnly, level, poundsCost, coalCost, ironCost, beerCost, VPs, LinkVPs, income, availableCoal, availableIron, availableBeer) {

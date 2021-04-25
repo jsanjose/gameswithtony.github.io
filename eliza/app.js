@@ -1,3 +1,9 @@
+function rollDie(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 // toString for names of spaces by industries
 function spaceToString(space) {
     let toStringResult = _.join(space.types, ' / ');
@@ -605,6 +611,10 @@ var app = new Vue({
         },
         roundsPerEra: function () {
             return this.numberOfPlayers === 2 ? TOTAL_ROUNDS_2PLAYER : TOTAL_ROUNDS_3PLAYER;
+        },
+        roundToStartGuaranteedSale: function () {
+            let roundsPerEra = this.numberOfPlayers === 2 ? TOTAL_ROUNDS_2PLAYER : TOTAL_ROUNDS_3PLAYER;
+            return (roundsPerEra - ROUNDS_LEFT_START_GUARANTEED_SALE) + 1;
         },
         startGame: function() {
             if (!this.humanPlayer.color) {
@@ -1747,231 +1757,226 @@ var app = new Vue({
                 sell = true;
             }
             else {
-                // TRY BUILD (first card, then second card)
-                let build = false;
-                let actioncards = [player.currentCard1, player.currentCard2];
+                // --- BEGIN guaranteed sale logic ---
+                let hasSoldThisEra = this.currentEra === ERA.Canal ? player.soldInCanalEra : player.soldInRailEra;
 
-                // try each card
-                for (let cardi = 0; cardi < actioncards.length; cardi++) {
-                    let othercardi = cardi === 0 ? 1 : 0;
+                if (this.currentRound >= this.roundToStartGuaranteedSale()) {
+                    if (!hasSoldThisEra) {
+                        let diff = this.roundsPerEra() - this.currentRound;
 
-                    let card = actioncards[cardi];
-                    let othercard = actioncards[othercardi];
+                        // if the last round of the era, guaranteed sale, otherwise chance at sale
+                        let diceRoll = rollDie(1, (diff + 1));
 
-                    // if location card
-                    if (card.locationid) {
-                        let availablespaceid = null;
-
-                        // first try brewery
-                        availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.Brewery, false);
-
-                        if (availablespaceid) {
-                            // if a brewery can be built in the location, then check if AI has unflipped breweries
-                            if (!this.playerHasUnflippedBrewery(player_type)) {
-                                build = true;
-
-                                actiondata.locationid = card.locationid;
-                                actiondata.spaceid = availablespaceid;
-                                actiondata.industrytype = INDUSTRY.Brewery;
-                            }
+                        if (diceRoll === 1 && this.findPlayerUnflippedSellableIndustriesConnectedToMarket.length > 0) {
+                            sell = true;
                         }
+                    }
+                }
+                // --- END guaranteed sale logic ---
 
-                        if (!build) {
-                            // then try coal mine
-                            availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.CoalMine, false);
+                // TRY BUILD (first card, then second card)
+                if (!sell) {
+                    let build = false;
+                    let actioncards = [player.currentCard1, player.currentCard2];
+
+                    // try each card
+                    for (let cardi = 0; cardi < actioncards.length; cardi++) {
+                        let othercardi = cardi === 0 ? 1 : 0;
+
+                        let card = actioncards[cardi];
+                        let othercard = actioncards[othercardi];
+
+                        // if location card
+                        if (card.locationid) {
+                            let availablespaceid = null;
+
+                            // first try brewery
+                            availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.Brewery, false);
 
                             if (availablespaceid) {
-                                // if a coal mine can be built in the location, then check if AI has unflipped coal mine
-                                if (!this.playerHasUnflippedCoalMine(player_type) && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.CoalMine)) {
+                                // if a brewery can be built in the location, then check if AI has unflipped breweries
+                                if (!this.playerHasUnflippedBrewery(player_type)) {
                                     build = true;
-    
+
                                     actiondata.locationid = card.locationid;
                                     actiondata.spaceid = availablespaceid;
-                                    actiondata.industrytype = INDUSTRY.CoalMine;
+                                    actiondata.industrytype = INDUSTRY.Brewery;
+                                }
+                            }
 
-                                    let emptyMarketCoal = this.board.market.totalPossibleCoal - this.board.market.coalInMarket;
-                                    if (emptyMarketCoal > 0) {
-                                        let isConnectedToMarket = this.isConnectedToMarket(card.locationid, player_type);
+                            if (!build) {
+                                // then try coal mine
+                                availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.CoalMine, false);
 
-                                        if (isConnectedToMarket) {
+                                if (availablespaceid) {
+                                    // if a coal mine can be built in the location, then check if AI has unflipped coal mine
+                                    if (!this.playerHasUnflippedCoalMine(player_type) && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.CoalMine)) {
+                                        build = true;
+        
+                                        actiondata.locationid = card.locationid;
+                                        actiondata.spaceid = availablespaceid;
+                                        actiondata.industrytype = INDUSTRY.CoalMine;
+
+                                        let emptyMarketCoal = this.board.market.totalPossibleCoal - this.board.market.coalInMarket;
+                                        if (emptyMarketCoal > 0) {
+                                            let isConnectedToMarket = this.isConnectedToMarket(card.locationid, player_type);
+
+                                            if (isConnectedToMarket) {
+                                                // Find tile to place from player board
+                                                let industrytile = this.findNextTileFromPlayerBoard(player_type, actiondata.industrytype);
+                                                
+                                                if (emptyMarketCoal > industrytile.availableCoal) {
+                                                    actiondata.coalMoved = industrytile.availableCoal;
+                                                    actiondata.willFlip = true;
+                                                }
+                                                else {
+                                                    actiondata.coalMoved =  emptyMarketCoal;
+                                                    actiondata.willFlip = false;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (!build) {
+                                // then try iron works
+                                availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.IronWorks, false);
+
+                                if (availablespaceid) {
+                                    // if an iron works can be built in the location, then check if AI has unflipped iron works
+                                    if (!this.playerHasUnflippedIronWorks(player_type) && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.IronWorks)) {
+                                        build = true;
+        
+                                        actiondata.locationid = card.locationid;
+                                        actiondata.spaceid = availablespaceid;
+                                        actiondata.industrytype = INDUSTRY.IronWorks;
+
+                                        let emptyMarketIron = this.board.market.totalPossibleIron - this.board.market.ironInMarket;
+                                        if (emptyMarketIron > 0) {
                                             // Find tile to place from player board
                                             let industrytile = this.findNextTileFromPlayerBoard(player_type, actiondata.industrytype);
                                             
-                                            if (emptyMarketCoal > industrytile.availableCoal) {
-                                                actiondata.coalMoved = industrytile.availableCoal;
+                                            if (emptyMarketIron > industrytile.availableIron) {
+                                                actiondata.ironMoved = industrytile.availableIron;
                                                 actiondata.willFlip = true;
                                             }
                                             else {
-                                                actiondata.coalMoved =  emptyMarketCoal;
+                                                actiondata.ironMoved = emptyMarketIron;
                                                 actiondata.willFlip = false;
                                             }
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        if (!build) {
-                            // then try iron works
-                            availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.IronWorks, false);
-
-                            if (availablespaceid) {
-                                // if an iron works can be built in the location, then check if AI has unflipped iron works
-                                if (!this.playerHasUnflippedIronWorks(player_type) && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.IronWorks)) {
-                                    build = true;
-    
-                                    actiondata.locationid = card.locationid;
-                                    actiondata.spaceid = availablespaceid;
-                                    actiondata.industrytype = INDUSTRY.IronWorks;
-
-                                    let emptyMarketIron = this.board.market.totalPossibleIron - this.board.market.ironInMarket;
-                                    if (emptyMarketIron > 0) {
-                                        // Find tile to place from player board
-                                        let industrytile = this.findNextTileFromPlayerBoard(player_type, actiondata.industrytype);
-                                        
-                                        if (emptyMarketIron > industrytile.availableIron) {
-                                            actiondata.ironMoved = industrytile.availableIron;
-                                            actiondata.willFlip = true;
-                                        }
-                                        else {
-                                            actiondata.ironMoved = emptyMarketIron;
-                                            actiondata.willFlip = false;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (!build) {
-                            // then try pottery
-                            availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.Pottery, false);
-
-                            if (availablespaceid && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.Pottery)) {
-                                build = true;
-    
-                                actiondata.locationid = card.locationid;
-                                actiondata.spaceid = availablespaceid;
-                                actiondata.industrytype = INDUSTRY.Pottery;
-                            }
-                        }
-
-                        if (!build) {
-                            // then try cotton mill
-                            availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.CottonMill, false);
-
-                            if (availablespaceid && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.CottonMill)) {
-                                build = true;
-    
-                                actiondata.locationid = card.locationid;
-                                actiondata.spaceid = availablespaceid;
-                                actiondata.industrytype = INDUSTRY.CottonMill;
-                            }
-                        }
-
-                        if (!build) {
-                            // then try manufactured goods
-                            availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.Manufacturer, false);
-
-                            if (availablespaceid && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.Manufacturer)) {
-                                build = true;
-    
-                                actiondata.locationid = card.locationid;
-                                actiondata.spaceid = availablespaceid;
-                                actiondata.industrytype = INDUSTRY.Manufacturer;
-                            }
-                        }
-                    } else {
-                        // if industry card, try sellable goods in adjacent locations
-                        let adjacentIndustryLocations = this.findAdjacentIndustryLocationsForAI(othercard.locationid);
-                        let availablespaceid = null;
-                        
-                        let self = this;
-                        _.forEach(adjacentIndustryLocations, function (l) {
                             if (!build) {
                                 // then try pottery
-                                availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.Pottery, false);
-    
-                                if (availablespaceid && self.findNextTileFromPlayerBoard(player_type, INDUSTRY.Pottery)) {
+                                availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.Pottery, false);
+
+                                if (availablespaceid && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.Pottery)) {
                                     build = true;
         
-                                    actiondata.locationid = l.id;
+                                    actiondata.locationid = card.locationid;
                                     actiondata.spaceid = availablespaceid;
                                     actiondata.industrytype = INDUSTRY.Pottery;
                                 }
                             }
-    
+
                             if (!build) {
                                 // then try cotton mill
-                                availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.CottonMill, false);
-    
-                                if (availablespaceid && self.findNextTileFromPlayerBoard(player_type, INDUSTRY.CottonMill)) {
+                                availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.CottonMill, false);
+
+                                if (availablespaceid && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.CottonMill)) {
                                     build = true;
         
-                                    actiondata.locationid = l.id;
+                                    actiondata.locationid = card.locationid;
                                     actiondata.spaceid = availablespaceid;
                                     actiondata.industrytype = INDUSTRY.CottonMill;
                                 }
                             }
-    
+
                             if (!build) {
                                 // then try manufactured goods
-                                availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.Manufacturer, false);
-    
-                                if (availablespaceid && self.findNextTileFromPlayerBoard(player_type, INDUSTRY.Manufacturer)) {
+                                availablespaceid = this.findAvailableIndustrySpaceInLocation(card.locationid, INDUSTRY.Manufacturer, false);
+
+                                if (availablespaceid && this.findNextTileFromPlayerBoard(player_type, INDUSTRY.Manufacturer)) {
                                     build = true;
         
-                                    actiondata.locationid = l.id;
+                                    actiondata.locationid = card.locationid;
                                     actiondata.spaceid = availablespaceid;
                                     actiondata.industrytype = INDUSTRY.Manufacturer;
                                 }
                             }
-
-                            // once we found a build, no more searching needed
-                            if (build) {
-                                return false;
-                            }
-                        });
-                    }
-
-                    if (build) {
-                        // Find tile to place from player board
-                        let industrytile = this.findNextTileFromPlayerBoard(player_type, actiondata.industrytype);
-                        actiondata.industrytile = industrytile;
-                    
-                        actiondata.neededCoal = actiondata.neededCoal + industrytile.coalCost;
-                        actiondata.neededIron = actiondata.neededIron + industrytile.ironCost;
-
-                        // Calculate network
-                        let addVPNoLink = 5;
-                        let addVPRailEra = 5;
-                        let closestWithPath = null; // closest unconnected
-                        actiondata.addVP = 0;
-                        // if brewery, coal mine, or iron works
-                        if (actiondata.industrytype === 0 || actiondata.industrytype === 4 || actiondata.industrytype === 5) {
-                            closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type);
-
-                            if (!closestWithPath) {
-                                closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
-
-                                if (!closestWithPath) {
-                                    //actiondata.addVP = addVPNoLink;
-                                    build = false;
-                                    sell = true;
-                                    actiondata.locationid = null;
-                                    actiondata.spaceid = null;
-                                    actiondata.industrytype = null;
-                                    actiondata.neededCoal = 0;
-                                    actiondata.neededIron = 0;
+                        } else {
+                            // if industry card, try sellable goods in adjacent locations
+                            let adjacentIndustryLocations = this.findAdjacentIndustryLocationsForAI(othercard.locationid);
+                            let availablespaceid = null;
+                            
+                            let self = this;
+                            _.forEach(adjacentIndustryLocations, function (l) {
+                                if (!build) {
+                                    // then try pottery
+                                    availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.Pottery, false);
+        
+                                    if (availablespaceid && self.findNextTileFromPlayerBoard(player_type, INDUSTRY.Pottery)) {
+                                        build = true;
+            
+                                        actiondata.locationid = l.id;
+                                        actiondata.spaceid = availablespaceid;
+                                        actiondata.industrytype = INDUSTRY.Pottery;
+                                    }
                                 }
-                            } 
-                        }
-                        
-                        // if pottery, cotton mill, or manufactured goods
-                        if (actiondata.industrytype === 1 || actiondata.industrytype === 2 || actiondata.industrytype === 3) {
-                            closestWithPath = this.findClosestUnconnectedMerchantWithPath(actiondata.locationid, actiondata.industrytype, player_type);
+        
+                                if (!build) {
+                                    // then try cotton mill
+                                    availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.CottonMill, false);
+        
+                                    if (availablespaceid && self.findNextTileFromPlayerBoard(player_type, INDUSTRY.CottonMill)) {
+                                        build = true;
+            
+                                        actiondata.locationid = l.id;
+                                        actiondata.spaceid = availablespaceid;
+                                        actiondata.industrytype = INDUSTRY.CottonMill;
+                                    }
+                                }
+        
+                                if (!build) {
+                                    // then try manufactured goods
+                                    availablespaceid = self.findAvailableIndustrySpaceInLocation(l.id, INDUSTRY.Manufacturer, false);
+        
+                                    if (availablespaceid && self.findNextTileFromPlayerBoard(player_type, INDUSTRY.Manufacturer)) {
+                                        build = true;
+            
+                                        actiondata.locationid = l.id;
+                                        actiondata.spaceid = availablespaceid;
+                                        actiondata.industrytype = INDUSTRY.Manufacturer;
+                                    }
+                                }
 
-                            if (!closestWithPath) {
-                                closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type, true);
+                                // once we found a build, no more searching needed
+                                if (build) {
+                                    return false;
+                                }
+                            });
+                        }
+
+                        if (build) {
+                            // Find tile to place from player board
+                            let industrytile = this.findNextTileFromPlayerBoard(player_type, actiondata.industrytype);
+                            actiondata.industrytile = industrytile;
+                        
+                            actiondata.neededCoal = actiondata.neededCoal + industrytile.coalCost;
+                            actiondata.neededIron = actiondata.neededIron + industrytile.ironCost;
+
+                            // Calculate network
+                            let addVPNoLink = 5;
+                            let addVPRailEra = 5;
+                            let closestWithPath = null; // closest unconnected
+                            actiondata.addVP = 0;
+                            // if brewery, coal mine, or iron works
+                            if (actiondata.industrytype === 0 || actiondata.industrytype === 4 || actiondata.industrytype === 5) {
+                                closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type);
 
                                 if (!closestWithPath) {
                                     closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
@@ -1986,73 +1991,97 @@ var app = new Vue({
                                         actiondata.neededCoal = 0;
                                         actiondata.neededIron = 0;
                                     }
+                                } 
+                            }
+                            
+                            // if pottery, cotton mill, or manufactured goods
+                            if (actiondata.industrytype === 1 || actiondata.industrytype === 2 || actiondata.industrytype === 3) {
+                                closestWithPath = this.findClosestUnconnectedMerchantWithPath(actiondata.locationid, actiondata.industrytype, player_type);
+
+                                if (!closestWithPath) {
+                                    closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type, true);
+
+                                    if (!closestWithPath) {
+                                        closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
+
+                                        if (!closestWithPath) {
+                                            //actiondata.addVP = addVPNoLink;
+                                            build = false;
+                                            sell = true;
+                                            actiondata.locationid = null;
+                                            actiondata.spaceid = null;
+                                            actiondata.industrytype = null;
+                                            actiondata.neededCoal = 0;
+                                            actiondata.neededIron = 0;
+                                        }
+                                    }
+                                } 
+                            }
+
+                            // find tile to lay (first missing tile along the path)
+                            if (closestWithPath) {
+                                let path = closestWithPath.path;
+                                for (let i=0;i<path.length;i++) {
+                                    let currentlocation = path[i];
+                                    let nexttargetlocation = path[i+1];
+
+                                    let edges = null;
+                                    if (this.currentEra === ERA.Canal) {
+                                        edges = currentlocation.edgesCanal;
+                                    } else {
+                                        edges = currentlocation.edgesRail;
+                                    }
+
+                                    // check if there is a tile on this portion of the path
+                                    let edge = _.find(edges, function (e) {
+                                        return e.toId === nexttargetlocation.id;
+                                    });
+
+                                    if (!edge.tile) {
+                                        actiondata.linktargetlocationid1 = currentlocation.id;
+                                        actiondata.linktargetlocationid2 = nexttargetlocation.id;
+                                        break;
+                                    }
                                 }
-                            } 
-                        }
+                            }
 
-                        // find tile to lay (first missing tile along the path)
-                        if (closestWithPath) {
-                            let path = closestWithPath.path;
-                            for (let i=0;i<path.length;i++) {
-                                let currentlocation = path[i];
-                                let nexttargetlocation = path[i+1];
+                            // if we are linking in the rail era, a coal will be needed
+                            if (actiondata.linktargetlocationid1 !== null && actiondata.linktargetlocationid1 !== undefined && this.currentEra === ERA.Rail) {
+                                // for now, no 5vp per network
+                                //actiondata.addVP = actiondata.addVP + addVPRailEra;
+                                actiondata.neededCoal = actiondata.neededCoal + 1;
+                            }
 
-                                let edges = null;
-                                if (this.currentEra === ERA.Canal) {
-                                    edges = currentlocation.edgesCanal;
-                                } else {
-                                    edges = currentlocation.edgesRail;
-                                }
+                            // calculate iron and coal consumption
+                            let coalConsumption = null;
+                            let ironConsumption = null;
 
-                                // check if there is a tile on this portion of the path
-                                let edge = _.find(edges, function (e) {
-                                    return e.toId === nexttargetlocation.id;
-                                });
+                            if (actiondata.neededCoal > 0) {
+                                coalConsumption = this.generateAICoalConsumption(actiondata.locationid, player_type, actiondata.neededCoal);
+                                actiondata.consumedata.coalConsumption = coalConsumption;
+                            }
 
-                                if (!edge.tile) {
-                                    actiondata.linktargetlocationid1 = currentlocation.id;
-                                    actiondata.linktargetlocationid2 = nexttargetlocation.id;
-                                    break;
-                                }
+                            if (actiondata.neededIron > 0) {
+                                ironConsumption = this.generateAIIronConsumption(actiondata.locationid, player_type, actiondata.neededIron);
+                                actiondata.consumedata.ironConsumption = ironConsumption;
                             }
                         }
 
-                        // if we are linking in the rail era, a coal will be needed
-                        if (actiondata.linktargetlocationid1 !== null && actiondata.linktargetlocationid1 !== undefined && this.currentEra === ERA.Rail) {
-                            // for now, no 5vp per network
-                            //actiondata.addVP = actiondata.addVP + addVPRailEra;
-                            actiondata.neededCoal = actiondata.neededCoal + 1;
-                        }
-
-                        // calculate iron and coal consumption
-                        let coalConsumption = null;
-                        let ironConsumption = null;
-
-                        if (actiondata.neededCoal > 0) {
-                            coalConsumption = this.generateAICoalConsumption(actiondata.locationid, player_type, actiondata.neededCoal);
-                            actiondata.consumedata.coalConsumption = coalConsumption;
-                        }
-
-                        if (actiondata.neededIron > 0) {
-                            ironConsumption = this.generateAIIronConsumption(actiondata.locationid, player_type, actiondata.neededIron);
-                            actiondata.consumedata.ironConsumption = ironConsumption;
+                        if (build || sell) {
+                            break;
                         }
                     }
 
-                    if (build || sell) {
-                        break;
+                    // if built, set the nextaction 
+                    if (build) {
+                        action = AI_ACTION.BuildAndNetwork;
+                        
+                        player.nextAction.action = action;
+                        player.nextAction.actiondata = actiondata;
+                    } else {
+                        // if neither card could be built, sell
+                        sell = true;
                     }
-                }
-
-                // if built, set the nextaction 
-                if (build) {
-                    action = AI_ACTION.BuildAndNetwork;
-                    
-                    player.nextAction.action = action;
-                    player.nextAction.actiondata = actiondata;
-                } else {
-                    // if neither card could be built, sell
-                    sell = true;
                 }
             }
 
@@ -2435,6 +2464,7 @@ var app = new Vue({
             // SELL
             if (this.currentPlayer.nextAction.action === AI_ACTION.Sell) {
                 // flip tiles
+                let didFlipTiles = false;
                 _.forEach(this.currentPlayer.nextAction.actiondata.industriestosell, function (t) {
                     let location = self.findLocationById(t.locationid);
                     let tile = location.spaces[t.spaceid].tile;
@@ -2444,7 +2474,18 @@ var app = new Vue({
                     } else {
                         location.totalLinkVPs = location.totalLinkVPs + tile.LinkVPs;
                     }
+                    didFlipTiles = true;
                 });
+
+                if (didFlipTiles) {
+                    if (this.currentEra === ERA.Canal) {
+                        this.currentPlayer.soldInCanalEra = true;
+                    }
+
+                    if (this.currentEra === ERA.Rail) {
+                        this.currentPlayer.soldInRailEra = true;
+                    }
+                }
 
                 // consume beer
                 if (this.currentPlayer.nextAction.actiondata.consumedata && this.currentPlayer.nextAction.actiondata.consumedata.beerConsumption) {
