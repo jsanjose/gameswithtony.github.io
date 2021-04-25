@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.64'
+        appVersion: '0.65'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -398,6 +398,7 @@ var app = new Vue({
                         this.isAIThinking = true;
                         setTimeout(function() { Vue.nextTick(function() { self.setupRailEra(); self.calculateAIAction(self.currentPlayerType); self.currentGameStep = GAME_STEPS.Round; self.saveGameState(); window.scrollTo(0,0); } ); }, 0);
                     } else {
+                        this.setupRailEra();
                         this.currentGameStep = GAME_STEPS.Round;
                         this.saveGameState();
                         window.scrollTo(0,0);
