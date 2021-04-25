@@ -131,7 +131,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.55'
+        appVersion: '0.56'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -1315,6 +1315,17 @@ var app = new Vue({
                             actionDone: false,
                             actionDesc: actionstring
                         });
+
+                        if (l.isMarket) {
+                            let totalMarketResourceCost = self.getTotalMarketResourceCost(l.chosenCoal, RESOURCETYPE.Coal);
+                            actionstring = '';
+                            actionstring = 'Pay £' + totalMarketResourceCost + '.';
+
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+                        }
                     }
                 });
             }
@@ -1342,6 +1353,17 @@ var app = new Vue({
                             actionDone: false,
                             actionDesc: actionstring
                         });
+
+                        if (l.isMarket) {
+                            let totalMarketResourceCost = self.getTotalMarketResourceCost(l.chosenIron, RESOURCETYPE.Iron);
+                            actionstring = '';
+                            actionstring = 'Pay £' + totalMarketResourceCost + '.';
+
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+                        }
                     }
                 });
             }
@@ -1488,6 +1510,14 @@ var app = new Vue({
                 _.forEach(self.humanPlayer.nextAction.actiondata.consumelocations.coal.coalLocations, function (l) {
                     if (l.locationid === -1) {
                         // market
+                        let totalMarketResourceCost = self.getTotalMarketResourceCost(l.chosenCoal, RESOURCETYPE.Coal);
+
+                        if (!self.humanPlayer.amountSpentThisRound) {
+                            self.humanPlayer.amountSpentThisRound = totalMarketResourceCost;
+                        } else {
+                            self.humanPlayer.amountSpentThisRound = self.humanPlayer.amountSpentThisRound + totalMarketResourceCost;
+                        }
+
                         let coalInMarket = self.board.market.coalInMarket;
 
                         if (l.chosenCoal > coalInMarket) {
@@ -1515,6 +1545,14 @@ var app = new Vue({
                 _.forEach(self.humanPlayer.nextAction.actiondata.consumelocations.iron.ironLocations, function (l) {
                     if (l.locationid === -2) {
                         // market
+                        let totalMarketResourceCost = self.getTotalMarketResourceCost(l.chosenIron, RESOURCETYPE.Iron);
+
+                        if (!self.humanPlayer.amountSpentThisRound) {
+                            self.humanPlayer.amountSpentThisRound = totalMarketResourceCost;
+                        } else {
+                            self.humanPlayer.amountSpentThisRound = self.humanPlayer.amountSpentThisRound + totalMarketResourceCost;
+                        }
+
                         let ironInMarket = self.board.market.ironInMarket;
 
                         if (l.chosenIron > ironInMarket) {
@@ -2458,6 +2496,14 @@ var app = new Vue({
                         tile.availableCoal = tile.availableCoal - c.coalConsumed;                            
                     } else {
                         // market
+                        let totalMarketResourceCost = self.getTotalMarketResourceCost(c.coalConsumed, RESOURCETYPE.Coal);
+
+                        if (!self.currentPlayer.amountSpentThisRound) {
+                            self.currentPlayer.amountSpentThisRound = totalMarketResourceCost;
+                        } else {
+                            self.currentPlayer.amountSpentThisRound = self.currentPlayer.amountSpentThisRound + totalMarketResourceCost;
+                        }
+
                         let coalInMarket = self.board.market.coalInMarket;
 
                         if (c.coalConsumed > coalInMarket) {
@@ -2479,6 +2525,14 @@ var app = new Vue({
                         tile.availableIron = tile.availableIron - c.ironConsumed;                            
                     } else {
                         // market
+                        let totalMarketResourceCost = self.getTotalMarketResourceCost(c.ironConsumed, RESOURCETYPE.Iron);
+
+                        if (!self.currentPlayer.amountSpentThisRound) {
+                            self.currentPlayer.amountSpentThisRound = totalMarketResourceCost;
+                        } else {
+                            self.currentPlayer.amountSpentThisRound = self.currentPlayer.amountSpentThisRound + totalMarketResourceCost;
+                        }
+
                         let ironInMarket = self.board.market.ironInMarket;
 
                         if (c.coalConsumed > ironInMarket) {
@@ -3975,6 +4029,54 @@ var app = new Vue({
         },
         // -- end Supporting logical methods
 
+        getTotalMarketResourceCost: function (totalAmountConsumed, resourcetype) {
+            let totalCost = 0;
+            let emptyMarketSpaces = resourcetype === RESOURCETYPE.Coal ? this.totalEmptyMarketCoalSpaces : this.totalEmptyMarketIronSpaces;
+
+            for (let i=0;i<totalAmountConsumed;i++) {
+                if (emptyMarketSpaces >= 0 && emptyMarketSpaces <= 1) {
+                    totalCost = totalCost + 1;
+                }
+
+                if (emptyMarketSpaces >= 2 && emptyMarketSpaces <= 3) {
+                    totalCost = totalCost + 2;
+                }
+
+                if (emptyMarketSpaces >= 4 && emptyMarketSpaces <= 5) {
+                    totalCost = totalCost + 3;
+                }
+
+                if (emptyMarketSpaces >= 6 && emptyMarketSpaces <= 7) {
+                    totalCost = totalCost + 4;
+                }
+
+                if (emptyMarketSpaces >= 8 && emptyMarketSpaces <= 9) {
+                    totalCost = totalCost + 5;
+                }
+
+                if (resourcetype === RESOURCETYPE.Iron) {
+                    if (emptyMarketSpaces >= 10) {
+                        totalCost = totalCost + 6;
+                    }
+                } else {
+                    if (emptyMarketSpaces >= 10 && emptyMarketSpaces <= 11) {
+                        totalCost = totalCost + 6;
+                    }
+
+                    if (emptyMarketSpaces >= 12 && emptyMarketSpaces <= 13) {
+                        totalCost = totalCost + 7;
+                    }
+
+                    if (emptyMarketSpaces >= 14) {
+                        totalCost = totalCost + 8;
+                    }
+                }
+
+                emptyMarketSpaces++;
+            }
+
+            return totalCost;
+        },
         toggleShowBoardState: function () {
             this.showBoardState = this.showBoardState ? false : true;
             return false;

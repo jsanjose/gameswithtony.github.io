@@ -62,7 +62,7 @@ const industryStringMap = {
     5: "Iron Works"
  };
 
-const RESOURCES = { Coal: 0, Iron: 1, Beer: 2 };
+const RESOURCETYPE = { Coal: 0, Iron: 1, Beer: 2 };
 
 const LOCATIONTYPE = { Industries: 0, Merchants: 1 };
 const locationTypeMap = {
