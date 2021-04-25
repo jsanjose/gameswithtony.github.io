@@ -36,7 +36,7 @@
                     v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 0 }">G</li>
                 -->
                 <li class="player-color-option blue" v-on:click="setPlayerColor(1)"
-                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 1 }">Blue</li>
+                    v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 1 }">Purple</li>
                 
                 <li class="player-color-option red" v-on:click="setPlayerColor(2)"
                     v-bind:class="{ playerColorOptionSelected: humanPlayer.color === 2 }">Red</li>
@@ -114,7 +114,7 @@
                 </ul>
                 <p style="font-style: italic;">NOTE: These merchant tiles have been chosen randomly. If you don't like the setup try starting a new game and you'll get a new random setup!</p>
                 <p>3) Setup a deck for a normal {{ numberOfPlayers }}-player game. <span v-if="numberOfPlayers == '2'">Take <em>half</em> of the cards (20 cards)</span><span v-if="numberOfPlayers == '3'">Take <em>one third</em> of the cards (18 cards)</span>, and leave the rest out of the game for now. Deal yourself 8 cards and place the remaining <span v-if="numberOfPlayers == '2'">12</span><span v-if="numberOfPlayers == '3'">10</span> cards on the board.</p>
-                <p>4) Place Eliza's tiles (use Gray tiles) next to the board. You may setup a player board for her if you wish, but it is not necessary. Eliza does not use Level 1 industries nor Level 2 manufactured goods. These are all considered already developed.</p>
+                <p>4) Place Eliza's tiles (use Light Grayish Blue tiles) next to the board. You may setup a player board for her if you wish, but it is not necessary. Eliza does not use Level 1 industries nor Level 2 manufactured goods. These are all considered already developed.</p>
                 <p v-if="numberOfPlayers == '3'">5) Place Eleanor's tiles (use Yellow tiles) next to the board. You may setup a player board for her if you wish, but it is not necessary. Eleanor does not use Level 1 industries nor Level 2 manufactured goods. These are all considered already developed.</p>
                 <p>When you are done with setup, click 'Next' to begin the game!</p>
             </section>

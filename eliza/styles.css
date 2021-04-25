@@ -77,8 +77,8 @@ a, a:visited, a:hover {
 }
 
 .blue {
-    fill: #00d0ff;
-    background-color: #00d0ff;
+    fill: #967EB2;
+    background-color: #967EB2;
 }
 
 .gray {
@@ -285,9 +285,9 @@ input[type="checkbox"].checkbox-strike:checked + span {
     color: #47443f;
 }
 
-.player-icon-blue path {
-    fill: #00d0ff;
-    background-color: #00d0ff;
+.player-icon-blue path, .player-icon-purple path {
+    fill: #967EB2;
+    background-color: #967EB2;
 }
 
 .player-icon-gray path {

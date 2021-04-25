@@ -917,11 +917,16 @@ var app = new Vue({
                 let allConnectedCoal = this.findAllConnectedCoal(locationids, this.currentPlayer.player_type);
 
                 let totalCoalAvailable = 0;
+                let distance = 0;
+                let prevdistance = null;
                 _.forEach(allConnectedCoal, function (ccl) {
                     _.forEach(ccl, function (l) {
+                        distance = l.distance;
+                        if (!prevdistance) { prevdistance = l.distance; }
+
                         _.forEach(l.coalspaces, function (pcs) {
                             // if still need coal, or this is a double network
-                            if ((totalCoalAvailable < totalCoalNeeded) || (locationids.length && locationids.length === 4)) {
+                            if ((totalCoalAvailable < totalCoalNeeded) || distance === prevdistance || locationids.length && locationids.length === 4) {
                                 let resourceArray = [];
                                 for (let i=0;i<=pcs.tile.availableCoal;i++) {
                                     resourceArray.push(i);
@@ -940,6 +945,8 @@ var app = new Vue({
                                 totalCoalAvailable = totalCoalAvailable + pcs.tile.availableCoal;
                             }
                         });
+
+                        prevdistance = ccl.distance;
                     });
                 });
 
@@ -4130,7 +4137,7 @@ var app = new Vue({
             this.soldInRailEra = false;
             this.currentRound = 1;
             this.currentGameStep = GAME_STEPS.Setup;
-            this.currentEra = ERA.Canal;
+            this.currentEra = ERA.Rail;
             this.currentPlayerType = PLAYER_TYPE.Human;
             this.board = _.cloneDeep(INITIAL_BOARD);
             this.humanPlayer = _.cloneDeep(HUMAN_PLAYER);

@@ -5,7 +5,7 @@ const PLAYER_TYPE = { Human: 0, Eliza_AI: 1, Eleanor_AI: 2 };
 const PLAYER_COLOR = { Gray: 0, Blue: 1, Red: 2, Yellow: 3 };
 const colorMap = {
     0: "gray",
-    1: "blue",
+    1: "purple",
     2: "red",
     3: "yellow"
  };
