@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.63'
+        appVersion: '0.64'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -397,7 +397,11 @@ var app = new Vue({
                         this.computedUpdater++;
                         this.isAIThinking = true;
                         setTimeout(function() { Vue.nextTick(function() { self.setupRailEra(); self.calculateAIAction(self.currentPlayerType); self.currentGameStep = GAME_STEPS.Round; self.saveGameState(); window.scrollTo(0,0); } ); }, 0);
-                    };
+                    } else {
+                        this.currentGameStep = GAME_STEPS.Round;
+                        this.saveGameState();
+                        window.scrollTo(0,0);
+                    }
                 } else {
                     this.currentGameStep = GAME_STEPS.Round;
                     this.saveGameState();
