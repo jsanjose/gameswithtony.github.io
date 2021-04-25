@@ -319,7 +319,7 @@
                         Turn order has been calculated:
                         <p class="text-tiny">
                             <span v-for="(player, index) in playersInOrder">
-                                {{ player.name }}<span v-if="index != numberOfPlayers - 1">&nbsp;&nbsp;->&nbsp;&nbsp;</span>
+                                {{ player.name }} (&pound;{{ player.amountSpentThisRound ? player.amountSpentThisRound : 0 }})<span v-if="index != numberOfPlayers - 1">&nbsp;&nbsp;->&nbsp;&nbsp;</span>
                             </span>
                         </p>
                     </li>
@@ -348,6 +348,9 @@
                     </li>
                     <li class="action-desc">
                         Deal yourself 8 cards, and place the remaining <span v-if="numberOfPlayers == '2'">12</span><span v-if="numberOfPlayers == '3'">10</span> cards on the board.
+                    </li>
+                    <li class="action-desc">
+                        Remember to receive (or pay) your income.
                     </li>
                 </ul>
             </section>

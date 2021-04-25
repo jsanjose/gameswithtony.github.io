@@ -370,10 +370,39 @@ var app = new Vue({
             }
 
             // if coming from new round screen or setup rail era screen
-            if (this.currentGameStep === 2 || this.currentGameStep === GAME_STEPS.SetupRailEra) {
-                this.currentGameStep = GAME_STEPS.Round;
-                this.saveGameState();
-                window.scrollTo(0,0);
+            if (this.currentGameStep === GAME_STEPS.EndOfRound || this.currentGameStep === GAME_STEPS.SetupRailEra) {
+                let players = [];
+
+                if (this.numberOfPlayers === 2) {
+                    players = [
+                        this.humanPlayer,
+                        this.eliza
+                    ];
+                } else {
+                    players = [
+                        this.humanPlayer,
+                        this.eliza,
+                        this.eleanor
+                    ];
+                }
+
+                // clear amount spent
+                let self = this;
+                _.forEach(players, function (p) {
+                    p.amountSpentThisRound = null;
+                });
+
+                if (this.currentGameStep === GAME_STEPS.SetupRailEra) {
+                    if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
+                        this.computedUpdater++;
+                        this.isAIThinking = true;
+                        setTimeout(function() { Vue.nextTick(function() { self.setupRailEra(); self.calculateAIAction(self.currentPlayerType); self.currentGameStep = GAME_STEPS.Round; self.saveGameState(); window.scrollTo(0,0); } ); }, 0);
+                    };
+                } else {
+                    this.currentGameStep = GAME_STEPS.Round;
+                    this.saveGameState();
+                    window.scrollTo(0,0);
+                }
 
                 setTimeout(() => {
                     this.isDisabledButton = false;
@@ -1677,14 +1706,13 @@ var app = new Vue({
                 this.currentRound = this.currentRound + 1;
 
                 // calculate new turn order
-                let newSortedPlayers = _.sortBy(players, function (p) {
+                let newSortedPlayers = _.sortBy(sortedPlayers, function (p) {
                     return p.amountSpentThisRound ? p.amountSpentThisRound : 0;
                 });
                 _.forEach(newSortedPlayers, function (p, index) {
                     let player = self.getPlayerFromType(p.player_type);
                     player.turnOrder = index;
                     player.currentRoundComplete = false;
-                    player.amountSpentThisRound = null;
                 });
 
                 this.humanPlayer.currentTurnIndex = 0;
@@ -1696,13 +1724,8 @@ var app = new Vue({
                 if (this.currentRound > this.roundsPerEra()) {
                     if (this.currentEra === ERA.Canal) {
                         this.isCalculatingScore = true;
-                        setTimeout(function() { Vue.nextTick(function() { self.calculateScore(); self.setupRailEra(); } ); }, 0);
+                        setTimeout(function() { Vue.nextTick(function() { self.calculateScore(); } ); }, 0);
                         this.currentGameStep = GAME_STEPS.SetupRailEra;
-                        if (this.currentPlayerType === PLAYER_TYPE.Eliza_AI || this.currentPlayerType === PLAYER_TYPE.Eleanor_AI) {
-                            this.computedUpdater++;
-                            this.isAIThinking = true;
-                            setTimeout(function() { Vue.nextTick(function() { self.calculateAIAction(self.currentPlayerType) } ); }, 0);
-                        };
                     } else {
                         this.isCalculatingScore = true;
                         setTimeout(function() { Vue.nextTick(function() { self.calculateScore(); } ); }, 0);
@@ -4137,7 +4160,7 @@ var app = new Vue({
             this.soldInRailEra = false;
             this.currentRound = 1;
             this.currentGameStep = GAME_STEPS.Setup;
-            this.currentEra = ERA.Rail;
+            this.currentEra = ERA.Canal;
             this.currentPlayerType = PLAYER_TYPE.Human;
             this.board = _.cloneDeep(INITIAL_BOARD);
             this.humanPlayer = _.cloneDeep(HUMAN_PLAYER);
