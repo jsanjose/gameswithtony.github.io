@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.65'
+        appVersion: '0.67'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -1308,6 +1308,7 @@ var app = new Vue({
                 let selectedTiles = _.filter(this.humanPlayer.nextAction.actiondata.sellabletiles, function (t) {
                     return t.selected;
                 });
+                let totalIncomeIncrease = 0;
                 let actionstring = '';
 
                 _.forEach(selectedTiles, function (t) {
@@ -1315,11 +1316,22 @@ var app = new Vue({
                     actionstring = actionstring + 'Sell ' + t.name + ' (Space ' + (t.spaceid + 1) + ')'
                     actionstring = actionstring + ' [[ Flips the tile! ]].';
 
+                    totalIncomeIncrease = totalIncomeIncrease + t.tile.income;
+
                     actions.push({
                         actionDone: false,
                         actionDesc: actionstring
                     });
                 });
+
+                if (totalIncomeIncrease > 0) {
+                    actionstring = '';
+                    actionstring = actionstring + 'Increase your income by ' + totalIncomeIncrease + '.';
+                    actions.push({
+                        actionDone: false,
+                        actionDesc: actionstring
+                    });
+                }
             }
 
             // If Develop
