@@ -373,7 +373,7 @@ var app = new Vue({
             if (this.currentGameStep === GAME_STEPS.EndOfRound || this.currentGameStep === GAME_STEPS.SetupRailEra) {
                 let players = [];
 
-                if (this.numberOfPlayers === 2) {
+                if (this.numberOfPlayers == '2') {
                     players = [
                         this.humanPlayer,
                         this.eliza
@@ -644,10 +644,10 @@ var app = new Vue({
             return "player-icon-" + this.colorString(this.currentPlayer.color);
         },
         roundsPerEra: function () {
-            return this.numberOfPlayers === 2 ? TOTAL_ROUNDS_2PLAYER : TOTAL_ROUNDS_3PLAYER;
+            return this.numberOfPlayers == '2' ? TOTAL_ROUNDS_2PLAYER : TOTAL_ROUNDS_3PLAYER;
         },
         roundToStartGuaranteedSale: function () {
-            let roundsPerEra = this.numberOfPlayers === 2 ? TOTAL_ROUNDS_2PLAYER : TOTAL_ROUNDS_3PLAYER;
+            let roundsPerEra = this.numberOfPlayers == '2' ? TOTAL_ROUNDS_2PLAYER : TOTAL_ROUNDS_3PLAYER;
             return (roundsPerEra - ROUNDS_LEFT_START_GUARANTEED_SALE) + 1;
         },
         startGame: function() {
@@ -1700,7 +1700,7 @@ var app = new Vue({
 
             let players = [];
 
-            if (this.numberOfPlayers === 2) {
+            if (this.numberOfPlayers == '2') {
                 players = [
                     this.humanPlayer,
                     this.eliza
@@ -2726,7 +2726,7 @@ var app = new Vue({
         getPlayersWithScores: function () {
             let players = [];
 
-            if (this.numberOfPlayers === 2) {
+            if (this.numberOfPlayers == '2') {
                 players = [
                     this.humanPlayer,
                     this.eliza

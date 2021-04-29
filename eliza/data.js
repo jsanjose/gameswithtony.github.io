@@ -1470,19 +1470,26 @@ const CARDS = [
     createCard(24, null, INDUSTRY.Brewery, 'Brewery', 2, CARD_TYPES.Industry),
 ];
 
-const AI_DECK_TYPES = { Balanced: 0, Birmingham: 1 };
+const AI_DECK_TYPES = { Balanced: 0, MarketDriven: 1 };
 function getAIDeck(type, numberOfPlayers) {
     // Balanced
-    if (type === AI_DECK_TYPES.Balanced && numberOfPlayers == '2') {
+    if (type == AI_DECK_TYPES.Balanced && numberOfPlayers == '2') {
         return [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 24];
     }
 
-    if (type === AI_DECK_TYPES.Balanced && numberOfPlayers == '3') {
+    if (type == AI_DECK_TYPES.Balanced && numberOfPlayers == '3') {
         // removes Cannock, Tamworth, and Dudley
         return [3, 4, 5, 6, 7, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
     }
 
-    // 
+    // Market-driven
+    if (type == AI_DECK_TYPES.MarketDriven && numberOfPlayers == '2') {
+        return [11, 15, 19, 10, 12, 11, 15, 19, 16, 16, 11, 15, 19, 16, 16, 20, 21, 22, 23, 24];
+    }
+
+    if (type == AI_DECK_TYPES.MarketDriven && numberOfPlayers == '3') {
+        return [3, 4, 19, 6, 8, 3, 11, 16, 3, 15, 16, 16, 15, 19, 20, 21, 22, 23];
+    }
 }
 
 const TOTAL_ROUNDS_2PLAYER = 10;
