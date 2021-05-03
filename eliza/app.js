@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.68'
+        appVersion: '0.70'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -220,6 +220,11 @@ var app = new Vue({
 
                 _.forEach(cardsForNumberOfPlayers, function (c) {
                     locations.push(self.findLocationById(c.locationid));
+                });
+
+                // include locations in network
+                locations = _.unionBy(locations, self.findAllLocationsInNetwork(PLAYER_TYPE.Human), function (l) {
+                    return l.id;
                 });
             }
 
