@@ -1058,7 +1058,7 @@ var app = new Vue({
                         name: "Iron Market",
                         spaceid: -1,
                         coalAvailable: totalIronNeeded - totalIronAvailable,
-                        chosenCoal: 0,
+                        chosenIron: 0,
                         resourceArray: resourceArray,
                         isMarket: true,
                         id: -2000
