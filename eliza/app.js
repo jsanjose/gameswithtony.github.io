@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.71'
+        appVersion: '0.72'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -1208,7 +1208,7 @@ var app = new Vue({
                             });
 
                             actionstring = '';
-                            actionstring = actionstring + 'Increase your income by ' + this.humanPlayer.nextAction.actiondata.buildtile.income;
+                            actionstring = actionstring + 'Increase your income by ' + this.humanPlayer.nextAction.actiondata.buildtile.income + '.';
                             this.humanPlayer.nextAction.actiondata.flipIncomeIncrease = this.humanPlayer.nextAction.actiondata.buildtile.income;
                         }
 
@@ -1240,7 +1240,7 @@ var app = new Vue({
                             });
 
                             actionstring = '';
-                            actionstring = actionstring + 'Increase your income by ' + this.humanPlayer.nextAction.actiondata.buildtile.income;
+                            actionstring = actionstring + 'Increase your income by ' + this.humanPlayer.nextAction.actiondata.buildtile.income + '.';
                             this.humanPlayer.nextAction.actiondata.flipIncomeIncrease = this.humanPlayer.nextAction.actiondata.buildtile.income;
                         }
 
@@ -1374,15 +1374,31 @@ var app = new Vue({
                         }
 
                         if (l.coalAvailable === l.chosenCoal && !l.isMarket) {
-                            actionstring = actionstring + ' [[ Flips the tile! ]]';
+                            actionstring = actionstring + ' [[ Flips the tile! ]].';
+
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+
+                            let location = self.findLocationById(l.locationid);
+                            let tile = location.spaces[l.spaceid - 1].tile;
+
+                            actionstring = '';
+                            actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+                            
+                        } else {
+                            actionstring = actionstring + '.';
+
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
                         }
-
-                        actionstring = actionstring + '.'
-
-                        actions.push({
-                            actionDone: false,
-                            actionDesc: actionstring
-                        });
 
                         if (l.isMarket) {
                             let totalMarketResourceCost = self.getTotalMarketResourceCost(l.chosenCoal, RESOURCETYPE.Coal);
@@ -1412,15 +1428,31 @@ var app = new Vue({
                         }
 
                         if (l.ironAvailable === l.chosenIron) {
-                            actionstring = actionstring + ' [[ Flips the tile! ]]';
+                            actionstring = actionstring + ' [[ Flips the tile! ]].';
+
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+
+                            let location = self.findLocationById(l.locationid);
+                            let tile = location.spaces[l.spaceid - 1].tile;
+
+                            actionstring = '';
+                            actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+                            
+                        } else {
+                            actionstring = actionstring + '.';
+
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
                         }
-
-                        actionstring = actionstring + '.'
-
-                        actions.push({
-                            actionDone: false,
-                            actionDesc: actionstring
-                        });
 
                         if (l.isMarket) {
                             let totalMarketResourceCost = self.getTotalMarketResourceCost(l.chosenIron, RESOURCETYPE.Iron);
@@ -1447,16 +1479,32 @@ var app = new Vue({
 
                         if (!l.isMerchant) {
                             if (l.beerAvailable === l.chosenBeer) {
-                                actionstring = actionstring + ' [[ Flips the tile! ]]';
+                                actionstring = actionstring + ' [[ Flips the tile! ]].';
+
+                                actions.push({
+                                    actionDone: false,
+                                    actionDesc: actionstring
+                                });
+
+                                let location = self.findLocationById(l.locationid);
+                                let tile = location.spaces[l.spaceid - 1].tile;
+
+                                actionstring = '';
+                                actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
+                                actions.push({
+                                    actionDone: false,
+                                    actionDesc: actionstring
+                                });
+                                
+                            } else {
+                                actionstring = actionstring + '.';
+
+                                actions.push({
+                                    actionDone: false,
+                                    actionDesc: actionstring
+                                });
                             }
                         }
-
-                        actionstring = actionstring + '.'
-
-                        actions.push({
-                            actionDone: false,
-                            actionDesc: actionstring
-                        });
 
                         if (l.isMerchant) {
                             actionstring = 'Merchant Beer Bonus: ';
