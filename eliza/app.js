@@ -806,6 +806,17 @@ var app = new Vue({
                     return !e.tile && !e.isToSouthernFarm;
                 }).length > 0;
             });
+
+            if (this.humanPlayer.actionStep === '52') {
+                let locationid = this.humanPlayer.nextAction.actiondata.networktolocationid;
+
+                if (locationid) {
+                    let location = this.findLocationById(locationid);
+                    validLocations.push(location);
+
+                    validLocations = _.uniqBy(validLocations, "id");
+                }
+            }
             
             return _.sortBy(validLocations, 'name');
         },
@@ -4393,7 +4404,7 @@ var app = new Vue({
             this.layNetworkTile(PLAYER_TYPE.Human, 19, 20);
             this.layIndustryTile(PLAYER_TYPE.Human, 0, 14, 2);*/
 
-            this.layIndustryTile(PLAYER_TYPE.Human, 0, 14, 2);
+            /*this.layIndustryTile(PLAYER_TYPE.Human, 0, 14, 2);
             this.layIndustryTile(PLAYER_TYPE.Human, 16, 14, 0);
             this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 1);
             this.layIndustryTile(PLAYER_TYPE.Human, 7, 23, 1);
@@ -4409,7 +4420,11 @@ var app = new Vue({
             this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 15, 18);
             this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
             this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
-            this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);
+            this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);*/
+
+            this.layIndustryTile(PLAYER_TYPE.Human, 12, 20, 0);
+            this.layNetworkTile(PLAYER_TYPE.Human, 20, 17);
+            this.layIndustryTile(PLAYER_TYPE.Human, 18, 17, 0);
         },
         // --- BEGIN: may not truly need these ---
         findCoalClosestToFlipping: function (locationid, player_type) {
