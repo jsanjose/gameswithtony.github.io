@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.72'
+        appVersion: '0.73'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -2420,18 +2420,41 @@ var app = new Vue({
                             let leftOverCoal = tile.availableCoal - c.coalConsumed;
 
                             if (leftOverCoal === 0) {
-                                actionstring = actionstring + ' [[ Flips the tile! ]]';
+                                actionstring = actionstring + ' [[ Flips the tile! ]].';
+                                actions.push({
+                                    id: actionid,
+                                    actionDone: false,
+                                    actionDesc: actionstring
+                                });
+                                actionid = actionid + 1;
+
+                                actionstring = '';
+                                actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
+                                actions.push({
+                                    actionDone: false,
+                                    actionDesc: actionstring
+                                });
+                                actionid = actionid + 1;
+                            } else {
+                                actionstring = actionstring + '.';
+
+                                actions.push({
+                                    id: actionid,
+                                    actionDone: false,
+                                    actionDesc: actionstring
+                                });
+                                actionid = actionid + 1;
                             }
+                        } else {
+                            actionstring = actionstring + '.';
+
+                            actions.push({
+                                id: actionid,
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+                            actionid = actionid + 1;
                         }
-
-                        actionstring = actionstring + '.';
-
-                        actions.push({
-                            id: actionid,
-                            actionDone: false,
-                            actionDesc: actionstring
-                        });
-                        actionid = actionid + 1;
                     });
                 }
 
@@ -2449,18 +2472,41 @@ var app = new Vue({
                             let leftOverIron = tile.availableIron - c.ironConsumed;
 
                             if (leftOverIron === 0) {
-                                actionstring = actionstring + ' [[ Flips the tile! ]]';
+                                actionstring = actionstring + ' [[ Flips the tile! ]].';
+                                actions.push({
+                                    id: actionid,
+                                    actionDone: false,
+                                    actionDesc: actionstring
+                                });
+                                actionid = actionid + 1;
+
+                                actionstring = '';
+                                actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
+                                actions.push({
+                                    actionDone: false,
+                                    actionDesc: actionstring
+                                });
+                                actionid = actionid + 1;
+                            } else {
+                                actionstring = actionstring + '.';
+
+                                actions.push({
+                                    id: actionid,
+                                    actionDone: false,
+                                    actionDesc: actionstring
+                                });
+                                actionid = actionid + 1;
                             }
+                        } else {
+                            actionstring = actionstring + '.';
+
+                            actions.push({
+                                id: actionid,
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+                            actionid = actionid + 1;
                         }
-
-                        actionstring = actionstring + '.';
-
-                        actions.push({
-                            id: actionid,
-                            actionDone: false,
-                            actionDesc: actionstring
-                        });
-                        actionid = actionid + 1;
                     });
                 }
             }
@@ -2505,18 +2551,41 @@ var app = new Vue({
                         let leftOverBeer = tile.availableBeer - c.beerConsumed;
 
                         if (leftOverBeer === 0) {
-                            actionstring = actionstring + ' [[ Flips the tile! ]]';
+                            actionstring = actionstring + ' [[ Flips the tile! ]].';
+                            actions.push({
+                                id: actionid,
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+                            actionid = actionid + 1;
+
+                            actionstring = '';
+                            actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
+                            actions.push({
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+                            actionid = actionid + 1;
+                        } else {
+                            actionstring = actionstring + '.';
+
+                            actions.push({
+                                id: actionid,
+                                actionDone: false,
+                                actionDesc: actionstring
+                            });
+                            actionid = actionid + 1;
                         }
+                    } else {
+                        actionstring = actionstring + '.';
+
+                        actions.push({
+                            id: actionid,
+                            actionDone: false,
+                            actionDesc: actionstring
+                        });
+                        actionid = actionid + 1;
                     }
-
-                    actionstring = actionstring + '.';
-
-                    actions.push({
-                        id: actionid,
-                        actionDone: false,
-                        actionDesc: actionstring
-                    });
-                    actionid = actionid + 1;
                 });
             }
 
