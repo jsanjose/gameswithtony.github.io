@@ -33,7 +33,7 @@ var app = new Vue({
             for(let i=0; i < this.characters.length; i++) {
                 this.characters[i].updateHitPoints = updateHitPoints;
 
-                if (!characters[i].hasOwnProperty("hide")) {
+                if (!this.characters[i].hasOwnProperty("hide")) {
                     this.characters[i].hide = false;
                 }
             };
