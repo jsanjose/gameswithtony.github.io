@@ -1,8 +1,9 @@
 const LOCALSTORAGENAME = "mcgamestate";
 
-const updateHitPoints = function (points) {
+const updateHitPoints = function (points, event) {
     this.hitpoints = this.hitpoints + points;
     app.saveGameState();
+    event.preventDefault();
 }
 
 function createCharacter(name, hitpoints) {
@@ -39,9 +40,11 @@ var app = new Vue({
     methods: {
         edit: function () {
             this.isEditing = true;
+            window.scrollTo(0,0);
         },
         save: function () {
             this.isEditing = false;
+            window.scrollTo(0,0);
             this.saveGameState();
         },
         add: function () {
