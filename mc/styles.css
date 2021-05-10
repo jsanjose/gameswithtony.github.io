@@ -1,0 +1,98 @@
+* {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 18px;
+    box-sizing: border-box;
+    color: #fff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #000;
+}
+
+.total-hit-points {
+    font-family: 'Itim', sans-serif;
+    font-size: 2.5rem;
+    border-right: dashed 1px #fff;
+    padding-right: 0.5rem;
+}
+
+#mc {
+    display: flex;
+    flex: 1;
+    max-width: 900px;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.character {
+    padding: 0 1rem;
+    width: 100%;
+}
+
+.character + .character {
+    margin-top: 0.5rem;
+}
+
+.character h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.125rem;
+}
+
+.hit-points {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.hit-point-buttons {
+    display: flex;
+}
+
+.hit-point-buttons a {
+    padding: 0.675rem;
+    background-color: darkred;
+    text-decoration: none;
+    border-radius: 25%;
+    display: inline-flex;
+    font-weight: bold;
+}
+
+a.hit-point-buttons--big {
+    background-color: blue;
+}
+
+a + a {
+    margin-left: 1rem;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    padding: 0.5rem;
+    width: 100%;
+    background-color: #000;
+    border-top: solid 1px #47443f;
+    margin: 0;
+}
+
+.button {
+    height: 50px;
+    min-height: 50px;
+    width: 100%;
+    max-width: 500px;
+    background-color: #000;
+    color: #ffffff;
+    font-size: 1.1rem;
+    box-shadow: none;
+    cursor: pointer;
+    border: none;
+}
