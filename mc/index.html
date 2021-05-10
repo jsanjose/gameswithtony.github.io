@@ -18,7 +18,7 @@
 </head>
 <body>
     <main id="mc">
-        <section class="character" v-for="character in characters" v-if="!isEditing">
+        <section class="character" v-for="character in characters" v-if="!isEditing && !character.hide">
             <h2>{{ character.name }}</h2>
             <section class="hit-points">
                 <section class="total-hit-points">
@@ -37,8 +37,8 @@
             <button class="button" v-on:click="edit()">Edit</button>
         </section>
 
-        <section v-for="(character, index) in characters" v-if="isEditing">
-            <input type="text" v-model="character.name" /> <a href="#" v-on:click="remove(index)">Remove</a>
+        <section class="character-edit" v-for="(character, index) in characters" v-if="isEditing">
+            <input type="text" v-model="character.name" /><br /><div class="character-edit-buttons">Hide?: <a href="#" v-on:click="toggleHide(index)"><span v-if="character.hide">Yes</span><span v-if="!character.hide">No</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index)" style="margin-left: 0;">Remove</a></div>
         </section>
 
         <section class="hit-point-buttons edit-buttons" v-if="isEditing">

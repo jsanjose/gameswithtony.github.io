@@ -10,6 +10,7 @@ function createCharacter(name, hitpoints) {
     return {
         name: name,
         hitpoints: hitpoints,
+        hide: false,
         updateHitPoints: updateHitPoints
     };
 }
@@ -31,6 +32,10 @@ var app = new Vue({
 
             for(let i=0; i < this.characters.length; i++) {
                 this.characters[i].updateHitPoints = updateHitPoints;
+
+                if (!characters[i].hasOwnProperty("hide")) {
+                    this.characters[i].hide = false;
+                }
             };
         }
     },
@@ -54,6 +59,9 @@ var app = new Vue({
             if (confirm('Are you sure you want to remove this character?')) {
                 this.characters.splice(index, 1);
             }
+        },
+        toggleHide: function (index) {
+            this.characters[index].hide = !this.characters[index].hide;
         },
         reset: function() {
             this.characters = [
