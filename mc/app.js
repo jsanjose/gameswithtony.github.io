@@ -10,7 +10,11 @@ function createCharacter(name, hitpoints) {
     return {
         name: name,
         hitpoints: hitpoints,
+        maxhitpoints: hitpoints,
         hide: false,
+        isStunned: false,
+        isTough: false,
+        isConfused: false,
         updateHitPoints: updateHitPoints
     };
 }
@@ -33,8 +37,25 @@ var app = new Vue({
             for(let i=0; i < this.characters.length; i++) {
                 this.characters[i].updateHitPoints = updateHitPoints;
 
+                // properties added after release...
                 if (!this.characters[i].hasOwnProperty("hide")) {
                     this.characters[i].hide = false;
+                }
+
+                if (!this.characters[i].hasOwnProperty("maxhitpoints")) {
+                    this.characters[i].maxhitpoints = 10;
+                }
+
+                if (!this.characters[i].hasOwnProperty("isStunned")) {
+                    this.characters[i].isStunned = false;
+                }
+
+                if (!this.characters[i].hasOwnProperty("isTough")) {
+                    this.characters[i].isTough = false;
+                }
+
+                if (!this.characters[i].hasOwnProperty("isConfused")) {
+                    this.characters[i].isConfused = false;
                 }
             };
         }

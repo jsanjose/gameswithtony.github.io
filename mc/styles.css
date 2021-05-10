@@ -22,6 +22,10 @@ body {
     padding-right: 0.5rem;
 }
 
+.max-hit-points {
+    font-size: 0.8rem;
+}
+
 #mc {
     display: flex;
     flex: 1;
@@ -45,6 +49,31 @@ body {
     margin-bottom: 0.125rem;
 }
 
+.status-card {
+    margin: 0;
+    padding: 0.25rem;
+    display: inline-flex;
+    border-radius: 15%;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.status-card + .status-card {
+    margin-left: 0.25rem;
+}
+
+.status-card--stunned {
+    border: solid 1px #E8AA1B;
+}
+
+.status-card--confused {
+    border: solid 1px #865198;
+}
+
+.status-card--tough {
+    border: solid 1px #FDD446;
+}
+
 .hit-points {
     display: flex;
     align-items: center;
@@ -53,6 +82,8 @@ body {
 
 .hit-point-buttons {
     display: flex;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
 }
 
 .hit-point-buttons a {
@@ -99,12 +130,20 @@ a + a {
     border: none;
 }
 
-input {
+input[type='text'] {
     color: #000;
-    width: 300px;
     margin-top: 1rem;
     padding: 0.5rem;
     font-size: 1.1rem;
+}
+
+.character-name {
+    width: 300px;
+}
+
+.character-maxhitpoints {
+    width: 50px;
+    margin-left: 0.5rem
 }
 
 .edit-buttons {
@@ -118,4 +157,9 @@ input {
 .character-edit-buttons {
     font-size: 1.1rem;
     margin-top: 0.25rem;
+}
+
+.character-edit-buttons label {
+    display: inline-flex;
+    padding: 0.5rem;
 }

@@ -22,7 +22,7 @@
             <h2>{{ character.name }}</h2>
             <section class="hit-points">
                 <section class="total-hit-points">
-                    {{ character.hitpoints }}
+                    {{ character.hitpoints }}<span class="max-hit-points">&nbsp;/&nbsp;{{ character.maxhitpoints }}</span>
                 </section>
                 <section class="hit-point-buttons">
                     <a class="hit-point-buttons--big" href="#" v-on:click="character.updateHitPoints(-5, $event)">- 5</a>
@@ -31,6 +31,9 @@
                     <a class="hit-point-buttons--big" href="#" v-on:click="character.updateHitPoints(5, $event)">+ 5</a>
                 </section>
             </section>
+            <p class="status-card status-card--stunned" v-if="character.isStunned">Stunned</p>
+            <p class="status-card status-card--confused" v-if="character.isConfused">Confused</p>
+            <p class="status-card status-card--tough" v-if="character.isTough">Tough</p>
         </section>
 
         <section class="button-container" v-if="!isEditing">
@@ -38,7 +41,13 @@
         </section>
 
         <section class="character-edit" v-for="(character, index) in characters" v-if="isEditing">
-            <input type="text" v-model="character.name" /><br /><div class="character-edit-buttons">Hide?: <a href="#" v-on:click="toggleHide(index)"><span v-if="character.hide">Yes</span><span v-if="!character.hide">No</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index)" style="margin-left: 0;">Remove</a></div>
+            <input type="text" class="character-name" v-model="character.name" /><input type="text" class="character-maxhitpoints" v-model="character.maxhitpoints" /><br /><div class="character-edit-buttons">
+                <label><input type="checkbox" v-model="character.isStunned" />Stunned</label>
+                <label><input type="checkbox" v-model="character.isConfused" />Confused</label>
+                <label><input type="checkbox" v-model="character.isTough" />Tough</label>
+            <br />
+            <label><input type="checkbox" v-model="character.hide" />Hide</label>
+            &nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index)" style="margin-left: 0;">Remove</a></div>
         </section>
 
         <section class="hit-point-buttons edit-buttons" v-if="isEditing">
