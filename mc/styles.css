@@ -24,13 +24,14 @@ body {
 #mc {
     display: flex;
     flex: 1;
-    max-width: 900px;
     min-height: 100vh;
     flex-direction: column;
+    align-items: center;
 }
 
 .character {
     padding: 0 1rem;
+    max-width: 500px;
     width: 100%;
 }
 
@@ -95,4 +96,16 @@ a + a {
     box-shadow: none;
     cursor: pointer;
     border: none;
+}
+
+input {
+    color: #000;
+    width: 300px;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.edit-buttons {
+    margin-top: 1rem;
 }

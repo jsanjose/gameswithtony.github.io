@@ -18,7 +18,7 @@
 </head>
 <body>
     <main id="mc">
-        <section class="character" v-for="character in characters">
+        <section class="character" v-for="character in characters" v-if="!isEditing">
             <h2>{{ character.name }}</h2>
             <section class="hit-points">
                 <section class="total-hit-points">
@@ -33,8 +33,20 @@
             </section>
         </section>
 
-        <section class="button-container">
-            <button class="button">Edit</button>
+        <section class="button-container" v-if="!isEditing">
+            <button class="button" v-on:click="edit()">Edit</button>
+        </section>
+
+        <section v-for="(character, index) in characters" v-if="isEditing">
+            <input type="text" v-model="character.name" /> <a href="#" v-on:click="remove(index)">Remove</a>
+        </section>
+
+        <section class="hit-point-buttons edit-buttons" v-if="isEditing">
+            <a href="#" v-on:click="add()">+ Add</a>
+        </section>
+
+        <section class="button-container" v-if="isEditing">
+            <button class="button" v-on:click="save()">Save</button>
         </section>
     </main>
     <script src="app.js"></script>
