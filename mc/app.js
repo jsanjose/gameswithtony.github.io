@@ -99,6 +99,13 @@ var app = new Vue({
             window.scrollTo(0,0);
         },
         save: function () {
+            // check if current hitpoints are greater than any new max hitpoints
+            for(let i=0; i < this.characters.length; i++) {
+                if (this.characters[i].hitpoints > this.characters[i].maxhitpoints) {
+                    this.characters[i].hitpoints = this.characters[i].maxhitpoints;
+                }
+            }
+
             this.isEditing = false;
             window.scrollTo(0,0);
             this.saveGameState();
