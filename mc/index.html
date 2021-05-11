@@ -20,7 +20,7 @@
 </head>
 <body>
     <main id="mc">
-        <section class="character" v-for="character in characters" v-if="!isEditing && !character.hide" v-bind:class="{ scheme: character.type != 2 }">
+        <section class="character" v-for="(character, index) in characters" v-if="!isEditing && !character.hide" v-bind:class="{ scheme: character.type != 2 }">
             <h2>{{ character.name }}</h2>
             <section class="threat" v-if="character.type != 2">
                 <a href="#" v-on:click="character.updateHitPoints(-1, $event)">- 1</a>
@@ -33,7 +33,7 @@
                 <a href="#" v-on:click="character.updateHitPoints(1, $event)">+ 1</a>
             </section>
             <section class="hit-points" v-if="character.type == 2">
-                <section class="total-hit-points">
+                <section class="total-hit-points" v-on:click="editmaxhitpoints(index, $event)">
                     {{ character.hitpoints }}<span class="max-hit-points">&nbsp;/&nbsp;{{ character.maxhitpoints }}</span>
                 </section>
                 <section class="hit-point-buttons">
@@ -62,7 +62,7 @@
         </section>
 
         <section class="character-edit" v-for="(character, index) in characters" v-if="isEditing">
-            <input type="text" class="character-name" v-model="character.name" /><input type="number" inputmode="numeric" pattern="[0-9]*" class="character-maxhitpoints" v-model="character.maxhitpoints" /><br />
+            <input type="text" class="character-name" v-model="character.name" /><input type="number" inputmode="numeric" pattern="[0-9]*" class="character-maxhitpoints" v-model="character.maxhitpoints" :ref="'maxhitpoints' + index" /><br />
             Type:
             <select v-model="character.type">
                 <option value="2">Character</option>

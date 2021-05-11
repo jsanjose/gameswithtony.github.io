@@ -159,6 +159,15 @@ var app = new Vue({
         toggleHide: function (index) {
             this.characters[index].hide = !this.characters[index].hide;
         },
+        editmaxhitpoints: function(index, event) {
+            this.isEditing = true;
+            this.charactersbeforeedit = _.cloneDeep(this.characters);
+            let self = this;
+            Vue.nextTick(function () {
+                console.log(self.$refs['maxhitpoints' + index]);
+                self.$refs['maxhitpoints' + index][0].focus();
+            });
+        },
         reset: function() {
             this.characters = [
                 createCharacter('Villian', 14),
