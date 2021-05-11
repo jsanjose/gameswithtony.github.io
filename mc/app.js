@@ -45,11 +45,15 @@ function createCharacter(name, hitpoints) {
         toggleStatus: toggleStatus
     };
 }
+let sampleScheme = createCharacter('Main Scheme', 7);
+sampleScheme.type = TYPE.MainScheme;
+sampleScheme.hitpoints = 0;
 
 var app = new Vue({
     el: '#mc',
     data: {
         characters: [
+            sampleScheme,
             createCharacter('Villian', 14),
             createCharacter('Hero', 10)
         ],
