@@ -52,7 +52,7 @@
         </section>
 
         <section class="character-edit" v-for="(character, index) in characters" v-if="isEditing">
-            <input type="text" class="character-name" v-model="character.name" /><input type="text" class="character-maxhitpoints" v-model="character.maxhitpoints" /><br /><div class="character-edit-buttons">
+            <input type="text" class="character-name" v-model="character.name" /><input type="number" class="character-maxhitpoints" v-model="character.maxhitpoints" /><br /><div class="character-edit-buttons">
                 <label><input type="checkbox" v-model="character.isStunned" />Stunned</label>
                 <label><input type="checkbox" v-model="character.isConfused" />Confused</label>
                 <label><input type="checkbox" v-model="character.isTough" />Tough</label>

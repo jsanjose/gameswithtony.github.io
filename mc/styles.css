@@ -130,7 +130,7 @@ a + a {
     border: none;
 }
 
-input[type='text'] {
+input[type='text'], input[type='number'] {
     color: #000;
     margin-top: 1rem;
     padding: 0.5rem;
@@ -138,11 +138,11 @@ input[type='text'] {
 }
 
 .character-name {
-    width: 300px;
+    width: 280px;
 }
 
 .character-maxhitpoints {
-    width: 50px;
+    width: 70px;
     margin-left: 0.5rem
 }
 
