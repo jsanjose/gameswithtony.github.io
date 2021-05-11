@@ -152,10 +152,11 @@ input[type='text'] {
 
 .show-toggle-edit {
     margin-top: 1rem;
-    padding-bottom: 0.25rem;
+    padding-bottom: 0.5rem;
     border-bottom: dashed 1px #fff;
     width: 100%;
     text-align: center;
+    
 }
 
 .status-card-toggle {
