@@ -51,7 +51,8 @@ var app = new Vue({
             createCharacter('Hero', 10)
         ],
         isEditing: false,
-        showToggleButtons: false
+        showToggleButtons: false,
+        charactersbeforeedit: null
     },
     mounted: function() {
         this.computedUpdater++;
@@ -96,6 +97,7 @@ var app = new Vue({
     methods: {
         edit: function () {
             this.isEditing = true;
+            this.charactersbeforeedit = _.cloneDeep(this.characters);
             window.scrollTo(0,0);
         },
         save: function () {
@@ -103,6 +105,12 @@ var app = new Vue({
             for(let i=0; i < this.characters.length; i++) {
                 if (this.characters[i].hitpoints > this.characters[i].maxhitpoints) {
                     this.characters[i].hitpoints = this.characters[i].maxhitpoints;
+                }
+
+                let maxdiff = this.characters[i].maxhitpoints - this.charactersbeforeedit[i].maxhitpoints;
+
+                if (maxdiff > 0 && this.characters[i].hitpoints < this.characters[i].maxhitpoints) {
+                    this.characters[i].hitpoints = this.characters[i].hitpoints + maxdiff;
                 }
             }
 
