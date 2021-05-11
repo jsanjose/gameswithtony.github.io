@@ -1,5 +1,7 @@
 const LOCALSTORAGENAME = "mcgamestate";
 
+const TYPE = { MainScheme: 0, SideScheme: 1, Character: 2 };
+
 const updateHitPoints = function (points, event) {
     let totalpoints = new Number(this.hitpoints) + new Number(points);
 
@@ -38,6 +40,7 @@ function createCharacter(name, hitpoints) {
         isStunned: false,
         isTough: false,
         isConfused: false,
+        type: TYPE.Character,
         updateHitPoints: updateHitPoints,
         toggleStatus: toggleStatus
     };
@@ -88,6 +91,10 @@ var app = new Vue({
                 if (!this.characters[i].hasOwnProperty("isConfused")) {
                     this.characters[i].isConfused = false;
                 }
+
+                if (!this.characters[i].hasOwnProperty("type")) {
+                    this.characters[i].type = TYPE.Character;
+                }
             };
         }
     },
@@ -113,8 +120,23 @@ var app = new Vue({
                     if (maxdiff > 0 && this.characters[i].hitpoints < this.characters[i].maxhitpoints) {
                         this.characters[i].hitpoints = this.characters[i].hitpoints + maxdiff;
                     }
+                }  else {
+                    // new schemes
+                    if (this.characters[i].type == TYPE.MainScheme) {
+                        this.characters[i].hitpoints = 0;
+                    }
+
+                    if (this.characters[i].type == TYPE.SideScheme) {
+                        this.characters[i].hitpoints = this.characters[i].maxhitpoints;
+                    }
                 }
             }
+
+            this.characters.sort(function (a, b) {
+                if (a.type == b.type) return 0;
+                if (a.type < b.type) return -1;
+                return 1;
+            });
 
             this.isEditing = false;
             window.scrollTo(0,0);

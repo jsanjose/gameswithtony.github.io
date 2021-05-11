@@ -20,9 +20,19 @@
 </head>
 <body>
     <main id="mc">
-        <section class="character" v-for="character in characters" v-if="!isEditing && !character.hide">
+        <section class="character" v-for="character in characters" v-if="!isEditing && !character.hide" v-bind:class="{ scheme: character.type != 2 }">
             <h2>{{ character.name }}</h2>
-            <section class="hit-points">
+            <section class="threat" v-if="character.type != 2">
+                <a href="#" v-on:click="character.updateHitPoints(-1, $event)">- 1</a>
+                <div class="wrapper">
+                    <div class="progress-bar">
+                        <span class="progress-bar-fill" v-bind:style="{ width: ((character.hitpoints / character.maxhitpoints)*100) + '%' }" style="width: 40%;"></span>
+                    </div>
+                    <div class="progress-total"><span style="font-size: 1.25rem">{{ character.hitpoints }}</span><span style="font-size: 0.85rem"> / {{ character.maxhitpoints }}</span></div>
+                </div>
+                <a href="#" v-on:click="character.updateHitPoints(1, $event)">+ 1</a>
+            </section>
+            <section class="hit-points" v-if="character.type == 2">
                 <section class="total-hit-points">
                     {{ character.hitpoints }}<span class="max-hit-points">&nbsp;/&nbsp;{{ character.maxhitpoints }}</span>
                 </section>
@@ -33,10 +43,10 @@
                     <a class="hit-point-buttons--big" href="#" v-on:click="character.updateHitPoints(5, $event)">+ 5</a>
                 </section>
             </section>
-            <p class="status-card status-card--stunned" v-if="character.isStunned && !showToggleButtons">Stunned</p>
-            <p class="status-card status-card--confused" v-if="character.isConfused && !showToggleButtons">Confused</p>
-            <p class="status-card status-card--tough" v-if="character.isTough && !showToggleButtons">Tough</p>
-            <section class="toggle-buttons" v-if="showToggleButtons">
+            <p class="status-card status-card--stunned" v-if="character.type == 2 && character.isStunned && !showToggleButtons">Stunned</p>
+            <p class="status-card status-card--confused" v-if="character.type == 2 && character.isConfused && !showToggleButtons">Confused</p>
+            <p class="status-card status-card--tough" v-if="character.type == 2 && character.isTough && !showToggleButtons">Tough</p>
+            <section class="toggle-buttons" v-if="showToggleButtons && character.type == 2">
                 <p class="status-card status-card-toggle status-card--stunned" v-bind:class="{ statuscardon: character.isStunned }" v-on:click="character.toggleStatus(0, $event)">Stunned</p>
                 <p class="status-card status-card-toggle status-card--confused" v-bind:class="{ statuscardon: character.isConfused }" v-on:click="character.toggleStatus(1, $event)">Confused</p>
                 <p class="status-card status-card-toggle status-card--tough" v-bind:class="{ statuscardon: character.isTough }" v-on:click="character.toggleStatus(2, $event)">Tough</p>
@@ -52,13 +62,21 @@
         </section>
 
         <section class="character-edit" v-for="(character, index) in characters" v-if="isEditing">
-            <input type="text" class="character-name" v-model="character.name" /><input type="number" inputmode="numeric" pattern="[0-9]*" class="character-maxhitpoints" v-model="character.maxhitpoints" /><br /><div class="character-edit-buttons">
-                <label><input type="checkbox" v-model="character.isStunned" />Stunned</label>
-                <label><input type="checkbox" v-model="character.isConfused" />Confused</label>
-                <label><input type="checkbox" v-model="character.isTough" />Tough</label>
+            <input type="text" class="character-name" v-model="character.name" /><input type="number" inputmode="numeric" pattern="[0-9]*" class="character-maxhitpoints" v-model="character.maxhitpoints" /><br />
+            Type:
+            <select v-model="character.type">
+                <option value="2">Character</option>
+                <option value="0">Main Scheme</option>
+                <option value="1">Side Scheme</option>
+            </select>
             <br />
-            <label><input type="checkbox" v-model="character.hide" />Hide</label>
-            &nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index, $event)" style="margin-left: 0;">Remove</a></div>
+            <div class="character-edit-buttons">
+                <label v-if="character.type == 2"><input type="checkbox" v-model="character.isStunned" />Stunned</label>
+                <label v-if="character.type == 2"><input type="checkbox" v-model="character.isConfused" />Confused</label>
+                <label v-if="character.type == 2"><input type="checkbox" v-model="character.isTough" />Tough</label>
+                <br v-if="character.type == 2" />
+                <label><input type="checkbox" v-model="character.hide" />Hide</label>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index, $event)" style="margin-left: 0;">Remove</a>
+            </div>
         </section>
 
         <section class="hit-point-buttons edit-buttons" v-if="isEditing">
