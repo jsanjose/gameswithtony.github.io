@@ -160,6 +160,7 @@ input[type='text'] {
 
 .status-card-toggle {
     opacity: 0.3;
+    cursor: pointer;
 }
 
 .statuscardon {
