@@ -107,10 +107,12 @@ var app = new Vue({
                     this.characters[i].hitpoints = this.characters[i].maxhitpoints;
                 }
 
-                let maxdiff = this.characters[i].maxhitpoints - this.charactersbeforeedit[i].maxhitpoints;
+                if (this.charactersbeforeedit.length > i) {
+                    let maxdiff = this.characters[i].maxhitpoints - this.charactersbeforeedit[i].maxhitpoints;
 
-                if (maxdiff > 0 && this.characters[i].hitpoints < this.characters[i].maxhitpoints) {
-                    this.characters[i].hitpoints = this.characters[i].hitpoints + maxdiff;
+                    if (maxdiff > 0 && this.characters[i].hitpoints < this.characters[i].maxhitpoints) {
+                        this.characters[i].hitpoints = this.characters[i].hitpoints + maxdiff;
+                    }
                 }
             }
 
