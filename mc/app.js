@@ -51,7 +51,7 @@ var app = new Vue({
             createCharacter('Hero', 10)
         ],
         isEditing: false,
-        showToggleButtons: false,
+        showToggleButtons: true,
         charactersbeforeedit: null
     },
     mounted: function() {
