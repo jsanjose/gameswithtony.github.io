@@ -119,10 +119,10 @@ var app = new Vue({
                 }
 
                 if (this.charactersbeforeedit.length > i) {
-                    let maxdiff = this.characters[i].maxhitpoints - this.charactersbeforeedit[i].maxhitpoints;
+                    let maxdiff = new Number(this.characters[i].maxhitpoints) - new Number(this.charactersbeforeedit[i].maxhitpoints);
 
                     if (maxdiff > 0 && this.characters[i].hitpoints < this.characters[i].maxhitpoints) {
-                        this.characters[i].hitpoints = this.characters[i].hitpoints + maxdiff;
+                        this.characters[i].hitpoints = new Number(this.characters[i].hitpoints) + new Number(maxdiff);
                     }
                 }  else {
                     // new schemes
