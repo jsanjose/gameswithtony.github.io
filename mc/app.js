@@ -1,7 +1,30 @@
 const LOCALSTORAGENAME = "mcgamestate";
 
 const updateHitPoints = function (points, event) {
-    this.hitpoints = this.hitpoints + points;
+    let totalpoints = new Number(this.hitpoints) + new Number(points);
+
+    if (totalpoints > this.maxhitpoints) {
+        totalpoints = this.maxhitpoints;
+    }
+
+    this.hitpoints = totalpoints;
+    app.saveGameState();
+    event.preventDefault();
+}
+
+const toggleStatus = function (type, event) {
+    if (type === 0) {
+        this.isStunned = !this.isStunned;
+    }
+
+    if (type === 1) {
+        this.isConfused = !this.isConfused;
+    }
+
+    if (type === 2) {
+        this.isTough = !this.isTough;
+    }
+
     app.saveGameState();
     event.preventDefault();
 }
@@ -15,7 +38,8 @@ function createCharacter(name, hitpoints) {
         isStunned: false,
         isTough: false,
         isConfused: false,
-        updateHitPoints: updateHitPoints
+        updateHitPoints: updateHitPoints,
+        toggleStatus: toggleStatus
     };
 }
 
@@ -26,7 +50,8 @@ var app = new Vue({
             createCharacter('Villian', 14),
             createCharacter('Hero', 10)
         ],
-        isEditing: false
+        isEditing: false,
+        showToggleButtons: false
     },
     mounted: function() {
         this.computedUpdater++;
@@ -34,8 +59,13 @@ var app = new Vue({
             let gameState = JSON.parse(localStorage.getItem(LOCALSTORAGENAME));
             this.characters = gameState.characters;
 
+            if (gameState.hasOwnProperty("showToggleButtons")) {
+                this.showToggleButtons = gameState.showToggleButtons;
+            }
+
             for(let i=0; i < this.characters.length; i++) {
                 this.characters[i].updateHitPoints = updateHitPoints;
+                this.characters[i].toggleStatus = toggleStatus;
 
                 // properties added after release...
                 if (!this.characters[i].hasOwnProperty("hide")) {
@@ -73,13 +103,15 @@ var app = new Vue({
             window.scrollTo(0,0);
             this.saveGameState();
         },
-        add: function () {
+        add: function (event) {
             this.characters.push(createCharacter('', 10));
+            event.preventDefault();
         },
-        remove: function (index) {
+        remove: function (index, event) {
             if (confirm('Are you sure you want to remove this character?')) {
                 this.characters.splice(index, 1);
             }
+            event.preventDefault();
         },
         toggleHide: function (index) {
             this.characters[index].hide = !this.characters[index].hide;
@@ -95,6 +127,7 @@ var app = new Vue({
         saveGameState: function() {
             let gameState = {};
             gameState.characters = this.characters;
+            gameState.showToggleButtons = this.showToggleButtons;
             localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
 
             this.computedUpdater++;

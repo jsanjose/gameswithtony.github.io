@@ -31,13 +31,22 @@
                     <a class="hit-point-buttons--big" href="#" v-on:click="character.updateHitPoints(5, $event)">+ 5</a>
                 </section>
             </section>
-            <p class="status-card status-card--stunned" v-if="character.isStunned">Stunned</p>
-            <p class="status-card status-card--confused" v-if="character.isConfused">Confused</p>
-            <p class="status-card status-card--tough" v-if="character.isTough">Tough</p>
+            <p class="status-card status-card--stunned" v-if="character.isStunned && !showToggleButtons">Stunned</p>
+            <p class="status-card status-card--confused" v-if="character.isConfused && !showToggleButtons">Confused</p>
+            <p class="status-card status-card--tough" v-if="character.isTough && !showToggleButtons">Tough</p>
+            <section class="toggle-buttons" v-if="showToggleButtons">
+                <p class="status-card status-card-toggle status-card--stunned" v-bind:class="{ statuscardon: character.isStunned }" v-on:click="character.toggleStatus(0, $event)">Stunned</p>
+                <p class="status-card status-card-toggle status-card--confused" v-bind:class="{ statuscardon: character.isConfused }" v-on:click="character.toggleStatus(1, $event)">Confused</p>
+                <p class="status-card status-card-toggle status-card--tough" v-bind:class="{ statuscardon: character.isTough }" v-on:click="character.toggleStatus(2, $event)">Tough</p>
+            </section>
         </section>
 
         <section class="button-container" v-if="!isEditing">
             <button class="button" v-on:click="edit()">Edit</button>
+        </section>
+
+        <section class="show-toggle-edit" v-if="isEditing">
+            <label><input type="checkbox" v-model="showToggleButtons" />Show Toggle Buttons on Main Page</label>
         </section>
 
         <section class="character-edit" v-for="(character, index) in characters" v-if="isEditing">
@@ -47,11 +56,11 @@
                 <label><input type="checkbox" v-model="character.isTough" />Tough</label>
             <br />
             <label><input type="checkbox" v-model="character.hide" />Hide</label>
-            &nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index)" style="margin-left: 0;">Remove</a></div>
+            &nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index, $event)" style="margin-left: 0;">Remove</a></div>
         </section>
 
         <section class="hit-point-buttons edit-buttons" v-if="isEditing">
-            <a href="#" v-on:click="add()">+ Add</a>
+            <a href="#" v-on:click="add($event)">+ Add</a>
         </section>
 
         <section class="button-container" v-if="isEditing">

@@ -150,6 +150,22 @@ input[type='text'] {
     margin-top: 1rem;
 }
 
+.show-toggle-edit {
+    margin-top: 1rem;
+    padding-bottom: 0.25rem;
+    border-bottom: dashed 1px #fff;
+    width: 100%;
+    text-align: center;
+}
+
+.status-card-toggle {
+    opacity: 0.3;
+}
+
+.statuscardon {
+    opacity: 1.0;
+}
+
 .character-edit + .character-edit {
     margin-top: 1rem;
 }
