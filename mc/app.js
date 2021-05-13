@@ -72,7 +72,10 @@ var app = new Vue({
         side_schemes: side_schemes,
         minions: minions,
         allies: allies,
-        hideListsForSetup: false
+        hideListsForSetup: false,
+        hideSideSchemes: false,
+        hideAllies: false,
+        hideMinions: false
     },
     mounted: function() {
         this.computedUpdater++;
@@ -90,6 +93,18 @@ var app = new Vue({
 
             if (gameState.hasOwnProperty("hideListsForSetup")) {
                 this.hideListsForSetup = gameState.hideListsForSetup;
+            }
+
+            if (gameState.hasOwnProperty("hideSideSchemes")) {
+                this.hideSideSchemes = gameState.hideSideSchemes;
+            }
+
+            if (gameState.hasOwnProperty("hideAllies")) {
+                this.hideAllies = gameState.hideAllies;
+            }
+
+            if (gameState.hasOwnProperty("hideMinions")) {
+                this.hideMinions = gameState.hideMinions;
             }
 
             for(let i=0; i < this.characters.length; i++) {
@@ -329,6 +344,9 @@ var app = new Vue({
             gameState.showToggleButtons = this.showToggleButtons;
             gameState.numberOfPlayers = this.numberOfPlayers;
             gameState.hideListsForSetup = this.hideListsForSetup;
+            gameState.hideSideSchemes = this.hideSideSchemes;
+            gameState.hideAllies = this.hideAllies;
+            gameState.hideMinions = this.hideMinions;
             localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
 
             this.computedUpdater++;

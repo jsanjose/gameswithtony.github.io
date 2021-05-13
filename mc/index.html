@@ -107,7 +107,10 @@
                     <option value="4">4</option>
                 </select>
                 <br /><em style="font-size: 0.9rem;">(Note: This is needed to calculate threat.)</em>
-                <br /><br /><label><input type="checkbox" v-model="hideListsForSetup" />Hide Heroes/Villains/Main Schemes?</label>
+                <br /><br /><label class="hidecheckbox"><input type="checkbox" v-model="hideListsForSetup" />Hide Heroes/Villains/Main Schemes?</label>
+                <label class="hidecheckbox"><input type="checkbox" v-model="hideSideSchemes" />Hide Side Schemes?</label>
+                <label class="hidecheckbox"><input type="checkbox" v-model="hideAllies" />Hide Allies?</label>
+                <label class="hidecheckbox"><input type="checkbox" v-model="hideMinions" />Hide Minions?</label>
             </section>
             <p>WARNING: The below list may provide spoilers.</p>
             <h2 v-if="!hideListsForSetup">Heroes</h2>
@@ -125,18 +128,18 @@
                 <label v-for="entity in main_schemes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
 
-            <h2>Side Schemes</h2>
-            <div class="character-edit-buttons">
+            <h2 v-if="!hideSideSchemes">Side Schemes</h2>
+            <div class="character-edit-buttons" v-if="!hideSideSchemes">
                 <label v-for="entity in side_schemes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
 
-            <h2>Allies</h2>
-            <div class="character-edit-buttons">
+            <h2 v-if="!hideAllies">Allies</h2>
+            <div class="character-edit-buttons" v-if="!hideAllies">
                 <label v-for="entity in allies"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
 
-            <h2>Minions</h2>
-            <div class="character-edit-buttons">
+            <h2 v-if="!hideMinions">Minions</h2>
+            <div class="character-edit-buttons" v-if="!hideMinions">
                 <label v-for="entity in minions"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
         </section>

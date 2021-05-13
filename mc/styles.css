@@ -261,3 +261,8 @@ option {
     padding: 0.25rem 0;
     font-size: 1.1rem;
 }
+
+.hidecheckbox + .hidecheckbox {
+    display: block;
+    margin-top: 0.25rem;
+}
