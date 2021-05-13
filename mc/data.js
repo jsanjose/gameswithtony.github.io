@@ -470,6 +470,13 @@ let side_schemes = [
         "basethreat": 2
     },
     {
+        "name": "Budding Crime Syndicate",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
+    },
+    {
         "name": "Bomb Scare",
         "isSelected": false,
         "type": "side_scheme",
@@ -803,6 +810,14 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 1,
         "basethreat": 1
+    },
+    {
+        "name": "Sibling Rivalry",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true
     },
     {
         "name": "Super Absorbing Power",
@@ -1184,10 +1199,22 @@ let minions = [
         "hitpoints": 5
     },
     {
+        "name": "Mister Knife",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6
+    },
+    {
         "name": "Monster",
         "isSelected": false,
         "type": "minion",
         "hitpoints": 6
+    },
+    {
+        "name": "Nebula",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5
     },
     {
         "name": "Private Security Specialist",
@@ -1349,6 +1376,12 @@ let minions = [
 
 let allies = [
     {
+        "name": "Adam Warlock",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Agent 13",
         "isSelected": false,
         "type": "ally",
@@ -1361,10 +1394,22 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Angela",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Ant-Man",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Beta Ray Bill",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
     },
     {
         "name": "Black Cat",
@@ -1415,10 +1460,22 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Cosmo",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Daredevil",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Drax",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
     },
     {
         "name": "Elektra",
@@ -1557,6 +1614,18 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Nova Prime",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Nebula",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Quake",
@@ -1737,5 +1806,11 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Yondu",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     }
 ];
