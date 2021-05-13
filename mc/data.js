@@ -36,6 +36,12 @@ let heroes = [
         "hitpoints": 10
     },
     {
+        "name": "Gamora",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
+    },
+    {
         "name": "Groot",
         "isSelected": false,
         "type": "hero",
@@ -100,6 +106,12 @@ let heroes = [
         "isSelected": false,
         "type": "hero",
         "hitpoints": 11
+    },
+    {
+        "name": "Star-Lord",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
     },
     {
         "name": "Thor",
@@ -237,163 +249,207 @@ let main_schemes = [
         "name": "Assault on NORAD",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 10
+        "threat": 10,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "Attack on Mount Athena",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 3
+        "threat": 3,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "Breakout",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 6
+        "threat": 6,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "Corporate Acquisition",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 10
+        "threat": 10,
+        "basethreat": 1
     },
     {
         "name": "Countdown to Oblivion",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 5
+        "threat": 5,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "Hostile Takeover",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 7
+        "threat": 7,
+        "basethreat": 2
     },
     {
         "name": "Hunting Down Heroes",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 12
+        "threat": 12,
+        "basethreat": 1
     },
     {
         "name": "Inexorable Fate",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 9
+        "threat": 9,
+        "basethreat": 1,
+        "basethreatfixed": true
     },
     {
         "name": "Kang's Arrival",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 7
+        "threat": 7,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "Kang's Wrath",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 10
+        "threat": 10,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "Mutagen Cloud",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 11
+        "threat": 11,
+        "basethreat": 4
     },
     {
         "name": "New World Hydra",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 11
+        "threat": 11,
+        "basethreat": 1
     },
     {
         "name": "None Shall Pass",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 12
+        "threat": 12,
+        "basethreat": 2
     },
     {
         "name": "Secret Rendezvous",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 8
+        "threat": 8,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "The Break-In!",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 7
+        "threat": 7,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "The Chronopolis",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 9
+        "threat": 9,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "The Crimson Cowl",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 3
+        "threat": 3,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "The Getaway",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 5
+        "threat": 5,
+        "basethreat": 1
     },
     {
         "name": "The Infinity Stone",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 6
+        "threat": 6,
+        "basethreat": 1
     },
     {
         "name": "The Island of Dr. Zola",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 6
+        "threat": 6,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "The Mad Doctor",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 8
+        "threat": 8,
+        "basethreat": 1
     },
     {
         "name": "The Master of Time",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": null
+        "threat": null,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "The Present Future War",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 9
+        "threat": 9,
+        "basethreat": 2,
+        "basethreatfixed": true
     },
     {
         "name": "The Realm of Rama-Tut",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 9
+        "threat": 9,
+        "basethreat": 1,
+        "basethreatfixed": true
     },
     {
         "name": "The Rise of the Red Skull",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 8
+        "threat": 8,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "Underground Distribution",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 6
+        "threat": 6,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "Unleashing the Mutagen",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 7
+        "threat": 7,
+        "basethreat": 2
     }
 ];
 
@@ -401,337 +457,500 @@ let side_schemes = [
     {
         "name": "A Mess of Things",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
     },
     {
         "name": "Avalanche!",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Bomb Scare",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
     },
     {
         "name": "Breakin' & Takin'",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
     },
     {
         "name": "Captured by Hydra",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true
     },
     {
         "name": "Censor the Past",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Clear the Road",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true
     },
     {
         "name": "Collapsing Bridge",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Cornered Staff",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
     },
     {
         "name": "Corrupted Timestream",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
     },
     {
         "name": "Crossbones' Assault",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Crowd Control",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Day of Reckoning",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true
     },
     {
         "name": "Defense Network",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
     },
     {
         "name": "Drone Factory",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true
     },
     {
         "name": "Extortion of Seismic Proportion",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Family Feud",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Generation Why?",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Goblin Nation",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Goblin Reinforcements",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
     },
     {
         "name": "Highway Robbery",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Hit Squad",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Hydra Patrol",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Hydra Prison",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 1,
+        "basethreat": 1,
+        "basethreatfixed": true
     },
     {
         "name": "Hydra Reinforcements",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Illegal Arms Factory",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
     },
     {
         "name": "Imminent Overload",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
     },
     {
         "name": "Invasive AI",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Judge, Jury, Executioner",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Kang's Dominion",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Killer for Hire",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Legions of Hydra",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
     },
     {
         "name": "Light of Centuries Sphere",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Marked for Death",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true
     },
     {
         "name": "Mass Chaos",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 0,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "Mother's Orders",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Open the Dark Dimension",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Oscorp Manufacturing",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Overrun",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 1,
+        "basethreat": 1
     },
     {
         "name": "Payoff",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Personal Challenge",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
     },
     {
         "name": "Pile It On!",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
     },
     {
         "name": "Pinned Down",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
     },
     {
         "name": "Power Drain",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Prison Camps",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Rampage",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true
     },
     {
         "name": "Running Interference",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 1,
+        "basethreat": 1
     },
     {
         "name": "Super Absorbing Power",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Taskmaster's Training Camp",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Tech Theft",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Test Subjects",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "The \"Immortal\" Klaw",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "The Anachronauts",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "The Doomsday Chair",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 8,
+        "basethreat": 8,
+        "basethreatfixed": true
     },
     {
         "name": "The Masters of Evil",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "The Next Evolution",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": false
     },
     {
         "name": "The Psych-Magnitron",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
     },
     {
         "name": "The Red House",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false
     },
     {
         "name": "The Sleeper Awakened",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 0,
+        "basethreat": 0,
+        "basethreatfixed": true
     },
     {
         "name": "The Viper's Ambition",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
     },
     {
         "name": "Thunderstruck",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true
     },
     {
         "name": "Time Portal",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Total Destruction",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Ultron's Imperative",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Under Attack",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
     },
     {
         "name": "Usurp The Throne",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Zola's Experiments",
         "isSelected": false,
-        "type": "side_scheme"
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     }
 ];
 

@@ -99,7 +99,9 @@ async function getdata() {
             name: d.name,
             isSelected: false,
             type: 'main_scheme',
-            threat: d.threat
+            threat: d.threat,
+            basethreat: d.base_threat,
+            basethreatfixed: d.base_threat_fixed
         });
     });
     main_schemes = _.sortBy(main_schemes, "name");
@@ -109,7 +111,9 @@ async function getdata() {
             name: d.name,
             isSelected: false,
             type: 'side_scheme',
-            threat: d.threat
+            threat: d.base_threat,
+            basethreat: d.base_threat,
+            basethreatfixed: d.base_threat_fixed
         });
     });
     side_schemes = _.sortBy(side_schemes, "name");

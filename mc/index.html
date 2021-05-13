@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="images/favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
+    <script src="data.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
@@ -20,7 +21,7 @@
 </head>
 <body>
     <main id="mc">
-        <section class="character" v-for="(character, index) in characters" v-if="!isEditing && !character.hide" v-bind:class="{ scheme: character.type != 2 }">
+        <section class="character" v-for="(character, index) in characters" v-if="pageState === 0 && !character.hide" v-bind:class="{ scheme: character.type != 2 }">
             <h2>{{ character.name }}</h2>
             <section class="threat" v-if="character.type != 2">
                 <a href="#" v-on:click="character.updateHitPoints(-1, $event)">- 1</a>
@@ -53,15 +54,16 @@
             </section>
         </section>
 
-        <section class="button-container" v-if="!isEditing">
+        <section class="button-container" v-if="pageState === 0">
             <button class="button" v-on:click="edit()">Edit</button>
+            <button class="button" v-on:click="showOfficialList($event)">Add From List</button>
         </section>
 
-        <section class="show-toggle-edit" v-if="isEditing">
+        <section class="show-toggle-edit" v-if="pageState === 1">
             <label><input type="checkbox" v-model="showToggleButtons" />Show Status Toggles on Main Page</label>
         </section>
 
-        <section class="character-edit" v-for="(character, index) in characters" v-if="isEditing">
+        <section class="character-edit" v-for="(character, index) in characters" v-if="pageState === 1" v-bind:class="{ 'character-edit-hidden': character.hide }">
             <input type="text" class="character-name" v-model="character.name" /><input type="number" inputmode="numeric" pattern="[0-9]*" class="character-maxhitpoints" v-model="character.maxhitpoints" :ref="'maxhitpoints' + index" /><br />
             Type:
             <select v-model="character.type">
@@ -79,12 +81,65 @@
             </div>
         </section>
 
-        <section class="hit-point-buttons edit-buttons" v-if="isEditing">
-            <a href="#" v-on:click="add($event)">+ Add</a>
+        <section class="hit-point-buttons edit-buttons" v-if="pageState === 1">
+            <a href="#" v-on:click="showOfficialList($event)">+ Add From Official List</a>
         </section>
 
-        <section class="button-container" v-if="isEditing">
+        <section class="hit-point-buttons edit-buttons" v-if="pageState === 1">
+            <a href="#" v-on:click="add($event)">+ Add Custom</a>
+        </section>
+
+        <section class="hit-point-buttons edit-buttons remove-button" v-if="pageState === 1">
+            <a href="#" v-on:click="removeAll($event)">- Remove All</a>
+        </section>
+
+        <section class="button-container" v-if="pageState === 1">
             <button class="button" v-on:click="save()">Save</button>
+        </section>
+
+        <section class="official-list" v-if="pageState === 2">
+            <strong>Number of Players: </strong>
+            <select v-model="numberOfPlayers">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            <br /><em>(Note: This is needed to calculate threat.)</em>
+            <p>WARNING: The below list may provide spoilers.</p>
+            <h2>Heroes</h2>
+            <div class="character-edit-buttons">
+                <label v-for="entity in heroes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
+            </div>
+
+            <h2>Villains</h2>
+            <div class="character-edit-buttons">
+                <label v-for="entity in villains"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
+            </div>
+
+            <h2>Main Schemes</h2>
+            <div class="character-edit-buttons">
+                <label v-for="entity in main_schemes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
+            </div>
+
+            <h2>Side Schemes</h2>
+            <div class="character-edit-buttons">
+                <label v-for="entity in side_schemes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
+            </div>
+
+            <h2>Minions</h2>
+            <div class="character-edit-buttons">
+                <label v-for="entity in minions"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
+            </div>
+
+            <h2>Allies</h2>
+            <div class="character-edit-buttons">
+                <label v-for="entity in allies"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
+            </div>
+        </section>
+
+        <section class="button-container" v-if="pageState === 2">
+            <button class="button" v-on:click="addofficial()">Add</button>
         </section>
     </main>
     <script src="app.js"></script>

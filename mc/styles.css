@@ -123,7 +123,6 @@ a + a {
 
 .button-container {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -146,6 +145,10 @@ a + a {
     box-shadow: none;
     cursor: pointer;
     border: none;
+}
+
+.button + .button {
+    border-left: dashed 1px #fff;
 }
 
 input[type='text'], input[type='number'], select {
@@ -175,6 +178,10 @@ option {
 
 .edit-buttons {
     margin-top: 1rem;
+}
+
+.remove-button a {
+    background-color: #333;
 }
 
 .show-toggle-edit {
@@ -210,6 +217,10 @@ option {
     padding: 0.5rem;
 }
 
+.character-edit-hidden {
+    opacity: 0.6;
+}
+
 
 .wrapper {
     width: 100%;
@@ -236,4 +247,13 @@ option {
     background-color: darkred;
     border-radius: 3px;
     transition: width 500ms ease-in-out;
+}
+
+.official-list {
+    padding: 1rem;
+}
+
+.official-list h2 {
+    padding: 0.25rem 0;
+    font-size: 1.1rem;
 }

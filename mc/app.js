@@ -2,6 +2,8 @@ const LOCALSTORAGENAME = "mcgamestate";
 
 const TYPE = { MainScheme: 0, SideScheme: 1, Character: 2 };
 
+const PAGE_STATE = { Main: 0, Edit: 1, Load: 2 };
+
 const updateHitPoints = function (points, event) {
     let totalpoints = new Number(this.hitpoints) + new Number(points);
 
@@ -57,9 +59,16 @@ var app = new Vue({
             createCharacter('Villian', 14),
             createCharacter('Hero', 10)
         ],
-        isEditing: false,
+        pageState: PAGE_STATE.Main,
         showToggleButtons: true,
-        charactersbeforeedit: null
+        charactersbeforeedit: null,
+        numberOfPlayers: 1,
+        heroes: heroes,
+        villains: villains,
+        main_schemes: main_schemes,
+        side_schemes: side_schemes,
+        minions: minions,
+        allies: allies
     },
     mounted: function() {
         this.computedUpdater++;
@@ -69,6 +78,10 @@ var app = new Vue({
 
             if (gameState.hasOwnProperty("showToggleButtons")) {
                 this.showToggleButtons = gameState.showToggleButtons;
+            }
+
+            if (gameState.hasOwnProperty("numberOfPlayers")) {
+                this.numberOfPlayers = gameState.numberOfPlayers;
             }
 
             for(let i=0; i < this.characters.length; i++) {
@@ -107,7 +120,7 @@ var app = new Vue({
     },
     methods: {
         edit: function () {
-            this.isEditing = true;
+            this.pageState = PAGE_STATE.Edit;
             this.charactersbeforeedit = _.cloneDeep(this.characters);
             window.scrollTo(0,0);
         },
@@ -142,7 +155,7 @@ var app = new Vue({
                 return 1;
             });
 
-            this.isEditing = false;
+            this.pageState = PAGE_STATE.Main;
             window.scrollTo(0,0);
             this.saveGameState();
         },
@@ -150,17 +163,94 @@ var app = new Vue({
             this.characters.push(createCharacter('', 10));
             event.preventDefault();
         },
+        showOfficialList: function (event) {
+            this.pageState = PAGE_STATE.Load;
+            window.scrollTo(0,0);
+            event.preventDefault();
+        },
+        addofficial: function () {
+            for (let i=0;i<this.heroes.length;i++) {
+                if (this.heroes[i].isSelected) {
+                    this.characters.push(createCharacter(this.heroes[i].name, this.heroes[i].hitpoints));
+                    this.heroes[i].isSelected = false;
+                }
+            }
+
+            for (let i=0;i<this.villains.length;i++) {
+                if (this.villains[i].isSelected) {
+                    this.characters.push(createCharacter(this.villains[i].name, this.villains[i].hitpoints));
+                    this.villains[i].isSelected = false;
+                }
+            }
+
+            for (let i=0;i<this.main_schemes.length;i++) {
+                if (this.main_schemes[i].isSelected) {
+                    let threat = this.calculateThreat(this.main_schemes[i]);
+
+                    let newcharacter = createCharacter(this.main_schemes[i].name, threat);
+                    newcharacter.type = TYPE.MainScheme;
+                    this.characters.push(newcharacter);
+                    this.main_schemes[i].isSelected = false;
+                }
+            }
+
+            for (let i=0;i<this.side_schemes.length;i++) {
+                if (this.side_schemes[i].isSelected) {
+                    let threat = this.calculateThreat(this.side_schemes[i]);
+
+                    let newcharacter = createCharacter(this.side_schemes[i].name, threat);
+                    newcharacter.type = TYPE.SideScheme;
+                    this.characters.push(newcharacter);
+                    this.side_schemes[i].isSelected = false;
+                }
+            }
+            
+            this.characters.sort(function (a, b) {
+                if (a.type == b.type) return 0;
+                if (a.type < b.type) return -1;
+                return 1;
+            });
+
+            window.scrollTo(0,0);
+            this.saveGameState();
+            this.pageState = PAGE_STATE.Main;
+        },
+        calculateThreat: function (scheme) {
+            let threat = 0;
+            let basethreat = 0;
+
+            if (scheme.threat && scheme.type === 'main_scheme') {
+                threat = scheme.threat * this.numberOfPlayers;
+            }
+
+            if (scheme.basethreatfixed) {
+                basethreat = scheme.basethreat;
+            } else {
+                if (scheme.basethreat) {
+                    basethreat = scheme.basethreat * this.numberOfPlayers;
+                }
+            }
+
+            return threat + basethreat;
+        },
         remove: function (index, event) {
             if (confirm('Are you sure you want to remove this character?')) {
                 this.characters.splice(index, 1);
             }
             event.preventDefault();
         },
+        removeAll: function (event) {
+            if (confirm('Are you sure you want to clear the app?')) {
+                this.characters = [];
+            }
+            
+            event.preventDefault();
+        },
         toggleHide: function (index) {
             this.characters[index].hide = !this.characters[index].hide;
         },
         editmaxhitpoints: function(index, event) {
-            this.isEditing = true;
+            this.pageState = PAGE_STATE.Edit;
             this.charactersbeforeedit = _.cloneDeep(this.characters);
             let self = this;
             Vue.nextTick(function () {
@@ -173,13 +263,14 @@ var app = new Vue({
                 createCharacter('Villian', 14),
                 createCharacter('Hero', 10)
             ];
-            this.isEditing = false;
+            this.pageState = PAGE_STATE.Main;
             this.saveGameState();
         },
         saveGameState: function() {
             let gameState = {};
             gameState.characters = this.characters;
             gameState.showToggleButtons = this.showToggleButtons;
+            gameState.numberOfPlayers = this.numberOfPlayers;
             localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
 
             this.computedUpdater++;
