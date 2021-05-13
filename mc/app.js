@@ -204,6 +204,20 @@ var app = new Vue({
                     this.side_schemes[i].isSelected = false;
                 }
             }
+
+            for (let i=0;i<this.allies.length;i++) {
+                if (this.allies[i].isSelected) {
+                    this.characters.push(createCharacter(this.allies[i].name, this.allies[i].hitpoints));
+                    this.allies[i].isSelected = false;
+                }
+            }
+
+            for (let i=0;i<this.minions.length;i++) {
+                if (this.minions[i].isSelected) {
+                    this.characters.push(createCharacter(this.minions[i].name, this.minions[i].hitpoints));
+                    this.minions[i].isSelected = false;
+                }
+            }
             
             this.characters.sort(function (a, b) {
                 if (a.type == b.type) return 0;

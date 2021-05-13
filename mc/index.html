@@ -127,14 +127,14 @@
                 <label v-for="entity in side_schemes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
 
-            <h2>Minions</h2>
-            <div class="character-edit-buttons">
-                <label v-for="entity in minions"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
-            </div>
-
             <h2>Allies</h2>
             <div class="character-edit-buttons">
                 <label v-for="entity in allies"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
+            </div>
+
+            <h2>Minions</h2>
+            <div class="character-edit-buttons">
+                <label v-for="entity in minions"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
         </section>
 
