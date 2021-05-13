@@ -68,7 +68,7 @@ body {
 }
 
 .status-card--stunned {
-    border: solid 1px #E8AA1B;
+    border: solid 1px #FDD446;
 }
 
 .status-card--confused {
@@ -76,7 +76,7 @@ body {
 }
 
 .status-card--tough {
-    border: solid 1px #FDD446;
+    border: solid 1px #E8AA1B;
 }
 
 .hit-points {
