@@ -98,13 +98,15 @@
         </section>
 
         <section class="official-list" v-if="pageState === 2">
-            <strong>Number of Players: </strong>
-            <select v-model="numberOfPlayers">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
+            <section style="border-top: dashed 1px #fff; border-bottom: dashed 1px #fff; padding: 0.5rem 0">
+                <strong>Number of Players: </strong>
+                <select v-model="numberOfPlayers" style="margin-top: 0;">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </section>
             <br /><em>(Note: This is needed to calculate threat.)</em>
             <p>WARNING: The below list may provide spoilers.</p>
             <h2>Heroes</h2>
