@@ -262,6 +262,10 @@ option {
     font-size: 1.1rem;
 }
 
+.hidecheckbox {  
+    cursor: pointer;
+}
+
 .hidecheckbox + .hidecheckbox {
     display: block;
     margin-top: 0.25rem;
