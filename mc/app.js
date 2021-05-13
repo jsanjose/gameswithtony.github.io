@@ -189,6 +189,7 @@ var app = new Vue({
 
                     let newcharacter = createCharacter(this.main_schemes[i].name, threat);
                     newcharacter.type = TYPE.MainScheme;
+                    newcharacter.hitpoints = 0;
                     this.characters.push(newcharacter);
                     this.main_schemes[i].isSelected = false;
                 }
