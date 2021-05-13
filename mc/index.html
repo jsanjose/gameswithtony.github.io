@@ -107,20 +107,21 @@
                     <option value="4">4</option>
                 </select>
                 <br /><em style="font-size: 0.9rem;">(Note: This is needed to calculate threat.)</em>
+                <br /><br /><label><input type="checkbox" v-model="hideListsForSetup" />Hide Heroes/Villains/Main Schemes?</label>
             </section>
             <p>WARNING: The below list may provide spoilers.</p>
-            <h2>Heroes</h2>
-            <div class="character-edit-buttons">
+            <h2 v-if="!hideListsForSetup">Heroes</h2>
+            <div class="character-edit-buttons" v-if="!hideListsForSetup">
                 <label v-for="entity in heroes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
 
-            <h2>Villains</h2>
-            <div class="character-edit-buttons">
+            <h2 v-if="!hideListsForSetup">Villains</h2>
+            <div class="character-edit-buttons" v-if="!hideListsForSetup">
                 <label v-for="entity in villains"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
 
-            <h2>Main Schemes</h2>
-            <div class="character-edit-buttons">
+            <h2 v-if="!hideListsForSetup">Main Schemes</h2>
+            <div class="character-edit-buttons" v-if="!hideListsForSetup">
                 <label v-for="entity in main_schemes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
 
