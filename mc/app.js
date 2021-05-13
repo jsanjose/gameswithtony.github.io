@@ -258,6 +258,7 @@ var app = new Vue({
                 this.characters = [];
             }
             
+            window.scrollTo(0,0);
             event.preventDefault();
         },
         toggleHide: function (index) {
