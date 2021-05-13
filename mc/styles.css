@@ -243,6 +243,7 @@ option {
 
 .progress-total {
     width: 30%;
+    cursor: pointer;
 }
 
 .progress-bar-fill {

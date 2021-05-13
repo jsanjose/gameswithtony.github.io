@@ -29,7 +29,7 @@
                     <div class="progress-bar">
                         <span class="progress-bar-fill" v-bind:style="{ width: ((character.hitpoints / character.maxhitpoints)*100) + '%' }" style="width: 40%;"></span>
                     </div>
-                    <div class="progress-total"><span style="font-size: 1.25rem">{{ character.hitpoints }}</span><span style="font-size: 0.85rem"> / {{ character.maxhitpoints }}</span></div>
+                    <div class="progress-total" v-on:click="editmaxhitpoints(index, $event)"><span style="font-size: 1.25rem">{{ character.hitpoints }}</span><span style="font-size: 0.85rem"> / {{ character.maxhitpoints }}</span></div>
                 </div>
                 <a href="#" v-on:click="character.updateHitPoints(1, $event)">+ 1</a>
             </section>
