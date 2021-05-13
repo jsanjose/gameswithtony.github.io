@@ -221,6 +221,10 @@ option {
     opacity: 0.6;
 }
 
+.character-edit-buttons a:hover {
+    text-decoration: none;
+}
+
 
 .wrapper {
     width: 100%;

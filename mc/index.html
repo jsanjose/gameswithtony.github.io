@@ -63,7 +63,7 @@
             <label><input type="checkbox" v-model="showToggleButtons" />Show Status Toggles on Main Page</label>
         </section>
 
-        <section class="character-edit" v-for="(character, index) in characters" v-if="pageState === 1" v-bind:class="{ 'character-edit-hidden': character.hide }">
+        <section class="character-edit" v-for="(character, index) in characters" :key="character.id" v-if="pageState === 1" v-bind:class="{ 'character-edit-hidden': character.hide }">
             <input type="text" class="character-name" v-model="character.name" /><input type="number" inputmode="numeric" pattern="[0-9]*" class="character-maxhitpoints" v-model="character.maxhitpoints" :ref="'maxhitpoints' + index" /><br />
             Type:
             <select v-model="character.type">
@@ -77,7 +77,7 @@
                 <label v-if="character.type == 2"><input type="checkbox" v-model="character.isConfused" />Confused</label>
                 <label v-if="character.type == 2"><input type="checkbox" v-model="character.isTough" />Tough</label>
                 <br v-if="character.type == 2" />
-                <label><input type="checkbox" v-model="character.hide" />Hide</label>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index, $event)" style="margin-left: 0;">Remove</a>
+                <label><input type="checkbox" v-model="character.hide" />Hide</label><span v-if="character.type == 2">&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="moveup(index, $event)" style="margin-left: 0;">Move &uparrow;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="movedown(index, $event)" style="margin-left: 0;">Move &downarrow;</a></span>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index, $event)" style="margin-left: 0;">Remove</a>
             </div>
         </section>
 
