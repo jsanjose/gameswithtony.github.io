@@ -27,7 +27,7 @@ const updateMaxHitPoints = function (points, event) {
     if (this.hitpoints > this.maxhitpoints) {
         this.hitpoints = this.maxhitpoints;
     }
-    
+
     app.saveGameState();
     event.preventDefault();
     app.$forceUpdate();
@@ -107,7 +107,8 @@ var app = new Vue({
         hideListsForSetup: false,
         hideSideSchemes: false,
         hideAllies: false,
-        hideMinions: false
+        hideMinions: false,
+        computedUpdater: 1
     },
     mounted: function() {
         this.computedUpdater++;
@@ -180,6 +181,7 @@ var app = new Vue({
     computed: {
         hiddenCharacters: function () {
             let self = this;
+            this.computedUpdater++;
             return _.filter(self.characters, function (c) {
                 return c.hide === true;
             });
