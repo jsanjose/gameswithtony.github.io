@@ -7,8 +7,12 @@ const PAGE_STATE = { Main: 0, Edit: 1, Load: 2 };
 const updateHitPoints = function (points, event) {
     let totalpoints = new Number(this.hitpoints) + new Number(points);
 
-    if (totalpoints > this.maxhitpoints) {
+    if (this.type != TYPE.SideScheme && totalpoints > this.maxhitpoints) {
         totalpoints = this.maxhitpoints;
+    }
+
+    if (this.type == TYPE.SideScheme && totalpoints > this.maxhitpoints) {
+        this.maxhitpoints = totalpoints;
     }
 
     this.hitpoints = totalpoints;
