@@ -132,25 +132,29 @@ let villains = [
         "name": "Absorbing Man",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 14
+        "hitpoints": 14,
+        "hitpointsper": true
     },
     {
         "name": "Bulldozer",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 12
+        "hitpoints": 12,
+        "hitpointsper": true
     },
     {
         "name": "Crossbones",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 12
+        "hitpoints": 12,
+        "hitpointsper": true
     },
     {
         "name": "Green Goblin",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 14
+        "hitpoints": 14,
+        "hitpointsper": true
     },
     {
         "name": "Kang (Immortus)",
@@ -180,67 +184,78 @@ let villains = [
         "name": "Kang (The Conqueror)",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 12
+        "hitpoints": 12,
+        "hitpointsper": true
     },
     {
         "name": "Klaw",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 12
+        "hitpoints": 12,
+        "hitpointsper": true
     },
     {
         "name": "Norman Osborn",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 14
+        "hitpoints": 14,
+        "hitpointsper": true
     },
     {
         "name": "Piledriver",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 11
+        "hitpoints": 11,
+        "hitpointsper": true
     },
     {
         "name": "Red Skull",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 12
+        "hitpoints": 12,
+        "hitpointsper": true
     },
     {
         "name": "Rhino",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 14
+        "hitpoints": 14,
+        "hitpointsper": true
     },
     {
         "name": "Taskmaster",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 13
+        "hitpoints": 13,
+        "hitpointsper": true
     },
     {
         "name": "Thunderball",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 13
+        "hitpoints": 13,
+        "hitpointsper": true
     },
     {
         "name": "Ultron",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 17
+        "hitpoints": 17,
+        "hitpointsper": true
     },
     {
         "name": "Wrecker",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 14
+        "hitpoints": 14,
+        "hitpointsper": true
     },
     {
         "name": "Zola",
         "isSelected": false,
         "type": "villain",
-        "hitpoints": 12
+        "hitpoints": 12,
+        "hitpointsper": true
     }
 ];
 

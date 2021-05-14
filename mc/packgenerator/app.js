@@ -89,7 +89,8 @@ async function getdata() {
             name: d.name,
             isSelected: false,
             type: 'villain',
-            hitpoints: d.health
+            hitpoints: d.health,
+            hitpointsper: d.health_per_hero
         });
     });
     villains = _.sortBy(villains, "name");

@@ -253,7 +253,13 @@ var app = new Vue({
 
             for (let i=0;i<this.villains.length;i++) {
                 if (this.villains[i].isSelected) {
-                    this.characters.push(createCharacter(2000+i, this.villains[i].name, this.villains[i].hitpoints));
+                    let villainhitpoints = this.villains[i].hitpoints;
+
+                    if (this.villains[i].hitpointsper) {
+                        villainhitpoints = new Number(this.villains[i].hitpoints) * new Number(this.numberOfPlayers);
+                    }
+
+                    this.characters.push(createCharacter(2000+i, this.villains[i].name, villainhitpoints));
                     this.villains[i].isSelected = false;
                 }
             }
