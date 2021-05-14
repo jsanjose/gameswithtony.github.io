@@ -24,6 +24,10 @@ const updateHitPoints = function (points, event) {
 const updateMaxHitPoints = function (points, event) {
     this.maxhitpoints = new Number(this.maxhitpoints) + new Number(points);
 
+    if (this.hitpoints > this.maxhitpoints) {
+        this.hitpoints = this.maxhitpoints;
+    }
+    
     app.saveGameState();
     event.preventDefault();
     app.$forceUpdate();
