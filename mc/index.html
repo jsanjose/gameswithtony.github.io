@@ -47,11 +47,25 @@
             <p class="status-card status-card--stunned" v-if="character.type == 2 && character.isStunned && !showToggleButtons">Stunned</p>
             <p class="status-card status-card--confused" v-if="character.type == 2 && character.isConfused && !showToggleButtons">Confused</p>
             <p class="status-card status-card--tough" v-if="character.type == 2 && character.isTough && !showToggleButtons">Tough</p>
-            <section class="toggle-buttons" v-if="showToggleButtons && character.type == 2">
-                <p class="status-card status-card-toggle status-card--stunned" v-bind:class="{ statuscardon: character.isStunned }" v-on:click="character.toggleStatus(0, $event)">Stunned</p>
-                <p class="status-card status-card-toggle status-card--confused" v-bind:class="{ statuscardon: character.isConfused }" v-on:click="character.toggleStatus(1, $event)">Confused</p>
-                <p class="status-card status-card-toggle status-card--tough" v-bind:class="{ statuscardon: character.isTough }" v-on:click="character.toggleStatus(2, $event)">Tough</p>
+            <section class="options" v-if="showToggleButtons && character.type == 2">
+                <section class="toggle-buttons">
+                    <p class="status-card status-card-toggle status-card--stunned" v-bind:class="{ statuscardon: character.isStunned }" v-on:click="character.toggleStatus(0, $event)">Stunned</p>
+                    <p class="status-card status-card-toggle status-card--confused" v-bind:class="{ statuscardon: character.isConfused }" v-on:click="character.toggleStatus(1, $event)">Confused</p>
+                    <p class="status-card status-card-toggle status-card--tough" v-bind:class="{ statuscardon: character.isTough }" v-on:click="character.toggleStatus(2, $event)">Tough</p>
+                </section>
+                <section class="max-buttons">
+                    <p class="max-button" v-on:click="character.hideMe($event)">H</p>
+                    <p class="max-button" v-on:click="character.updateMaxHitPoints(-1, $event)">-M</p>
+                    <p class="max-button" v-on:click="character.updateMaxHitPoints(1, $event)">+M</p>
+                </section>
             </section>
+        </section>
+
+        <section class="characters hidden-characters" v-if="hiddenCharacters.length > 0">
+            <h2>Hidden</h2>
+            <p v-for="(character, index) in hiddenCharacters">
+                {{ character.name }}:&nbsp;&nbsp;<a href="#" v-on:click="character.showMe($event)">Show</a>
+            </p>
         </section>
 
         <section class="button-container" v-if="pageState === 0">
@@ -77,7 +91,7 @@
                 <label v-if="character.type == 2"><input type="checkbox" v-model="character.isConfused" />Confused</label>
                 <label v-if="character.type == 2"><input type="checkbox" v-model="character.isTough" />Tough</label>
                 <br v-if="character.type == 2" />
-                <label><input type="checkbox" v-model="character.hide" />Hide</label><span v-if="character.type == 2">&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="moveup(index, $event)" style="margin-left: 0;">Move &uparrow;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="movedown(index, $event)" style="margin-left: 0;">Move &downarrow;</a></span>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index, $event)" style="margin-left: 0;">Remove</a>
+                <label><input type="checkbox" v-model="character.hide" :ref="'hide' + index" />Hide</label><span v-if="character.type == 2">&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="moveup(index, $event)" style="margin-left: 0;">Move &uparrow;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="movedown(index, $event)" style="margin-left: 0;">Move &downarrow;</a></span>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index, $event)" style="margin-left: 0;">Remove</a>
             </div>
         </section>
 

@@ -21,6 +21,30 @@ const updateHitPoints = function (points, event) {
     app.$forceUpdate();
 }
 
+const updateMaxHitPoints = function (points, event) {
+    this.maxhitpoints = new Number(this.maxhitpoints) + new Number(points);
+
+    app.saveGameState();
+    event.preventDefault();
+    app.$forceUpdate();
+}
+
+const hideMe = function (event) {
+    this.hide = true;
+
+    app.saveGameState();
+    event.preventDefault();
+    app.$forceUpdate();
+}
+
+const showMe = function (event) {
+    this.hide = false;
+
+    app.saveGameState();
+    event.preventDefault();
+    app.$forceUpdate();
+}
+
 const toggleStatus = function (type, event) {
     if (type === 0) {
         this.isStunned = !this.isStunned;
@@ -113,7 +137,10 @@ var app = new Vue({
 
             for(let i=0; i < this.characters.length; i++) {
                 this.characters[i].updateHitPoints = updateHitPoints;
+                this.characters[i].updateMaxHitPoints = updateMaxHitPoints;
                 this.characters[i].toggleStatus = toggleStatus;
+                this.characters[i].hideMe = hideMe;
+                this.characters[i].showMe = showMe;
                 
                 // properties added after release...
                 if (!this.characters[i].hasOwnProperty("id")) {
@@ -147,7 +174,12 @@ var app = new Vue({
         }
     },
     computed: {
-        
+        hiddenCharacters: function () {
+            let self = this;
+            return _.filter(self.characters, function (c) {
+                return c.hide === true;
+            });
+        }
     },
     methods: {
         edit: function () {
@@ -332,6 +364,15 @@ var app = new Vue({
             Vue.nextTick(function () {
                 console.log(self.$refs['maxhitpoints' + index]);
                 self.$refs['maxhitpoints' + index][0].focus();
+            });
+        },
+        edithide: function(index, event) {
+            this.pageState = PAGE_STATE.Edit;
+            this.charactersbeforeedit = _.cloneDeep(this.characters);
+            let self = this;
+            Vue.nextTick(function () {
+                console.log(self.$refs['hide' + index]);
+                self.$refs['hide' + index][0].focus();
             });
         },
         reset: function() {

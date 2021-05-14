@@ -54,13 +54,19 @@ body {
     color: yellow;
 }
 
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0rem;
+}
+
 .status-card {
     margin: 0;
     padding: 0.25rem;
     display: inline-flex;
     border-radius: 15%;
     font-size: 0.8rem;
-    margin-top: 0.25rem;
 }
 
 .status-card + .status-card {
@@ -77,6 +83,20 @@ body {
 
 .status-card--tough {
     border: solid 1px #E8AA1B;
+}
+
+.max-buttons {
+    display: flex;
+}
+
+.max-button {
+    color: darkred;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.max-button + .max-button {
+    margin-left: 1rem;
 }
 
 .hit-points {
@@ -149,6 +169,14 @@ a + a {
 
 .button + .button {
     border-left: dashed 1px #fff;
+}
+
+.hidden-characters {
+    width: 100%;
+    max-width: 500px;
+    padding: 0.25rem 1rem;
+    margin-top: 1rem;
+    border-top: dashed 1px #555;
 }
 
 input[type='text'], input[type='number'], select {
