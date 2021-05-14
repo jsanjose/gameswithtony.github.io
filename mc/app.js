@@ -79,7 +79,10 @@ function createCharacter(id, name, hitpoints) {
         isConfused: false,
         type: TYPE.Character,
         updateHitPoints: updateHitPoints,
-        toggleStatus: toggleStatus
+        updateMaxHitPoints: updateMaxHitPoints,
+        toggleStatus: toggleStatus,
+        hideMe: hideMe,
+        showMe: showMe
     };
 }
 let sampleScheme = createCharacter('Main Scheme', 7);
