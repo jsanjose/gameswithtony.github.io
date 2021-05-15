@@ -85,7 +85,7 @@ function createCharacter(id, name, hitpoints) {
         showMe: showMe
     };
 }
-let sampleScheme = createCharacter('Main Scheme', 7);
+let sampleScheme = createCharacter(0, 'Main Scheme', 7);
 sampleScheme.type = TYPE.MainScheme;
 sampleScheme.hitpoints = 0;
 
