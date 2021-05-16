@@ -21,6 +21,13 @@
 </head>
 <body>
     <main id="mc">
+        <section class="characters" v-if="characters.length === 0 && hiddenCharacters.length === 0 && pageState === 0" style="padding: 1rem;">
+            <h2>Marvel Champions Digital Tracker</h2>
+            <p>
+                Tap "Add From List" to add characters and schemes.
+            </p>
+        </section>
+
         <section class="character" v-for="(character, index) in characters" v-if="pageState === 0 && !character.hide" v-bind:class="{ scheme: character.type != 2 }">
             <h2>{{ character.name }}</h2>
             <section class="threat" v-if="character.type != 2">

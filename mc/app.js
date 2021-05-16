@@ -92,11 +92,7 @@ sampleScheme.hitpoints = 0;
 var app = new Vue({
     el: '#mc',
     data: {
-        characters: [
-            sampleScheme,
-            createCharacter(1, 'Villian', 14),
-            createCharacter(2, 'Hero', 10)
-        ],
+        characters: [],
         pageState: PAGE_STATE.Main,
         showToggleButtons: true,
         charactersbeforeedit: null,
