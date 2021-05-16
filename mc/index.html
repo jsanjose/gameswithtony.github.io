@@ -68,7 +68,7 @@
             </section>
         </section>
 
-        <section class="characters hidden-characters" v-if="hiddenCharacters.length > 0">
+        <section class="characters hidden-characters" v-if="pageState === 0 && hiddenCharacters.length > 0">
             <h2>Hidden</h2>
             <p v-for="(character, index) in hiddenCharacters">
                 {{ character.name }}:&nbsp;&nbsp;<a href="#" v-on:click="character.showMe($event)">Show</a>
