@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.75'
+        appVersion: '0.76'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -1863,6 +1863,19 @@ var app = new Vue({
 
             let sell = false;
 
+            // don't try to sell quickly early in the era
+            if (this.currentRound < 4) {
+                while (!player.currentCard1.locationid && !player.currentCard2.locationid) {
+                    // put cards back
+                    player.cards.push(player.currentCard1.id);
+                    player.cards.push(player.currentCard2.id);
+                    player.cards = _.shuffle(player.cards);
+
+                    player.currentCard1 = this.findCardById(player.cards.shift());
+                    player.currentCard2 = this.findCardById(player.cards.shift());
+                }
+            }
+
             // if both cards are industry (non-null industry type) then SELL
             if (!player.currentCard1.locationid && !player.currentCard2.locationid) {
                 sell = true;
@@ -2093,14 +2106,14 @@ var app = new Vue({
                                     closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
 
                                     if (!closestWithPath) {
-                                        //actiondata.addVP = addVPNoLink;
-                                        build = false;
+                                        actiondata.addVP = addVPNoLink;
+                                       /* build = false;
                                         sell = true;
                                         actiondata.locationid = null;
                                         actiondata.spaceid = null;
                                         actiondata.industrytype = null;
                                         actiondata.neededCoal = 0;
-                                        actiondata.neededIron = 0;
+                                        actiondata.neededIron = 0; */
                                     }
                                 } 
                             }
@@ -2116,14 +2129,14 @@ var app = new Vue({
                                         closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
 
                                         if (!closestWithPath) {
-                                            //actiondata.addVP = addVPNoLink;
-                                            build = false;
+                                            actiondata.addVP = addVPNoLink;
+                                           /* build = false;
                                             sell = true;
                                             actiondata.locationid = null;
                                             actiondata.spaceid = null;
                                             actiondata.industrytype = null;
                                             actiondata.neededCoal = 0;
-                                            actiondata.neededIron = 0;
+                                            actiondata.neededIron = 0; */
                                         }
                                     }
                                 } 
@@ -2395,6 +2408,13 @@ var app = new Vue({
                 // Add VP
                 if (this.currentPlayer.nextAction.actiondata.addVP && this.currentPlayer.nextAction.actiondata.addVP > 0) {
                     actionstring = actionstring + 'Could not network, so gains ' + this.currentPlayer.nextAction.actiondata.addVP + 'VP (now has ' + (this.currentPlayer.totalVP + this.currentPlayer.nextAction.actiondata.addVP) + 'VP in total).';
+
+                    actions.push({
+                        id: actionid,
+                        actionDone: false,
+                        actionDesc: actionstring
+                    });
+                    actionid = actionid + 1;
                 } else {
                     if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== undefined && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== undefined) {
                         let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
@@ -2407,15 +2427,15 @@ var app = new Vue({
                         }
 
                         actionstring = actionstring + '.';
+
+                        actions.push({
+                            id: actionid,
+                            actionDone: false,
+                            actionDesc: actionstring
+                        });
+                        actionid = actionid + 1;
                     }
                 }
-
-                actions.push({
-                    id: actionid,
-                    actionDone: false,
-                    actionDesc: actionstring
-                });
-                actionid = actionid + 1;
 
                 // Coal consumption
                 if (this.currentPlayer.nextAction.actiondata.consumedata && this.currentPlayer.nextAction.actiondata.consumedata.coalConsumption) {
