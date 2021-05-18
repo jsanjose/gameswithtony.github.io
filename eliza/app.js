@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.76'
+        appVersion: '0.77'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -2244,17 +2244,14 @@ var app = new Vue({
                     let networkLocations = this.findAllLocationsInNetwork(this.currentPlayer.player_type);
 
                     let sortedLocationsByLinkVP = [];
-                    let locationsWithPossibleVPs = _.filter(networkLocations, function (l) {
-                        return l.possibleLinkVPs;
-                    });
                     let locationsWithTotalLinkVPs = _.filter(networkLocations, function (l) {
                         return l.totalLinkVPs;
                     });
 
-                    sortedLocationsByLinkVP = _.orderBy(locationsWithPossibleVPs, [function (l) { return l.possibleLinkVPs }], ['desc']);
+                    sortedLocationsByLinkVP = _.orderBy(networkLocations, [function (l) { return (new Number(l.possibleLinkVPs ? l.possibleLinkVPs : 0) + new Number(l.totalLinkVPs ? l.totalLinkVPs : 0)) }], ['desc']);
 
-                    if (this.currentRound > 5) {
-                        // if later in the round, prefer locations with flipped industries, otherwise stick with locations with unflipped
+                    if (this.currentRound == this.roundsPerEra()) {
+                        // if the last round, prefer locations with flipped industries, otherwise stick with locations with unflipped
                         if (locationsWithTotalLinkVPs.length > 0) {
                             sortedLocationsByLinkVP = _.orderBy(locationsWithTotalLinkVPs, [function (l) { return l.totalLinkVPs }], ['desc']);
                         }
@@ -2288,17 +2285,14 @@ var app = new Vue({
 
                                 // find best adjacent
                                 let sortedAdjacentLocationsByLinkVP = [];
-                                let adjacentLocationsWithPossibleVPs = _.filter(sellAdjacentIndustryLocations, function (lvp) {
-                                    return lvp.possibleLinkVPs;
-                                });
                                 let adjacentLocationsWithTotalLinkVPs = _.filter(sellAdjacentIndustryLocations, function (lvp) {
                                     return lvp.totalLinkVPs;
                                 });
                                 
-                                sortedAdjacentLocationsByLinkVP = _.orderBy(adjacentLocationsWithPossibleVPs, [function (lvp) { return lvp.possibleLinkVPs }], ['desc']);
+                                sortedAdjacentLocationsByLinkVP = _.orderBy(sellAdjacentIndustryLocations, [function (lvp) { return (new Number(lvp.possibleLinkVPs ? lvp.possibleLinkVPs : 0) + new Number(lvp.totalLinkVPs ? lvp.totalLinkVPs : 0)) }], ['desc']);
 
-                                if (self2.currentRound > 5) {
-                                    // if later in the round, prefer adjacent locations with flipped industries, otherwise stick with locations with unflipped
+                                if (self2.currentRound == self2.roundsPerEra()) {
+                                    // if the last round, prefer adjacent locations with flipped industries, otherwise stick with locations with unflipped
                                     if (adjacentLocationsWithTotalLinkVPs.length > 0) {
                                         sortedAdjacentLocationsByLinkVP = _.orderBy(adjacentLocationsWithTotalLinkVPs, [function (lvp) { return lvp.totalLinkVPs }], ['desc']);
                                     }
