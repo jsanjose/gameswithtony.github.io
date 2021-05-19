@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.77'
+        appVersion: '0.78'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -1395,12 +1395,14 @@ var app = new Vue({
                             let location = self.findLocationById(l.locationid);
                             let tile = location.spaces[l.spaceid - 1].tile;
 
-                            actionstring = '';
-                            actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
-                            actions.push({
-                                actionDone: false,
-                                actionDesc: actionstring
-                            });
+                            if (tile.color === self.humanPlayer.color) {
+                                actionstring = '';
+                                actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
+                                actions.push({
+                                    actionDone: false,
+                                    actionDesc: actionstring
+                                });
+                            }
                             
                         } else {
                             actionstring = actionstring + '.';
@@ -1449,12 +1451,14 @@ var app = new Vue({
                             let location = self.findLocationById(l.locationid);
                             let tile = location.spaces[l.spaceid - 1].tile;
 
-                            actionstring = '';
-                            actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
-                            actions.push({
-                                actionDone: false,
-                                actionDesc: actionstring
-                            });
+                            if (tile.color === self.humanPlayer.color) {
+                                actionstring = '';
+                                actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
+                                actions.push({
+                                    actionDone: false,
+                                    actionDesc: actionstring
+                                });
+                            }
                             
                         } else {
                             actionstring = actionstring + '.';
@@ -1500,12 +1504,14 @@ var app = new Vue({
                                 let location = self.findLocationById(l.locationid);
                                 let tile = location.spaces[l.spaceid - 1].tile;
 
-                                actionstring = '';
-                                actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
-                                actions.push({
-                                    actionDone: false,
-                                    actionDesc: actionstring
-                                });
+                                if (tile.color === self.humanPlayer.color) {
+                                    actionstring = '';
+                                    actionstring = actionstring + 'Increase your income by ' + tile.income + '.';
+                                    actions.push({
+                                        actionDone: false,
+                                        actionDesc: actionstring
+                                    });
+                                }
                                 
                             } else {
                                 actionstring = actionstring + '.';
