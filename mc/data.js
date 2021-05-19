@@ -1212,10 +1212,40 @@ let minions = [
         "hitpoints": 5
     },
     {
+        "name": "Badoon Assassin",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 1
+    },
+    {
+        "name": "Badoon Grunt",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 2
+    },
+    {
         "name": "Badoon Engineer",
         "isSelected": false,
         "type": "minion",
         "hitpoints": 3
+    },
+    {
+        "name": "Badoon Lieutenant",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6
+    },
+    {
+        "name": "Badoon Sentry",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5
+    },
+    {
+        "name": "Badoon Warlord",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4
     },
     {
         "name": "Beetle",
