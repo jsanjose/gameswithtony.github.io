@@ -75,6 +75,11 @@
             </p>
         </section>
 
+        <section class="footer-links" v-if="pageState === 0 && characters.length > 0">
+            <a href="mc_digitaltracker.pdf" target="_blank">Help</a>
+            <a href="#" v-on:click="newgame($event)">New Game</a>
+        </section>
+
         <section class="button-container" v-if="pageState === 0">
             <button class="button" v-on:click="edit()">Edit</button>
             <button class="button" v-on:click="showOfficialList($event)">Add From List</button>

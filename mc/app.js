@@ -365,6 +365,15 @@ var app = new Vue({
             window.scrollTo(0,0);
             event.preventDefault();
         },
+        newgame: function (event) {
+            if (confirm('Are you sure you want to clear the app?')) {
+                this.characters = [];
+            }
+            
+            window.scrollTo(0,0);
+            event.preventDefault();
+            this.saveGameState();
+        },
         toggleHide: function (index) {
             this.characters[index].hide = !this.characters[index].hide;
         },

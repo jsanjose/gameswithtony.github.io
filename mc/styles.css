@@ -179,6 +179,19 @@ a + a {
     border-top: dashed 1px #555;
 }
 
+.footer-links {
+    margin-top: 3rem;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: darkred;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
 input[type='text'], input[type='number'], select {
     color: #000;
     margin-top: 1rem;
