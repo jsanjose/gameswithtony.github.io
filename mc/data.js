@@ -143,6 +143,20 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Collector 1 (Infiltrate)",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 13,
+        "hitpointsper": true
+    },
+    {
+        "name": "Collector 2 (Escape)",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 8,
+        "hitpointsper": true
+    },
+    {
         "name": "Crossbones",
         "isSelected": false,
         "type": "villain",
@@ -202,6 +216,13 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Nebula",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 14,
+        "hitpointsper": true
+    },
+    {
         "name": "Norman Osborn",
         "isSelected": false,
         "type": "villain",
@@ -220,6 +241,13 @@ let villains = [
         "isSelected": false,
         "type": "villain",
         "hitpoints": 12,
+        "hitpointsper": true
+    },
+    {
+        "name": "Ronan",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 14,
         "hitpointsper": true
     },
     {
@@ -329,6 +357,13 @@ let main_schemes = [
         "basethreatfixed": true
     },
     {
+        "name": "Interception Imminent",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 7,
+        "basethreat": 2
+    },
+    {
         "name": "Kang's Arrival",
         "isSelected": false,
         "type": "main_scheme",
@@ -343,6 +378,13 @@ let main_schemes = [
         "threat": 10,
         "basethreat": 0,
         "basethreatfixed": true
+    },
+    {
+        "name": "Lost in the Museum",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 15,
+        "basethreat": 11
     },
     {
         "name": "Mutagen Cloud",
@@ -366,6 +408,13 @@ let main_schemes = [
         "basethreat": 2
     },
     {
+        "name": "Protect the Planet",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 8,
+        "basethreat": 4
+    },
+    {
         "name": "Secret Rendezvous",
         "isSelected": false,
         "type": "main_scheme",
@@ -374,10 +423,24 @@ let main_schemes = [
         "basethreatfixed": true
     },
     {
+        "name": "Take What Is Mine",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 10,
+        "basethreat": 1
+    },
+    {
         "name": "Terrestrial Invasion",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 8,
+        "basethreat": 2
+    },
+    {
+        "name": "The Art of Evasion",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 6,
         "basethreat": 2
     },
     {
@@ -412,6 +475,20 @@ let main_schemes = [
         "basethreat": 1
     },
     {
+        "name": "The Grand Collection",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 10,
+        "basethreat": 4
+    },
+    {
+        "name": "The Great Escape",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 12,
+        "basethreat": 8
+    },
+    {
         "name": "The Infinity Stone",
         "isSelected": false,
         "type": "main_scheme",
@@ -440,6 +517,13 @@ let main_schemes = [
         "threat": null,
         "basethreat": 0,
         "basethreatfixed": true
+    },
+    {
+        "name": "The Missing Milano",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 11,
+        "basethreat": 7
     },
     {
         "name": "The Present Future War",
@@ -479,6 +563,13 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 7,
         "basethreat": 2
+    },
+    {
+        "name": "Warp Drive Initiated",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 9,
+        "basethreat": 3
     }
 ];
 
@@ -500,6 +591,21 @@ let side_schemes = [
     },
     {
         "name": "Blazing Inferno",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
+    },
+    {
+        "name": "Blockade",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
+    },
+    {
+        "name": "Bombardment",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
@@ -587,6 +693,13 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2
+    },
+    {
+        "name": "Cut the Power",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Day of Reckoning",
@@ -737,6 +850,13 @@ let side_schemes = [
         "basethreatfixed": true
     },
     {
+        "name": "Lethal Intent",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
+    },
+    {
         "name": "Light of Centuries Sphere",
         "isSelected": false,
         "type": "side_scheme",
@@ -771,7 +891,15 @@ let side_schemes = [
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "basethreatfixed": true
+    },
+    {
+        "name": "Oppressive Armada",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 1,
+        "basethreat": 1
     },
     {
         "name": "Oscorp Manufacturing",
@@ -804,6 +932,14 @@ let side_schemes = [
     },
     {
         "name": "Pile It On!",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
+    },
+    {
+        "name": "Pincer Maneuver",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
@@ -856,11 +992,25 @@ let side_schemes = [
         "basethreatfixed": true
     },
     {
+        "name": "Spatial Positioning",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
+    },
+    {
         "name": "Super Absorbing Power",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3
+    },
+    {
+        "name": "Superior Tactics",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Taskmaster's Training Camp",
@@ -1062,6 +1212,12 @@ let minions = [
         "hitpoints": 5
     },
     {
+        "name": "Badoon Engineer",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3
+    },
+    {
         "name": "Beetle",
         "isSelected": false,
         "type": "minion",
@@ -1258,6 +1414,12 @@ let minions = [
         "isSelected": false,
         "type": "minion",
         "hitpoints": 6
+    },
+    {
+        "name": "Monark Starstalker",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 7
     },
     {
         "name": "Monster",
