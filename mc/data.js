@@ -150,6 +150,13 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Drang",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 14,
+        "hitpointsper": true
+    },
+    {
         "name": "Green Goblin",
         "isSelected": false,
         "type": "villain",
@@ -367,6 +374,13 @@ let main_schemes = [
         "basethreatfixed": true
     },
     {
+        "name": "Terrestrial Invasion",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 8,
+        "basethreat": 2
+    },
+    {
         "name": "The Break-In!",
         "isSelected": false,
         "type": "main_scheme",
@@ -483,6 +497,13 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2
+    },
+    {
+        "name": "Blazing Inferno",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3
     },
     {
         "name": "Budding Crime Syndicate",
@@ -976,6 +997,13 @@ let side_schemes = [
         "basethreat": 3
     },
     {
+        "name": "Vendetta",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
+    },
+    {
         "name": "Zola's Experiments",
         "isSelected": false,
         "type": "side_scheme",
@@ -1046,6 +1074,12 @@ let minions = [
         "hitpoints": 3
     },
     {
+        "name": "Blackjack O'Hare",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3
+    },
+    {
         "name": "Chitauri Soldier",
         "isSelected": false,
         "type": "minion",
@@ -1092,6 +1126,12 @@ let minions = [
         "isSelected": false,
         "type": "minion",
         "hitpoints": 4
+    },
+    {
+        "name": "Furnax",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6
     },
     {
         "name": "Goblin Knight",

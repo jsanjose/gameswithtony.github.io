@@ -24,6 +24,7 @@ let jsonfiles = [
     'core_encounter',
     'drs_encounter',
     'drs',
+    'gam',
     'gmw',
     'gob_encounter',
     'hlk_encounter',
