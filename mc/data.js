@@ -590,6 +590,14 @@ let side_schemes = [
         "basethreat": 2
     },
     {
+        "name": "Badoon Blitz",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
+    },
+    {
         "name": "Blazing Inferno",
         "isSelected": false,
         "type": "side_scheme",
@@ -640,6 +648,14 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 5,
         "basethreat": 5,
+        "basethreatfixed": true
+    },
+    {
+        "name": "Cannonade",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 1,
+        "basethreat": 1,
         "basethreatfixed": true
     },
     {
@@ -695,6 +711,14 @@ let side_schemes = [
         "basethreat": 2
     },
     {
+        "name": "Crystal Ball",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
+    },
+    {
         "name": "Cut the Power",
         "isSelected": false,
         "type": "side_scheme",
@@ -740,6 +764,22 @@ let side_schemes = [
         "basethreat": 2
     },
     {
+        "name": "Fugitive Recovery",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
+    },
+    {
+        "name": "Galaxy of Splendor",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
+    },
+    {
         "name": "Generation Why?",
         "isSelected": false,
         "type": "side_scheme",
@@ -762,6 +802,14 @@ let side_schemes = [
         "basethreatfixed": true
     },
     {
+        "name": "Guerilla Tactics",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true
+    },
+    {
         "name": "Highway Robbery",
         "isSelected": false,
         "type": "side_scheme",
@@ -774,6 +822,14 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3
+    },
+    {
+        "name": "Hujahdarian Monarch Egg",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true
     },
     {
         "name": "Hydra Patrol",
@@ -835,6 +891,14 @@ let side_schemes = [
         "basethreat": 3
     },
     {
+        "name": "Kree Supremacy",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true
+    },
+    {
         "name": "Killer for Hire",
         "isSelected": false,
         "type": "side_scheme",
@@ -862,6 +926,14 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3
+    },
+    {
+        "name": "Magical Teapot",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
     },
     {
         "name": "Marked for Death",
@@ -931,6 +1003,14 @@ let side_schemes = [
         "basethreatfixed": true
     },
     {
+        "name": "Philosopher's Stone",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true
+    },
+    {
         "name": "Pile It On!",
         "isSelected": false,
         "type": "side_scheme",
@@ -990,6 +1070,13 @@ let side_schemes = [
         "threat": 4,
         "basethreat": 4,
         "basethreatfixed": true
+    },
+    {
+        "name": "Sound the Alarms",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Spatial Positioning",
@@ -1100,6 +1187,14 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
+        "basethreatfixed": true
+    },
+    {
+        "name": "There is No Escape",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
         "basethreatfixed": true
     },
     {
@@ -1218,16 +1313,22 @@ let minions = [
         "hitpoints": 1
     },
     {
+        "name": "Badoon Engineer",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3
+    },
+    {
         "name": "Badoon Grunt",
         "isSelected": false,
         "type": "minion",
         "hitpoints": 2
     },
     {
-        "name": "Badoon Engineer",
+        "name": "Badoon Headhunter",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 7
     },
     {
         "name": "Badoon Lieutenant",
@@ -1338,6 +1439,12 @@ let minions = [
         "hitpoints": 3
     },
     {
+        "name": "Headhunter's Henchman",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 8
+    },
+    {
         "name": "Hired Gun",
         "isSelected": false,
         "type": "minion",
@@ -1404,6 +1511,24 @@ let minions = [
         "hitpoints": 5
     },
     {
+        "name": "Kree Commando",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6
+    },
+    {
+        "name": "Kree Lieutenant",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 7
+    },
+    {
+        "name": "Kree Private",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5
+    },
+    {
         "name": "Loki",
         "isSelected": false,
         "type": "minion",
@@ -1464,6 +1589,24 @@ let minions = [
         "hitpoints": 5
     },
     {
+        "name": "Pirate Commander",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6
+    },
+    {
+        "name": "Pirate Lackey",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3
+    },
+    {
+        "name": "Psionic Ghost",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4
+    },
+    {
         "name": "Private Security Specialist",
         "isSelected": false,
         "type": "minion",
@@ -1494,6 +1637,12 @@ let minions = [
         "hitpoints": 7
     },
     {
+        "name": "Servant Bot",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3
+    },
+    {
         "name": "Shocker",
         "isSelected": false,
         "type": "minion",
@@ -1504,6 +1653,12 @@ let minions = [
         "isSelected": false,
         "type": "minion",
         "hitpoints": 6
+    },
+    {
+        "name": "Starshark",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 7
     },
     {
         "name": "Taskmaster",
