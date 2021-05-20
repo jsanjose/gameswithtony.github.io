@@ -1,6 +1,6 @@
 const LOCALSTORAGENAME = "mcgamestate";
 
-const TYPE = { MainScheme: 0, SideScheme: 1, Character: 2 };
+const TYPE = { MainScheme: 0, SideScheme: 1, Character: 2, CounterCard: 3 };
 
 const PAGE_STATE = { Main: 0, Edit: 1, Load: 2 };
 
@@ -28,6 +28,17 @@ const updateMaxHitPoints = function (points, event) {
         this.hitpoints = this.maxhitpoints;
     }
 
+    app.saveGameState();
+    event.preventDefault();
+    app.$forceUpdate();
+}
+
+const updateCounter = function (diff, event) {
+    let totalcounter = new Number(this.counter) + new Number(diff);
+    this.counter = totalcounter;
+    if (this.counter < 0) {
+        this.counter = 0;
+    }
     app.saveGameState();
     event.preventDefault();
     app.$forceUpdate();
@@ -67,26 +78,27 @@ const toggleStatus = function (type, event) {
     app.$forceUpdate();
 }
 
-function createCharacter(id, name, hitpoints) {
+function createCharacter(id, name, hitpoints, type) {
     return {
         id: id,
         name: name,
         hitpoints: hitpoints,
         maxhitpoints: hitpoints,
+        counter: hitpoints,
         hide: false,
         isStunned: false,
         isTough: false,
         isConfused: false,
-        type: TYPE.Character,
+        type: type,
         updateHitPoints: updateHitPoints,
         updateMaxHitPoints: updateMaxHitPoints,
+        updateCounter: updateCounter,
         toggleStatus: toggleStatus,
         hideMe: hideMe,
         showMe: showMe
     };
 }
-let sampleScheme = createCharacter(0, 'Main Scheme', 7);
-sampleScheme.type = TYPE.MainScheme;
+let sampleScheme = createCharacter(0, 'Main Scheme', 7, TYPE.MainScheme);
 sampleScheme.hitpoints = 0;
 
 var app = new Vue({
@@ -103,10 +115,12 @@ var app = new Vue({
         side_schemes: side_schemes,
         minions: minions,
         allies: allies,
+        countercards: countercards,
         hideListsForSetup: false,
         hideSideSchemes: false,
         hideAllies: false,
         hideMinions: false,
+        hideCounters: false,
         computedUpdater: 1
     },
     mounted: function() {
@@ -139,9 +153,14 @@ var app = new Vue({
                 this.hideMinions = gameState.hideMinions;
             }
 
+            if (gameState.hasOwnProperty("hideCounters")) {
+                this.hideCounters = gameState.hideCounters;
+            }
+
             for(let i=0; i < this.characters.length; i++) {
                 this.characters[i].updateHitPoints = updateHitPoints;
                 this.characters[i].updateMaxHitPoints = updateMaxHitPoints;
+                this.characters[i].updateCounter = updateCounter;
                 this.characters[i].toggleStatus = toggleStatus;
                 this.characters[i].hideMe = hideMe;
                 this.characters[i].showMe = showMe;
@@ -220,18 +239,14 @@ var app = new Vue({
                 }
             }
 
-            this.characters.sort(function (a, b) {
-                if (a.type == b.type) return 0;
-                if (a.type < b.type) return -1;
-                return 1;
-            });
+            this.characters = _.sortBy(this.characters, "type");
 
             this.pageState = PAGE_STATE.Main;
             window.scrollTo(0,0);
             this.saveGameState();
         },
         add: function (event) {
-            this.characters.push(createCharacter(this.characters.length + 1, '', 10));
+            this.characters.push(createCharacter(this.characters.length + 1, '', 10), TYPE.Character);
             event.preventDefault();
         },
         showOfficialList: function (event) {
@@ -242,7 +257,14 @@ var app = new Vue({
         addofficial: function () {
             for (let i=0;i<this.heroes.length;i++) {
                 if (this.heroes[i].isSelected) {
-                    this.characters.push(createCharacter(1000+i, this.heroes[i].name, this.heroes[i].hitpoints));
+                    let newcharacter = createCharacter(1000+i, this.heroes[i].name, this.heroes[i].hitpoints, TYPE.Character);
+
+                    if (this.heroes[i].useCounter) {
+                        newcharacter.useCounter = true;
+                        newcharacter.counter = this.heroes[i].counter;
+                    }
+
+                    this.characters.push(newcharacter);
                     this.heroes[i].isSelected = false;
                 }
             }
@@ -255,7 +277,7 @@ var app = new Vue({
                         villainhitpoints = new Number(this.villains[i].hitpoints) * new Number(this.numberOfPlayers);
                     }
 
-                    this.characters.push(createCharacter(2000+i, this.villains[i].name, villainhitpoints));
+                    this.characters.push(createCharacter(2000+i, this.villains[i].name, villainhitpoints, TYPE.Character));
                     this.villains[i].isSelected = false;
                 }
             }
@@ -264,8 +286,7 @@ var app = new Vue({
                 if (this.main_schemes[i].isSelected) {
                     let threat = this.calculateThreat(this.main_schemes[i]);
 
-                    let newcharacter = createCharacter(3000+i, this.main_schemes[i].name, threat);
-                    newcharacter.type = TYPE.MainScheme;
+                    let newcharacter = createCharacter(3000+i, this.main_schemes[i].name, threat, TYPE.MainScheme);
 
                     if (this.main_schemes[i].type === 'main_scheme' && this.main_schemes[i].basethreat > 0 && this.main_schemes[i].basethreatfixed) {
                         newcharacter.hitpoints = this.main_schemes[i].basethreat;
@@ -284,8 +305,7 @@ var app = new Vue({
                 if (this.side_schemes[i].isSelected) {
                     let threat = this.calculateThreat(this.side_schemes[i]);
 
-                    let newcharacter = createCharacter(4000+i, this.side_schemes[i].name, threat);
-                    newcharacter.type = TYPE.SideScheme;
+                    let newcharacter = createCharacter(4000+i, this.side_schemes[i].name, threat, TYPE.SideScheme);
                     this.characters.push(newcharacter);
                     this.side_schemes[i].isSelected = false;
                 }
@@ -293,23 +313,34 @@ var app = new Vue({
 
             for (let i=0;i<this.allies.length;i++) {
                 if (this.allies[i].isSelected) {
-                    this.characters.push(createCharacter(5000+i, this.allies[i].name, this.allies[i].hitpoints));
+                    let newcharacter = createCharacter(5000+i, this.allies[i].name, this.allies[i].hitpoints, TYPE.Character);
+                    if (this.allies[i].useCounter) {
+                        newcharacter.useCounter = true;
+                        newcharacter.counter = this.allies[i].counter;
+                    }
+
+                    this.characters.push(newcharacter);
                     this.allies[i].isSelected = false;
                 }
             }
 
             for (let i=0;i<this.minions.length;i++) {
                 if (this.minions[i].isSelected) {
-                    this.characters.push(createCharacter(6000+i, this.minions[i].name, this.minions[i].hitpoints));
+                    this.characters.push(createCharacter(6000+i, this.minions[i].name, this.minions[i].hitpoints), TYPE.Character);
                     this.minions[i].isSelected = false;
                 }
             }
+
+            for (let i=0;i<this.countercards.length;i++) {
+                if (this.countercards[i].isSelected) {
+                    let newcharacter = createCharacter(7000+i, this.countercards[i].name, this.countercards[i].counter, TYPE.CounterCard);
+
+                    this.characters.push(newcharacter);
+                    this.countercards[i].isSelected = false;
+                }
+            }
             
-            this.characters.sort(function (a, b) {
-                if (a.type == b.type) return 0;
-                if (a.type < b.type) return -1;
-                return 1;
-            });
+            this.characters = _.sortBy(this.characters, "type");
 
             window.scrollTo(0,0);
             this.saveGameState();
@@ -362,7 +393,7 @@ var app = new Vue({
             event.preventDefault();
         },
         remove: function (index, event) {
-            if (confirm('Are you sure you want to remove this character?')) {
+            if (confirm('Are you sure you want to remove ' + this.characters[index].name + '?')) {
                 this.characters.splice(index, 1);
             }
             event.preventDefault();
@@ -422,6 +453,7 @@ var app = new Vue({
             gameState.hideSideSchemes = this.hideSideSchemes;
             gameState.hideAllies = this.hideAllies;
             gameState.hideMinions = this.hideMinions;
+            gameState.hideCounters = this.hideCounters;
             localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
 
             this.computedUpdater++;

@@ -45,7 +45,9 @@ let heroes = [
         "name": "Groot",
         "isSelected": false,
         "type": "hero",
-        "hitpoints": 10
+        "hitpoints": 10,
+        "useCounter": true,
+        "counter": 0
     },
     {
         "name": "Hawkeye",
@@ -1913,7 +1915,9 @@ let allies = [
         "name": "Hawkeye (Barton)",
         "isSelected": false,
         "type": "ally",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "useCounter": true,
+        "counter": 4
     },
     {
         "name": "Hawkeye (Bishop)",
@@ -1949,7 +1953,9 @@ let allies = [
         "name": "Iron Fist",
         "isSelected": false,
         "type": "ally",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "useCounter": true,
+        "counter": 2
     },
     {
         "name": "Iron Man",
@@ -2220,5 +2226,110 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    }
+];
+
+let countercards = [
+    {
+        "name": "Battery Pack",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2
+    },
+    {
+        "name": "Energy Barriers",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3
+    },
+    {
+        "name": "Energy Channel",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
+        "name": "Enhanced Awareness",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3
+    },
+    {
+        "name": "Enhanced Physique",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3
+    },
+    {
+        "name": "Enhanced Reflexes",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3
+    },
+    {
+        "name": "Hall of Heroes",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 1
+    },
+    {
+        "name": "Hand Cannon",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3
+    },
+    {
+        "name": "Med Team",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3
+    },
+    {
+        "name": "Particle Cannon",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2
+    },
+    {
+        "name": "Quinjet",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
+        "name": "Rocket Launcher",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2
+    },
+    {
+        "name": "Rocket's Pistol",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3
+    },
+    {
+        "name": "Surveillance Team",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3
+    },
+    {
+        "name": "Tac Team",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3
+    },
+    {
+        "name": "The Night Nurse",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3
+    },
+    {
+        "name": "Web Shooter",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3
     }
 ];

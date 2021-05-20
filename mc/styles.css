@@ -54,6 +54,10 @@ body {
     color: yellow;
 }
 
+.countercard h2 {
+    color: #CCCC00;
+}
+
 .options {
     display: flex;
     justify-content: space-between;
@@ -109,6 +113,65 @@ body {
     display: flex;
     flex-shrink: 0;
     margin-left: 0.5rem;
+}
+
+.counter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 0.95rem;
+    text-align: right;
+    color: darkred;
+}
+
+.counter-buttons {
+    display: flex;
+    margin-left: 0.5rem;
+    justify-content: space-between;
+}
+
+.counter-buttons a {
+    padding: 0.25rem;
+    background-color: #CCCC00;
+    color: #000;
+    text-decoration: none;
+    border-radius: 25%;
+    display: inline-flex;
+    align-items: center;
+}
+
+.counter-button-item {
+    padding: 0.25rem;
+}
+
+.counter-button-item + .counter-button-item {
+    margin-left: 0.5rem;
+}
+
+.countercard {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 1.25rem !important;
+    align-items: center;
+}
+
+.countercard .counter-buttons a {
+    background-color: blue;
+    font-weight: bold;
+    color: #fff;
+}
+
+.countercard .counter-buttons a, .countercard .counter-button-item {
+    padding: 0.675rem;
+}
+
+.countercard .countercard-total {
+    font-size: 1.25rem;
+}
+
+.countercard .max-button {
+    flex-shrink: 0;
 }
 
 .threat {

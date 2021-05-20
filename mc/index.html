@@ -28,9 +28,9 @@
             </p>
         </section>
 
-        <section class="character" v-for="(character, index) in characters" v-if="pageState === 0 && !character.hide" v-bind:class="{ scheme: character.type != 2 }">
+        <section class="character" v-for="(character, index) in characters" v-if="pageState === 0 && !character.hide" v-bind:class="{ scheme: (character.type == 0 || character.type == 1), countercard: character.type == 3 }">
             <h2>{{ character.name }}</h2>
-            <section class="threat" v-if="character.type != 2">
+            <section class="threat" v-if="character.type == 0 || character.type == 1">
                 <a href="#" v-on:click="character.updateHitPoints(-1, $event)">- 1</a>
                 <div class="wrapper">
                     <div class="progress-bar">
@@ -51,10 +51,10 @@
                     <a class="hit-point-buttons--big" href="#" v-on:click="character.updateHitPoints(5, $event)">+ 5</a>
                 </section>
             </section>
-            <p class="status-card status-card--stunned" v-if="character.type == 2 && character.isStunned && !showToggleButtons">Stunned</p>
-            <p class="status-card status-card--confused" v-if="character.type == 2 && character.isConfused && !showToggleButtons">Confused</p>
-            <p class="status-card status-card--tough" v-if="character.type == 2 && character.isTough && !showToggleButtons">Tough</p>
-            <section class="options" v-if="showToggleButtons && character.type == 2">
+            <p class="status-card status-card--stunned" v-if="character.type == 2 && !character.isCounterCard && character.isStunned && !showToggleButtons">Stunned</p>
+            <p class="status-card status-card--confused" v-if="character.type == 2 && !character.isCounterCard && character.isConfused && !showToggleButtons">Confused</p>
+            <p class="status-card status-card--tough" v-if="character.type == 2 && !character.isCounterCard && character.isTough && !showToggleButtons">Tough</p>
+            <section class="options" v-if="showToggleButtons && character.type == 2 && !character.isCounterCard">
                 <section class="toggle-buttons">
                     <p class="status-card status-card-toggle status-card--stunned" v-bind:class="{ statuscardon: character.isStunned }" v-on:click="character.toggleStatus(0, $event)">Stunned</p>
                     <p class="status-card status-card-toggle status-card--confused" v-bind:class="{ statuscardon: character.isConfused }" v-on:click="character.toggleStatus(1, $event)">Confused</p>
@@ -65,6 +65,22 @@
                     <p class="max-button" v-on:click="character.updateMaxHitPoints(-1, $event)">-M</p>
                     <p class="max-button" v-on:click="character.updateMaxHitPoints(1, $event)">+M</p>
                 </section>
+            </section>
+            <section class="counter" v-if="character.useCounter">
+                Counter: 
+                <section class="counter-buttons">
+                    <a class="counter-button-item" href="#" v-on:click="character.updateCounter(-1, $event)">- 1</a>
+                    <span class="counter-button-item">{{ character.counter }}</span>
+                    <a class="counter-button-item" href="#" v-on:click="character.updateCounter(1, $event)">+ 1</a>
+                </section>
+            </section>
+            <section class="countercard" v-if="character.type == 3">
+                <section class="counter-buttons">
+                    <a class="counter-button-item" href="#" v-on:click="character.updateCounter(-1, $event)">- 1</a>
+                    <span class="counter-button-item countercard-total">{{ character.counter }}</span>
+                    <a class="counter-button-item" href="#" v-on:click="character.updateCounter(1, $event)">+ 1</a>
+                </section>
+                <p class="max-button" v-on:click="character.hideMe($event)">Hide</p>
             </section>
         </section>
 
@@ -90,20 +106,28 @@
         </section>
 
         <section class="character-edit" v-for="(character, index) in characters" :key="character.id" v-if="pageState === 1" v-bind:class="{ 'character-edit-hidden': character.hide }">
-            <input type="text" class="character-name" v-model="character.name" /><input type="number" inputmode="numeric" pattern="[0-9]*" class="character-maxhitpoints" v-model="character.maxhitpoints" :ref="'maxhitpoints' + index" /><br />
-            Type:
-            <select v-model="character.type">
-                <option value="2">Character</option>
-                <option value="0">Main Scheme</option>
-                <option value="1">Side Scheme</option>
-            </select>
-            <br />
-            <div class="character-edit-buttons">
-                <label v-if="character.type == 2"><input type="checkbox" v-model="character.isStunned" />Stunned</label>
-                <label v-if="character.type == 2"><input type="checkbox" v-model="character.isConfused" />Confused</label>
-                <label v-if="character.type == 2"><input type="checkbox" v-model="character.isTough" />Tough</label>
-                <br v-if="character.type == 2" />
-                <label><input type="checkbox" v-model="character.hide" :ref="'hide' + index" />Hide</label><span v-if="character.type == 2">&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="moveup(index, $event)" style="margin-left: 0;">Move &uparrow;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="movedown(index, $event)" style="margin-left: 0;">Move &downarrow;</a></span>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index, $event)" style="margin-left: 0;">Remove</a>
+            <div v-if="character.type != 3">
+                <input type="text" class="character-name" v-model="character.name" /><input type="number" inputmode="numeric" pattern="[0-9]*" class="character-maxhitpoints" v-model="character.maxhitpoints" :ref="'maxhitpoints' + index" /><br />
+                Type:
+                <select v-model="character.type">
+                    <option value="2">Character</option>
+                    <option value="0">Main Scheme</option>
+                    <option value="1">Side Scheme</option>
+                </select>
+                <br />
+                <div class="character-edit-buttons">
+                    <label v-if="character.type == 2"><input type="checkbox" v-model="character.isStunned" />Stunned</label>
+                    <label v-if="character.type == 2"><input type="checkbox" v-model="character.isConfused" />Confused</label>
+                    <label v-if="character.type == 2"><input type="checkbox" v-model="character.isTough" />Tough</label>
+                    <br v-if="character.type == 2" />
+                    <label><input type="checkbox" v-model="character.hide" :ref="'hide' + index" />Hide</label><span v-if="character.type == 2">&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="moveup(index, $event)" style="margin-left: 0;">Move &uparrow;</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="movedown(index, $event)" style="margin-left: 0;">Move &downarrow;</a></span>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="remove(index, $event)" style="margin-left: 0;">Remove</a>
+                </div>
+            </div>
+            <div v-if="character.type == 3" style="width: 100vw; padding: 0 0.5rem;">
+                <p style="font-weight: bold; display: inline-block">{{ character.name }} - </p>
+                <div style="display: inline-block;" class="character-edit-buttons">
+                    <a href="#" v-on:click="remove(index, $event)">Remove</a>
+                </div>
             </div>
         </section>
 
@@ -137,6 +161,7 @@
                 <label class="hidecheckbox"><input type="checkbox" v-model="hideSideSchemes" />Hide Side Schemes?</label>
                 <label class="hidecheckbox"><input type="checkbox" v-model="hideAllies" />Hide Allies?</label>
                 <label class="hidecheckbox"><input type="checkbox" v-model="hideMinions" />Hide Minions?</label>
+                <label class="hidecheckbox"><input type="checkbox" v-model="hideCounters" />Hide Counter Cards?</label>
             </section>
             <p>WARNING: The below list may provide spoilers.</p>
             <h2 v-if="!hideListsForSetup">Heroes</h2>
@@ -167,6 +192,11 @@
             <h2 v-if="!hideMinions">Minions</h2>
             <div class="character-edit-buttons" v-if="!hideMinions">
                 <label v-for="entity in minions"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
+            </div>
+
+            <h2 v-if="!hideCounters">Counter Cards</h2>
+            <div class="character-edit-buttons" v-if="!hideCounters">
+                <label v-for="entity in countercards"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
         </section>
 
