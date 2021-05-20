@@ -1910,7 +1910,13 @@ let allies = [
         "hitpoints": 6
     },
     {
-        "name": "Hawkeye",
+        "name": "Hawkeye (Barton)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Hawkeye (Bishop)",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
