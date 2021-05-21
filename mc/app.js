@@ -246,7 +246,7 @@ var app = new Vue({
             this.saveGameState();
         },
         add: function (event) {
-            this.characters.push(createCharacter(this.characters.length + 1, '', 10), TYPE.Character);
+            this.characters.push(createCharacter(this.characters.length + 1, '', 10, TYPE.Character));
             event.preventDefault();
         },
         showOfficialList: function (event) {
