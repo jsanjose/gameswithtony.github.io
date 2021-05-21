@@ -247,6 +247,16 @@ var app = new Vue({
         },
         add: function (event) {
             this.characters.push(createCharacter(this.characters.length + 1, '', 10, TYPE.Character));
+
+            // if there are counter cards, move this above them
+            if (this.characters.length > 1) {
+                startingindex = this.characters.length - 1;
+                while (startingindex > 0 && this.characters[startingindex - 1].type === TYPE.CounterCard) {
+                    this.moveup(startingindex, event);
+                    startingindex--;
+                }
+            }
+
             event.preventDefault();
         },
         showOfficialList: function (event) {
@@ -370,7 +380,7 @@ var app = new Vue({
             let tmp = _.cloneDeep(this.characters[index]);
             let prev = _.cloneDeep(this.characters[index - 1]);
 
-            if (prev.type == 2) {
+            if (prev.type != 0 && prev.type != 1) {
                 this.characters[index] = prev;
                 this.characters[index - 1] = tmp;
             }
