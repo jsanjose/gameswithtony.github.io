@@ -246,7 +246,9 @@ var app = new Vue({
             this.saveGameState();
         },
         add: function (event) {
-            this.characters.push(createCharacter(this.characters.length + 1, '', 10, TYPE.Character));
+            let newcharacter = createCharacter(this.characters.length + 1, '', 10, TYPE.Character);
+            newcharacter.counter = 0;
+            this.characters.push(newcharacter);
 
             // if there are counter cards, move this above them
             if (this.characters.length > 1) {

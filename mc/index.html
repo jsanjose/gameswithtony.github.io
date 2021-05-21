@@ -114,6 +114,7 @@
                     <option value="0">Main Scheme</option>
                     <option value="1">Side Scheme</option>
                 </select>
+                <label v-if="character.type == 2">&nbsp;&nbsp;<input type="checkbox" v-model="character.useCounter" />Counters</label>
                 <br />
                 <div class="character-edit-buttons">
                     <label v-if="character.type == 2"><input type="checkbox" v-model="character.isStunned" />Stunned</label>
