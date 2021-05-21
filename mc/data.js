@@ -1807,9 +1807,7 @@ let allies = [
         "name": "Ant-Man",
         "isSelected": false,
         "type": "ally",
-        "hitpoints": 3,
-        "useCounter": true,
-        "counter": 0
+        "hitpoints": 3
     },
     {
         "name": "Beta Ray Bill",
