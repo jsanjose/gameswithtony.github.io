@@ -326,7 +326,7 @@ var app = new Vue({
 
             for (let i=0;i<this.minions.length;i++) {
                 if (this.minions[i].isSelected) {
-                    this.characters.push(createCharacter(6000+i, this.minions[i].name, this.minions[i].hitpoints), TYPE.Character);
+                    this.characters.push(createCharacter(6000+i, this.minions[i].name, this.minions[i].hitpoints, TYPE.Character));
                     this.minions[i].isSelected = false;
                 }
             }
