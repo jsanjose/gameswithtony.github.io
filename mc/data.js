@@ -2237,6 +2237,12 @@ let countercards = [
         "counter": 2
     },
     {
+        "name": "Beat Cop",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
         "name": "Energy Barriers",
         "isSelected": false,
         "type": "counter",
