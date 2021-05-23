@@ -50,6 +50,14 @@ body {
     margin-bottom: 0.125rem;
 }
 
+.badguy {
+    color: #ff3636;
+}
+
+.badguyhitpoints {
+    color: #f10000;
+}
+
 .scheme h2 {
     color: yellow;
 }

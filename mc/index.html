@@ -29,7 +29,7 @@
         </section>
 
         <section class="character" v-for="(character, index) in characters" v-if="pageState === 0 && !character.hide" v-bind:class="{ scheme: (character.type == 0 || character.type == 1), countercard: character.type == 3 }">
-            <h2>{{ character.name }}</h2>
+            <h2 v-bind:class="{ badguy: character.isBadGuy }">{{ character.name }}</h2>
             <section class="threat" v-if="character.type == 0 || character.type == 1">
                 <a href="#" v-on:click="character.updateHitPoints(-1, $event)">- 1</a>
                 <div class="wrapper">
@@ -41,8 +41,8 @@
                 <a href="#" v-on:click="character.updateHitPoints(1, $event)">+ 1</a>
             </section>
             <section class="hit-points" v-if="character.type == 2">
-                <section class="total-hit-points" v-on:click="editmaxhitpoints(index, $event)">
-                    {{ character.hitpoints }}<span class="max-hit-points">&nbsp;/&nbsp;{{ character.maxhitpoints }}</span>
+                <section class="total-hit-points" v-on:click="editmaxhitpoints(index, $event)" v-bind:class="{ badguyhitpoints: character.isBadGuy }">
+                    {{ character.hitpoints }}<span class="max-hit-points" v-bind:class="{ badguyhitpoints: character.isBadGuy }">&nbsp;/&nbsp;{{ character.maxhitpoints }}</span>
                 </section>
                 <section class="hit-point-buttons">
                     <a class="hit-point-buttons--big" href="#" v-on:click="character.updateHitPoints(-5, $event)">- 5</a>

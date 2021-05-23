@@ -276,6 +276,8 @@ var app = new Vue({
                         newcharacter.counter = this.heroes[i].counter;
                     }
 
+                    newcharacter.isHero = true;
+                    newcharacter.isGoodGuy = true;
                     this.characters.push(newcharacter);
                     this.heroes[i].isSelected = false;
                 }
@@ -289,7 +291,10 @@ var app = new Vue({
                         villainhitpoints = new Number(this.villains[i].hitpoints) * new Number(this.numberOfPlayers);
                     }
 
-                    this.characters.push(createCharacter(2000+i, this.villains[i].name, villainhitpoints, TYPE.Character));
+                    let newcharacter = createCharacter(2000+i, this.villains[i].name, villainhitpoints, TYPE.Character);
+                    newcharacter.isVillain = true;
+                    newcharacter.isBadGuy = true;
+                    this.characters.push(newcharacter);
                     this.villains[i].isSelected = false;
                 }
             }
@@ -331,6 +336,8 @@ var app = new Vue({
                         newcharacter.counter = this.allies[i].counter;
                     }
 
+                    newcharacter.isAlly = true;
+                    newcharacter.isGoodGuy = true;
                     this.characters.push(newcharacter);
                     this.allies[i].isSelected = false;
                 }
@@ -338,7 +345,12 @@ var app = new Vue({
 
             for (let i=0;i<this.minions.length;i++) {
                 if (this.minions[i].isSelected) {
-                    this.characters.push(createCharacter(6000+i, this.minions[i].name, this.minions[i].hitpoints, TYPE.Character));
+
+                    let newcharacter = createCharacter(6000+i, this.minions[i].name, this.minions[i].hitpoints, TYPE.Character);
+                    newcharacter.isMinion = true;
+                    newcharacter.isBadGuy = true;
+                    
+                    this.characters.push(newcharacter);
                     this.minions[i].isSelected = false;
                 }
             }
