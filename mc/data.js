@@ -303,7 +303,9 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 10,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Ultron"]
     },
     {
         "name": "Attack on Mount Athena",
@@ -311,7 +313,9 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 3,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Crossbones"]
     },
     {
         "name": "Breakout",
@@ -319,14 +323,18 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 6,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Wrecker", "Thunderball", "Piledriver", "Bulldozer"]
     },
     {
         "name": "Corporate Acquisition",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 10,
-        "basethreat": 1
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Green Goblin"]
     },
     {
         "name": "Countdown to Oblivion",
@@ -334,21 +342,27 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 5,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Ultron"]
     },
     {
         "name": "Hostile Takeover",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 7,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Green Goblin"]
     },
     {
         "name": "Hunting Down Heroes",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 12,
-        "basethreat": 1
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Taskmaster"]
     },
     {
         "name": "Inexorable Fate",
@@ -356,14 +370,18 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 9,
         "basethreat": 1,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (Iron Lad)"]
     },
     {
         "name": "Interception Imminent",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": 7,
-        "basethreat": 2
+        "threat": 10,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Ronan"]
     },
     {
         "name": "Kang's Arrival",
@@ -371,7 +389,9 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 7,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (The Conqueror)", "Kang (Immortus)", "Kang (Iron Lad)", "Kang (Rama-Tut)", "Kang (Scarlet Centurion)"]
     },
     {
         "name": "Kang's Wrath",
@@ -379,42 +399,54 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 10,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (The Conqueror)", "Kang (Immortus)", "Kang (Iron Lad)", "Kang (Rama-Tut)", "Kang (Scarlet Centurion)"]
     },
     {
         "name": "Lost in the Museum",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 15,
-        "basethreat": 11
+        "basethreat": 11,
+        "belongstotype": "villain",
+        "belongsto": ["Collector 1 (Infiltrate)", "Collector 2 (Escape)"]
     },
     {
         "name": "Mutagen Cloud",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 11,
-        "basethreat": 4
+        "basethreat": 4,
+        "belongstotype": "villain",
+        "belongsto": ["Green Goblin"]
     },
     {
         "name": "New World Hydra",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 11,
-        "basethreat": 1
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Red Skull"]
     },
     {
         "name": "None Shall Pass",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 12,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Absorbing Man"]
     },
     {
         "name": "Protect the Planet",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 8,
-        "basethreat": 4
+        "basethreat": 4,
+        "belongstotype": "villain",
+        "belongsto": ["Drang"]
     },
     {
         "name": "Secret Rendezvous",
@@ -422,28 +454,36 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 8,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Klaw"]
     },
     {
         "name": "Take What Is Mine",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 10,
-        "basethreat": 1
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Ronan"]
     },
     {
         "name": "Terrestrial Invasion",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 8,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Drang"]
     },
     {
         "name": "The Art of Evasion",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 6,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Nebula"]
     },
     {
         "name": "The Break-In!",
@@ -451,7 +491,9 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 7,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Rhino"]
     },
     {
         "name": "The Chronopolis",
@@ -459,7 +501,9 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 9,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (Immortus)"]
     },
     {
         "name": "The Crimson Cowl",
@@ -467,35 +511,45 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 3,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Ultron"]
     },
     {
         "name": "The Getaway",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 5,
-        "basethreat": 1
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Crossbones"]
     },
     {
         "name": "The Grand Collection",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 10,
-        "basethreat": 4
+        "basethreat": 4,
+        "belongstotype": "villain",
+        "belongsto": ["Collector 1 (Infiltrate)"]
     },
     {
         "name": "The Great Escape",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 12,
-        "basethreat": 8
+        "basethreat": 8,
+        "belongstotype": "villain",
+        "belongsto": ["Collector 2 (Escape)"]
     },
     {
         "name": "The Infinity Stone",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 6,
-        "basethreat": 1
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Crossbones"]
     },
     {
         "name": "The Island of Dr. Zola",
@@ -503,14 +557,18 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 6,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Zola"]
     },
     {
         "name": "The Mad Doctor",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 8,
-        "basethreat": 1
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Zola"]
     },
     {
         "name": "The Master of Time",
@@ -518,14 +576,18 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": null,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (The Conqueror)", "Kang (Immortus)", "Kang (Iron Lad)", "Kang (Rama-Tut)", "Kang (Scarlet Centurion)"]
     },
     {
         "name": "The Missing Milano",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 11,
-        "basethreat": 7
+        "basethreat": 7,
+        "belongstotype": "villain",
+        "belongsto": ["Collector 2 (Escape)"]
     },
     {
         "name": "The Present Future War",
@@ -533,7 +595,9 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 9,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (The Conqueror)", "Kang (Immortus)", "Kang (Iron Lad)", "Kang (Rama-Tut)", "Kang (Scarlet Centurion)"]
     },
     {
         "name": "The Realm of Rama-Tut",
@@ -541,7 +605,9 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 9,
         "basethreat": 1,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (Rama-Tut)"]
     },
     {
         "name": "The Rise of the Red Skull",
@@ -549,7 +615,9 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 8,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Red Skull"]
     },
     {
         "name": "Underground Distribution",
@@ -557,21 +625,27 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": 6,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Klaw"]
     },
     {
         "name": "Unleashing the Mutagen",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 7,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Green Goblin"]
     },
     {
         "name": "Warp Drive Initiated",
         "isSelected": false,
         "type": "main_scheme",
         "threat": 9,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Nebula"]
     }
 ];
 
@@ -582,14 +656,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Green Goblin"]
     },
     {
         "name": "Avalanche!",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Absorbing Man"]
     },
     {
         "name": "Badoon Blitz",
@@ -622,19 +700,13 @@ let side_schemes = [
         "basethreat": 3
     },
     {
-        "name": "Budding Crime Syndicate",
-        "isSelected": false,
-        "type": "side_scheme",
-        "threat": 2,
-        "basethreat": 2
-    },
-    {
         "name": "Bomb Scare",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "isModular": true
     },
     {
         "name": "Breakin' & Takin'",
@@ -643,6 +715,13 @@ let side_schemes = [
         "threat": 2,
         "basethreat": 2,
         "basethreatfixed": true
+    },
+    {
+        "name": "Budding Crime Syndicate",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2
     },
     {
         "name": "Captured by Hydra",
@@ -1807,7 +1886,9 @@ let allies = [
         "name": "Ant-Man",
         "isSelected": false,
         "type": "ally",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "useCounter": true,
+        "counter": 0
     },
     {
         "name": "Beta Ray Bill",
