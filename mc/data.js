@@ -2312,6 +2312,12 @@ let allies = [
 
 let countercards = [
     {
+        "name": "Badoon's Ship",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
         "name": "Battery Pack",
         "isSelected": false,
         "type": "counter",
@@ -2370,6 +2376,12 @@ let countercards = [
         "isSelected": false,
         "type": "counter",
         "counter": 3
+    },
+    {
+        "name": "Nebula's Ship",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
     },
     {
         "name": "Particle Cannon",
