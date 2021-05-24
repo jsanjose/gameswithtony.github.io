@@ -544,6 +544,7 @@ var app = new Vue({
             if (confirm('Are you sure you want to clear the app?')) {
                 this.characters = [];
                 this.filterModule = '';
+                this.filterAspect = '';
             }
             
             window.scrollTo(0,0);
@@ -578,6 +579,7 @@ var app = new Vue({
             ];
             this.pageState = PAGE_STATE.Main;
             this.filterModule = '';
+            this.filterAspect = '';
             this.saveGameState();
         },
         saveGameState: function() {
