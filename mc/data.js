@@ -1566,481 +1566,641 @@ let minions = [
         "name": "Baron Mordo",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "hero",
+        "belongsto": ["Doctor Strange"]
     },
     {
         "name": "Baron Zemo",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "hero",
+        "belongsto": ["Captain America"]
     },
     {
         "name": "Badoon Assassin",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 1
+        "hitpoints": 1,
+        "belongstotype": "module",
+        "belongsto": ["Band of Badoon"]
     },
     {
         "name": "Badoon Engineer",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Drang"]
     },
     {
         "name": "Badoon Grunt",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 2
+        "hitpoints": 2,
+        "belongstotype": "module",
+        "belongsto": ["Band of Badoon"]
     },
     {
         "name": "Badoon Headhunter",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 7
+        "hitpoints": 7,
+        "belongstotype": "module",
+        "belongsto": ["Badoon Headhunter"]
     },
     {
         "name": "Badoon Lieutenant",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Band of Badoon"]
     },
     {
         "name": "Badoon Sentry",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Band of Badoon"]
     },
     {
         "name": "Badoon Warlord",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Band of Badoon"]
     },
     {
         "name": "Beetle",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Wasp"]
     },
     {
         "name": "Berserk Mutate",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Zola"]
     },
     {
         "name": "Blackjack O'Hare",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "hero",
+        "belongsto": ["Rocket Raccoon"]
     },
     {
         "name": "Chitauri Soldier",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Temporal"]
     },
     {
         "name": "Corrupt Prison Guard",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Wrecker", "Thunderball", "Piledriver", "Bulldozer"]
     },
     {
         "name": "Crossfire",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Hawkeye"]
     },
     {
         "name": "Deathunt 9000",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Anachronauts"]
     },
     {
         "name": "Edison's Giant Robot",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 8
+        "hitpoints": 8,
+        "belongstotype": "hero",
+        "belongsto": ["Ms. Marvel"]
     },
     {
         "name": "Electro",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Power Drain"]
     },
     {
         "name": "Escaped Convict",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 2
+        "hitpoints": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Wrecker", "Thunderball", "Piledriver", "Bulldozer"]
     },
     {
         "name": "Frost Giant",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Thor"]
     },
     {
         "name": "Furnax",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "hero",
+        "belongsto": ["Groot"]
     },
     {
         "name": "Goblin Knight",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 7
+        "hitpoints": 7,
+        "belongstotype": "villain",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Goblin Soldier",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "villain",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Goblin Thrall",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Headhunter's Henchman",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 8
+        "hitpoints": 8,
+        "belongstotype": "module",
+        "belongsto": ["Badoon Headhunter"]
     },
     {
         "name": "Hired Gun",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Hydra Bomber",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 2
+        "hitpoints": 2,
+        "belongstotype": ["module", "villain"],
+        "belongsto": ["Bomb Scare", "Crossbones"]
     },
     {
         "name": "Hydra Exo-Soldier",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "villain",
+        "belongsto": ["Red Skull"]
     },
     {
         "name": "Hydra Flame-Soldier",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Hydra Assault"]
     },
     {
         "name": "Hydra Hunter",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Taskmaster"]
     },
     {
         "name": "Hydra Jet-Trooper",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Hydra Assault"]
     },
     {
         "name": "Hydra Mercenary",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": ["villain", "hero"],
+        "belongsto": ["Rhino", "Black Widow"]
     },
     {
         "name": "Hydra Regular",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 2
+        "hitpoints": 2,
+        "belongstotype": ["hero", "module"],
+        "belongsto": ["Spider-Woman", "Hydra Patrol"]
     },
     {
         "name": "Hydra Soldier",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": ["module", "hero", "module"],
+        "belongsto": ["Legions of Hydra", "Captain America", "Hydra Patrol"]
     },
     {
         "name": "Kang (Master of Time)",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Master of Time"]
     },
     {
         "name": "Killmonger",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "hero",
+        "belongsto": ["Black Panther"]
     },
     {
         "name": "Kree Commando",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Kree Militants"]
     },
     {
         "name": "Kree Lieutenant",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 7
+        "hitpoints": 7,
+        "belongstotype": "module",
+        "belongsto": ["Kree Militants"]
     },
     {
         "name": "Kree Private",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Kree Militants"]
     },
     {
         "name": "Loki",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Thor"]
     },
     {
         "name": "Luminous",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
-    },
-    {
-        "name": "MODOK",
-        "isSelected": false,
-        "type": "minion",
-        "hitpoints": 8
+        "hitpoints": 5,
+        "belongstotype": "hero",
+        "belongsto": ["Scarlet Witch"]
     },
     {
         "name": "Macrobots",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (The Conqueror)", "Kang (Immortus)", "Kang (Iron Lad)", "Kang (Rama-Tut)", "Kang (Scarlet Centurion)"]
     },
     {
         "name": "Madame Hydra",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Legions of Hydra"]
     },
     {
         "name": "Melter",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Masters of Evil"]
     },
     {
         "name": "Mister Knife",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "hero",
+        "belongsto": ["Star-Lord"]
+    },
+    {
+        "name": "MODOK",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 8,
+        "belongstotype": "module",
+        "belongsto": ["The Doomsday Chair"]
     },
     {
         "name": "Monark Starstalker",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 7
+        "hitpoints": 7,
+        "belongstotype": "villain",
+        "belongsto": ["Collector 1 (Infiltrate)"]
     },
     {
         "name": "Monster",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "villain",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Nebula",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "hero",
+        "belongsto": ["Gamora"]
     },
     {
         "name": "Pirate Commander",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Space Pirates"]
     },
     {
         "name": "Pirate Lackey",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Space Pirates"]
     },
     {
         "name": "Psionic Ghost",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Menagerie Medley"]
     },
     {
         "name": "Private Security Specialist",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "villain",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Radioactive Man",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 7
+        "hitpoints": 7,
+        "belongstotype": "module",
+        "belongsto": ["Masters of Evil"]
     },
     {
         "name": "Ronan the Accuser",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 9
+        "hitpoints": 9,
+        "belongstotype": "module",
+        "belongsto": ["Kree Fanatic"]
     },
     {
         "name": "Sandman",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "villain",
+        "belongsto": ["Rhino"]
     },
     {
         "name": "Scorpion",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 7
+        "hitpoints": 7,
+        "belongstotype": "module",
+        "belongsto": ["A Mess of Things"]
     },
     {
         "name": "Servant Bot",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Menagerie Medley"]
     },
     {
         "name": "Shocker",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Rhino"]
     },
     {
         "name": "Sir Raston",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Anachronauts"]
     },
     {
         "name": "Starshark",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 7
+        "hitpoints": 7,
+        "belongstotype": "module",
+        "belongsto": ["Menagerie Medley"]
     },
     {
         "name": "Taskmaster",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Black Widow"]
     },
     {
         "name": "Terminatrix",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Anachronauts"]
     },
     {
         "name": "The Sleeper",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "villain",
+        "belongsto": ["Red Skull"]
     },
     {
         "name": "The Viper",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "hero",
+        "belongsto": ["Spider-Woman"]
     },
     {
         "name": "Thomas Edison",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "hero",
+        "belongsto": ["Ms. Marvel"]
     },
     {
         "name": "Tiger Shark",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Masters of Evil"]
     },
     {
         "name": "Time-Displaced Soldier",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Masters of Evil"]
     },
     {
         "name": "Titania",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "hero",
+        "belongsto": ["Titania"]
     },
     {
         "name": "Tombstone",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 9
+        "hitpoints": 9,
+        "belongstotype": "module",
+        "belongsto": ["Running Interference"]
     },
     {
         "name": "Tyrannosaurus Rex",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Temporal"]
     },
     {
         "name": "Ultimate Bio-Servant",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "villain",
+        "belongsto": ["Zola"]
     },
     {
         "name": "Vulture",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Spider-Man"]
     },
     {
         "name": "Weapons Runner",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 2
+        "hitpoints": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Klaw"]
     },
     {
         "name": "Whiplash",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Iron Man"]
     },
     {
         "name": "Whirlwind",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Masters of Evil"]
     },
     {
         "name": "Wildrun",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Anachronauts"]
     },
     {
         "name": "Yellowjacket",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Ant-Man"]
     },
     {
         "name": "Yon-Rogg",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "hero",
+        "belongsto": ["Captain Marvel"]
     },
     {
         "name": "Zola's Mutate",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 5
+        "hitpoints": 5,
+        "belongstotype": "villain",
+        "belongsto": ["Zola"]
     }
 ];
 
@@ -2631,6 +2791,9 @@ let modules = [
         "name": "Badoon Headhunter"
     },
     {
+        "name": "Band of Badoon"
+    },
+    {
         "name": "Bomb Scare"
     },
     {
@@ -2640,13 +2803,25 @@ let modules = [
         "name": "GMW Campaign"
     },
     {
+        "name": "Hydra Assault"
+    },
+    {
         "name": "Hydra Patrol"
+    },
+    {
+        "name": "Kree Militants"
     },
     {
         "name": "Legions of Hydra"
     },
     {
         "name": "Master of Time"
+    },
+    {
+        "name": "Menagerie Medley"
+    },
+    {
+        "name": "Power Drain"
     },
     {
         "name": "Running Interference"

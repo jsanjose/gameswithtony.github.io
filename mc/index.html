@@ -163,7 +163,13 @@
                 <label class="hidecheckbox"><input type="checkbox" v-model="hideAllies" />Hide Allies?</label>
                 <label class="hidecheckbox"><input type="checkbox" v-model="hideMinions" />Hide Minions?</label>
                 <label class="hidecheckbox"><input type="checkbox" v-model="hideCounters" />Hide Counter Cards?</label>
-            </section>
+                <label class="hidecheckbox"><input type="checkbox" v-model="autoFilterSideSchemesAndMinions" />Auto-filter by chosen heroes/villains?</label>
+                Modular:
+                <select v-model="filterModule">
+                    <option value="">-- All Modular --</option>
+                    <option v-for="module in modules" v-bind:value="module.name">{{ module.name }}</option>
+                </select>
+            </section>            
             <p>WARNING: The below list may provide spoilers.</p>
             <h2 v-if="!hideListsForSetup">Heroes</h2>
             <div class="character-edit-buttons" v-if="!hideListsForSetup">
@@ -182,7 +188,7 @@
 
             <h2 v-if="!hideSideSchemes">Side Schemes</h2>
             <div class="character-edit-buttons" v-if="!hideSideSchemes">
-                <label v-for="entity in side_schemes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
+                <label v-for="entity in filteredSideSchemes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
 
             <h2 v-if="!hideAllies">Allies</h2>
@@ -192,7 +198,7 @@
 
             <h2 v-if="!hideMinions">Minions</h2>
             <div class="character-edit-buttons" v-if="!hideMinions">
-                <label v-for="entity in minions"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
+                <label v-for="entity in filteredMinions"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
 
             <h2 v-if="!hideCounters">Counter Cards</h2>
