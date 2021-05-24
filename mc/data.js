@@ -334,7 +334,7 @@ let main_schemes = [
         "threat": 10,
         "basethreat": 1,
         "belongstotype": "villain",
-        "belongsto": ["Green Goblin"]
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Countdown to Oblivion",
@@ -353,7 +353,7 @@ let main_schemes = [
         "threat": 7,
         "basethreat": 2,
         "belongstotype": "villain",
-        "belongsto": ["Green Goblin"]
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Hunting Down Heroes",
@@ -636,7 +636,7 @@ let main_schemes = [
         "threat": 7,
         "basethreat": 2,
         "belongstotype": "villain",
-        "belongsto": ["Green Goblin"]
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Warp Drive Initiated",
@@ -657,8 +657,8 @@ let side_schemes = [
         "threat": 2,
         "basethreat": 2,
         "basethreatfixed": true,
-        "belongstotype": "villain",
-        "belongsto": ["Green Goblin"]
+        "belongstotype": "module",
+        "belongsto": ["A Mess of Things"]
     },
     {
         "name": "Avalanche!",
@@ -675,14 +675,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["GMW Campaign"]
     },
     {
         "name": "Blazing Inferno",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "hero",
+        "belongsto": ["Groot"]
     },
     {
         "name": "Blockade",
@@ -690,14 +694,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Drang"]
     },
     {
         "name": "Bombardment",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Drang"]
     },
     {
         "name": "Bomb Scare",
@@ -706,7 +714,8 @@ let side_schemes = [
         "threat": 2,
         "basethreat": 2,
         "basethreatfixed": true,
-        "isModular": true
+        "belongstotype": "module",
+        "belongsto": ["Bomb Scare"]
     },
     {
         "name": "Breakin' & Takin'",
@@ -714,14 +723,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Rhino"]
     },
     {
         "name": "Budding Crime Syndicate",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Star-Lord"]
     },
     {
         "name": "Captured by Hydra",
@@ -729,7 +742,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 5,
         "basethreat": 5,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Taskmaster"]
     },
     {
         "name": "Cannonade",
@@ -737,14 +752,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 1,
         "basethreat": 1,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Ship Command"]
     },
     {
         "name": "Censor the Past",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Red Skull"]
     },
     {
         "name": "Clear the Road",
@@ -752,14 +771,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 4,
         "basethreat": 4,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Bulldozer"]
     },
     {
         "name": "Collapsing Bridge",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Cornered Staff",
@@ -767,7 +790,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Crossbones"]
     },
     {
         "name": "Corrupted Timestream",
@@ -775,21 +800,27 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (The Conqueror)", "Kang (Immortus)", "Kang (Iron Lad)", "Kang (Rama-Tut)", "Kang (Scarlet Centurion)"]
     },
     {
         "name": "Crossbones' Assault",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Crossbones"]
     },
     {
         "name": "Crowd Control",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Rhino"]
     },
     {
         "name": "Crystal Ball",
@@ -797,14 +828,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Galactic Artifacts"]
     },
     {
         "name": "Cut the Power",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Ronan"]
     },
     {
         "name": "Day of Reckoning",
@@ -812,7 +847,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 6,
         "basethreat": 6,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Wrecker"]
     },
     {
         "name": "Defense Network",
@@ -820,7 +857,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Klaw"]
     },
     {
         "name": "Drone Factory",
@@ -828,21 +867,27 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 4,
         "basethreat": 4,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Ultron"]
     },
     {
         "name": "Extortion of Seismic Proportion",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Quicksilver"]
     },
     {
         "name": "Family Feud",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Thor"]
     },
     {
         "name": "Fugitive Recovery",
@@ -850,29 +895,37 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Badoon Headhunter"]
     },
     {
-        "name": "Galaxy of Splendor",
+        "name": "Gallery of Splendor",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["GMW Campaign"]
     },
     {
         "name": "Generation Why?",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Ms. Marvel"]
     },
     {
         "name": "Goblin Nation",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "module",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Goblin Reinforcements",
@@ -880,7 +933,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Guerilla Tactics",
@@ -888,21 +943,27 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 5,
         "basethreat": 5,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["GMW Campaign"]
     },
     {
         "name": "Highway Robbery",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "hero",
+        "belongsto": ["Spider-Man"]
     },
     {
         "name": "Hit Squad",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "hero",
+        "belongsto": ["Captain America"]
     },
     {
         "name": "Hujahdarian Monarch Egg",
@@ -910,14 +971,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Galactic Artifacts"]
     },
     {
         "name": "Hydra Patrol",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "module",
+        "belongsto": ["Hydra Patrol"]
     },
     {
         "name": "Hydra Prison",
@@ -925,14 +990,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 1,
         "basethreat": 1,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Zola"]
     },
     {
         "name": "Hydra Reinforcements",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Red Skull"]
     },
     {
         "name": "Illegal Arms Factory",
@@ -940,7 +1009,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Klaw"]
     },
     {
         "name": "Imminent Overload",
@@ -948,28 +1019,36 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Iron Man"]
     },
     {
         "name": "Invasive AI",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Ultron"]
     },
     {
         "name": "Judge, Jury, Executioner",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Ronan"]
     },
     {
         "name": "Kang's Dominion",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (The Conqueror)", "Kang (Immortus)", "Kang (Iron Lad)", "Kang (Rama-Tut)", "Kang (Scarlet Centurion)"]
     },
     {
         "name": "Kree Supremacy",
@@ -977,14 +1056,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 6,
         "basethreat": 6,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["GMW Campaign"]
     },
     {
         "name": "Killer for Hire",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "hero",
+        "belongsto": ["Black Widow"]
     },
     {
         "name": "Legions of Hydra",
@@ -992,7 +1075,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Legions of Hydra"]
     },
     {
         "name": "Lethal Intent",
@@ -1006,7 +1091,9 @@ let side_schemes = [
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["Master of Time"]
     },
     {
         "name": "Magical Teapot",
@@ -1014,7 +1101,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Galactic Artifacts"]
     },
     {
         "name": "Marked for Death",
@@ -1022,7 +1111,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 5,
         "basethreat": 5,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Hawkeye"]
     },
     {
         "name": "Mass Chaos",
@@ -1030,14 +1121,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 0,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Red Skull"]
     },
     {
         "name": "Mother's Orders",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Wasp"]
     },
     {
         "name": "Open the Dark Dimension",
@@ -1045,35 +1140,45 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Doctor Strange"]
     },
     {
         "name": "Oppressive Armada",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 1,
-        "basethreat": 1
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Drang"]
     },
     {
         "name": "Oscorp Manufacturing",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Overrun",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 1,
-        "basethreat": 1
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Payoff",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Personal Challenge",
@@ -1081,7 +1186,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["She-Hulk"]
     },
     {
         "name": "Philosopher's Stone",
@@ -1089,7 +1196,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Galactic Artifacts"]
     },
     {
         "name": "Pile It On!",
@@ -1097,7 +1206,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Piledriver"]
     },
     {
         "name": "Pincer Maneuver",
@@ -1105,7 +1216,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Ronan"]
     },
     {
         "name": "Pinned Down",
@@ -1113,21 +1226,27 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (The Conqueror)", "Kang (Immortus)", "Kang (Iron Lad)", "Kang (Rama-Tut)", "Kang (Scarlet Centurion)"]
     },
     {
         "name": "Power Drain",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
         "name": "Prison Camps",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Red Skull"]
     },
     {
         "name": "Rampage",
@@ -1135,14 +1254,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 4,
         "basethreat": 4,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Kang (The Conqueror)", "Kang (Immortus)", "Kang (Iron Lad)", "Kang (Rama-Tut)", "Kang (Scarlet Centurion)"]
     },
     {
         "name": "Running Interference",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 1,
-        "basethreat": 1
+        "basethreat": 1,
+        "belongstotype": "module",
+        "belongsto": ["Running Interference"]
     },
     {
         "name": "Sibling Rivalry",
@@ -1150,70 +1273,90 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 4,
         "basethreat": 4,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Gamora"]
     },
     {
         "name": "Sound the Alarms",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "module",
+        "belongsto": ["Space Pirates"]
     },
     {
         "name": "Spatial Positioning",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Drang"]
     },
     {
         "name": "Super Absorbing Power",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Absorbing Man"]
     },
     {
         "name": "Superior Tactics",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Ronan"]
     },
     {
         "name": "Taskmaster's Training Camp",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Taskmaster"]
     },
     {
         "name": "Tech Theft",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Ant-Man"]
     },
     {
         "name": "Test Subjects",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Zola"]
     },
     {
         "name": "The \"Immortal\" Klaw",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Klaw"]
     },
     {
         "name": "The Anachronauts",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["Anachronauts"]
     },
     {
         "name": "The Doomsday Chair",
@@ -1221,14 +1364,18 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 8,
         "basethreat": 8,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["The Doomsday Chair"]
     },
     {
         "name": "The Masters of Evil",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["The Masters of Evil"]
     },
     {
         "name": "The Next Evolution",
@@ -1236,7 +1383,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": false
+        "basethreatfixed": false,
+        "belongstotype": "hero",
+        "belongsto": ["Scarlet Witch"]
     },
     {
         "name": "The Psych-Magnitron",
@@ -1244,7 +1393,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Captain Marvel"]
     },
     {
         "name": "The Red House",
@@ -1252,7 +1403,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": false
+        "basethreatfixed": false,
+        "belongstotype": "villain",
+        "belongsto": ["Red Skull"]
     },
     {
         "name": "The Sleeper Awakened",
@@ -1260,7 +1413,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 0,
         "basethreat": 0,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Red Skull"]
     },
     {
         "name": "The Viper's Ambition",
@@ -1268,7 +1423,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Spider-Woman"]
     },
     {
         "name": "There is No Escape",
@@ -1276,7 +1433,9 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 4,
         "basethreat": 4,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["GMW Campaign"]
     },
     {
         "name": "Thunderstruck",
@@ -1284,28 +1443,36 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 5,
         "basethreat": 5,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Thunderball"]
     },
     {
         "name": "Time Portal",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "module",
+        "belongsto": ["Temporal"]
     },
     {
         "name": "Total Destruction",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Hulk"]
     },
     {
         "name": "Ultron's Imperative",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Ultron"]
     },
     {
         "name": "Under Attack",
@@ -1313,28 +1480,36 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 3,
         "basethreat": 3,
-        "basethreatfixed": true
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Under Attack"]
     },
     {
         "name": "Usurp The Throne",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "hero",
+        "belongsto": ["Black Panther"]
     },
     {
         "name": "Vendetta",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
-        "basethreat": 2
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Rocket Raccoon"]
     },
     {
         "name": "Zola's Experiments",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 3,
-        "basethreat": 3
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Zola"]
     }
 ];
 
@@ -1343,37 +1518,49 @@ let minions = [
         "name": "Abomination",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 6
+        "hitpoints": 6,
+        "belongstotype": "hero",
+        "belongsto": ["Hulk"]
     },
     {
         "name": "Advanced Ultron Drone",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "villain",
+        "belongsto": ["Ultron"]
     },
     {
         "name": "Ancient Warrior",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 2
+        "hitpoints": 2,
+        "belongstotype": "module",
+        "belongsto": ["Temporal"]
     },
     {
         "name": "Apocryphus",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Anachronauts"]
     },
     {
         "name": "Armored Guard",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 3
+        "hitpoints": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Klaw"]
     },
     {
         "name": "Avalanche",
         "isSelected": false,
         "type": "minion",
-        "hitpoints": 4
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Quicksilver"]
     },
     {
         "name": "Baron Mordo",
@@ -2432,3 +2619,54 @@ let countercards = [
         "counter": 3
     }
 ];
+
+let modules = [
+    {
+        "name": "A Mess of Things"
+    },
+    {
+        "name": "Anachronauts"
+    },
+    {
+        "name": "Badoon Headhunter"
+    },
+    {
+        "name": "Bomb Scare"
+    },
+    {
+        "name": "Galactic Artifacts"
+    },
+    {
+        "name": "GMW Campaign"
+    },
+    {
+        "name": "Hydra Patrol"
+    },
+    {
+        "name": "Legions of Hydra"
+    },
+    {
+        "name": "Master of Time"
+    },
+    {
+        "name": "Running Interference"
+    },
+    {
+        "name": "Ship Command"
+    },
+    {
+        "name": "Space Pirates"
+    },
+    {
+        "name": "Temporal"
+    },
+    {
+        "name": "The Doomsday Chair"
+    },
+    {
+        "name": "The Masters of Evil"
+    },
+    {
+        "name": "Under Attack"
+    }
+]
