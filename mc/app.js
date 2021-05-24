@@ -116,6 +116,7 @@ var app = new Vue({
         minions: minions,
         allies: allies,
         modules: modules,
+        aspects: aspects,
         countercards: countercards,
         hideListsForSetup: false,
         hideSideSchemes: false,
@@ -124,7 +125,7 @@ var app = new Vue({
         hideCounters: false,
         autoFilterSideSchemesAndMinions: true,
         filterModule: "",
-        minionFilterModule: "",
+        filterAspect: "",
         computedUpdater: 1
     },
     mounted: function() {
@@ -167,6 +168,10 @@ var app = new Vue({
 
             if (gameState.hasOwnProperty("filterModule")) {
                 this.filterModule = gameState.filterModule;
+            }
+
+            if (gameState.hasOwnProperty("filterAspect")) {
+                this.filterAspect = gameState.filterAspect;
             }
 
             for(let i=0; i < this.characters.length; i++) {
@@ -286,7 +291,29 @@ var app = new Vue({
                 return (m.belongstotype === 'module' && moduleMatch) || (_.intersection(m.belongsto, self.allSelectedMainCharacterNames)).length > 0;
             });
             return filtered;
-        }
+        },
+        filteredCounterCards: function () {
+            let self = this;
+            if (!this.autoFilterSideSchemesAndMinions) {
+                return this.countercards;
+            }
+
+            let filtered = _.filter(this.countercards, function (c) {
+                let moduleMatch = true;
+                let aspectMatch = true;
+
+                if (self.filterModule != '') {
+                    moduleMatch = (_.intersection(c.belongsto, [ self.filterModule ])).length > 0;
+                }
+
+                if (self.filterAspect != '') {
+                    aspectMatch = (_.intersection(c.belongsto, [ self.filterAspect ])).length > 0;
+                }
+
+                return (c.belongstotype === 'aspect' && aspectMatch) || (c.belongstotype === 'module' && moduleMatch) || (_.intersection(c.belongsto, self.allSelectedMainCharacterNames)).length > 0;
+            });
+            return filtered;
+        },
     },
     methods: {
         edit: function () {
@@ -565,6 +592,7 @@ var app = new Vue({
             gameState.hideCounters = this.hideCounters;
             gameState.autoFilterSideSchemesAndMinions = this.autoFilterSideSchemesAndMinions;
             gameState.filterModule = this.filterModule;
+            gameState.filterAspect = this.filterAspect;
             localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
 
             this.computedUpdater++;

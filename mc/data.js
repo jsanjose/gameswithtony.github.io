@@ -2659,124 +2659,164 @@ let allies = [
 
 let countercards = [
     {
-        "name": "Badoon's Ship",
+        "name": "Badoon Ship",
         "isSelected": false,
         "type": "counter",
-        "counter": 0
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": ["Brotherhood of Badoon"]
     },
     {
         "name": "Battery Pack",
         "isSelected": false,
         "type": "counter",
-        "counter": 2
+        "counter": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Rocket Raccoon"]
     },
     {
         "name": "Beat Cop",
         "isSelected": false,
         "type": "counter",
-        "counter": 0
+        "counter": 0,
+        "belongstotype": "aspect",
+        "belongsto": ["Justice"]
     },
     {
-        "name": "Energy Barriers",
+        "name": "Energy Barrier",
         "isSelected": false,
         "type": "counter",
-        "counter": 3
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Protection"]
     },
     {
         "name": "Energy Channel",
         "isSelected": false,
         "type": "counter",
-        "counter": 0
+        "counter": 0,
+        "belongstotype": "hero",
+        "belongsto": ["Captain Marvel"]
     },
     {
         "name": "Enhanced Awareness",
         "isSelected": false,
         "type": "counter",
-        "counter": 3
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Basic"]
     },
     {
         "name": "Enhanced Physique",
         "isSelected": false,
         "type": "counter",
-        "counter": 3
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Basic"]
     },
     {
         "name": "Enhanced Reflexes",
         "isSelected": false,
         "type": "counter",
-        "counter": 3
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Basic"]
     },
     {
         "name": "Hall of Heroes",
         "isSelected": false,
         "type": "counter",
-        "counter": 1
+        "counter": 1,
+        "belongstotype": "aspect",
+        "belongsto": ["Aggression"]
     },
     {
         "name": "Hand Cannon",
         "isSelected": false,
         "type": "counter",
-        "counter": 3
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Aggression"]
     },
     {
         "name": "Med Team",
         "isSelected": false,
         "type": "counter",
-        "counter": 3
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Protection"]
     },
     {
         "name": "Nebula's Ship",
         "isSelected": false,
         "type": "counter",
-        "counter": 0
+        "counter": 0,
+        "belongstotype": "villain",
+        "belongsto": ["Nebula"]
     },
     {
         "name": "Particle Cannon",
         "isSelected": false,
         "type": "counter",
-        "counter": 2
+        "counter": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Rocket Raccoon"]
     },
     {
         "name": "Quinjet",
         "isSelected": false,
         "type": "counter",
-        "counter": 0
+        "counter": 0,
+        "belongstotype": "aspect",
+        "belongsto": ["Leadership"]
     },
     {
         "name": "Rocket Launcher",
         "isSelected": false,
         "type": "counter",
-        "counter": 2
+        "counter": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Rocket Raccoon"]
     },
     {
         "name": "Rocket's Pistol",
         "isSelected": false,
         "type": "counter",
-        "counter": 3
+        "counter": 3,
+        "belongstotype": "hero",
+        "belongsto": ["Rocket Raccoon"]
     },
     {
         "name": "Surveillance Team",
         "isSelected": false,
         "type": "counter",
-        "counter": 3
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Justice"]
     },
     {
         "name": "Tac Team",
         "isSelected": false,
         "type": "counter",
-        "counter": 3
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Aggression"]
     },
     {
         "name": "The Night Nurse",
         "isSelected": false,
         "type": "counter",
-        "counter": 3
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Protection"]
     },
     {
         "name": "Web Shooter",
         "isSelected": false,
         "type": "counter",
-        "counter": 3
+        "counter": 3,
+        "belongstotype": "hero",
+        "belongsto": ["Spider-Man"]
     }
 ];
 
@@ -2843,5 +2883,20 @@ let modules = [
     },
     {
         "name": "Under Attack"
+    }
+]
+
+let aspects = [
+    {
+        "name": "Aggression"
+    },
+    {
+        "name": "Justice"
+    },
+    {
+        "name": "Leadership"
+    },
+    {
+        "name": "Protection"
     }
 ]
