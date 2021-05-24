@@ -310,7 +310,7 @@ var app = new Vue({
                     aspectMatch = (_.intersection(c.belongsto, [ self.filterAspect ])).length > 0;
                 }
 
-                return (c.belongstotype === 'aspect' && aspectMatch) || (c.belongstotype === 'module' && moduleMatch) || (_.intersection(c.belongsto, self.allSelectedMainCharacterNames)).length > 0;
+                return (c.belongstotype === 'aspect' && (aspectMatch || c.belongsto[0] === 'Basic')) || (c.belongstotype === 'module' && moduleMatch) || (_.intersection(c.belongsto, self.allSelectedMainCharacterNames)).length > 0;
             });
             return filtered;
         },
