@@ -21,11 +21,20 @@
 </head>
 <body>
     <main id="mc">
-        <section class="characters" v-if="characters.length === 0 && hiddenCharacters.length === 0 && pageState === 0" style="padding: 1rem;">
+        <section class="limit-container characters" v-if="characters.length === 0 && hiddenCharacters.length === 0 && pageState === 0" style="padding: 1rem;">
             <h2>Marvel Champions Digital Tracker</h2>
             <p>
-                Tap "Add From List" to add characters and schemes.
+                Tap "Add From List" to add characters, schemes, and cards that use counters.
             </p>
+            <section>
+                <h3>Setup suggestions</h3>
+                <ul class="simple-list">
+                    <li class="simple-list-item">Select your heroes and villain first, all other lists will auto-filter based on your choices.</li>
+                    <li class="simple-list-item">The "Add From List" page also allows you to select your chosen modular content and aspect, which will further reduce the list.</li>
+                    <li class="simple-list-item">You can quickly hide and show cards here on this main page, so you may wish to add all your allies and side schemes, then hide them so you can quickly show them as they come into play.</li>
+                    <li class="simple-list-item">Tap the 'H' on a card after adding it to hide it. Hidden cards will appear at the bottom of this page.</li>
+                </ul>
+            </section>
         </section>
 
         <section class="character" v-for="(character, index) in characters" v-if="pageState === 0 && !character.hide" v-bind:class="{ scheme: (character.type == 0 || character.type == 1), countercard: character.type == 3 }">
@@ -105,7 +114,7 @@
             <label><input type="checkbox" v-model="showToggleButtons" />Show Status Toggles on Main Page</label>
         </section>
 
-        <section class="character-edit" v-for="(character, index) in characters" :key="character.id" v-if="pageState === 1" v-bind:class="{ 'character-edit-hidden': character.hide }">
+        <section class="limit-container character-edit" v-for="(character, index) in characters" :key="character.id" v-if="pageState === 1" v-bind:class="{ 'character-edit-hidden': character.hide }">
             <div v-if="character.type != 3">
                 <input type="text" class="character-name" v-model="character.name" /><input type="number" inputmode="numeric" pattern="[0-9]*" class="character-maxhitpoints" v-model="character.maxhitpoints" :ref="'maxhitpoints' + index" /><br />
                 Type:
@@ -148,7 +157,7 @@
             <button class="button" v-on:click="save()">Save</button>
         </section>
 
-        <section class="official-list" v-if="pageState === 2">
+        <section class="limit-container official-list" v-if="pageState === 2">
             <section style="border-top: dashed 1px #fff; border-bottom: dashed 1px #fff; padding: 0.5rem 0">
                 <strong>Number of Players: </strong>
                 <select v-model="numberOfPlayers" style="margin-top: 0;">

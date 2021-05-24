@@ -35,6 +35,14 @@ body {
     align-items: center;
 }
 
+.limit-container {
+    max-width: 800px;
+}
+
+.simple-list-item +  .simple-list-item {
+    margin-top: 1rem;
+}
+
 .character {
     padding: 0 1rem;
     max-width: 500px;
