@@ -236,6 +236,23 @@ var app = new Vue({
 
             return _.union(charactersAddedNames, charactersSelectedNames);
         },
+        filteredMainSchemes: function () {
+            let self = this;
+            if (!this.autoFilterSideSchemesAndMinions) {
+                return this.main_schemes;
+            }
+
+            let filtered = _.filter(this.main_schemes, function (m) {
+                let moduleMatch = true;
+
+                if (self.filterModule != '') {
+                    moduleMatch = (_.intersection(m.belongsto, [ self.filterModule ])).length > 0;
+                }
+
+                return (m.belongstotype === 'module' && moduleMatch) || (_.intersection(m.belongsto, self.allSelectedMainCharacterNames)).length > 0;
+            });
+            return filtered;
+        },
         filteredSideSchemes: function () {
             let self = this;
             if (!this.autoFilterSideSchemesAndMinions) {

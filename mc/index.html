@@ -183,7 +183,7 @@
 
             <h2 v-if="!hideListsForSetup">Main Schemes</h2>
             <div class="character-edit-buttons" v-if="!hideListsForSetup">
-                <label v-for="entity in main_schemes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
+                <label v-for="entity in filteredMainSchemes"><input type="checkbox" v-model="entity.isSelected" />{{ entity.name }}</label>
             </div>
 
             <h2 v-if="!hideSideSchemes">Side Schemes</h2>
