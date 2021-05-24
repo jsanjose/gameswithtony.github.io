@@ -2891,6 +2891,9 @@ let aspects = [
         "name": "Aggression"
     },
     {
+        "name": "Basic"
+    },
+    {
         "name": "Justice"
     },
     {
