@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.79'
+        appVersion: '0.80'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -2266,11 +2266,13 @@ var app = new Vue({
                     if (sortedLocationsByLinkVP.length > 0) {
                         let locationfromid = null;
                         let locationtoid = null;
+                        let locationfromid2 = null;
+                        let locationtoid2 = null;
 
                         let l = sortedLocationsByLinkVP[0];
                         let self2 = this;
                         _.forEach(sortedLocationsByLinkVP, function (l) {
-                            if (locationtoid === null || locationtoid === undefined) {
+                            if (locationtoid === null || locationtoid === undefined || locationtoid2 === null || locationtoid2 === undefined) {
                                 let edges = [];
                                 let sellAdjacentIndustryLocations = [];
         
@@ -2305,8 +2307,13 @@ var app = new Vue({
                                 }
 
                                 if (sortedAdjacentLocationsByLinkVP.length > 0) {
-                                    locationfromid = l.id;
-                                    locationtoid = sortedAdjacentLocationsByLinkVP[0].id;
+                                    if (locationtoid === null || locationtoid === undefined) {
+                                        locationfromid = l.id;
+                                        locationtoid = sortedAdjacentLocationsByLinkVP[0].id;
+                                    } else {
+                                        locationfromid2 = l.id;
+                                        locationtoid2 = sortedAdjacentLocationsByLinkVP[0].id;
+                                    }
                                 }
                             }
                         });
@@ -2315,6 +2322,11 @@ var app = new Vue({
                             action = AI_ACTION.NetworkCouldntSell;
                             actiondata.linktargetlocationid1 = locationfromid;
                             actiondata.linktargetlocationid2 = locationtoid;
+
+                            if (!(locationtoid2 === null || locationtoid2 === undefined)) {
+                                actiondata.linktargetlocationid3 = locationfromid2;
+                                actiondata.linktargetlocationid4 = locationtoid2;
+                            }
                         } else {
                             actiondata.addVP = 5;
                         }
@@ -2419,6 +2431,27 @@ var app = new Vue({
                     if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== undefined && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid2 !== undefined) {
                         let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid1);
                         let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
+
+                        actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
+
+                        if (this.currentEra === ERA.Rail && this.currentPlayer.nextAction.action === AI_ACTION.NetworkCouldntSell) {
+                            actionstring = actionstring + ' (no coal cost)';
+                        }
+
+                        actionstring = actionstring + '.';
+
+                        actions.push({
+                            id: actionid,
+                            actionDone: false,
+                            actionDesc: actionstring
+                        });
+                        actionid = actionid + 1;
+                    }
+
+                    if (this.currentPlayer.nextAction.actiondata.linktargetlocationid3 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid3 !== undefined && this.currentPlayer.nextAction.actiondata.linktargetlocationid4 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid4 !== undefined) {
+                        actionstring = '';
+                        let locationfrom = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid3);
+                        let locationto = this.findLocationById(this.currentPlayer.nextAction.actiondata.linktargetlocationid4);
 
                         actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
 
@@ -2654,6 +2687,18 @@ var app = new Vue({
                 // Network
                 if (this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid1 !== undefined) {
                     this.layNetworkTile(this.currentPlayer.player_type, this.currentPlayer.nextAction.actiondata.linktargetlocationid1, this.currentPlayer.nextAction.actiondata.linktargetlocationid2);
+
+                    let networkcost = this.currentEra === ERA.Canal ? CANALERANETWORKCOST : RAILERANETWORKCOST;
+
+                    if (!this.currentPlayer.amountSpentThisRound) {
+                        this.currentPlayer.amountSpentThisRound = networkcost;
+                    } else {
+                        this.currentPlayer.amountSpentThisRound = this.currentPlayer.amountSpentThisRound + networkcost;
+                    }
+                }
+
+                if (this.currentPlayer.nextAction.actiondata.linktargetlocationid3 !== null && this.currentPlayer.nextAction.actiondata.linktargetlocationid4 !== undefined) {
+                    this.layNetworkTile(this.currentPlayer.player_type, this.currentPlayer.nextAction.actiondata.linktargetlocationid3, this.currentPlayer.nextAction.actiondata.linktargetlocationid4);
 
                     let networkcost = this.currentEra === ERA.Canal ? CANALERANETWORKCOST : RAILERANETWORKCOST;
 
