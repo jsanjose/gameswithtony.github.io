@@ -2811,6 +2811,14 @@ let countercards = [
         "belongsto": ["Protection"]
     },
     {
+        "name": "The Poison",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": ["Galactic Artifacts"]
+    },
+    {
         "name": "Web Shooter",
         "isSelected": false,
         "type": "counter",
