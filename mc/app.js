@@ -288,7 +288,8 @@ var app = new Vue({
                     moduleMatch = (_.intersection(m.belongsto, [ self.filterModule ])).length > 0;
                 }
 
-                return (m.belongstotype === 'module' && moduleMatch) || (_.intersection(m.belongsto, self.allSelectedMainCharacterNames)).length > 0;
+                let belongstoisarray = _.isArray(m.belongstotype);
+                return ((m.belongstotype === 'module' || (belongstoisarray && m.belongstotype[0] === 'module')) && moduleMatch) || (_.intersection(m.belongsto, self.allSelectedMainCharacterNames)).length > 0;
             });
             return filtered;
         },
