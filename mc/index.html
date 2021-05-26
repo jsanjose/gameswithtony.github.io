@@ -49,6 +49,7 @@
                     <div class="progress-total" v-on:click="editmaxhitpoints(index, $event)"><span style="font-size: 1.25rem">{{ character.hitpoints }}</span><span style="font-size: 0.85rem"> / {{ character.maxhitpoints }}</span></div>
                 </div>
                 <a href="#" v-on:click="character.updateHitPoints(1, $event)">+ 1</a>
+                <p class="max-button scheme-hide" v-if="character.type == 1" v-on:click="character.hideMe($event)">H</p>
             </section>
             <section class="hit-points" v-if="character.type == 2">
                 <section class="total-hit-points" v-on:click="editmaxhitpoints(index, $event)" v-bind:class="{ badguyhitpoints: character.isBadGuy }">

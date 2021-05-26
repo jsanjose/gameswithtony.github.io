@@ -119,6 +119,11 @@ body {
     margin-left: 1rem;
 }
 
+.scheme-hide {
+    flex-shrink: 0;
+    margin-left: 0.75rem;
+}
+
 .hit-points {
     display: flex;
     align-items: center;
