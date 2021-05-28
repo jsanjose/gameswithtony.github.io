@@ -265,6 +265,7 @@ a + a {
 
 .footer-links {
     margin-top: 3rem;
+    text-align: center;
 }
 
 .footer-links a {
@@ -274,6 +275,11 @@ a + a {
 
 .footer-links a:hover {
     text-decoration: underline;
+}
+
+.version {
+    color: darkred;
+    font-size: 0.7rem;
 }
 
 input[type='text'], input[type='number'], select {

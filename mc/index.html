@@ -105,6 +105,8 @@
         <section class="footer-links" v-if="pageState === 0">
             <a href="mc_digitaltracker.pdf" target="_blank">Help</a>
             <a href="#" v-if="characters.length > 0" v-on:click="newgame($event)">New Game</a>
+            <br />
+            <span class="version">version {{ version }}</span>
         </section>
 
         <section class="button-container" v-if="pageState === 0">

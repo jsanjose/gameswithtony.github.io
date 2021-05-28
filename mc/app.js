@@ -126,7 +126,8 @@ var app = new Vue({
         autoFilterSideSchemesAndMinions: true,
         filterModule: "",
         filterAspect: "",
-        computedUpdater: 1
+        computedUpdater: 1,
+        version: "0.9"
     },
     mounted: function() {
         this.computedUpdater++;

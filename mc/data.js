@@ -1912,7 +1912,7 @@ let minions = [
         "type": "minion",
         "hitpoints": 5,
         "belongstotype": "module",
-        "belongsto": ["Masters of Evil"]
+        "belongsto": ["The Masters of Evil"]
     },
     {
         "name": "Mister Knife",
@@ -1992,7 +1992,7 @@ let minions = [
         "type": "minion",
         "hitpoints": 7,
         "belongstotype": "module",
-        "belongsto": ["Masters of Evil"]
+        "belongsto": ["The Masters of Evil"]
     },
     {
         "name": "Ronan the Accuser",
@@ -2096,7 +2096,7 @@ let minions = [
         "type": "minion",
         "hitpoints": 6,
         "belongstotype": "module",
-        "belongsto": ["Masters of Evil"]
+        "belongsto": ["The Masters of Evil"]
     },
     {
         "name": "Time-Displaced Soldier",
@@ -2104,7 +2104,7 @@ let minions = [
         "type": "minion",
         "hitpoints": 3,
         "belongstotype": "module",
-        "belongsto": ["Masters of Evil"]
+        "belongsto": ["The Masters of Evil"]
     },
     {
         "name": "Titania",
@@ -2168,7 +2168,7 @@ let minions = [
         "type": "minion",
         "hitpoints": 6,
         "belongstotype": "module",
-        "belongsto": ["Masters of Evil"]
+        "belongsto": ["The Masters of Evil"]
     },
     {
         "name": "Wildrun",
