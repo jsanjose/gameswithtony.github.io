@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.82'
+        appVersion: '0.83'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -2599,7 +2599,7 @@ var app = new Vue({
                 _.forEach(this.currentPlayer.nextAction.actiondata.industriestosell, function (l) {
                     let actionstring = '';
 
-                    actionstring = actionstring + 'Sell ' + self.tileToString(l.tile) + ' in ' + l.name + ' (Space ' + l.spaceid + ') [[ Flips the tile! ]].';
+                    actionstring = actionstring + 'Sell ' + self.tileToString(l.tile) + ' in ' + l.name + ' (Space ' + (l.spaceid + 1) + ') [[ Flips the tile! ]].';
                     actions.push({
                         id: actionid,
                         actionDone: false,
