@@ -137,7 +137,7 @@ var app = new Vue({
         isCalculatingScore: false,
         finishedCanalScore: false,
         finishedRailScore: false,
-        appVersion: '0.81'
+        appVersion: '0.82'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -953,6 +953,7 @@ var app = new Vue({
         // UI: Consume
         humanConsumeLocations(locationids, totalCoalNeeded, totalIronNeeded, totalBeerNeeded) {
             let locationid = null;
+            let self = this;
             if (locationids && !locationids.length) {
                 locationid = locationids;
             }
@@ -1002,28 +1003,43 @@ var app = new Vue({
 
                 // Include market
                 if ((totalCoalAvailable < totalCoalNeeded) || (locationids.length && locationids.length === 4)) {
-                    // TODO: Only show if human is connected to coal market
-                    let resourceArray = [];
-                    if (locationids.length && locationids.length === 4) {
-                        for (let i=0;i<=2;i++) {
-                            resourceArray.push(i);
-                        }
+                    let isConnectedToCoal = false;
+                    if (locationid) {
+                        isConnectedToCoal = self.isConnectedToMarket(locationid, PLAYER_TYPE.Human);
                     } else {
-                        for (let i=0;i<=totalCoalNeeded - totalCoalAvailable;i++) {
-                            resourceArray.push(i);
+                        if (locationids.length) {
+                            for (let i=0;i<locationids.length;i++) {
+                                if (self.isConnectedToMarket(locationids[i], PLAYER_TYPE.Human)) {
+                                    isConnectedToCoal = true;
+                                    break;
+                                }
+                            }
                         }
                     }
 
-                    consumeLocations.coal.coalLocations.push({
-                        locationid: -1,
-                        name: "Coal Market",
-                        spaceid: -1,
-                        coalAvailable: totalCoalNeeded - totalCoalAvailable,
-                        chosenCoal: 0,
-                        resourceArray: resourceArray,
-                        isMarket: true,
-                        id: -1000
-                    });
+                    if (isConnectedToCoal) {
+                        let resourceArray = [];
+                        if (locationids.length && locationids.length === 4) {
+                            for (let i=0;i<=2;i++) {
+                                resourceArray.push(i);
+                            }
+                        } else {
+                            for (let i=0;i<=totalCoalNeeded - totalCoalAvailable;i++) {
+                                resourceArray.push(i);
+                            }
+                        }
+
+                        consumeLocations.coal.coalLocations.push({
+                            locationid: -1,
+                            name: "Coal Market",
+                            spaceid: -1,
+                            coalAvailable: totalCoalNeeded - totalCoalAvailable,
+                            chosenCoal: 0,
+                            resourceArray: resourceArray,
+                            isMarket: true,
+                            id: -1000
+                        });
+                    }
                 }
             }
 
