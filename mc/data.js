@@ -2104,7 +2104,7 @@ let minions = [
         "type": "minion",
         "hitpoints": 3,
         "belongstotype": "module",
-        "belongsto": ["The Masters of Evil"]
+        "belongsto": ["Master of Time"]
     },
     {
         "name": "Titania",
