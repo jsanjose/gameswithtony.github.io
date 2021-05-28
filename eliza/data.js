@@ -1568,10 +1568,10 @@ const INDUSTRY_TILES = [
 
     // manufactured goods
     createIndustryTile(34, INDUSTRY.Manufacturer, true, 1, 8, 1, 0, 1, 3, 2, 5, 0, 0, 0),
-    createIndustryTile(35, INDUSTRY.Manufacturer, false, 2, 10, 0, 1, 1, 5, 1, 0, 0, 0, 0),
-    createIndustryTile(36, INDUSTRY.Manufacturer, false, 2, 10, 0, 1, 1, 5, 1, 0, 0, 0, 0),
+    createIndustryTile(35, INDUSTRY.Manufacturer, false, 2, 10, 0, 1, 1, 5, 1, 1, 0, 0, 0),
+    createIndustryTile(36, INDUSTRY.Manufacturer, false, 2, 10, 0, 1, 1, 5, 1, 1, 0, 0, 0),
     createIndustryTile(37, INDUSTRY.Manufacturer, false, 3, 12, 2, 0, 0, 4, 0, 4, 0, 0, 0),
-    createIndustryTile(38, INDUSTRY.Manufacturer, false, 4, 8, 0, 1, 1, 3, 1, 7, 0, 0, 0),
+    createIndustryTile(38, INDUSTRY.Manufacturer, false, 4, 8, 0, 1, 1, 3, 1, 6, 0, 0, 0),
     createIndustryTile(39, INDUSTRY.Manufacturer, false, 5, 16, 1, 0, 2, 8, 2, 2, 0, 0, 0),
     createIndustryTile(40, INDUSTRY.Manufacturer, false, 5, 16, 1, 0, 2, 8, 2, 2, 0, 0, 0),
     createIndustryTile(41, INDUSTRY.Manufacturer, false, 6, 20, 0, 0, 1, 7, 1, 6, 0, 0, 0),
