@@ -78,6 +78,14 @@ const bonusTypeMap = {
     3: "Develop"
 };
 
+const NEEDSCONNECTIONTYPE = { Coal: 0, Merchants: 1, Beer: 2 };
+const needsConnectionType = {
+    0: "Coal",
+    1: "Merchants",
+    2: "Beer"
+};
+const LONGESTCONNECTIONPATHTOSEARCH = 12;
+
 const DIFFICULTY_LEVEL = { Apprentice: 0, Professional: 1, Manager: 2, Titan: 3 };
 
 const CANALERANETWORKCOST = 3;

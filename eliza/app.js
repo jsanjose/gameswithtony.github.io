@@ -138,7 +138,7 @@ var app = new Vue({
         finishedCanalScore: false,
         finishedRailScore: false,
         error: null,
-        appVersion: '0.84'
+        appVersion: '0.85'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -3757,11 +3757,11 @@ var app = new Vue({
             let connectedLocations = [];
 
             if (!locationids.length) {
-                connectedLocations = this.findAllConnectedLocations(locationids, player_type);
+                connectedLocations = this.findAllConnectedLocations(locationids, player_type, NEEDSCONNECTIONTYPE.Coal);
             } else {
                 // support looking for coal from either end of a placed link
-                let connectedLocations1 = this.findAllConnectedLocations(locationids[0], player_type);
-                let connectedLocations2 = this.findAllConnectedLocations(locationids[1], player_type);
+                let connectedLocations1 = this.findAllConnectedLocations(locationids[0], player_type, NEEDSCONNECTIONTYPE.Coal);
+                let connectedLocations2 = this.findAllConnectedLocations(locationids[1], player_type, NEEDSCONNECTIONTYPE.Coal);
 
                 connectedLocations = _.uniqBy(_.union(connectedLocations1, connectedLocations2), "id");
             }
@@ -3815,12 +3815,12 @@ var app = new Vue({
             let connectedLocations = [];
 
             if (locationids && !locationids.length) {
-                connectedLocations = this.findAllConnectedLocations(locationids, player_type);
+                connectedLocations = this.findAllConnectedLocations(locationids, player_type, NEEDSCONNECTIONTYPE.Beer);
             } else {
                 // support looking for beer from either end of a placed link and for multiple sell locations
                 let allLocations = [];
                 for (let i=0;i<locationids.length;i++) {
-                    let connectedLocations1 = this.findAllConnectedLocations(locationids[i], player_type);
+                    let connectedLocations1 = this.findAllConnectedLocations(locationids[i], player_type, NEEDSCONNECTIONTYPE.Beer);
                     allLocations = _.union(connectedLocations1, allLocations)
                 }
 
@@ -4013,10 +4013,11 @@ var app = new Vue({
             let visited = [locationid1];
             let paths = [];
             let path = [this.findLocationById(locationid1)];
+            let pathFound = [false]; // want by reference
             path.numberOfLinks = 0;
             path.hasOnlyPlayerLinks = true;
 
-            this.findAllPathsUtil(locationid1, targetlocationid, visited, paths, path, requireLinks, player_type);
+            this.findAllPathsUtil(locationid1, targetlocationid, visited, paths, path, requireLinks, player_type, pathFound);
 
             // sort shortest paths to the top
             let sortedPaths = _.sortBy(paths, function(a) {
@@ -4028,9 +4029,16 @@ var app = new Vue({
                 p.distance = p.length - 1;
             });
 
+            console.log({
+                locationid: locationid1,
+                targetlocid: targetlocationid,
+                length: sortedPaths.length,
+                paths: sortedPaths
+            });
+
             return sortedPaths;
         },
-        findAllPathsUtil: function (locationid, targetlocationid, visited, paths, path, requireLinks, player_type) {
+        findAllPathsUtil: function (locationid, targetlocationid, visited, paths, path, requireLinks, player_type, pathFound) {
 
             let player = this.getPlayerFromType(player_type);
             
@@ -4039,57 +4047,100 @@ var app = new Vue({
                 clonedPath.numberOfLinks = path.numberOfLinks;
                 clonedPath.hasOnlyPlayerLinks = path.hasOnlyPlayerLinks;
                 paths.push(clonedPath);
-            } else {
-                let location = this.findLocationById(locationid);
-                let edges = [];
 
-                if (this.currentEra === ERA.Canal) {
-                    edges = location.edgesCanal;
-                } else {
-                    edges = location.edgesRail;
+                if (requireLinks) { // if links are required (i.e. we are looking for connected locations) than the first path is the best one
+                    pathFound[0] = true;
                 }
+            } else  {
+                if (!pathFound[0]) {
+                    let location = this.findLocationById(locationid);
+                    let edges = [];
 
-                // optionally, only include edges with links placed on them
-                if (requireLinks) {
-                    edges = _.filter(edges, function (e) {
-                        return e.tile;
+                    if (this.currentEra === ERA.Canal) {
+                        edges = location.edgesCanal;
+                    } else {
+                        edges = location.edgesRail;
+                    }
+
+                    // optionally, only include edges with links placed on them
+                    if (requireLinks) {
+                        edges = _.filter(edges, function (e) {
+                            return e.tile;
+                        });
+                    }
+
+                    let self = this;
+                    _.forEach(edges, function(e) { 
+                        if (!(self.numberOfPlayers == '2' && player.player_type !== PLAYER_TYPE.Human && e.toId < 8)) { // AI in two-player game ignores everything north of Stafford
+                            let edgeloc = self.findLocationById(e.toId);
+                            if (!_.includes(visited, e.toId) && !edgeloc.isSouthernFarm) {
+                                visited.push(e.toId);
+                                path.push(edgeloc);
+
+                                if (path.length > LONGESTCONNECTIONPATHTOSEARCH) {
+                                    visited.pop();
+                                    path.pop();
+                                } else {
+                                    if (e.tile) {
+                                        path.numberOfLinks++;
+
+                                        if (e.tile.color !== player.color) {
+                                            path.hasOnlyPlayerLinks = false;
+                                        }
+                                    }
+
+                                    self.findAllPathsUtil(e.toId, targetlocationid, visited, paths, path, requireLinks, player_type, pathFound);
+                                    visited.pop();
+
+                                    if (e.tile) {
+                                        path.numberOfLinks--;
+                                        if (e.tile.color !== player.color) {
+                                            path.hasOnlyPlayerLinks = true;
+                                        }
+                                    }
+                                    path.pop();
+                                }
+                            }
+                        }
                     });
                 }
-
-                let self = this;
-                _.forEach(edges, function(e) { 
-                    if (!(self.numberOfPlayers == '2' && player.player_type !== PLAYER_TYPE.Human && e.toId < 8)) { // AI in two-player game ignores everything north of Stafford
-                        if (!_.includes(visited, e.toId)) {
-                            visited.push(e.toId);
-                            path.push(self.findLocationById(e.toId));
-                            if (e.tile) {
-                                path.numberOfLinks++;
-
-                                if (e.tile.color !== player.color) {
-                                    path.hasOnlyPlayerLinks = false;
-                                }
-                            }
-
-                            self.findAllPathsUtil(e.toId, targetlocationid, visited, paths, path, requireLinks, player_type);
-                            visited.pop();
-
-                            if (e.tile) {
-                                path.numberOfLinks--;
-                                if (e.tile.color !== player.color) {
-                                    path.hasOnlyPlayerLinks = true;
-                                }
-                            }
-                            path.pop();
-                        }
-                    }
-                });
             }
         },
-        findAllConnectedLocations: function (locationid, player_type) {
+        findAllConnectedLocations: function (locationid, player_type, needsConnectionType) {
             let connectedLocations = [];
 
             let self = this;
-            _.forEach(this.board.locations, function (p) {
+
+            let locations = [];
+
+            if (needsConnectionType === NEEDSCONNECTIONTYPE.Coal) {
+                // get all locations with coal
+                locations = _.filter(this.board.locations, function(o) {
+                    let coalSpaces = _.find(o.spaces, function(p) {
+                        if (p.tile) {
+                            return p.tile.industrytype === INDUSTRY.CoalMine && p.tile.availableCoal > 0;
+                        }
+                        return false;
+                    });
+                    return coalSpaces;
+                });
+            } else if (needsConnectionType === NEEDSCONNECTIONTYPE.Beer) {
+                // get all locations with beer
+                locations = _.filter(this.board.locations, function(o) {
+                    let coalSpaces = _.find(o.spaces, function(p) {
+                        if (p.tile) {
+                            return p.tile.industrytype === INDUSTRY.Beer && p.tile.availableBeer > 0;
+                        }
+                        return false;
+                    });
+                    return coalSpaces;
+                });
+            } else if (needsConnectionType === NEEDSCONNECTIONTYPE.Merchants) {
+                // get all merchant locations
+                locations = this.findAllMerchants();
+            }
+
+            _.forEach(locations, function (p) {
                 let paths = self.findAllPathsBetweenLocations(locationid, p.id, true, player_type);
                 if (paths && paths.length > 0) {
                     p.distance = paths[0].distance;
@@ -4103,7 +4154,7 @@ var app = new Vue({
             return _.sortBy(_.uniqBy(connectedLocations, 'id'), 'distance', 'id');
         },
         findAllConnectedMarkets: function (locationid, player_type) {
-            let connectedLocations = this.findAllConnectedLocations(locationid, player_type);
+            let connectedLocations = this.findAllConnectedLocations(locationid, player_type, NEEDSCONNECTIONTYPE.Merchants);
             let connectedMarketLocations = [];
 
             if (connectedLocations && connectedLocations.length > 0) {
