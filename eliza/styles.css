@@ -413,3 +413,11 @@ input[type="checkbox"].checkbox-strike:checked + span {
 .boardstate__adjacentlocation {
     font-style: italic;
 }
+
+.error h2 {
+    color: darkred;
+}
+
+.error-text {
+    font-size: 1.15rem;
+}
