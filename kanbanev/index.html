@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="images/favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
+    <script src="images.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -121,7 +122,7 @@
             </section>
             <header v-if="this.currentPhase === 0" class="phase-title phase-title-dept">
                 <span v-for="deptCard in currentDeptCards">
-                    <img class="dept-card-img" v-bind:src="'images/' + deptImageYellow(deptCard.dept)" />
+                    <img class="dept-card-img" v-bind:src="deptImageYellow(deptCard.dept)" />
                 </span>
                 <h2>Department Selection</h2>
                 <p>{{ playerName(currentPlayer.engineer) }}</p>  
@@ -141,23 +142,23 @@
                 <ul class="dept-selector">
                     <li class="dept-selection" v-on:click="setDept(0)"
                     v-bind:class="{ deptSelected: currentPlayer.dept === 0, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
-                        <img class="dept-img" v-bind:src="'images/' + deptImage(0)" />
+                        <img class="dept-img" v-bind:src="deptImage(0)" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(1)"
                     v-bind:class="{ deptSelected: currentPlayer.dept === 1, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
-                        <img class="dept-img" v-bind:src="'images/' + deptImage(1)" />
+                        <img class="dept-img" v-bind:src="deptImage(1)" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(2)"
                     v-bind:class="{ deptSelected: currentPlayer.dept === 2, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
-                        <img class="dept-img" v-bind:src="'images/' + deptImage(2)" />
+                        <img class="dept-img" v-bind:src="deptImage(2)" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(3)"
                     v-bind:class="{ deptSelected: currentPlayer.dept === 3, dim: this.currentPlayer.engineer === 2 && this.currentPlayer.dept === 4 && this.isFirstDeptSelection }">
-                        <img class="dept-img" v-bind:src="'images/' + deptImage(3)" />
+                        <img class="dept-img" v-bind:src="deptImage(3)" />
                     </li>
                     <li class="dept-selection" v-on:click="setDept(4)"
                     v-bind:class="{ deptSelected: currentPlayer.dept === 4 }">
-                        <img class="dept-img" v-bind:src="'images/' + deptImage(4)" />
+                        <img class="dept-img" v-bind:src="deptImage(4)" />
                     </li>
                 </ul>
             </section>
@@ -168,28 +169,28 @@
                 <ul class="pos-selector">
                     <li class="pos-selection" v-if="this.currentPlayer.dept < 4" v-on:click="setPos(0)"
                     v-bind:class="{ posSelected: currentPlayer.position === 0, posImgInvisible: this.currentPlayer.engineer === 0 }">
-                        <img class="pos-img" src="images/position2.png" />
+                        <img class="pos-img" v-bind:src="getImage('position2')" />
                     </li>
                     <li class="pos-selection" v-if="this.currentPlayer.dept < 4" v-on:click="setPos(1)"
                     v-bind:class="{ posSelected: currentPlayer.position === 1, posImgInvisible: this.currentPlayer.engineer === 1 }">
-                        <img class="pos-img" src="images/position3.png" />
+                        <img class="pos-img" v-bind:src="getImage('position3')" />
                     </li>
                     <li class="pos-selection" v-if="this.currentPlayer.dept === 4" v-on:click="setPos(0)"
                     v-bind:class="{ posSelected: currentPlayer.position === 0, posImgInvisible: this.currentPlayer.engineer === 0 }">
-                        <img class="pos-img" src="images/position1.png" />
+                        <img class="pos-img" v-bind:src="getImage('position1')" />
                     </li>
                     <li class="pos-selection" v-if="this.currentPlayer.dept === 4" v-on:click="setPos(1)"
                     v-bind:class="{ posSelected: currentPlayer.position === 1, posImgInvisible: this.currentPlayer.engineer === 1 }">
-                        <img class="pos-img" src="images/position2.png" />
+                        <img class="pos-img" v-bind:src="getImage('position2')" />
                     </li>
                 </ul>
             </section>
             <section class="selected-dept" v-if="this.currentPhase === 1">
-                <img v-if="currentPlayer.dept === 0" class="dept-img" src="images/randd.png" />
-                <img v-if="currentPlayer.dept === 1" class="dept-img" src="images/assembly.png" />
-                <img v-if="currentPlayer.dept === 2" class="dept-img" src="images/logistics.png" />
-                <img v-if="currentPlayer.dept === 3" class="dept-img" src="images/design.png" />
-                <img v-if="currentPlayer.dept === 4" class="dept-img" src="images/admin.png" />
+                <img v-if="currentPlayer.dept === 0" class="dept-img" v-bind:src="getImage('randd')" />
+                <img v-if="currentPlayer.dept === 1" class="dept-img" v-bind:src="getImage('assembly')" />
+                <img v-if="currentPlayer.dept === 2" class="dept-img" v-bind:src="getImage('logistics')" />
+                <img v-if="currentPlayer.dept === 3" class="dept-img" v-bind:src="getImage('design')" />
+                <img v-if="currentPlayer.dept === 4" class="dept-img" v-bind:src="getImage('admin')" />
                 <img v-if="currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1" v-bind:src="currentTrainingTrackImage" style="height: 60px; padding-left: 1rem; margin-left: 1rem; border-left: solid 1px black;" />
             </section>
             <section class="extra-info" v-if="this.currentPhase === 1 && (currentPlayer.dept === 1 || currentPlayer.dept === 2) && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)">
@@ -205,11 +206,11 @@
                 <a href="#" class="draw-part" v-if="currentPlayer.dept === 2" v-on:click="drawPart">Draw Another Part</a>
             </section>          
             <section class="design-tiles" v-if="this.currentPhase === 1 && currentPlayer.dept === 3 && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)">
-                <img v-bind:class="{ designTileSelected: sandrasPosition === 0 }" src="images/designstack.png" />
-                <img v-bind:class="{ designTileSelected: sandrasPosition === 1 }" src="images/designtile.png" />
-                <img v-bind:class="{ designTileSelected: sandrasPosition === 2 }" src="images/designtile.png" />
-                <img v-bind:class="{ designTileSelected: sandrasPosition === 3 }" src="images/designtile.png" />
-                <img v-bind:class="{ designTileSelected: sandrasPosition === 4 }" src="images/designtile.png" />
+                <img v-bind:class="{ designTileSelected: sandrasPosition === 0 }" v-bind:src="getImage('designstack')" />
+                <img v-bind:class="{ designTileSelected: sandrasPosition === 2 }" v-bind:src="getImage('designtile')" />
+                <img v-bind:class="{ designTileSelected: sandrasPosition === 3 }" v-bind:src="getImage('designtile')" />
+                <img v-bind:class="{ designTileSelected: sandrasPosition === 4 }" v-bind:src="getImage('designtile')" />
+                <img v-bind:class="{ designTileSelected: sandrasPosition === 1 }" v-bind:src="getImage('designtile')" />
             </section>
             <section class="recycle" v-if="this.isEndOfDay && this.currentDeptCards[0].parts">
                 <strong class="recycle-title">END OF DAY: Recycle if possible.</strong>
@@ -217,13 +218,13 @@
                     <section>
                         Plan
                         <div v-for="part in currentDeptCards[0].parts">
-                            <img v-bind:src="'images/' + partImage(part)" class="small-image" />
+                            <img v-bind:src="partImage(part)" class="small-image" />
                         </div>
                     </section>
                     <section class="recycle-selection">
                         Selection 
                         <div>
-                            <img v-bind:src="'images/' + partImage(currentSelectionCard.part)" class="small-image" />
+                            <img v-bind:src="partImage(currentSelectionCard.part)" class="small-image" />
                         </div>
                     </section> 
                 </section>
@@ -240,7 +241,7 @@
                     <section>
                         Plan
                         <div v-for="part in currentDeptCards[0].parts">
-                            <img v-bind:src="'images/' + partImage(part)" class="small-image" />
+                            <img v-bind:src="partImage(part)" class="small-image" />
                         </div>
                     </section> 
                 </section>
@@ -333,7 +334,7 @@
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
                     <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Lacerda moves the Cars from top to bottom, or bottom to top before moving left.
-                        <br /><img src="images/assembly_lacerda.png" style="width: 200px; margin: 1rem;" />
+                        <br /><img v-bind:src="getImage('assembly_lacerda')" style="width: 200px; margin: 1rem;" />
                     </li>
                     <li>
                         <span v-if="!lacerdaIsCertified && !difficultyCards[0].include">
@@ -364,7 +365,7 @@
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
                     <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
                     <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Turczi always moves left (where it is possible to choose).
-                        <br /><img src="images/assembly_turczi.png" style="width: 200px; margin: 1rem;" />
+                        <br /><img v-bind:src="getImage('assembly_turczi')" style="width: 200px; margin: 1rem;" />
                     </li>
                     <li v-if="difficultyCards[1].include">
                         <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.

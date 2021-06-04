@@ -221,31 +221,31 @@ var app = new Vue({
         },
         currentPlayerImage: function () {
             this.computedUpdater;
-            return 'images/' + this.playerImage(this.currentPlayer.engineer);
+            return this.playerImage(this.currentPlayer.engineer);
         },
         currentPartImage: function () {
             this.computedUpdater;
-            return 'images/' + this.partImage(this.currentPlayer.part);
+            return this.partImage(this.currentPlayer.part);
         },
         currentLacerdaPartImage: function () {
             this.computedUpdater;
-            return 'images/' + this.partImage(this.lacerdaPlayer.part);
+            return this.partImage(this.lacerdaPlayer.part);
         },
         currentTurcziPartImage: function () {
             this.computedUpdater;
-            return 'images/' + this.partImage(this.turcziPlayer.part);
+            return this.partImage(this.turcziPlayer.part);
         },
         currentCarImage: function () {
             this.computedUpdater;
-            return 'images/' + this.carImage(this.sandrasPosition);
+            return this.carImage(this.sandrasPosition);
         },
         currentKanbanImage: function () {
             this.computedUpdater;
-            return 'images/' + this.kanbanImage(this.sandrasPosition);
+            return this.kanbanImage(this.sandrasPosition);
         },
         currentTrainingTrackImage: function () {
             this.computedUpdater;
-            let path = 'images/training';
+            let path = 'training';
             let playerPrefix = '';
             let direction = (this.currentPlayer.dept === 0 || this.currentPlayer.dept === 3) ? 'rl' : 'lr';
             let level = 0;
@@ -260,7 +260,7 @@ var app = new Vue({
                 level = this.turcziTrainingTrack[this.currentPlayer.dept];
             }
 
-            return path + playerPrefix + "_" + direction + "_" + level + ".png";
+            return this.getImage(path + playerPrefix + "_" + direction + "_" + level);
         },
         currentTrainingTrackLevel: function () {
             this.computedUpdater;
@@ -661,27 +661,27 @@ var app = new Vue({
       playerImage: function (engineer) {
         switch (engineer) {
             case 0:
-                return "lacerda.png";
+                return this.getImage("lacerda");
                 break;
             case 1:
-                return "turczi.png";
+                return this.getImage("turczi");
                 break;
             case 2:
-                return "sandra.png";
+                return this.getImage("sandra");
                 break;
             case 3:
                 switch (this.playerColor) {
                     case PLAYERCOLOR.yellow:
-                        return "human_yellow.png";
+                        return this.getImage("human_yellow");
                         break;
                     case PLAYERCOLOR.blue:
-                        return "human_blue.png";
+                        return this.getImage("human_blue");
                         break;
                     case PLAYERCOLOR.purple:
-                        return "human_purple.png";
+                        return this.getImage("human_purple");
                         break;
                     case PLAYERCOLOR.red:
-                        return "human_red.png";
+                        return this.getImage("human_red");
                         break;
                 }
                 break;
@@ -690,89 +690,92 @@ var app = new Vue({
       deptImage: function (dept) {
         switch (dept) {
             case 0:
-                return this.useDEArt ? "de_randd.png" : "randd.png";
+                return this.useDEArt ? this.getImage("de_randd") : this.getImage("randd");
                 break;
             case 1:
-                return this.useDEArt ? "de_assembly.png" : "assembly.png";
+                return this.useDEArt ? this.getImage("de_assembly") : this.getImage("assembly");
                 break;
             case 2:
-                return this.useDEArt ? "de_logistics.png" : "logistics.png";
+                return this.useDEArt ? this.getImage("de_logistics") : this.getImage("logistics");
                 break;
             case 3:
-                return this.useDEArt ? "de_design.png" : "design.png"
+                return this.useDEArt ? this.getImage("de_design") : this.getImage("design")
                 break;
             case 4:
-                return this.useDEArt ? "de_admin.png" : "admin.png"
+                return this.useDEArt ? this.getImage("de_admin") : this.getImage("admin")
                 break;
         }
       },
       deptImageYellow: function (dept) {
         switch (dept) {
             case 0:
-                return "randd_yellow.png";
+                return this.getImage("randd_yellow");
                 break;
             case 1:
-                return "assembly_yellow.png";
+                return this.getImage("assembly_yellow");
                 break;
             case 2:
-                return "logistics_yellow.png";
+                return this.getImage("logistics_yellow");
                 break;
             case 3:
-                return "design_yellow.png"
+                return this.getImage("design_yellow")
                 break;
             case 4:
-                return "admin_yellow.png"
+                return this.getImage("admin_yellow")
                 break;
         }
       },
       partImage: function (dept) {
         switch (dept) {
             case 0:
-                return "motor.PNG";
+                return this.getImage("motor");
                 break;
             case 1:
-                return "autopilot.PNG";
+                return this.getImage("autopilot");
                 break;
             case 2:
-                return "battery.PNG";
+                return this.getImage("battery");
                 break;
             case 3:
-                return "body.png"
+                return this.getImage("body");
                 break;
             case 4:
-                return "electronics.PNG"
+                return this.getImage("electronics");
                 break;
             case 5:
-                return "drivetrain.png"
+                return this.getImage("drivetrain");
                 break;
         }
       },
       carImage: function (dept) {
         switch (dept) {
             case 0:
-                return "concept.png";
+                return this.getImage("concept");
                 break;
             case 1:
-                return "suv.png";
+                return this.getImage("suv");
                 break;
             case 2:
-                return "city.png";
+                return this.getImage("city");
                 break;
             case 3:
-                return "truck.png"
+                return this.getImage("truck");
                 break;
             case 4:
-                return "sports.png"
+                return this.getImage("sports");
                 break;
         }
       },
       kanbanImage: function (dept) {
         if (dept === 0 || dept === 1 || dept === 2) {
-            return "kanban_above.png";
+            return this.getImage("kanban_above");
         }
         if (dept === 3 || dept === 4) {
-            return "kanban_below.png";
+            return this.getImage("kanban_below");
         }
+      },
+      getImage: function (name) {
+        return 'data:image/png;base64,' + IMAGES[name];
       },
       playerName: function (engineer) {
         switch (engineer) {
