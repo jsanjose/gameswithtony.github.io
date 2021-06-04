@@ -119,17 +119,17 @@ var app = new Vue({
         gameState.showPathfinderRules = this.showPathfinderRules;
         localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
       },
-      actionImage: function () {
+      actionImage: function (rule) {
           if (this.currentSide === ORBITAL) {
                 switch (this.currentCard.action) {
                     case 1:
-                        return "obtainblueprint.png";
+                        return rule ? "obtainblueprint.png" : this.getImage("obtainblueprint");
                         break;
                     case 2:
-                        return "learnnewtechnology.png";
+                        return rule ? "learnnewtechnology.png" : this.getImage("learnnewtechnology");
                         break;
                     case 3:
-                        return "researchanddevelopment.png";
+                        return rule ? "researchanddevelopment.png" : this.getImage("researchanddevelopment");
                         break;
                 }
           }
@@ -137,13 +137,13 @@ var app = new Vue({
           if (this.currentSide === COLONY) {
                 switch (this.currentCard.action) {
                     case 1:
-                        return "constructabuilding.png";
+                        return rule ? "constructabuilding.png" : this.getImage("constructabuilding");
                         break;
                     case 2:
-                        return "upgradeabuilding.png";
+                        return rule ? "upgradeabuilding.png" : this.getImage("upgradeabuilding");
                         break;
                     case 3:
-                        return "hireascientist.png";
+                        return rule ? "hireascientist.png" : this.getImage("hireascientist");
                         break;
                 }
           }
@@ -157,21 +157,24 @@ var app = new Vue({
       },
       hexDirImage: function () {
           if (!this.currentCard.travel) {
-              return "bt-rl.png";
+              return this.getImage("bt-rl");
           }
           else {
               switch (this.currentCard.action) {
                   case 1:
-                      return "tb-lr.png";
+                      return this.getImage("tb-lr");
                       break;
                   case 2:
-                      return "tb-rl.png";
+                      return this.getImage("tb-rl");
                       break;
                   case 3:
-                      return "bt-lr.png";
+                      return this.getImage("bt-lr");
                       break;
               }
           }
+      },
+      getImage: function (name) {
+        return 'data:image/png;base64,' + IMAGES[name];
       }
     }
 });

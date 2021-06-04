@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="images/favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
+    <script src="images.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -25,10 +26,10 @@
         <div class="mission" v-bind:class="{ showMission: showMission }" v-if="!gameHasNotStarted">
             <p>{{ currentCard.mission }}</p>
         </div>
-        <img v-bind:src="'images/' + actionImage()" class="action" v-if="!gameHasNotStarted"
+        <img v-bind:src="actionImage()" class="action" v-if="!gameHasNotStarted"
             v-on:click="showReferenceModal" />
         <button v-on:click="draw" class="draw-button" v-if="!gameHasNotStarted">Draw ({{ cardsLeft }})</button>
-        <img v-bind:src="'images/' + hexDirImage()" class="hexdir" v-if="!gameHasNotStarted" />
+        <img v-bind:src="hexDirImage()" class="hexdir" v-if="!gameHasNotStarted" />
         <ul class="turn-order-spaces" v-if="!gameHasNotStarted">
             <li>
                 <svg xmlns="http://www.w3.org/2000/svg" v-if="currentCard.travel" class="travel" viewBox="0 0 300.68 539.57">
@@ -122,9 +123,9 @@
             Choose AI starting side
         </p>
         <div class="sides" v-bind:class="{ noBottomMargin: !gameHasNotStarted }">
-            <img src="images/orbitalside.png" class="orbital-colony" v-bind:class="{ currentSide: tempSide === 0 }"
+            <img v-bind:src="getImage('orbitalside')" class="orbital-colony" v-bind:class="{ currentSide: tempSide === 0 }"
                 v-on:click="setSide(0)" />
-            <img src="images/colonyside.png" class="orbital-colony" v-bind:class="{ currentSide: tempSide === 1 }"
+            <img v-bind:src="getImage('colonyside')" class="orbital-colony" v-bind:class="{ currentSide: tempSide === 1 }"
                 v-on:click="setSide(1)" / />
         </div>
         <button v-on:click="draw" class="draw-button" v-if="gameHasNotStarted">Start Game</button>
@@ -168,7 +169,7 @@
             <section class="rule-entry" v-if="!showLacerdaRules && !showPathfinderRules">
                 <strong>Choose a rule set to show.</strong>
             </section>
-            <section class="rule" v-if="actionImage() === 'obtainblueprint.png'">
+            <section class="rule" v-if="actionImage(true) === 'obtainblueprint.png'">
                 <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Obtain Blueprint</h2>
                     <p>
@@ -185,7 +186,7 @@
                     </p>
                 </section>
             </section>
-            <section class="rule" v-if="actionImage() === 'learnnewtechnology.png'">
+            <section class="rule" v-if="actionImage(true) === 'learnnewtechnology.png'">
                 <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Learn New Technology</h2>
                     <p>
@@ -201,7 +202,7 @@
                     </p>
                 </section>
             </section>
-            <section class="rule" v-if="actionImage() === 'researchanddevelopment.png'">
+            <section class="rule" v-if="actionImage(true) === 'researchanddevelopment.png'">
                 <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Research and Development</h2>
                     <p>
@@ -222,7 +223,7 @@
                     </p>
                 </section>
             </section>
-            <section class="rule" v-if="actionImage() === 'constructabuilding.png'">
+            <section class="rule" v-if="actionImage(true) === 'constructabuilding.png'">
                 <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Construct a Building</h2>
                     <p>
@@ -264,7 +265,7 @@
                     </p>
                 </section>
             </section>
-            <section class="rule" v-if="actionImage() === 'upgradeabuilding.png'">
+            <section class="rule" v-if="actionImage(true) === 'upgradeabuilding.png'">
                 <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Upgrade a Building</h2>
                     <p>
@@ -286,7 +287,7 @@
                     </p>
                 </section>
             </section>
-            <section class="rule" v-if="actionImage() === 'hireascientist.png'">
+            <section class="rule" v-if="actionImage(true) === 'hireascientist.png'">
                 <section class="rule-entry" v-if="showLacerdaRules">
                     <h2>LACERDA: Hire a Scientist or Take an Earth Contract</h2>
                     <p>
@@ -401,23 +402,23 @@
                     <section class="turn-order-space-benefits">
                         <ul>
                             <li class="turn-order-space-benefit">
-                                <img src="images/turnorderspace1.png" class="turn-order-space-benefit-image" />
+                                <img v-bind:src="getImage('turnorderspace1')" class="turn-order-space-benefit-image" />
                                 <p>Lacerda takes whatever there is the most of. In case of a tie, he takes the leftmost one (Crystals first). Any Resources taken are placed into the general supply.</p>
                             </li>
                             <li class="turn-order-space-benefit">
-                                <img src="images/turnorderspace2.png" class="turn-order-space-benefit-image" />
+                                <img v-bind:src="getImage('turnorderspace2')" class="turn-order-space-benefit-image" />
                                 <p>Lacerda takes a Tech tile as as described under "Learn New Technology".</p>
                             </li>
                             <li class="turn-order-space-benefit">
-                                <img src="images/turnorderspace3.png" class="turn-order-space-benefit-image" />
+                                <img v-bind:src="getImage('turnorderspace3')" class="turn-order-space-benefit-image" />
                                 <p>Since Lacerda always has all the Colonists he needs, instead he moves his Rover.</p>
                             </li>
                             <li class="turn-order-space-benefit">
-                                <img src="images/turnorderspace4.png" class="turn-order-space-benefit-image" />
+                                <img v-bind:src="getImage('turnorderspace4')" class="turn-order-space-benefit-image" />
                                 <p>Move Lacerda’s Bot.</p>
                             </li>
                             <li class="turn-order-space-benefit">
-                                <img src="images/turnorderspace5.png" class="turn-order-space-benefit-image" />
+                                <img v-bind:src="getImage('turnorderspace5')" class="turn-order-space-benefit-image" />
                                 <p>Lacerda takes a Blueprint as described under "Obtain Blueprint".</p>
                             </li>
                         </ul>
