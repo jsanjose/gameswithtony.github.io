@@ -36,6 +36,14 @@ let heroes = [
         "hitpoints": 10
     },
     {
+        "name": "Drax",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 14,
+        "useCounter": true,
+        "counter": 0
+    },
+    {
         "name": "Gamora",
         "isSelected": false,
         "type": "hero",
@@ -831,6 +839,15 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "module",
         "belongsto": ["Galactic Artifacts"]
+    },
+    {
+        "name": "Cull the Weak",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Drax"]
     },
     {
         "name": "Cut the Power",
@@ -2195,6 +2212,14 @@ let minions = [
         "belongsto": ["Captain Marvel"]
     },
     {
+        "name": "Yotat the Destroyer",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "hero",
+        "belongsto": ["Drax"]
+    },
+    {
         "name": "Zola's Mutate",
         "isSelected": false,
         "type": "minion",
@@ -2322,6 +2347,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Gamora",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Giant-Man",
         "isSelected": false,
         "type": "ally",
@@ -2422,10 +2453,22 @@ let allies = [
         "hitpoints": 5
     },
     {
+        "name": "Mantis",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Maria Hill",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Martyr",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Mockingbird",
