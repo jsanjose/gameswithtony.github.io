@@ -3814,6 +3814,8 @@ var app = new Vue({
 
             let connectedLocations = [];
 
+            // TODO: Fix so that on the second link of a double network action you can consume opponent beer from the end of the double link
+
             if (locationids && !locationids.length) {
                 connectedLocations = this.findAllConnectedLocations(locationids, player_type, NEEDSCONNECTIONTYPE.Beer);
             } else {
@@ -4029,12 +4031,12 @@ var app = new Vue({
                 p.distance = p.length - 1;
             });
 
-            console.log({
+            /*console.log({
                 locationid: locationid1,
                 targetlocid: targetlocationid,
                 length: sortedPaths.length,
                 paths: sortedPaths
-            });
+            });*/
 
             return sortedPaths;
         },
