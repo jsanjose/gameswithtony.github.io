@@ -130,6 +130,12 @@ let heroes = [
         "hitpoints": 14
     },
     {
+        "name": "Venom",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 12
+    },
+    {
         "name": "Wasp",
         "isSelected": false,
         "type": "hero",
@@ -1087,6 +1093,15 @@ let side_schemes = [
         "belongsto": ["Black Widow"]
     },
     {
+        "name": "Klyntar Frenzy",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Venom"]
+    },
+    {
         "name": "Legions of Hydra",
         "isSelected": false,
         "type": "side_scheme",
@@ -1722,6 +1737,14 @@ let minions = [
         "hitpoints": 6,
         "belongstotype": "module",
         "belongsto": ["Power Drain"]
+    },
+    {
+        "name": "Enraged Symbiote",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Venom"]
     },
     {
         "name": "Escaped Convict",
@@ -2429,6 +2452,14 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Jack Flag",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3,
+        "useCounter": true,
+        "counter": 0
+    },
+    {
         "name": "Jessica Jones",
         "isSelected": false,
         "type": "ally",
@@ -2601,6 +2632,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Star-Lord",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Starhawk",
@@ -2806,6 +2843,14 @@ let countercards = [
         "belongsto": ["Rocket Raccoon"]
     },
     {
+        "name": "Plasma Pistol",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Basic"]
+    },
+    {
         "name": "Quinjet",
         "isSelected": false,
         "type": "counter",
@@ -2828,6 +2873,14 @@ let countercards = [
         "counter": 3,
         "belongstotype": "hero",
         "belongsto": ["Rocket Raccoon"]
+    },
+    {
+        "name": "Sonic Rifle",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "aspect",
+        "belongsto": ["Justice"]
     },
     {
         "name": "Surveillance Team",
