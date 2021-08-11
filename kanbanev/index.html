@@ -207,10 +207,10 @@
             </section>          
             <section class="design-tiles" v-if="this.currentPhase === 1 && currentPlayer.dept === 3 && (this.currentPlayer.engineer === 0 || this.currentPlayer.engineer === 1)">
                 <img v-bind:class="{ designTileSelected: sandrasPosition === 0 }" v-bind:src="getImage('designstack')" />
+                <img v-bind:class="{ designTileSelected: sandrasPosition === 1 }" v-bind:src="getImage('designtile')" />
                 <img v-bind:class="{ designTileSelected: sandrasPosition === 2 }" v-bind:src="getImage('designtile')" />
                 <img v-bind:class="{ designTileSelected: sandrasPosition === 3 }" v-bind:src="getImage('designtile')" />
                 <img v-bind:class="{ designTileSelected: sandrasPosition === 4 }" v-bind:src="getImage('designtile')" />
-                <img v-bind:class="{ designTileSelected: sandrasPosition === 1 }" v-bind:src="getImage('designtile')" />
             </section>
             <section class="recycle" v-if="this.isEndOfDay && this.currentDeptCards[0].parts">
                 <strong class="recycle-title">END OF DAY: Recycle if possible.</strong>
