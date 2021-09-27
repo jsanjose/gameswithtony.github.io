@@ -2336,7 +2336,7 @@ var app = new Vue({
                                             locationtoid2 = sortedAdjacentLocationsByLinkVP[0].id;
 
                                             // prevent both network actions from being duplicates
-                                            if (locationfromid === locationfromid2 && locationtoid === locationtoid2) {
+                                            if ((locationfromid === locationfromid2 && locationtoid === locationtoid2) || (locationfromid === locationtoid2 && locationtoid === locationfromid2)) {
                                                 if (sortedAdjacentLocationsByLinkVP.length > 1) {
                                                     locationtoid2 = sortedAdjacentLocationsByLinkVP[1].id;
                                                 } else {
