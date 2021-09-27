@@ -138,7 +138,7 @@ var app = new Vue({
         finishedCanalScore: false,
         finishedRailScore: false,
         error: null,
-        appVersion: '0.85'
+        appVersion: '0.86'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -2334,6 +2334,16 @@ var app = new Vue({
                                         } else {
                                             locationfromid2 = l.id;
                                             locationtoid2 = sortedAdjacentLocationsByLinkVP[0].id;
+
+                                            // prevent both network actions from being duplicates
+                                            if (locationfromid === locationfromid2 && locationtoid === locationtoid2) {
+                                                if (sortedAdjacentLocationsByLinkVP.length > 1) {
+                                                    locationtoid2 = sortedAdjacentLocationsByLinkVP[1].id;
+                                                } else {
+                                                    locationfromid2 = null;
+                                                    locationtoid2 = null;
+                                                }
+                                            }
                                         }
                                     }
                                 }
