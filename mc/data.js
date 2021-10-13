@@ -82,6 +82,12 @@ let heroes = [
         "hitpoints": 10
     },
     {
+        "name": "Nebula",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 9
+    },
+    {
         "name": "Quicksilver",
         "isSelected": false,
         "type": "hero",
@@ -1300,6 +1306,15 @@ let side_schemes = [
         "belongsto": ["Running Interference"]
     },
     {
+        "name": "Self-Preservation",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Nebula"]
+    },
+    {
         "name": "Sibling Rivalry",
         "isSelected": false,
         "type": "side_scheme",
@@ -1769,6 +1784,14 @@ let minions = [
         "hitpoints": 6,
         "belongstotype": "hero",
         "belongsto": ["Groot"]
+    },
+    {
+        "name": "Gamora",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "hero",
+        "belongsto": ["Nebula"]
     },
     {
         "name": "Goblin Knight",
@@ -2364,6 +2387,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Eros",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Falcon",
         "isSelected": false,
         "type": "ally",
@@ -2676,6 +2705,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Venom",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
+    },
+    {
         "name": "Vision",
         "isSelected": false,
         "type": "ally",
@@ -2716,6 +2751,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 4
+    },
+    {
+        "name": "Wrath",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Wonder Man",
@@ -2761,6 +2802,14 @@ let countercards = [
         "counter": 0,
         "belongstotype": "aspect",
         "belongsto": ["Justice"]
+    },
+    {
+        "name": "Defensive Training",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "aspect",
+        "belongsto": ["Protection"]
     },
     {
         "name": "Energy Barrier",
