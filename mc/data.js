@@ -82,7 +82,7 @@ let heroes = [
         "hitpoints": 10
     },
     {
-        "name": "Nebula",
+        "name": "Nebula (Hero)",
         "isSelected": false,
         "type": "hero",
         "hitpoints": 9
@@ -238,7 +238,7 @@ let villains = [
         "hitpointsper": true
     },
     {
-        "name": "Nebula",
+        "name": "Nebula (Villain)",
         "isSelected": false,
         "type": "villain",
         "hitpoints": 14,
@@ -503,7 +503,7 @@ let main_schemes = [
         "threat": 6,
         "basethreat": 2,
         "belongstotype": "villain",
-        "belongsto": ["Nebula"]
+        "belongsto": ["Nebula (Villain)"]
     },
     {
         "name": "The Break-In!",
@@ -665,7 +665,7 @@ let main_schemes = [
         "threat": 9,
         "basethreat": 3,
         "belongstotype": "villain",
-        "belongsto": ["Nebula"]
+        "belongsto": ["Nebula (Villain)"]
     }
 ];
 
@@ -1312,7 +1312,7 @@ let side_schemes = [
         "threat": 2,
         "basethreat": 2,
         "belongstotype": "hero",
-        "belongsto": ["Nebula"]
+        "belongsto": ["Nebula (Hero)"]
     },
     {
         "name": "Sibling Rivalry",
@@ -1791,7 +1791,7 @@ let minions = [
         "type": "minion",
         "hitpoints": 6,
         "belongstotype": "hero",
-        "belongsto": ["Nebula"]
+        "belongsto": ["Nebula (Hero)"]
     },
     {
         "name": "Goblin Knight",
@@ -2881,7 +2881,7 @@ let countercards = [
         "type": "counter",
         "counter": 0,
         "belongstotype": "villain",
-        "belongsto": ["Nebula"]
+        "belongsto": ["Nebula (Villain)"]
     },
     {
         "name": "Particle Cannon",
