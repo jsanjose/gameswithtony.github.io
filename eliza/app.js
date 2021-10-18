@@ -138,7 +138,7 @@ var app = new Vue({
         finishedCanalScore: false,
         finishedRailScore: false,
         error: null,
-        appVersion: '0.87'
+        appVersion: '0.871'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -2470,7 +2470,7 @@ var app = new Vue({
                         actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
 
                         if (this.currentEra === ERA.Rail && this.currentPlayer.nextAction.action === AI_ACTION.NetworkCouldntSell) {
-                            actionstring = actionstring + ' (no coal cost)';
+                            actionstring = actionstring + ' ||| AI tried to sell and couldn\'t, so by special AI rule, this action costs no coal';
                         }
 
                         actionstring = actionstring + '.';
@@ -2491,7 +2491,7 @@ var app = new Vue({
                         actionstring = actionstring + 'Network from ' + locationfrom.name + ' to ' + locationto.name;
 
                         if (this.currentEra === ERA.Rail && this.currentPlayer.nextAction.action === AI_ACTION.NetworkCouldntSell) {
-                            actionstring = actionstring + ' (no coal cost)';
+                            actionstring = actionstring + ' ||| AI tried to sell and couldn\'t, so by special AI rule, this action costs no coal';
                         }
 
                         actionstring = actionstring + '.';
