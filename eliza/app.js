@@ -138,7 +138,7 @@ var app = new Vue({
         finishedCanalScore: false,
         finishedRailScore: false,
         error: null,
-        appVersion: '0.86'
+        appVersion: '0.87'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -4141,7 +4141,7 @@ var app = new Vue({
                 locations = _.filter(this.board.locations, function(o) {
                     let coalSpaces = _.find(o.spaces, function(p) {
                         if (p.tile) {
-                            return p.tile.industrytype === INDUSTRY.Beer && p.tile.availableBeer > 0;
+                            return p.tile.industrytype === INDUSTRY.Brewery && p.tile.availableBeer > 0;
                         }
                         return false;
                     });
@@ -4584,11 +4584,20 @@ var app = new Vue({
             this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
             this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);*/
 
-            this.layIndustryTile(PLAYER_TYPE.Human, 12, 20, 0);
-            this.layNetworkTile(PLAYER_TYPE.Human, 20, 17);
-            this.layIndustryTile(PLAYER_TYPE.Human, 18, 17, 0);
+            //this.layIndustryTile(PLAYER_TYPE.Human, 12, 20, 0);
+            //this.layNetworkTile(PLAYER_TYPE.Human, 20, 17);
+            //this.layIndustryTile(PLAYER_TYPE.Human, 18, 17, 0);
+
+            // SCENARIO: Connected to Eliza's beer
+            this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 18, 16, 1); // beer on Walsall
+            this.layIndustryTile(PLAYER_TYPE.Human, 18, 14, 0); // beer on Coalbrookdale
+            this.layNetworkTile(PLAYER_TYPE.Human, 16, 15);
+            this.layNetworkTile(PLAYER_TYPE.Human, 15, 14);
+            this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
+            this.layIndustryTile(PLAYER_TYPE.Human, 34, 15, 0); // Manufacturing on Wolverhampton
         },
         // --- BEGIN: may not truly need these ---
+        /*
         findCoalClosestToFlipping: function (locationid, player_type) {
             let connectedCoalLocations = this.findAllConnectedCoal(locationid, player_type);
             let player = this.getPlayerFromType(player_type);
@@ -4670,6 +4679,7 @@ var app = new Vue({
                 closestToFlippingSpaceId: closestToFlippingSpaceId
             }
         }
+        */
         // --- END: may not truly need these ---
     }
 });
