@@ -4589,10 +4589,16 @@ var app = new Vue({
             //this.layIndustryTile(PLAYER_TYPE.Human, 18, 17, 0);
 
             // SCENARIO: Connected to Eliza's beer
-            this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 18, 16, 1); // beer on Walsall
+            /*this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 18, 16, 1); // beer on Walsall
             this.layIndustryTile(PLAYER_TYPE.Human, 18, 14, 0); // beer on Coalbrookdale
             this.layNetworkTile(PLAYER_TYPE.Human, 16, 15);
             this.layNetworkTile(PLAYER_TYPE.Human, 15, 14);
+            this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
+            this.layIndustryTile(PLAYER_TYPE.Human, 34, 15, 0); // Manufacturing on Wolverhampton */
+
+            // SCENARIO: Connected to Eliza's beer after double link (assumes 2nd era)
+            this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 18, 16, 1); // beer on Walsall
+            this.layIndustryTile(PLAYER_TYPE.Human, 18, 14, 0); // beer on Coalbrookdale
             this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
             this.layIndustryTile(PLAYER_TYPE.Human, 34, 15, 0); // Manufacturing on Wolverhampton
         },
