@@ -138,7 +138,7 @@ var app = new Vue({
         finishedCanalScore: false,
         finishedRailScore: false,
         error: null,
-        appVersion: '0.871'
+        appVersion: '0.88'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -2820,7 +2820,11 @@ var app = new Vue({
                         // consume from tile
                         let location = self.findLocationById(c.locationid);
                         let tile = location.spaces[c.spaceid].tile;
-                        tile.availableCoal = tile.availableCoal - c.coalConsumed;                            
+                        tile.availableCoal = tile.availableCoal - c.coalConsumed;
+                        
+                        if (tile.availableCoal === 0) {
+                            tile.flipped = true;
+                        }
                     } else {
                         // market
                         let totalMarketResourceCost = self.getTotalMarketResourceCost(c.coalConsumed, RESOURCETYPE.Coal);
@@ -2849,7 +2853,11 @@ var app = new Vue({
                         // consume from tile
                         let location = self.findLocationById(c.locationid);
                         let tile = location.spaces[c.spaceid].tile;
-                        tile.availableIron = tile.availableIron - c.ironConsumed;                            
+                        tile.availableIron = tile.availableIron - c.ironConsumed; 
+                        
+                        if (tile.availableIron === 0) {
+                            tile.flipped = true;
+                        }
                     } else {
                         // market
                         let totalMarketResourceCost = self.getTotalMarketResourceCost(c.ironConsumed, RESOURCETYPE.Iron);
@@ -4555,39 +4563,7 @@ var app = new Vue({
         },
 
 
-        debugSetupTestBoard: function () {
-            // TEMPORARY (remove this later): setup board state
-            
-            /*this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
-            this.layNetworkTile(PLAYER_TYPE.Human, 14, 21);
-            this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
-            this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);
-            this.layNetworkTile(PLAYER_TYPE.Human, 25, 19);
-            this.layNetworkTile(PLAYER_TYPE.Human, 19, 20);
-            this.layIndustryTile(PLAYER_TYPE.Human, 0, 14, 2);*/
-
-            /*this.layIndustryTile(PLAYER_TYPE.Human, 0, 14, 2);
-            this.layIndustryTile(PLAYER_TYPE.Human, 16, 14, 0);
-            this.layIndustryTile(PLAYER_TYPE.Human, 1, 15, 1);
-            this.layIndustryTile(PLAYER_TYPE.Human, 7, 23, 1);
-            this.layIndustryTile(PLAYER_TYPE.Human, 23, 25, 0);
-            this.layIndustryTile(PLAYER_TYPE.Human, 24, 25, 1);
-            this.layIndustryTile(PLAYER_TYPE.Human, 25, 2, 0);
-            this.layIndustryTile(PLAYER_TYPE.Human, 26, 3, 0);
-            this.layIndustryTile(PLAYER_TYPE.Human, 27, 6, 0);
-            this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 37, 23, 0);
-            this.layNetworkTile(PLAYER_TYPE.Human, 14, 21);
-            this.layNetworkTile(PLAYER_TYPE.Human, 21, 18);
-            this.layNetworkTile(PLAYER_TYPE.Human, 21, 14);
-            this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 15, 18);
-            this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
-            this.layNetworkTile(PLAYER_TYPE.Human, 21, 25);
-            this.layNetworkTile(PLAYER_TYPE.Human, 25, 26);*/
-
-            //this.layIndustryTile(PLAYER_TYPE.Human, 12, 20, 0);
-            //this.layNetworkTile(PLAYER_TYPE.Human, 20, 17);
-            //this.layIndustryTile(PLAYER_TYPE.Human, 18, 17, 0);
-
+        debugSetupTestBoard: function () {            
             // SCENARIO: Connected to Eliza's beer
             /*this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 18, 16, 1); // beer on Walsall
             this.layIndustryTile(PLAYER_TYPE.Human, 18, 14, 0); // beer on Coalbrookdale
@@ -4597,10 +4573,12 @@ var app = new Vue({
             this.layIndustryTile(PLAYER_TYPE.Human, 34, 15, 0); // Manufacturing on Wolverhampton */
 
             // SCENARIO: Connected to Eliza's beer after double link (assumes 2nd era)
+            /*
             this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 18, 16, 1); // beer on Walsall
             this.layIndustryTile(PLAYER_TYPE.Human, 18, 14, 0); // beer on Coalbrookdale
             this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
             this.layIndustryTile(PLAYER_TYPE.Human, 34, 15, 0); // Manufacturing on Wolverhampton
+            */
         },
         // --- BEGIN: may not truly need these ---
         /*
