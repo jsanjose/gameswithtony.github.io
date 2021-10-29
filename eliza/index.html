@@ -159,10 +159,10 @@
                             <li class="card card--clickable" v-on:click="setHumanAction('00')">
                                 <p class="card__name">Build</p>
                             </li>
-                            <li class="card card--clickable" v-on:click="setHumanAction('10')">
+                            <li class="card card--clickable" v-if="humanPlayer.totalUsedNetworkTiles < 14" v-on:click="setHumanAction('10')">
                                 <p class="card__name"><span v-if="currentEra === 1">Single </span>Network</p>
                             </li>
-                            <li class="card card--clickable" v-if="currentEra === 1" v-on:click="setHumanAction('50')">
+                            <li class="card card--clickable" v-if="currentEra === 1 && humanPlayer.totalUsedNetworkTiles < 14" v-on:click="setHumanAction('50')">
                                 <p class="card__name">Double Network</p>
                             </li>
                             <li class="card card--clickable" v-on:click="setHumanAction('20')">

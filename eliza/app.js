@@ -53,6 +53,7 @@ const HUMAN_PLAYER = {
     turnOrder: 0,
     currentRoundComplete: false,
     amountSpentThisRound: 0,
+    totalUsedNetworkTiles: 0,
     currentTurnIndex: 0, // human player takes two actions
     actionStep: null, // guides showing appropriate UI for the chosen action
     nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
@@ -83,6 +84,7 @@ const ELIZA = {
     soldInCanalEra: false,
     soldInRailEra: false,
     amountSpentThisRound: null,
+    totalUsedNetworkTiles: 0,
     nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
 }
 
@@ -111,6 +113,7 @@ const ELEANOR = {
     soldInCanalEra: false,
     soldInRailEra: false,
     amountSpentThisRound: null,
+    totalUsedNetworkTiles: 0,
     nextAction: { action: null, actiondata: { consumedata: [] }, actiondesc: []} // intended action
 }
 
@@ -138,7 +141,7 @@ var app = new Vue({
         finishedCanalScore: false,
         finishedRailScore: false,
         error: null,
-        appVersion: '0.88'
+        appVersion: '0.89'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -2123,34 +2126,17 @@ var app = new Vue({
                                 // Calculate network
                                 let addVPNoLink = 5;
                                 let addVPRailEra = 5;
+                                let currentPlayer = this.getPlayerFromType(player_type);
                                 let closestWithPath = null; // closest unconnected
-                                actiondata.addVP = 0;
-                                // if brewery, coal mine, or iron works
-                                if (actiondata.industrytype === 0 || actiondata.industrytype === 4 || actiondata.industrytype === 5) {
-                                    closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type);
 
-                                    if (!closestWithPath) {
-                                        closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
+                                if (currentPlayer.totalUsedNetworkTiles === 14) {
+                                    actiondata.addVP = addVPNoLink;
+                                } else {
+                                    actiondata.addVP = 0;
 
-                                        if (!closestWithPath) {
-                                            actiondata.addVP = addVPNoLink;
-                                        /* build = false;
-                                            sell = true;
-                                            actiondata.locationid = null;
-                                            actiondata.spaceid = null;
-                                            actiondata.industrytype = null;
-                                            actiondata.neededCoal = 0;
-                                            actiondata.neededIron = 0; */
-                                        }
-                                    } 
-                                }
-                                
-                                // if pottery, cotton mill, or manufactured goods
-                                if (actiondata.industrytype === 1 || actiondata.industrytype === 2 || actiondata.industrytype === 3) {
-                                    closestWithPath = this.findClosestUnconnectedMerchantWithPath(actiondata.locationid, actiondata.industrytype, player_type);
-
-                                    if (!closestWithPath) {
-                                        closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type, true);
+                                    // if brewery, coal mine, or iron works
+                                    if (actiondata.industrytype === 0 || actiondata.industrytype === 4 || actiondata.industrytype === 5) {
+                                        closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type);
 
                                         if (!closestWithPath) {
                                             closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
@@ -2165,8 +2151,32 @@ var app = new Vue({
                                                 actiondata.neededCoal = 0;
                                                 actiondata.neededIron = 0; */
                                             }
-                                        }
-                                    } 
+                                        } 
+                                    }
+                                    
+                                    // if pottery, cotton mill, or manufactured goods
+                                    if (actiondata.industrytype === 1 || actiondata.industrytype === 2 || actiondata.industrytype === 3) {
+                                        closestWithPath = this.findClosestUnconnectedMerchantWithPath(actiondata.locationid, actiondata.industrytype, player_type);
+
+                                        if (!closestWithPath) {
+                                            closestWithPath = this.findClosestUnconnectedUnflippedIndustryWithPath(actiondata.locationid, player_type, true);
+
+                                            if (!closestWithPath) {
+                                                closestWithPath = this.findClosestUnconnectedFlippedIndustryWithPath(actiondata.locationid, player_type, true);
+
+                                                if (!closestWithPath) {
+                                                    actiondata.addVP = addVPNoLink;
+                                                /* build = false;
+                                                    sell = true;
+                                                    actiondata.locationid = null;
+                                                    actiondata.spaceid = null;
+                                                    actiondata.industrytype = null;
+                                                    actiondata.neededCoal = 0;
+                                                    actiondata.neededIron = 0; */
+                                                }
+                                            }
+                                        } 
+                                    }
                                 }
 
                                 // find tile to lay (first missing tile along the path)
@@ -2284,7 +2294,7 @@ var app = new Vue({
                             }
                         }
 
-                        if (sortedLocationsByLinkVP.length > 0) {
+                        if (sortedLocationsByLinkVP.length > 0 && player.totalUsedNetworkTiles < 14) {
                             let locationfromid = null;
                             let locationtoid = null;
                             let locationfromid2 = null;
@@ -3012,6 +3022,10 @@ var app = new Vue({
                 }
             });
 
+            this.humanPlayer.totalUsedNetworkTiles = 0;
+            this.eliza.totalUsedNetworkTiles = 0;
+            this.eleanor.totalUsedNetworkTiles = 0;
+
             // reset merchant beer
             _.forEach(this.board.locations, function (l) {
                 if (l.type === LOCATIONTYPE.Merchants) {
@@ -3214,6 +3228,12 @@ var app = new Vue({
             if (locationid2 === 22) {
                 this.layNetworkTileBase(player_type, 21, 25);
             }
+
+            let player = this.getPlayerFromType(player_type);
+            if (player.totalUsedNetworkTiles === null || player.totalUsedNetworkTiles === undefined) {
+                player.totalUsedNetworkTiles = 0;
+            }
+            player.totalUsedNetworkTiles = player.totalUsedNetworkTiles + 1;
         },
         updateTurnOrder: function () {
             // Calculate turn order based on amount spent
@@ -3831,8 +3851,6 @@ var app = new Vue({
             }
 
             let connectedLocations = [];
-
-            // TODO: Fix so that on the second link of a double network action you can consume opponent beer from the end of the double link
 
             if (locationids && !locationids.length) {
                 connectedLocations = this.findAllConnectedLocations(locationids, player_type, NEEDSCONNECTIONTYPE.Beer);
@@ -4571,6 +4589,7 @@ var app = new Vue({
             this.layNetworkTile(PLAYER_TYPE.Human, 15, 14);
             this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
             this.layIndustryTile(PLAYER_TYPE.Human, 34, 15, 0); // Manufacturing on Wolverhampton */
+            // END SCENARIO
 
             // SCENARIO: Connected to Eliza's beer after double link (assumes 2nd era)
             /*
@@ -4579,6 +4598,67 @@ var app = new Vue({
             this.layNetworkTile(PLAYER_TYPE.Human, 14, 13);
             this.layIndustryTile(PLAYER_TYPE.Human, 34, 15, 0); // Manufacturing on Wolverhampton
             */
+            // END SCENARIO
+
+            // SCENARIO: Eliza connected to player beer, merchant doesn't have beer, and Eliza sells on first turn
+            /*
+            // first, clear merchant beer
+            let self = this;
+            let merchantTiles = _.shuffle(_.filter(MERCHANT_TILES, function (t) {
+                return t.minPlayers <= self.numberOfPlayers;
+            }));
+            let merchantLocationIds = this.getMerchantLocationIds();
+
+            _.forEach(merchantLocationIds, function (id) {
+                let location = self.findLocationById(id);
+
+                // lay merchant tile
+                _.forEach(location.spaces, function (s) {
+                    let merchantTile = merchantTiles.shift();
+                    s.tile = merchantTile;
+
+                    if (merchantTile.industryTypes) {
+                        s.tile.totalBeer = 0;
+                    }
+                });
+            });
+
+            // make all cards industry cards 
+            _.forEach(CARDS, function (c) {
+                c.locationid = null;
+            });
+
+            // needs to be at least round 5 for Eliza to sell
+            this.currentRound = 5;
+
+            // setup board
+            this.layIndustryTile(PLAYER_TYPE.Human, 18, 16, 1); // beer on Walsall
+            //this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 18, 14, 0); // beer on Coalbrookdale
+            this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 16, 15);
+            this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 15, 14);
+            this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 14, 13);
+            this.layIndustryTile(PLAYER_TYPE.Eliza_AI, 38, 15, 0); // Manufacturing on Wolverhampton
+            */
+            // END SCENARIO
+
+            // SCENARIO: Eliza has 14 network tiles on the board
+            /*
+            this.layNetworkTile(PLAYER_TYPE.Human, 13, 14);
+            this.layNetworkTile(PLAYER_TYPE.Human, 14, 15);
+            this.layNetworkTile(PLAYER_TYPE.Human, 15, 16);
+            this.layNetworkTile(PLAYER_TYPE.Human, 16, 19);
+            this.layNetworkTile(PLAYER_TYPE.Human, 12, 19);
+            this.layNetworkTile(PLAYER_TYPE.Human, 20, 19);
+            this.layNetworkTile(PLAYER_TYPE.Human, 24, 19);
+            this.layNetworkTile(PLAYER_TYPE.Human, 25, 19);
+            this.layNetworkTile(PLAYER_TYPE.Human, 14, 21);
+            this.layNetworkTile(PLAYER_TYPE.Human, 25, 21);
+            this.layNetworkTile(PLAYER_TYPE.Human, 11, 16);
+            this.layNetworkTile(PLAYER_TYPE.Human, 11, 8);
+            this.layNetworkTile(PLAYER_TYPE.Human, 4, 8);
+            this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 4, 1);
+            */
+            // END SCENARIO
         },
         // --- BEGIN: may not truly need these ---
         /*
