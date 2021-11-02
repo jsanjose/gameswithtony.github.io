@@ -32,7 +32,7 @@ function romanize(level) {
 const INITIAL_HUMAN_BOARD = _.cloneDeep(INDUSTRY_TILES);
 
 const INITIAL_AI_BOARD = _.filter(INDUSTRY_TILES, function(p) {
-    return p.level > 1 && !(p.industrytype === INDUSTRY.Manufacturer && p.level <= 2);
+    return p.level > 1 && !(p.industrytype === INDUSTRY.Manufacturer && p.level <= 2) && !(p.industrytype === INDUSTRY.Pottery && p.level <= 2);
 });
 
 // players
@@ -141,7 +141,7 @@ var app = new Vue({
         finishedCanalScore: false,
         finishedRailScore: false,
         error: null,
-        appVersion: '0.89'
+        appVersion: '0.90'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
