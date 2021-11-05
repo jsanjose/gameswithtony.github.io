@@ -458,7 +458,13 @@ var app = new Vue({
             for (let i=0;i<this.minions.length;i++) {
                 if (this.minions[i].isSelected) {
 
-                    let newcharacter = createCharacter(6000+i, this.minions[i].name, this.minions[i].hitpoints, TYPE.Character);
+                    let minionhitpoints = this.minions[i].hitpoints;
+
+                    if (this.minions[i].hitpointsper) {
+                        minionhitpoints = new Number(this.minions[i].hitpoints) * new Number(this.numberOfPlayers);
+                    }
+
+                    let newcharacter = createCharacter(6000+i, this.minions[i].name, minionhitpoints, TYPE.Character);
                     newcharacter.isMinion = true;
                     newcharacter.isBadGuy = true;
                     
