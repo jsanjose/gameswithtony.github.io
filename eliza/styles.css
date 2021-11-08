@@ -421,3 +421,13 @@ input[type="checkbox"].checkbox-strike:checked + span {
 .error-text {
     font-size: 1.15rem;
 }
+
+.report-a-bug {
+    text-align: center;
+    font-size: 0.75rem;
+}
+
+.report-a-bug textarea {
+    width: 400px;
+    padding: 0;
+}

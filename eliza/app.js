@@ -141,6 +141,8 @@ var app = new Vue({
         finishedCanalScore: false,
         finishedRailScore: false,
         error: null,
+        isGameStateOpen: false,
+        gameState: "",
         appVersion: '0.90'
     },
     mounted: function() {
@@ -370,7 +372,22 @@ var app = new Vue({
         }
     },
     methods: {
+        getGameState: function () {
+            this.gameState = "[size=7]" + btoa(LZString.decompress(localStorage.getItem(LOCALSTORAGENAME))) + "[/size]";
+            this.isGameStateOpen = true;
+            return this.gameState;
+        },
+        copyGameState() {
+            navigator.clipboard.writeText(this.gameState)
+            .then(() => {
+              alert('Save game copied to clipboard');
+            })
+            .catch(err => {
+              alert('Error in copying text: ', err);
+            });
+        },
         next: function () {
+            this.isGameStateOpen = false;
             if (this.isDisabledButton) return;
             this.isDisabledButton = true;
 
@@ -704,6 +721,7 @@ var app = new Vue({
 
         // UI functions
         setHumanAction(actionStep) {
+            this.isGameStateOpen = false;
             this.currentPlayer.actionStep = actionStep;
 
             if (actionStep === '20') {

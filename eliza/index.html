@@ -419,6 +419,14 @@
                     </li>
                 </ul>
             </section>
+            <section class="report-a-bug">
+                <a href="#" v-on:click="getGameState()">report a bug</a>
+                <section v-if="isGameStateOpen">
+                    <p>To report a bug, <a href="https://boardgamegeek.com/thread/2644263/eliza-and-eleanor-online-solo-opponents">reply to the app's thread on BoardGameGeek</a> <a href="https://boardgamegeek.com/geekmail/compose?touser=TonyA680">or send me a direct message</a>. Please copy/paste the below into your message so your game can be replicated.</p>
+                    <textarea ref="gamestate" rows=10>{{ getGameState() }}</textarea>
+                    <br /><a href="#" v-on:click="copyGameState()">Copy to clipboard</a>
+                </section>
+            </section>
         </section>
     </main>
 </body>
