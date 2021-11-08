@@ -143,7 +143,7 @@ var app = new Vue({
         error: null,
         isGameStateOpen: false,
         gameState: "",
-        appVersion: '0.90'
+        appVersion: '0.91'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -2968,7 +2968,7 @@ var app = new Vue({
                         }
 
                         _.forEach(edges, function (e) {
-                            if (e.tile && e.tile.color === p.color && !e.isToSouthernFarm) {
+                            if (e.tile && e.tile.color === p.color && !e.isToSouthernFarm && !e.isSecondSouthernFarmLink) {
                                 if (self.currentEra === ERA.Canal) {
                                     p.canalLinkVP = p.canalLinkVP + locationLinkVPs;
                                 } else {

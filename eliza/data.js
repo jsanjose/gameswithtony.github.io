@@ -1236,7 +1236,8 @@ const INITIAL_BOARD = {
                 },
                 {
                     toId: 25,
-                    tile: null
+                    tile: null,
+                    isSecondSouthernFarmLink: true
                 }
             ],
             edgesRail: [
@@ -1246,7 +1247,8 @@ const INITIAL_BOARD = {
                 },
                 {
                     toId: 25,
-                    tile: null
+                    tile: null,
+                    isSecondSouthernFarmLink: true
                 }
             ]
         },
