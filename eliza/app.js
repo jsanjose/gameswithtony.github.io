@@ -3815,11 +3815,14 @@ var app = new Vue({
             if (!locationids.length) {
                 connectedLocations = this.findAllConnectedLocations(locationids, player_type, NEEDSCONNECTIONTYPE.Coal);
             } else {
-                // support looking for coal from either end of a placed link
-                let connectedLocations1 = this.findAllConnectedLocations(locationids[0], player_type, NEEDSCONNECTIONTYPE.Coal);
-                let connectedLocations2 = this.findAllConnectedLocations(locationids[1], player_type, NEEDSCONNECTIONTYPE.Coal);
-
-                connectedLocations = _.uniqBy(_.union(connectedLocations1, connectedLocations2), "id");
+                // Support looking for coal from either end of a placed link(s). Note that for a double network action,
+                // this may allow consuming both coal at one link, even if the coal is not connected to the second link.
+                // We may want to fix this in the future but for now it's up to the human player to only select legal
+                // coal sources for consumption.
+                let self = this;
+                connectedLocations = _.uniqBy(_.flatMap(locationids, function(lid) {
+                    return self.findAllConnectedLocations(lid, player_type, NEEDSCONNECTIONTYPE.Coal);
+                }), "id");
             }
 
             let connectedCoalLocations = [];
