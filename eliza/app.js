@@ -4677,6 +4677,20 @@ var app = new Vue({
             this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 4, 1);
             */
             // END SCENARIO
+
+            // SCENARIO: Double network from disconnected locations that both have access to coal.
+            // It should be possible to perform a double network action placing a link from Dudley
+            // and another link from Burton-on-Trent, consuming coal from the respective starting
+            // spots.
+            /*
+            this.setupRailEra();
+            this.layIndustryTile(PLAYER_TYPE.Human, 1, 18, 0);  // One coal in Dudley
+            this.findLocationById(18).spaces[0].tile.availableCoal = 1;
+
+            this.layIndustryTile(PLAYER_TYPE.Human, 2, 9, 0);  // Coal in Burton-on-Trent
+            this.layIndustryTile(PLAYER_TYPE.Human, 18, 9, 1);  // Beer in Burton-on-Trent
+            */
+            // END SCENARIO
         },
         // --- BEGIN: may not truly need these ---
         /*
