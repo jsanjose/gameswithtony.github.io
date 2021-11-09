@@ -373,7 +373,7 @@ var app = new Vue({
     },
     methods: {
         getGameState: function () {
-            this.gameState = "[size=7]" + btoa(LZString.decompress(localStorage.getItem(LOCALSTORAGENAME))) + "[/size]";
+            this.gameState = btoa(LZString.decompress(localStorage.getItem(LOCALSTORAGENAME)));
             this.isGameStateOpen = true;
             return this.gameState;
         },
