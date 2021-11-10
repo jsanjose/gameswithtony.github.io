@@ -3815,11 +3815,14 @@ var app = new Vue({
             if (!locationids.length) {
                 connectedLocations = this.findAllConnectedLocations(locationids, player_type, NEEDSCONNECTIONTYPE.Coal);
             } else {
-                // support looking for coal from either end of a placed link
-                let connectedLocations1 = this.findAllConnectedLocations(locationids[0], player_type, NEEDSCONNECTIONTYPE.Coal);
-                let connectedLocations2 = this.findAllConnectedLocations(locationids[1], player_type, NEEDSCONNECTIONTYPE.Coal);
-
-                connectedLocations = _.uniqBy(_.union(connectedLocations1, connectedLocations2), "id");
+                // Support looking for coal from either end of a placed link(s). Note that for a double network action,
+                // this may allow consuming both coal at one link, even if the coal is not connected to the second link.
+                // We may want to fix this in the future but for now it's up to the human player to only select legal
+                // coal sources for consumption.
+                let self = this;
+                connectedLocations = _.uniqBy(_.flatMap(locationids, function(lid) {
+                    return self.findAllConnectedLocations(lid, player_type, NEEDSCONNECTIONTYPE.Coal);
+                }), "id");
             }
 
             let connectedCoalLocations = [];
@@ -4675,6 +4678,20 @@ var app = new Vue({
             this.layNetworkTile(PLAYER_TYPE.Human, 11, 8);
             this.layNetworkTile(PLAYER_TYPE.Human, 4, 8);
             this.layNetworkTile(PLAYER_TYPE.Eliza_AI, 4, 1);
+            */
+            // END SCENARIO
+
+            // SCENARIO: Double network from disconnected locations that both have access to coal.
+            // It should be possible to perform a double network action placing a link from Dudley
+            // and another link from Burton-on-Trent, consuming coal from the respective starting
+            // spots.
+            /*
+            this.setupRailEra();
+            this.layIndustryTile(PLAYER_TYPE.Human, 1, 18, 0);  // One coal in Dudley
+            this.findLocationById(18).spaces[0].tile.availableCoal = 1;
+
+            this.layIndustryTile(PLAYER_TYPE.Human, 2, 9, 0);  // Coal in Burton-on-Trent
+            this.layIndustryTile(PLAYER_TYPE.Human, 18, 9, 1);  // Beer in Burton-on-Trent
             */
             // END SCENARIO
         },
