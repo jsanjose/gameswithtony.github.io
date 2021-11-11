@@ -428,6 +428,6 @@ input[type="checkbox"].checkbox-strike:checked + span {
 }
 
 .report-a-bug textarea {
-    width: 400px;
+    width: 325px;
     padding: 0;
 }
