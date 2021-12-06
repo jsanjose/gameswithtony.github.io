@@ -143,7 +143,7 @@ var app = new Vue({
         error: null,
         isGameStateOpen: false,
         gameState: "",
-        appVersion: '0.92'
+        appVersion: '1.0'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
