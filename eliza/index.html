@@ -422,7 +422,7 @@
             <section class="report-a-bug">
                 <a href="#" v-on:click="getGameState()">report a bug</a>
                 <section v-if="isGameStateOpen">
-                    <p>To report a bug, <a href="https://discord.gg/7CHwh6TSsa">join my Discord</a>. You can then copy/paste the below error into a message to me.</p>
+                    <p>To report a bug, <a href="https://discord.gg/7CHwh6TSsa">join my Discord</a>. Please copy/paste the below error <em>into a text file or google doc</em> and then attach it to a message to me. The error is usually too long to copy into a direct message.</p>
                     <textarea ref="gamestate" rows=10>{{ getGameState() }}</textarea>
                     <br /><a href="#" v-on:click="copyGameState()">Copy to clipboard</a>
                 </section>
