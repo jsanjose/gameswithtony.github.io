@@ -158,7 +158,15 @@ let heroes = [
         "isSelected": false,
         "type": "hero",
         "hitpoints": 11
-    }
+    },
+    {
+        "name": "War Machine",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10,
+        "useCounter": true,
+        "counter": 0
+    },
 ];
 
 let villains = [
@@ -1028,6 +1036,16 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "villain",
         "belongsto": ["Wrecker"]
+    },
+    {
+        "name": "Deadly Light Show",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["War Machine"]
     },
     {
         "name": "Defense Network",
@@ -2398,6 +2416,14 @@ let minions = [
         "belongsto": ["Frost Giants"]
     },
     {
+        "name": "Living Laser",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["War Machine"]
+    },
+    {
         "name": "Loki",
         "isSelected": false,
         "type": "minion",
@@ -2853,6 +2879,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Black Panther",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
+    },
+    {
         "name": "Black Widow",
         "isSelected": false,
         "type": "ally",
@@ -2895,7 +2927,13 @@ let allies = [
         "hitpoints": 4
     },
     {
-        "name": "Captain Marvel",
+        "name": "Captain Marvel (Spider-Woman Ally)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Captain Marvel (Leadership)",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -3432,6 +3470,14 @@ let countercards = [
         "belongsto": ["Justice"]
     },
     {
+        "name": "Command Team",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Leadership"]
+    },
+    {
         "name": "Defensive Training",
         "isSelected": false,
         "type": "counter",
@@ -3518,6 +3564,14 @@ let countercards = [
         "counter": 3,
         "belongstotype": "aspect",
         "belongsto": ["Protection"]
+    },
+    {
+        "name": "Munitions Bunker",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "hero",
+        "belongsto": ["War Machine"]
     },
     {
         "name": "Nebula's Ship",
@@ -3630,6 +3684,14 @@ let countercards = [
         "counter": 0,
         "belongstotype": "module",
         "belongsto": ["Galactic Artifacts"]
+    },
+    {
+        "name": "Vigilante Training",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "aspect",
+        "belongsto": ["Justice"]
     },
     {
         "name": "Web Shooter",
