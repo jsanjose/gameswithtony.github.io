@@ -349,6 +349,13 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "The Hood",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 14,
+        "hitpointsper": true
+    },
+    {
         "name": "Thunderball",
         "isSelected": false,
         "type": "villain",
@@ -457,6 +464,15 @@ let main_schemes = [
         "belongsto": ["Ultron"]
     },
     {
+        "name": "Crime State",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 10,
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["The Hood"]
+    },
+    {
         "name": "Hostile Takeover",
         "isSelected": false,
         "type": "main_scheme",
@@ -523,6 +539,15 @@ let main_schemes = [
         "belongsto": ["Collector 1 (Infiltrate)", "Collector 2 (Escape)"]
     },
     {
+        "name": "Making Connections",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 5,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["The Hood"]
+    },
+    {
         "name": "Mutagen Cloud",
         "isSelected": false,
         "type": "main_scheme",
@@ -557,6 +582,15 @@ let main_schemes = [
         "basethreat": 1,
         "belongstotype": "villain",
         "belongsto": ["Hela"]
+    },
+    {
+        "name": "Promised Prosperity",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 8,
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["The Hood"]
     },
     {
         "name": "Protect the Planet",
@@ -837,6 +871,15 @@ let side_schemes = [
         "belongsto": ["GMW Campaign"]
     },
     {
+        "name": "Beast Mode",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "belongstotype": "module",
+        "belongsto": ["Beasty Boys"]
+    },
+    {
         "name": "Blazing Inferno",
         "isSelected": false,
         "type": "side_scheme",
@@ -982,6 +1025,15 @@ let side_schemes = [
         "belongsto": ["Kang (The Conqueror)", "Kang (Immortus)", "Kang (Iron Lad)", "Kang (Rama-Tut)", "Kang (Scarlet Centurion)"]
     },
     {
+        "name": "Crime Pays",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["Sinister Syndicate"]
+    },
+    {
         "name": "Crossbones' Assault",
         "isSelected": false,
         "type": "side_scheme",
@@ -1058,6 +1110,15 @@ let side_schemes = [
         "belongsto": ["Klaw"]
     },
     {
+        "name": "Disaster At The Docks",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["State of Emergency"]
+    },
+    {
         "name": "Drone Factory",
         "isSelected": false,
         "type": "side_scheme",
@@ -1084,6 +1145,15 @@ let side_schemes = [
         "basethreat": 2,
         "belongstotype": "hero",
         "belongsto": ["Thor"]
+    },
+    {
+        "name": "Feisty Heist",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["State of Emergency"]
     },
     {
         "name": "Fugitive Recovery",
@@ -1190,6 +1260,15 @@ let side_schemes = [
         "basethreat": 3,
         "belongstotype": "hero",
         "belongsto": ["Captain America"]
+    },
+    {
+        "name": "Hot Pursuit",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["State of Emergency"]
     },
     {
         "name": "Hujahdarian Monarch Egg",
@@ -1419,6 +1498,15 @@ let side_schemes = [
         "belongsto": ["Red Skull"]
     },
     {
+        "name": "Self-Experimentation",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "belongstotype": "module",
+        "belongsto": ["Mister Hyde"]
+    },
+    {
         "name": "Mother's Orders",
         "isSelected": false,
         "type": "side_scheme",
@@ -1426,6 +1514,15 @@ let side_schemes = [
         "basethreat": 2,
         "belongstotype": "hero",
         "belongsto": ["Wasp"]
+    },
+    {
+        "name": "Offshore Inferno",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["State of Emergency"]
     },
     {
         "name": "Open the Bifrost",
@@ -1473,6 +1570,15 @@ let side_schemes = [
         "basethreat": 2,
         "belongstotype": "villain",
         "belongsto": ["Norman Osborn", "Green Goblin"]
+    },
+    {
+        "name": "Out For Blood",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "belongstotype": "module",
+        "belongsto": ["Crossfire's Crew"]
     },
     {
         "name": "Overrun",
@@ -1855,6 +1961,16 @@ let side_schemes = [
         "belongsto": ["Temporal"]
     },
     {
+        "name": "Top Talent",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Wrecking Crew"]
+    },
+    {
         "name": "Total Destruction",
         "isSelected": false,
         "type": "side_scheme",
@@ -1871,6 +1987,16 @@ let side_schemes = [
         "basethreat": 2,
         "belongstotype": "module",
         "belongsto": ["Children of Thanos"]
+    },
+    {
+        "name": "Unbridled Ambition",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["The Hood"]
     },
     {
         "name": "Ultron's Imperative",
@@ -1990,6 +2116,14 @@ let minions = [
         "belongsto": ["Klaw"]
     },
     {
+        "name": "Armored Guard (Ransacked Armory)",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Ransacked Armory"]
+    },
+    {
         "name": "Avalanche",
         "isSelected": false,
         "type": "minion",
@@ -2078,6 +2212,14 @@ let minions = [
         "belongsto": ["Wasp"]
     },
     {
+        "name": "Beetle (Sinister Syndicate)",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Sinister Syndicate"]
+    },
+    {
         "name": "Berserk Mutate",
         "isSelected": false,
         "type": "minion",
@@ -2127,6 +2269,38 @@ let minions = [
         "belongsto": ["Band of Badoon"]
     },
     {
+        "name": "Boomerang",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Sinister Syndicate"]
+    },
+    {
+        "name": "Brothers Grimm",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 8,
+        "belongstotype": "module",
+        "belongsto": ["Beasty Boys"]
+    },
+    {
+        "name": "Bulldozer",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 7,
+        "belongstotype": "module",
+        "belongsto": ["Wrecking Crew"]
+    },
+    {
+        "name": "Calvin Zabo",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Mister Hyde"]
+    },
+    {
         "name": "Chitauri Soldier",
         "isSelected": false,
         "type": "minion",
@@ -2143,6 +2317,14 @@ let minions = [
         "belongsto": ["Wrecker", "Thunderball", "Piledriver", "Bulldozer"]
     },
     {
+        "name": "Corruptor",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Crossfire's Crew"]
+    },
+    {
         "name": "Corvus Glaive",
         "isSelected": false,
         "type": "minion",
@@ -2157,6 +2339,14 @@ let minions = [
         "hitpoints": 4,
         "belongstotype": "hero",
         "belongsto": ["Hawkeye"]
+    },
+    {
+        "name": "Crossfire (Crossfire's Crew)",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Crossfire's Crew"]
     },
     {
         "name": "Deathunt 9000",
@@ -2286,6 +2476,14 @@ let minions = [
         "hitpoints": 3,
         "belongstotype": "villain",
         "belongsto": ["Norman Osborn", "Green Goblin"]
+    },
+    {
+        "name": "Griffin",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 7,
+        "belongstotype": "module",
+        "belongsto": ["Beasty Boys"]
     },
     {
         "name": "Headhunter's Henchman",
@@ -2456,12 +2654,44 @@ let minions = [
         "belongsto": ["Legions of Hydra"]
     },
     {
+        "name": "Madame Masque",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "villain",
+        "belongsto": ["The Hood"]
+    },
+    {
+        "name": "Mandrill",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Beasty Boys"]
+    },
+    {
         "name": "Melter",
         "isSelected": false,
         "type": "minion",
         "hitpoints": 5,
         "belongstotype": "module",
         "belongsto": ["The Masters of Evil"]
+    },
+    {
+        "name": "Mister Fear",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Crossfire's Crew"]
+    },
+    {
+        "name": "Mister Hyde",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 10,
+        "belongstotype": "module",
+        "belongsto": ["Mister Hyde"]
     },
     {
         "name": "Mister Knife",
@@ -2519,6 +2749,14 @@ let minions = [
         "hitpoints": 2,
         "belongstotype": "module",
         "belongsto": ["Armies of Titan"]
+    },
+    {
+        "name": "Piledriver",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Wrecking Crew"]
     },
     {
         "name": "Pirate Commander",
@@ -2617,6 +2855,14 @@ let minions = [
         "belongsto": ["Rhino"]
     },
     {
+        "name": "Shocker (Sinister Syndicate)",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Sinister Syndicate"]
+    },
+    {
         "name": "Sir Raston",
         "isSelected": false,
         "type": "minion",
@@ -2632,6 +2878,14 @@ let minions = [
         "hitpointsper": true,
         "belongstotype": "villain",
         "belongsto": ["Hela"]
+    },
+    {
+        "name": "Speed Demon",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Sinister Syndicate"]
     },
     {
         "name": "Starshark",
@@ -2696,6 +2950,14 @@ let minions = [
         "hitpoints": 3,
         "belongstotype": "hero",
         "belongsto": ["Ms. Marvel"]
+    },
+    {
+        "name": "Thunderball",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 7,
+        "belongstotype": "module",
+        "belongsto": ["Wrecking Crew"]
     },
     {
         "name": "Tiger Shark",
@@ -2770,12 +3032,28 @@ let minions = [
         "belongsto": ["Iron Man"]
     },
     {
+        "name": "White Rabbit",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Sinister Syndicate"]
+    },
+    {
         "name": "Whirlwind",
         "isSelected": false,
         "type": "minion",
         "hitpoints": 6,
         "belongstotype": "module",
         "belongsto": ["The Masters of Evil"]
+    },
+    {
+        "name": "Wrecker",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 8,
+        "belongstotype": "module",
+        "belongsto": ["Wrecking Crew"]
     },
     {
         "name": "Wildrun",
@@ -3720,13 +3998,22 @@ let modules = [
         "name": "Band of Badoon"
     },
     {
+        "name": "Beasty Boys"
+    },
+    {
         "name": "Black Order"
     },
     {
         "name": "Bomb Scare"
     },
     {
+        "name": "Brothers Grimm"
+    },
+    {
         "name": "Children of Thanos"
+    },
+    {
+        "name": "Crossfire's Crew"
     },
     {
         "name": "Enchantress"
@@ -3765,16 +4052,31 @@ let modules = [
         "name": "Menagerie Medley"
     },
     {
+        "name": "Mister Hyde"
+    },
+    {
         "name": "MTS Campaign"
     },
     {
         "name": "Power Drain"
     },
     {
+        "name": "Ransacked Armory"
+    },
+    {
         "name": "Running Interference"
     },
     {
         "name": "Ship Command"
+    },
+    {
+        "name": "Sinister Syndicate"
+    },
+    {
+        "name": "State of Emergency"
+    },
+    {
+        "name": "Streets of Mayhem"
     },
     {
         "name": "Space Pirates"
@@ -3790,6 +4092,9 @@ let modules = [
     },
     {
         "name": "Under Attack"
+    },
+    {
+        "name": "Wrecking Crew"
     }
 ]
 
