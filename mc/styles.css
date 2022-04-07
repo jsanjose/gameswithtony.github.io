@@ -211,6 +211,8 @@ body {
 }
 
 .threat a {
+    font-size: 0.75rem;
+    padding: 0.5rem;
     flex-shrink: 0;
     margin: 0 0.25rem;
     background-color: #CCCC00;
@@ -361,6 +363,7 @@ option {
     width: 100%;
     text-align: center;
     display: flex;
+    align-items: center;
 }
 
 .progress-bar {
@@ -370,11 +373,13 @@ option {
     padding: 3px;
     border-radius: 3px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+    max-height: 30px;
 }
 
 .progress-total {
     width: 30%;
     cursor: pointer;
+    margin: 0 .25rem;
 }
 
 .progress-bar-fill {

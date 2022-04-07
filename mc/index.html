@@ -41,6 +41,7 @@
         <section class="character" v-for="(character, index) in characters" v-if="pageState === 0 && !character.hide" v-bind:class="{ scheme: (character.type == 0 || character.type == 1), countercard: character.type == 3 }">
             <h2 v-bind:class="{ badguy: character.isBadGuy }">{{ character.name }}</h2>
             <section class="threat" v-if="character.type == 0 || character.type == 1">
+                <a href="#" v-on:click="character.updateHitPoints(-5, $event)">- 5</a>
                 <a href="#" v-on:click="character.updateHitPoints(-1, $event)">- 1</a>
                 <div class="wrapper">
                     <div class="progress-bar">
@@ -49,6 +50,7 @@
                     <div class="progress-total" v-on:click="editmaxhitpoints(index, $event)"><span style="font-size: 1.25rem">{{ character.hitpoints }}</span><span style="font-size: 0.85rem"> / {{ character.maxhitpoints }}</span></div>
                 </div>
                 <a href="#" v-on:click="character.updateHitPoints(1, $event)">+ 1</a>
+                <a href="#" v-on:click="character.updateHitPoints(5, $event)">+ 5</a>
                 <p class="max-button scheme-hide" v-if="character.type == 1" v-on:click="character.hideMe($event)">H</p>
             </section>
             <section class="hit-points" v-if="character.type == 2">
