@@ -148,10 +148,22 @@ let heroes = [
         "hitpoints": 14
     },
     {
+        "name": "Valkyrie",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 12
+    },
+    {
         "name": "Venom",
         "isSelected": false,
         "type": "hero",
         "hitpoints": 12
+    },
+    {
+        "name": "Vision",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 11
     },
     {
         "name": "Wasp",
@@ -1658,6 +1670,16 @@ let side_schemes = [
         "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
+        "name": "Powerful Enchantments",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Valkyrie"]
+    },
+    {
         "name": "Prison Camps",
         "isSelected": false,
         "type": "side_scheme",
@@ -2006,6 +2028,16 @@ let side_schemes = [
         "basethreat": 2,
         "belongstotype": "villain",
         "belongsto": ["Ultron"]
+    },
+    {
+        "name": "Ultron Unleashed",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Vision"]
     },
     {
         "name": "Unnatural Storm",
@@ -2394,7 +2426,7 @@ let minions = [
         "type": "minion",
         "hitpoints": 5,
         "belongstotype": "module",
-        "belongsto": ["Enchantress"]
+        "belongsto": ["Enchantress", "Valkyrie"]
     },
     {
         "name": "Enraged Symbiote",
@@ -3008,6 +3040,14 @@ let minions = [
         "belongsto": ["Zola"]
     },
     {
+        "name": "Ultron",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "hero",
+        "belongsto": ["Vision"]
+    },
+    {
         "name": "Vulture",
         "isSelected": false,
         "type": "minion",
@@ -3129,6 +3169,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Annabelle Riggs",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Ant-Man",
@@ -3373,6 +3419,12 @@ let allies = [
         "counter": 0
     },
     {
+        "name": "Jacosta",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Jessica Jones",
         "isSelected": false,
         "type": "ally",
@@ -3401,6 +3453,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 5
+    },
+    {
+        "name": "Machine Man",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Major Victory",
@@ -3494,6 +3552,12 @@ let allies = [
     },
     {
         "name": "Power Man",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Protector",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -3619,6 +3683,18 @@ let allies = [
         "hitpoints": 4
     },
     {
+        "name": "Thor (Valkyrie)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Throg",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Tigra",
         "isSelected": false,
         "type": "ally",
@@ -3638,6 +3714,12 @@ let allies = [
     },
     {
         "name": "Venom",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
+    },
+    {
+        "name": "Victor Mancha",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 4
