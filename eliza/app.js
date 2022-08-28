@@ -143,7 +143,7 @@ var app = new Vue({
         error: null,
         isGameStateOpen: false,
         gameState: "",
-        appVersion: '1.0'
+        appVersion: '1.1'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -208,12 +208,17 @@ var app = new Vue({
             let locations = [];
             let self = this;
             if (this.currentEra === ERA.Canal) {
-                // locations where the player hasn't built
+                // locations where the player hasn't built or can overbuild
                 locations = _.filter(self.board.locations, function (l) {
                     let canBuildHere = true;
                     _.forEach(l.spaces, function (s) {
                         if (s.tile && s.tile.color === self.humanPlayer.color) {
-                            canBuildHere = false;
+                            let nextTileOfSameType = self.findNextTileFromPlayerBoard(PLAYER_TYPE.Human, s.tile.industrytype);
+    
+                            // OVERBUILD: Next tile on player board must be higher level than tile being replaced
+                            if (s.tile.level >= nextTileOfSameType.level) {
+                                canBuildHere = false;
+                            }
                         }
                     });
 
@@ -269,15 +274,31 @@ var app = new Vue({
                 }
 
                 if (resourcesAvailable) {
+
+                    let isCanalEraOverbuild = false;
+                    if (self.currentEra === ERA.Canal) {
+                        // only show one space in the Canal era, so if the location is valid due to overbuilding only show the overbuilding space
+
+                        _.forEach(l.spaces, function (s) {
+                            if (_.includes(s.types, industrytype)) {
+                                if (s.tile) {
+                                    isCanalEraOverbuild = true;
+                                }
+                            }
+                        });
+                    }
+
                     _.forEach(l.spaces, function (s) {
-                        if (!s.tile && _.includes(s.types, industrytype)) {
+                        let isOverbuild = (s.tile !== null && s.tile !== undefined);
+                        if (_.includes(s.types, industrytype) && !(isCanalEraOverbuild && !isOverbuild)) {
                             if (s.types.length === 1) {
                                 // prefer single spaces
                                 spacesWithLocations.push({
                                     locationid: l.id,
                                     spaceid: s.id + 1,
                                     name: l.name,
-                                    industrytype: industrytype
+                                    industrytype: industrytype,
+                                    isOverbuild: isOverbuild
                                 });
                             } else {
                                 if (!singleSpaceAvailable) {
@@ -285,7 +306,8 @@ var app = new Vue({
                                         locationid: l.id,
                                         spaceid: s.id + 1,
                                         name: l.name,
-                                        industrytype: industrytype
+                                        industrytype: industrytype,
+                                        isOverbuild: isOverbuild
                                     });
                                 }
                             }
@@ -3115,6 +3137,12 @@ var app = new Vue({
                 let space = _.find(location.spaces, function (p) {
                     return p.id === spaceid;
                 });
+
+                // OVERBUILD: If overbuilding
+                if (space.tile) {
+                    space.tile = null;
+                }
+
                 space.tile = _.cloneDeep(tile);
                 // increment the possible link VPs
                 if (!location.possibleLinkVPs) {

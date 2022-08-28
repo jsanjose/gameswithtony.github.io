@@ -95,7 +95,7 @@
                         <li class="action-desc">
                         The AIs do not require beer to sell, but they will consume it if they can.
                         </li>
-                        <li class="action-desc">You play by normal rules, except <em>you cannot overbuild (the AIs can't either)</em>.</li>
+                        <li class="action-desc">The AIs can't overbuild.</li>
                         <li class="action-desc">Removing industry tiles to pay for negative income is not currently supported.</li>
                         <li class="action-desc">Strategy note: If the AIs have not sold any tiles in an era, then during the last 3 rounds of the era (8,9,10 for a 2-player game or 7,8,9 for a 3-player game) the AI is <em>guaranteed</em> to sell in one of those rounds if it can.</li>
                     </ul>
@@ -191,7 +191,7 @@
                         <p class="action-header">Where are you building your {{ tileToString(humanPlayer.nextAction.actiondata.buildtile) }}?</p> 
                         <ul class="cards">
                             <li v-for="loc in validHumanBuildLocationsForIndustryType" :key="loc.id" class="card card--clickable" v-on:click="setHumanBuildLocationAndSpace(loc.locationid, loc.spaceid)">
-                                <p class="card__name">{{ loc.name }} (Space {{ loc.spaceid }})</p>
+                                <p class="card__name">{{ loc.name }} (Space {{ loc.spaceid }}) <span v-if="loc.isOverbuild"> [Overbuild]</span></p>
                             </li>
                         </ul>
                         <p v-if="validHumanBuildLocationsForIndustryType.length === 0">This tile cannot be built currently.</p>
