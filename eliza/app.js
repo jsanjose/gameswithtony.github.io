@@ -298,7 +298,7 @@ var app = new Vue({
                         
                         let isAIPlayersTile = (s.tile !== null && s.tile !== undefined && s.tile.color !== self.humanPlayer.color);
 
-                        if (_.includes(s.types, industrytype) && !isAIPlayersTile && !(isCanalEraOverbuild && !isOverbuild) && !(isCanalEraOverbuild && s.tile !== null && s.tile !== undefined) && !isCanalEraInvalidSpace) {
+                        if (_.includes(s.types, industrytype) && !isAIPlayersTile && !(isCanalEraOverbuild && !isOverbuild) && !isCanalEraInvalidSpace) {
                             if (s.types.length === 1) {
                                 // prefer single spaces
                                 spacesWithLocations.push({
