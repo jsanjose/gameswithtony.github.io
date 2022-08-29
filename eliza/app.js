@@ -276,21 +276,29 @@ var app = new Vue({
                 if (resourcesAvailable) {
 
                     let isCanalEraOverbuild = false;
+                    let isCanalEraInvalidSpace = false;
                     if (self.currentEra === ERA.Canal) {
                         // only show one space in the Canal era, so if the location is valid due to overbuilding only show the overbuilding space
 
                         _.forEach(l.spaces, function (s) {
                             if (_.includes(s.types, industrytype)) {
-                                if (s.tile) {
+                                if (s.tile && s.tile.color === self.humanPlayer.color) {
                                     isCanalEraOverbuild = true;
+                                }
+                            } else {
+                                if (s.tile && s.tile.color === self.humanPlayer.color) {
+                                    isCanalEraInvalidSpace = true;
                                 }
                             }
                         });
                     }
 
                     _.forEach(l.spaces, function (s) {
-                        let isOverbuild = (s.tile !== null && s.tile !== undefined);
-                        if (_.includes(s.types, industrytype) && !(isCanalEraOverbuild && !isOverbuild)) {
+                        let isOverbuild = (s.tile !== null && s.tile !== undefined && s.tile.color === self.humanPlayer.color);
+                        
+                        let isAIPlayersTile = (s.tile !== null && s.tile !== undefined && s.tile.color !== self.humanPlayer.color);
+
+                        if (_.includes(s.types, industrytype) && !isAIPlayersTile && !(isCanalEraOverbuild && !isOverbuild) && !(isCanalEraOverbuild && s.tile !== null && s.tile !== undefined) && !isCanalEraInvalidSpace) {
                             if (s.types.length === 1) {
                                 // prefer single spaces
                                 spacesWithLocations.push({
