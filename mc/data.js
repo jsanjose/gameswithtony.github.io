@@ -82,6 +82,14 @@ let heroes = [
         "hitpoints": 18
     },
     {
+        "name": "Ironheart",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10,
+        "useCounter": true,
+        "counter": 0
+    },
+    {
         "name": "Iron Man",
         "isSelected": false,
         "type": "hero",
@@ -98,6 +106,12 @@ let heroes = [
         "isSelected": false,
         "type": "hero",
         "hitpoints": 9
+    },
+    {
+        "name": "Nova",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
     },
     {
         "name": "Quicksilver",
@@ -128,6 +142,20 @@ let heroes = [
         "isSelected": false,
         "type": "hero",
         "hitpoints": 11
+    },
+    {
+        "name": "SP//dr",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 14
+    },
+    {
+        "name": "Spider-Ham",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 12,
+        "useCounter": true,
+        "counter": 0
     },
     {
         "name": "Spider-Man",
@@ -1037,6 +1065,15 @@ let side_schemes = [
         "belongsto": ["Whispers of Paranoia"]
     },
     {
+        "name": "Armored Assault",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["Armadillo"]
+    },
+    {
         "name": "Avalanche!",
         "isSelected": false,
         "type": "side_scheme",
@@ -1122,6 +1159,16 @@ let side_schemes = [
         "belongsto": ["Rhino"]
     },
     {
+        "name": "Bring The War!",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Nova"]
+    },
+    {
         "name": "Brute Force Barricade",
         "isSelected": false,
         "type": "side_scheme",
@@ -1137,6 +1184,7 @@ let side_schemes = [
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
+        "basethreatfixed": true,
         "belongstotype": "hero",
         "belongsto": ["Star-Lord"]
     },
@@ -1380,6 +1428,16 @@ let side_schemes = [
         "belongsto": ["Thor"]
     },
     {
+        "name": "Feedback Loop",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Zzzax"]
+    },
+    {
         "name": "Feisty Heist",
         "isSelected": false,
         "type": "side_scheme",
@@ -1437,6 +1495,16 @@ let side_schemes = [
         "belongsto": ["Ms. Marvel"]
     },
     {
+        "name": "Giant Monster Attack",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["SP//dr"]
+    },
+    {
         "name": "Gjallerbru",
         "isSelected": false,
         "type": "side_scheme",
@@ -1474,6 +1542,16 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "module",
         "belongsto": ["Norman Osborn", "Green Goblin"]
+    },
+    {
+        "name": "Grand Larceny",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Iron Spider's Sinister Six"]
     },
     {
         "name": "Guerilla Tactics",
@@ -1550,6 +1628,16 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "module",
         "belongsto": ["Galactic Artifacts"]
+    },
+    {
+        "name": "Hunting The Spider-Totems",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["The Inheritors"]
     },
     {
         "name": "Hydra Patrol",
@@ -1847,6 +1935,16 @@ let side_schemes = [
         "belongsto": ["Wasp"]
     },
     {
+        "name": "Nefarious Trap",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Spider-Ham"]
+    },
+    {
         "name": "Off The Rails",
         "isSelected": false,
         "type": "side_scheme",
@@ -2082,6 +2180,15 @@ let side_schemes = [
         "basethreat": 5,
         "belongstotype": "module",
         "belongsto": ["SM Campaign"]
+    },
+    {
+        "name": "Rule By Force",
+        "isSelected": false,
+        "type": "side_scheme",
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Ironheart"]
     },
     {
         "name": "Running Interference",
@@ -2557,6 +2664,14 @@ let minions = [
         "belongsto": ["Anachronauts"]
     },
     {
+        "name": "Armadillo",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 8,
+        "belongstotype": "module",
+        "belongsto": ["Armadillo"]
+    },
+    {
         "name": "Armored Guard",
         "isSelected": false,
         "type": "minion",
@@ -2718,12 +2833,36 @@ let minions = [
         "belongsto": ["Band of Badoon"]
     },
     {
+        "name": "Bombshell",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Iron Spider's Sinister Six"]
+    },
+    {
         "name": "Boomerang",
         "isSelected": false,
         "type": "minion",
         "hitpoints": 5,
         "belongstotype": "module",
         "belongsto": ["Sinister Syndicate"]
+    },
+    {
+        "name": "Bora",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["The Inheritors"]
+    },
+    {
+        "name": "Brix",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["The Inheritors"]
     },
     {
         "name": "Brothers Grimm",
@@ -2806,6 +2945,14 @@ let minions = [
         "belongsto": ["Crossfire's Crew"]
     },
     {
+        "name": "Daemos",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["The Inheritors"]
+    },
+    {
         "name": "Deathunt 9000",
         "isSelected": false,
         "type": "minion",
@@ -2852,6 +2999,14 @@ let minions = [
         "hitpoints": 6,
         "belongstotype": "module",
         "belongsto": ["Power Drain", "Sinister Assault"]
+    },
+    {
+        "name": "Electro (Iron Spider's)",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Iron Spider's Sinister Six"]
     },
     {
         "name": "Enchantress",
@@ -2935,6 +3090,14 @@ let minions = [
         "belongsto": ["Hela"]
     },
     {
+        "name": "The Green Gobbler",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Spider-Ham"]
+    },
+    {
         "name": "Goblin Knight",
         "isSelected": false,
         "type": "minion",
@@ -2989,6 +3152,14 @@ let minions = [
         "hitpoints": 6,
         "belongstotype": "module",
         "belongsto": ["Sinister Assault"]
+    },
+    {
+        "name": "Hobgoblin (Iron Spider's)",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Iron Spider's Sinister Six"]
     },
     {
         "name": "Hydra Bomber",
@@ -3055,12 +3226,36 @@ let minions = [
         "belongsto": ["Legions of Hydra", "Captain America", "Hydra Patrol"]
     },
     {
+        "name": "Iron Spider",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Iron Spider's Sinister Six"]
+    },
+    {
+        "name": "Jennix",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["The Inheritors"]
+    },
+    {
         "name": "Kang (Master of Time)",
         "isSelected": false,
         "type": "minion",
         "hitpoints": 6,
         "belongstotype": "module",
         "belongsto": ["Master of Time"]
+    },
+    {
+        "name": "Karn",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["The Inheritors"]
     },
     {
         "name": "Killmonger",
@@ -3133,6 +3328,14 @@ let minions = [
         "hitpoints": 4,
         "belongstotype": "hero",
         "belongsto": ["Thor"]
+    },
+    {
+        "name": "Lucia Von Bardas",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Nova"]
     },
     {
         "name": "Luminous",
@@ -3229,6 +3432,14 @@ let minions = [
         "hitpoints": 6,
         "belongstotype": "villain",
         "belongsto": ["Norman Osborn", "Green Goblin"]
+    },
+    {
+        "name": "Morlun",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["The Inheritors"]
     },
     {
         "name": "Nebula",
@@ -3352,6 +3563,14 @@ let minions = [
         "belongsto": ["Rhino"]
     },
     {
+        "name": "Sandman (Iron Spider's)",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 7,
+        "belongstotype": "module",
+        "belongsto": ["Iron Spider's Sinister Six"]
+    },
+    {
         "name": "Sand Clone",
         "isSelected": false,
         "type": "minion",
@@ -3425,12 +3644,28 @@ let minions = [
         "belongsto": ["Hela"]
     },
     {
+        "name": "Solus",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 7,
+        "belongstotype": "module",
+        "belongsto": ["The Inheritors"]
+    },
+    {
         "name": "Speed Demon",
         "isSelected": false,
         "type": "minion",
         "hitpoints": 3,
         "belongstotype": "module",
         "belongsto": ["Sinister Syndicate"]
+    },
+    {
+        "name": "Spot",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Iron Spider's Sinister Six"]
     },
     {
         "name": "Starshark",
@@ -3593,6 +3828,14 @@ let minions = [
         "belongsto": ["Vision"]
     },
     {
+        "name": "Vera",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["The Inheritors"]
+    },
+    {
         "name": "Vulture",
         "isSelected": false,
         "type": "minion",
@@ -3607,6 +3850,14 @@ let minions = [
         "hitpoints": 6,
         "belongstotype": "module",
         "belongsto": ["Sinister Assault"]
+    },
+    {
+        "name": "Warbringer",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "hero",
+        "belongsto": ["Nova"]
     },
     {
         "name": "Weapons Runner",
@@ -3695,7 +3946,15 @@ let minions = [
         "hitpoints": 5,
         "belongstotype": "villain",
         "belongsto": ["Zola"]
-    }
+    },
+    {
+        "name": "Zzzax",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Zzzax"]
+    },
 ];
 
 let allies = [
@@ -3786,10 +4045,22 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Bombshell",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Brawn",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 5
+    },
+    {
+        "name": "Brawn (Ironheart Ally)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Brother Voodoo",
@@ -3808,6 +4079,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 4
+    },
+    {
+        "name": "Captain Americat",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Captain Marvel (Spider-Woman Ally)",
@@ -3832,6 +4109,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Cloud 9",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Cosmo",
@@ -4014,10 +4297,22 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Lady Spider",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
+    },
+    {
         "name": "Lockjaw",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 4
+    },
+    {
+        "name": "The Locust",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Luke Cage",
@@ -4068,6 +4363,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Ms. Marvel",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Mockingbird",
         "isSelected": false,
         "type": "ally",
@@ -4078,6 +4379,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Moon Girl",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Moon Knight",
@@ -4120,6 +4427,18 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints":6
+    },
+    {
+        "name": "Patriot",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
+    },
+    {
+        "name": "Pinpoint",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Pip the Troll",
@@ -4176,6 +4495,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Scarlet Spider",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
+    },
+    {
         "name": "Scarlet Witch",
         "isSelected": false,
         "type": "ally",
@@ -4212,6 +4537,18 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Snowguard",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "SP//dr",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Speed",
         "isSelected": false,
         "type": "ally",
@@ -4224,7 +4561,25 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Spider-Ham",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Spider-Man",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Spider-Man (Otto Octavius)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
+        "name": "Spider-Man Noir",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -4308,6 +4663,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "VEN#m",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Venom (Flash Thompson)",
         "isSelected": false,
         "type": "ally",
@@ -4332,6 +4693,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Vivian",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Volstagg",
         "isSelected": false,
         "type": "ally",
@@ -4354,6 +4721,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 0
+    },
+    {
+        "name": "Wasp (Nadia Van Dyne)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "White Tiger (Angela Del Toro)",
@@ -4686,6 +5059,9 @@ let modules = [
     },
     {
         "name": "Anachronauts"
+    },
+    {
+        "name": "Armadillo"
     },
     {
         "name": "Armies of Titan"
