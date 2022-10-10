@@ -143,7 +143,7 @@ var app = new Vue({
         error: null,
         isGameStateOpen: false,
         gameState: "",
-        appVersion: '1.1'
+        appVersion: '1.2'
     },
     mounted: function() {
         if (localStorage.getItem(LOCALSTORAGENAME)) {
@@ -227,7 +227,7 @@ var app = new Vue({
             } else {
                 // all locations for the number of players
                 let cardsForNumberOfPlayers = _.filter(CARDS, function (c) {
-                    return c.type === CARD_TYPES.Location && c.minPlayers <= self.numberOfPlayers;
+                    return c.type === CARD_TYPES.Location; // all locations valid because of wild cards
                 });
 
                 _.forEach(cardsForNumberOfPlayers, function (c) {
