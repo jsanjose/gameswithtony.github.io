@@ -128,6 +128,7 @@ var app = new Vue({
           { id: 0, include: false }, { id: 1, include: false }, { id: 2, include: false }, { id: 3, include: false }, { id: 4, include: false }, { id: 5, include: false }, { id: 6, include: false }, { id: 7, include: false }, { id: 8, include: false }
       ],
       useDEArt: false,
+      niceSandra: false,
       undoState: {}
     },
     mounted: function() {
@@ -166,6 +167,10 @@ var app = new Vue({
 
             if (gameState.hasOwnProperty('useDEArt')) {
                 this.useDEArt = gameState.useDEArt;
+            }
+
+            if (gameState.hasOwnProperty('niceSandra')) {
+                this.niceSandra = gameState.niceSandra;
             }
         }
         else {
@@ -818,6 +823,7 @@ var app = new Vue({
             { id: 0, include: false }, { id: 1, include: false }, { id: 2, include: false }, { id: 3, include: false }, { id: 4, include: false }, { id: 5, include: false }, { id: 6, include: false }, { id: 7, include: false }, { id: 8, include: false }
         ];
         this.useDEArt = false;
+        this.niceSandra = false;
         this.undoState = {};
         this.saveGameState();
       },
@@ -838,6 +844,7 @@ var app = new Vue({
         gameState.turcziTrainingTrack = this.turcziTrainingTrack;
         gameState.difficultyCards = this.difficultyCards;
         gameState.useDEArt = this.useDEArt;
+        gameState.niceSandra = this.niceSandra;
         gameState.undoState = this.undoState;
         localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
 
@@ -859,6 +866,7 @@ var app = new Vue({
         this.undoState.lacerdaTrainingTrack = _.cloneDeep(this.lacerdaTrainingTrack);
         this.undoState.turcziTrainingTrack = _.cloneDeep(this.turcziTrainingTrack);
         this.undoState.difficultyCards = _.cloneDeep(this.difficultyCards);
+        this.undoState.niceSandra = this.niceSandra;
 
         // only one level of undo is saved
         this.undoState.undoState = _.cloneDeep({});
@@ -896,6 +904,9 @@ var app = new Vue({
                 if (this.difficultyCards[1].id) {
                     this.difficultyCards = _.cloneDeep(this.undoState.difficultyCards);
                 }
+            }
+            if (this.niceSandra) {
+                this.niceSandra = this.undoState.niceSandra;
             }
 
             this.saveGameState();

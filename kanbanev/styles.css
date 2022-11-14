@@ -437,3 +437,11 @@ a, a:visited, a:hover {
 .usingDEArt .dept-img {
     min-width: 47px;
 }
+
+.niceSandra {
+    margin-bottom: 1rem;
+}
+
+.niceSandra label {
+    cursor: pointer;
+}

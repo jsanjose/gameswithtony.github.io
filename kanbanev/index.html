@@ -81,6 +81,10 @@
                 <li class="player-color-option" v-on:click="setStartingCertTrackPosition(0)"
                     v-bind:class="{ playerColorOptionSelected: playerStartingCertTrackPosition === 0 }">1</li>
             </ul>
+            <p class="niceSandra">
+                <label for="niceSandra"> <input type="checkbox" v-model="niceSandra" name="niceSandra" id="niceSandra" /> Nice Sandra Variant
+            </label>
+            </p>
             <p class="startmessage startmessage--small">
                 Select your difficulty cards (if any) or <a href="#" v-on:click="chooseRandomDifficulty" style="text-decoration: underline;">randomly choose two.</a>
             </p>
@@ -304,7 +308,8 @@
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 0 && currentPlayer.engineer === 2">
                     <li>Advance the Pace Car 1 space. Advance all Cars behind it to fill the gap. If the Pace Car moves onto a striped space, this triggers a Meeting.</li>
-                    <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Upgraded Designs.</li>
+                    <li v-if="!niceSandra"><strong>Evaluation Penalty: </strong>Have 2 or fewer Upgraded Designs.</li>
+                    <li v-if="niceSandra"><strong>Evaluation Benefit: </strong>Have 2 or more Upgraded Designs.</li>
                     <li v-if="difficultyCards[8].include">
                         <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
                     </li>
@@ -332,10 +337,13 @@
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 0">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
-                    <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
+                    <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above. If not permitted, next car to the right.</li>
                     <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Lacerda moves the Cars from top to bottom, or bottom to top before moving left.
                         <br /><img v-bind:src="getImage('assembly_lacerda')" style="width: 200px; margin: 1rem;" />
                     </li>
+                    <li>Place a new Car of this Model from the supply at the beginning of the assembly line.</li>
+                    <li>Colleague gains PP if car is pushed off assembly line.</li>
+                    <li>Check Demand tiles, if match Colleague gains 1 PP and discard Generic Speech token from Demand tile.</li>
                     <li>
                         <span v-if="!lacerdaIsCertified && !difficultyCards[0].include">
                             <span class="instructions-important">Mr. Lacerda is NOT yet certified.<br /></span>
@@ -363,10 +371,13 @@
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 1">
                     <li>Advance once on the training track (you should end up on the spot indicated above).</li>
-                    <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above.</li>
+                    <li>Provide the selected part (shown above) from the supply to the Car that needs it. The indicated Model is also shown above. If not permitted, next car to the right.</li>
                     <li>When the Cars move through the Assembly line and a choice needs to be made between arrows, Mr. Turczi always moves left (where it is possible to choose).
                         <br /><img v-bind:src="getImage('assembly_turczi')" style="width: 200px; margin: 1rem;" />
                     </li>
+                    <li>Place a new Car of this Model from the supply at the beginning of the assembly line.</li>
+                    <li>Colleague gains PP if car is pushed off assembly line.</li>
+                    <li>Check Demand tiles, if match Colleague gains 1 PP and discard Generic Speech token from Demand tile.</li>
                     <li v-if="difficultyCards[1].include">
                         <span class="instructions-important">Difficulty Card #2: Cushy Speech<br /></span>Speech tokens acquired by {{ currentPlayerName }} (in Assembly and at the top of training tracks) score 2 PP instead of 1 PP.
                     </li>
@@ -382,7 +393,8 @@
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 1 && currentPlayer.engineer === 2">
                     <li>Remove all Car Parts from all Assembly spaces.</li>
-                    <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Cars in your garages.</li>
+                    <li v-if="!niceSandra"><strong>Evaluation Penalty: </strong>Have 2 or fewer Cars in your garages.</li>
+                    <li v-if="niceSandra"><strong>Evaluation Benefit: </strong>Have 2 or more Cars in your garages.</li>
                     <li v-if="difficultyCards[8].include">
                         <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
                     </li>
@@ -453,7 +465,8 @@
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 2 && currentPlayer.engineer === 2">
                     <li>Remove all but 1 Car Part from each warehouse.</li>
-                    <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Car Parts on your Player board.</li>
+                    <li v-if="!niceSandra"><strong>Evaluation Penalty: </strong>Have 2 or fewer Car Parts on your Player board.</li>
+                    <li v-if="niceSandra"><strong>Evaluation Benefit: </strong>Have 2 or more Car Parts on your Player board.</li>
                     <li v-if="difficultyCards[8].include">
                         <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
                     </li>
@@ -523,8 +536,9 @@
                     </li>
                 </ul>
                 <ul class="instructions-list" v-if="currentPlayer.dept === 3 && currentPlayer.engineer === 2">
-                    <li>Shuffle and return the rightmost 4 Design tiles to the bottom of the Central stack. In a 2-player game, remove the rightmost 8 tiles. Then, slide the Designs right and fill any gaps as normal.</li>
-                    <li><strong>Evaluation Penalty: </strong>Have 2 or fewer Designs on your desk.</li>
+                    <li>Shuffle and return the rightmost 4 Design tiles to the bottom of the Central stack. Then, slide the Designs right and fill any gaps as normal.</li>
+                    <li v-if="!niceSandra"><strong>Evaluation Penalty: </strong>Have 2 or fewer Designs on your desk.</li>
+                    <li v-if="niceSandra"><strong>Evaluation Benefit: </strong>Have 2 or more Designs on your desk.</li>
                     <li v-if="difficultyCards[8].include">
                         <span class="instructions-important">Difficulty Card #9: The Immediate Termination Clause<br /></span>If your PP reaches zero at any time (not just after a Meeting or End-of-Week scoring), you are immediately fired and have lost the game.
                     </li>
@@ -593,7 +607,8 @@
                     <p><span class="instructions-important">Then...</span></p>
                     <li>Advance the Week marker by 1 space unless it is already on position 3 (in that case just ignore this step).</li>
                     <li>The Colleagues score 2 PP for each Upgraded Design tile they have. These tiles are then removed from the game (and so will not be scored again at the end of next Week).</li>
-                    <li><strong>Evaluation Penalty: </strong>Be certified in 2 or fewer departments.</li>
+                    <li v-if="!niceSandra"><strong>Evaluation Penalty: </strong>Be certified in 2 or fewer departments.</li>
+                    <li v-if="niceSandra"><strong>Evaluation Benefit: </strong>Be certified in 2 or more departments.</li>
                     <li v-if="difficultyCards[5].include">
                         <span class="instructions-important">Difficulty Card #6: Increased Quotas<br /></span>The Colleagues score one additional PP (3 PP total) per Upgraded Design they have during the End-of-Week scoring.
                     </li>
