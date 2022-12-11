@@ -100,20 +100,20 @@ var app = new Vue({
         },
         roll2d20: function() {
             this.clearDiePool();
-            setTimeout(() => this.roll(0, 20, WHITE), 50);
+            this.roll(0, 20, WHITE);
             setTimeout(() => this.roll(1, 20, WHITE), 105);
             this.totalRolls++;
         },
         roll3d20: function() {
             this.clearDiePool();
-            setTimeout(() => this.roll(0, 20, WHITE), 50);
+            this.roll(0, 20, WHITE);
             setTimeout(() => this.roll(1, 20, WHITE), 105);
             setTimeout(() => this.roll(2, 20, WHITE), 203);
             this.totalRolls++;
         },
         roll4d20: function() {
             this.clearDiePool();
-            setTimeout(() => this.roll(0, 20, WHITE), 50);
+            this.roll(0, 20, WHITE);
             setTimeout(() => this.roll(1, 20, WHITE), 105);
             setTimeout(() => this.roll(2, 20, WHITE), 203);
             setTimeout(() => this.roll(3, 20, WHITE), 304);
@@ -121,7 +121,7 @@ var app = new Vue({
         },
         roll5d20: function() {
             this.clearDiePool();
-            setTimeout(() => this.roll(0, 20, WHITE), 50);
+            this.roll(0, 20, WHITE);
             setTimeout(() => this.roll(1, 20, WHITE), 105);
             setTimeout(() => this.roll(2, 20, WHITE), 203);
             setTimeout(() => this.roll(3, 20, WHITE), 304);
