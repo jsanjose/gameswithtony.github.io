@@ -13,7 +13,7 @@ function createDie(id, d, color) {
         d: d,
         color: color,
         currentValue: 1,
-        showDie: true,
+        showDie: false,
         selectable: false,
         selected: false
     };
@@ -41,7 +41,7 @@ const diePoolInit = [
 ]; 
 
 var app = new Vue({
-    el: '#stadice',
+    el: '#gap',
     data: {
       diePool: diePoolInit,
       showCalc: false,
