@@ -66,6 +66,29 @@ var app = new Vue({
         },
         roll: function (index, d, color) {
             this.diePool[index].currentValue = rollDie(1, d);
+
+            if (d == 6) {
+                switch (this.diePool[index].currentValue) {
+                    case 1: 
+                        this.diePool[index].currentValue = 1;
+                        break;
+                    case 2: 
+                        this.diePool[index].currentValue = 2;
+                        break;
+                    case 3: 
+                        this.diePool[index].currentValue = 0;
+                        break;
+                    case 4: 
+                        this.diePool[index].currentValue = 0;
+                        break;
+                    case 5: 
+                        this.diePool[index].currentValue = '1+';
+                        break;
+                    case 6: 
+                        this.diePool[index].currentValue = '1+';
+                }
+            }
+
             this.diePool[index].color = color;
             this.diePool[index].showDie = true;
             window.scrollTo(0,0);
