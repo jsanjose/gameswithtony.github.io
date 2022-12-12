@@ -15,6 +15,8 @@
 	flex-wrap: wrap;
 	align-items: flex-start;	
 	padding: 0;
+    margin-top: -.5rem;
+    justify-content: flex-start;
 }
 
 .die-list {
