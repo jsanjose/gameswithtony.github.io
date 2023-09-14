@@ -236,8 +236,7 @@ createApp({
             if (playerid <= 0 || playerid == 1000) { return false; }
             let player = this.getPlayerById(playerid);
             if (!player) {
-                alert("Player not found for player id: " + playerid);
-                throw new Error("Player not found for player id: " + playerid);
+                return false;
             }
             return _.find(player.techs, function(t) { return t.id === techid });
         },
