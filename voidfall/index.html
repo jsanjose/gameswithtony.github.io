@@ -219,7 +219,7 @@
                     <p class="tech tech--used" v-for="(tech, techIndex) in player.techs" :key="tech.id">{{ tech.name }}<br /><a href="#" :class="{ 'tech-level': !tech.isImproved }"  v-on:click="demoteTech($event, playerIndex, techIndex)">Basic</a> | <a href="#" :class="{ 'tech-level': tech.isImproved }" v-on:click="improveTech($event, playerIndex, techIndex)">Improved</a>&nbsp;&nbsp;&nbsp;/ <a href="#" v-on:click="removeTech($event, playerIndex, techIndex)">X</a></p>
                 </section>
                 <section class="tech-list">
-                    <p class="tech" v-for="(tech, techIndex) in player.unusedTechs" :key="tech.id" v-on:click="addTech(playerIndex, tech, techIndex)"><template v-if="!playerHasTech(playerIndex, tech)" >{{ tech.name }}</template></p>
+                    <p class="tech" v-for="(tech, techIndex) in player.unusedTechs" :key="tech.id" v-on:click="addTech(playerIndex, tech, techIndex)">{{ tech.name }}</p>
                 </section>
             </section>
         </section>

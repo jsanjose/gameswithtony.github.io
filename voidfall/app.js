@@ -232,13 +232,13 @@ createApp({
 
             event.preventDefault();
         },
-        playerHasTech: function(playerid, techid) {
+        playerByIdHasTech: function(playerid, techid) {
             if (playerid <= 0 || playerid == 1000) { return false; }
             let player = this.getPlayerById(playerid);
             return _.find(player.techs, function(t) { return t.id === techid });
         },
         playerHasAutonomousDrones: function(playerid) {
-            return this.playerHasTech(playerid, TECHS.AutonomousDrones);
+            return this.playerByIdHasTech(playerid, TECHS.AutonomousDrones);
         },
         updateBombardAbsorption: function(event, calcPlayerIndex, increment) {
             if (increment < 0 && this.calculationPlayers[calcPlayerIndex].bombardAbsorption === 0) { return };
@@ -253,6 +253,9 @@ createApp({
         },
         getPlayerById: function (id) {
             return _.find(this.players, function(p) { return p.id === id });
+        },
+        calculate: function () {
+
         },
         newgame: function (event) {
             if (confirm('Are you sure you want to clear the app and start a new game?')) {
