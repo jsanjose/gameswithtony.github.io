@@ -33,6 +33,15 @@
 
         #vf {
             padding: 0 1rem;
+            display: flex;
+            flex: 1;
+            min-height: 100vh;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        section {
+            width: 100%;
         }
 
         h1 {
@@ -54,7 +63,7 @@
         }
 
         select {
-            padding: 0.1rem;
+            padding: 0.5rem;
         }
 
         option {
@@ -124,21 +133,35 @@
             font-weight: bold;
         }
 
-        .increment-buttons {
+        .increment {
             display: flex;
             flex-shrink: 0;
             margin-left: 0.5rem;
-            justify-content: space-evenly;
+            justify-content: space-between;
             align-items: baseline;
+            width: 100%;
+            max-width: 400px;
         }
 
-        .increment-buttons a, .threat a {
-            padding: 0.675rem;
+        .increment a, .threat a {
+            padding: 0.625rem;
             background-color: darkred;
             text-decoration: none;
             border-radius: 25%;
             display: inline-flex;
             font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .increment-buttons {
+            display: inline-flex;
+            justify-content: space-evenly;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .calc-button {
+            margin-top: 1rem;
         }
 
         .margin-md {
@@ -155,7 +178,7 @@
     <main id="vf" class="limit-container">
         <section v-if="this.pageState === 0">
             <h1>Voidfall Combat Calculator</h1>
-            <label for="numberOfPlayers"># of players:</label>
+            <label for="numberOfPlayers"># of players: </label>
             <select v-model="numberOfPlayers" id="numberOfPlayers">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -190,13 +213,13 @@
         </nav>
         <section v-if="this.pageState === 1">
             <h1>Technologies</h1>
-            <section class="" v-for="(player, playerIndex) in players" :key="player.id">
+            <section v-for="(player, playerIndex) in players" :key="player.id">
                 <h2>{{ player.name }}</h2>
                 <section class="tech-list" v-if="player.techs.length > 0">
                     <p class="tech tech--used" v-for="(tech, techIndex) in player.techs" :key="tech.id">{{ tech.name }}<br /><a href="#" :class="{ 'tech-level': !tech.isImproved }"  v-on:click="demoteTech($event, playerIndex, techIndex)">Basic</a> | <a href="#" :class="{ 'tech-level': tech.isImproved }" v-on:click="improveTech($event, playerIndex, techIndex)">Improved</a>&nbsp;&nbsp;&nbsp;/ <a href="#" v-on:click="removeTech($event, playerIndex, techIndex)">X</a></p>
                 </section>
                 <section class="tech-list">
-                    <p class="tech" v-for="(tech, techIndex) in player.unusedTechs" :key="tech.id" v-on:click="addTech(playerIndex, tech, techIndex)"><template v-if="playerHasTech(playerIndex, tech)" >{{ tech.name }}</template></p>
+                    <p class="tech" v-for="(tech, techIndex) in player.unusedTechs" :key="tech.id" v-on:click="addTech(playerIndex, tech, techIndex)"><template v-if="!playerHasTech(playerIndex, tech)" >{{ tech.name }}</template></p>
                 </section>
             </section>
         </section>
@@ -204,23 +227,50 @@
             <h1>Calculator</h1>
             <section v-for="(calcPlayer, calcPlayerIndex) in calculationPlayers">
                 <label>
-                    <template v-if="calcPlayer.isInvader">Invader </template><template v-if="!calcPlayer.isInvader">Defender </template>
-                    <select v-model="calcPlayer.playerid">
+                    <template v-if="calcPlayer.isInvader">Invader: </template><template v-if="!calcPlayer.isInvader">Defender: </template>
+                    <select v-model="calcPlayer.playerid" @change="calcPlayerChanged(calcPlayerIndex)">
                         <option v-for="(player, index) in players" :value="player.id">{{ player.name }}</option>
                         <option value="1000">Voidborn</option>
                     </select>
                 </label>
                 <section v-if="calcPlayer.playerid > 0">
                     <template v-for="(playerFleet, playerFleetIndex) in calcPlayer.fleets">
-                        <section class="increment-buttons" v-if="showFleet(calcPlayerIndex, playerFleetIndex)">
-                            <p>{{ playerFleet.name }}</p>
-                            <a href="#" v-on:click="updatePlayerFleet($event, calcPlayerIndex, playerFleetIndex, -1)">- 1</a>
-                            <p>{{ playerFleet.power }}</p>
-                            <a href="#" v-on:click="updatePlayerFleet($event, calcPlayerIndex, playerFleetIndex, 1)">+ 1</a>
+                        <section class="increment" v-if="showFleet(calcPlayerIndex, playerFleetIndex)">
+                            <p class="increment-name">{{ playerFleet.name }}</p>
+                            <p class="increment-buttons">
+                                <a href="#" v-on:click="updatePlayerFleet($event, calcPlayerIndex, playerFleetIndex, -1)">- 1</a>
+                                <span class="power">{{ playerFleet.power }}</span>
+                                <a href="#" v-on:click="updatePlayerFleet($event, calcPlayerIndex, playerFleetIndex, 1)">+ 1</a>
+                            </p>
                         </section>
                     </template>
+                    <template v-if="calcPlayer.isInvader && playerHasAutonomousDrones(calcPlayer.playerid)">
+                        <section class="increment">
+                            <p class="increment-name"><label :for="'TradeToken_' + calcPlayer.id">Return Trade Token?</label></p>
+                            <p class="increment-buttons">
+                                <input type="checkbox" v-model="calcPlayer.useTradeToken" :id="'TradeToken_' + calcPlayer.id" />
+                            </p>
+                        </section>
+                    </template>
+                    <section class="increment" v-if="calcPlayer.isInvader && calcPlayer.playerid != 1000">
+                        <p class="increment-name"><label :for="'Bombard_' + calcPlayer.id">Use Bombard?</label></p>
+                        <p class="increment-buttons">
+                            <input type="checkbox" v-model="calcPlayer.useBombard" :id="'Bombard_' + calcPlayer.id" />
+                        </p>
+                    </section>
+                    <section class="increment" v-if="calcPlayer.useBombard">
+                        <p class="increment-name">&nbsp;&nbsp;Bombard Absorption</p>
+                        <p class="increment-buttons">
+                            <a href="#" v-on:click="updateBombardAbsorption($event, calcPlayerIndex, -1)">- 1</a>
+                            <span class="power">{{ calcPlayer.bombardAbsorption }}</span>
+                            <a href="#" v-on:click="updateBombardAbsorption($event, calcPlayerIndex, 1)">+ 1</a>
+                        </p>
+                    </section>
                 </section>
             </section>
+            <p>
+                <button v-on:click="calculate" class="calc-button">&nbsp;&nbsp;Calculate Outcomes&nbsp;&nbsp;</button>
+            </p>
         </section>
     </main>
     <script src="app.js"></script>

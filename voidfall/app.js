@@ -1,7 +1,6 @@
 const LOCALSTORAGENAME = "vfgamestate";
 const PAGE_STATE = { StartScreen: 0, Technologies: 1, Calculator: 2 };
-const FLEET_TYPE = { Corvette: 0, Destroyer: 1, Dreadnaught: 2, Carrier: 3, Sentry: 4, Voidborn: 5 };
-const DEFENSE_TYPE = { Sector_Defense: 0, Starbase: 1 };
+const FLEET_TYPE = { Corvette: 0, Destroyer: 1, Dreadnaught: 2, Carrier: 3, Sentry: 4, Voidborn: 5, Sector_Defense: 6, Starbase: 7 };
 const TECHS = { Sentries: 0, Destroyers: 1, Dreadnaughts: 2, Carriers: 3, DeepSpaceMissiles: 4, EnergyCells: 5, Shields: 6, AutonomousDrones: 7, Targeting: 8, Torpedoes: 9, Starbases: 10
 };
 
@@ -65,42 +64,31 @@ let Fleets = [
     new PlayerFleet(FLEET_TYPE.Carrier, 'Carriers', 0),
     new PlayerFleet(FLEET_TYPE.Sentry, 'Sentries', 0),
     new PlayerFleet(FLEET_TYPE.Voidborn, 'Voidborn', 0),
-];
-
-class PlayerDefense {
-    defenseType;
-    name;
-    total = 0;
-    constructor(defenseType, name, total) {
-        this.defenseType = defenseType;
-        this.name = name;
-        this.total = total;
-    }
-}
-
-let Defenses = [
-    new PlayerDefense(DEFENSE_TYPE.Sector_Defense, 'Sector Defenses', 0),
-    new PlayerDefense(DEFENSE_TYPE.Starbase, 'Starbases', 0)
+    new PlayerFleet(FLEET_TYPE.Sector_Defense, 'Sector Defenses', 0),
+    new PlayerFleet(FLEET_TYPE.Starbase, 'Starbases', 0)
 ];
 
 class PlayerState {
+    id;
     playerid;
     name;
     isInvader = true;
     fleets = _.clone(Fleets);
-    defenses = _.clone(Defenses);
     techs = [];
     useBombard = false;
     bombardAbsorption = 0;
-    constructor(playerid, name, isInvader, fleets, defenses, techs, useBombard, bombardAbsorption) {
+    useTradeToken = false;
+    
+    constructor(id, playerid, name, isInvader, fleets, techs, useBombard, bombardAbsorption, useTradeToken) {
+        this.id = id;
         this.playerid = playerid;
         this.name = name;
         this.isInvader = isInvader;
-        this.fleets = fleets;
-        this.defenses = defenses; // if isInvader then defenses are adjacent defenses
+        this.fleets = fleets; 
         this.techs = techs;
         this.useBombard = useBombard;
         this.bombardAbsorption = bombardAbsorption;
+        this.useTradeToken = useTradeToken;
     }
 }
 
@@ -116,10 +104,8 @@ createApp({
             new Player(4, 'Player 4', [], _.clone(Technologies))
         ],
         technologies: _.clone(Technologies),
-        invaderState: new PlayerState(-1, '', true, _.cloneDeep(Fleets), 
-        _.cloneDeep(Defenses), [], false, 0),
-        defenderState: new PlayerState(-1, '', false, _.cloneDeep(Fleets), 
-        _.cloneDeep(Defenses), [], false, 0),
+        invaderState: new PlayerState(1, -1, '', true, _.cloneDeep(Fleets), [], false, 0, false),
+        defenderState: new PlayerState(2, -1, '', false, _.cloneDeep(Fleets), [], false, 0, false),
         results: [],
         computedUpdater: 1,
         version: "0.1"
@@ -216,12 +202,21 @@ createApp({
                 showFleet = false;
             }
 
+            // starbases
+            if (player && !_.find(player.techs, function(t) { return t.id === TECHS.Starbases }) && this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].fleetType === FLEET_TYPE.Starbase) {
+                showFleet = false;
+            }
+
             // voidborn
             if (this.calculationPlayers[calcPlayerIndex].playerid != 1000 && this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].fleetType === FLEET_TYPE.Voidborn) {
                 showFleet = false;
             }
 
-            if (this.calculationPlayers[calcPlayerIndex].playerid == 1000 && this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].fleetType !== FLEET_TYPE.Voidborn) {
+            if (this.calculationPlayers[calcPlayerIndex].playerid == 1000 && this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].fleetType !== FLEET_TYPE.Voidborn && this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].fleetType !== FLEET_TYPE.Sector_Defense) {
+                showFleet = false;
+            }
+
+            if (this.calculationPlayers[calcPlayerIndex].isInvader && this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].fleetType === FLEET_TYPE.Sector_Defense) {
                 showFleet = false;
             }
 
@@ -236,6 +231,25 @@ createApp({
             this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].power = this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].power + increment;
 
             event.preventDefault();
+        },
+        playerHasTech: function(playerid, techid) {
+            if (playerid <= 0 || playerid == 1000) { return false; }
+            let player = this.getPlayerById(playerid);
+            return _.find(player.techs, function(t) { return t.id === techid });
+        },
+        playerHasAutonomousDrones: function(playerid) {
+            return this.playerHasTech(playerid, TECHS.AutonomousDrones);
+        },
+        updateBombardAbsorption: function(event, calcPlayerIndex, increment) {
+            if (increment < 0 && this.calculationPlayers[calcPlayerIndex].bombardAbsorption === 0) { return };
+
+            this.calculationPlayers[calcPlayerIndex].bombardAbsorption = this.calculationPlayers[calcPlayerIndex].bombardAbsorption + increment;
+
+            event.preventDefault();
+        },
+        calcPlayerChanged: function(calcPlayerChanged) {
+            this.calculationPlayers[calcPlayerChanged].useBombard = false;
+            this.calculationPlayers[calcPlayerChanged].bombardAbsorption = 0;
         },
         getPlayerById: function (id) {
             return _.find(this.players, function(p) { return p.id === id });
@@ -264,10 +278,8 @@ createApp({
             this.saveGameState();
         },
         resetPlayerStates() {
-            this.invaderState = new PlayerState('', true, _.clone(Fleets), 
-            _.clone(Defenses), [], false, 0);
-            this.defenderState = new PlayerState('', false, _.clone(Fleets), 
-            _.clone(Defenses), [], false, 0);
+            this.invaderState = new PlayerState('', true, _.clone(Fleets), [], false, 0);
+            this.defenderState = new PlayerState('', false, _.clone(Fleets), [], false, 0);
         },
         saveGameState: function() {
             let gameState = {};
