@@ -235,6 +235,10 @@ createApp({
         playerByIdHasTech: function(playerid, techid) {
             if (playerid <= 0 || playerid == 1000) { return false; }
             let player = this.getPlayerById(playerid);
+            if (!player) {
+                alert("Player not found for player id: " + playerid);
+                throw new Error("Player not found for player id: " + playerid);
+            }
             return _.find(player.techs, function(t) { return t.id === techid });
         },
         playerHasAutonomousDrones: function(playerid) {
@@ -248,6 +252,9 @@ createApp({
             event.preventDefault();
         },
         calcPlayerChanged: function(calcPlayerChanged) {
+            for (let fleet of this.calculationPlayers[calcPlayerChanged].fleets) {
+                fleet.power = 0;
+            }
             this.calculationPlayers[calcPlayerChanged].useBombard = false;
             this.calculationPlayers[calcPlayerChanged].bombardAbsorption = 0;
         },
