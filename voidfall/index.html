@@ -151,6 +151,7 @@
             display: inline-flex;
             font-weight: bold;
             font-size: 0.9rem;
+            white-space: nowrap;
         }
 
         .increment-buttons {
@@ -172,12 +173,12 @@
             max-width: 800px;
         }
     </style>
-    <title>Voidfall Combat Calculator</title>
+    <title>Voidfall Calculator</title>
 </head>
 <body>
     <main id="vf" class="limit-container">
         <section v-if="this.pageState === 0">
-            <h1>Voidfall Combat Calculator</h1>
+            <h1>Voidfall Calculator (v{{version}})</h1>
             <label for="numberOfPlayers"># of players: </label>
             <select v-model="numberOfPlayers" id="numberOfPlayers">
                 <option value="1">1</option>
@@ -246,13 +247,13 @@
                     </template>
                     <template v-if="calcPlayer.isInvader && playerHasAutonomousDrones(calcPlayer.playerid)">
                         <section class="increment">
-                            <p class="increment-name"><label :for="'TradeToken_' + calcPlayer.id">Return Trade Token?</label></p>
+                            <p class="increment-name"><label :for="'AutonomousDrones_' + calcPlayer.id">Return Trade Token (Drones)?</label></p>
                             <p class="increment-buttons">
-                                <input type="checkbox" v-model="calcPlayer.useTradeToken" :id="'TradeToken_' + calcPlayer.id" />
+                                <input type="checkbox" v-model="calcPlayer.spendTradeTokenToUseAutonomousDrones" :id="'AutonomousDrones_' + calcPlayer.id" />
                             </p>
                         </section>
                     </template>
-                    <section class="increment" v-if="calcPlayer.isInvader && calcPlayer.playerid != 1000">
+                    <section class="increment" v-if="calcPlayer.isInvader && calcPlayer.playerid != 1000 && calcPlayer.playerid > 0">
                         <p class="increment-name"><label :for="'Bombard_' + calcPlayer.id">Use Bombard?</label></p>
                         <p class="increment-buttons">
                             <input type="checkbox" v-model="calcPlayer.useBombard" :id="'Bombard_' + calcPlayer.id" />
@@ -266,11 +267,44 @@
                             <a href="#" v-on:click="updateBombardAbsorption($event, calcPlayerIndex, 1)">+ 1</a>
                         </p>
                     </section>
+                    <section class="increment" v-if="(calcPlayer.isInvader && playerHasBasicDeepSpaceMissiles(calcPlayer.playerid))">
+                        <p class="increment-name"><label :for="'DeepSpaceMissiles_' + calcPlayer.id">Spend 1 Energy (Deep Space Missiles)?</label></p>
+                        <p class="increment-buttons">
+                            <input type="checkbox" v-model="calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles" :id="'DeepSpaceMissiles_' + calcPlayer.id" />
+                        </p>
+                    </section>
+                    <section class="increment" v-if="(!calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)) || ((calcPlayer.isInvader && playerHasBasicDeepSpaceMissiles(calcPlayer.playerid) && calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles) || (calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)))">
+                        <p class="increment-name">Adjacent Sectors w/ Shipyards</p>
+                        <p class="increment-buttons">
+                            <a href="#" v-on:click="updateAdjacentSectorsWithShipyards($event, calcPlayerIndex, -1)">- 1</a>
+                            <span class="power">{{ calcPlayer.adjacentSectorsWithShipyards }}</span>
+                            <a href="#" v-on:click="updateAdjacentSectorsWithShipyards($event, calcPlayerIndex, 1)">+ 1</a>
+                        </p>
+                    </section>
+                    <section class="increment" v-if="(!calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)) || ((calcPlayer.isInvader && playerHasBasicDeepSpaceMissiles(calcPlayer.playerid) && calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles) || (calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)))">
+                        <p class="increment-name">Adjacent Sectors w/ Starbases</p>
+                        <p class="increment-buttons">
+                            <a href="#" v-on:click="updateAdjacentSectorsWithStarbases($event, calcPlayerIndex, -1)">- 1</a>
+                            <span class="power">{{ calcPlayer.adjacentSectorsWithStarbases }}</span>
+                            <a href="#" v-on:click="updateAdjacentSectorsWithStarbases($event, calcPlayerIndex, 1)">+ 1</a>
+                        </p>
+                    </section>
                 </section>
             </section>
             <p>
                 <button v-on:click="calculate" class="calc-button">&nbsp;&nbsp;Calculate Outcomes&nbsp;&nbsp;</button>
             </p>
+            <section v-if="showResults">
+                <section v-if="results.invaderWins">
+                    <p>Invader Wins ({{ results.invaderWins.length }} iterations)</p>
+                </section>
+                <section v-if="results.defenderWins">
+                    <p>Defender Wins: {{ results.defenderWins.length }} iterations</p>
+                </section>
+                <section v-if="results.ties">
+                    <p>Ties: {{ results.ties.length }} iterations</p>
+                </section>
+            </section>
         </section>
     </main>
     <script src="app.js"></script>
