@@ -338,7 +338,7 @@
                         <em>Final Fleet (v{{index+1}})</em>
                         <ul class="winner-final-fleet">
                             <template v-for="fleet in win.winnerFleet">
-                                <li v-if="fleet.power > 0">{{ getFleetDesc(fleet.fleetType) }}: {{ fleet.power }}</li>
+                                <li v-if="fleet.power > 0 && fleet.fleetType < 6">{{ getFleetDesc(fleet.fleetType) }}: {{ fleet.power }}</li>
                             </template>
                         </ul>
                         <ul class="winner-steps">
@@ -354,7 +354,7 @@
                         <em>Final Fleet (v{{index+1}})</em>
                         <ul class="winner-final-fleet">
                             <template v-for="fleet in win.winnerFleet">
-                                <li v-if="fleet.power > 0">{{ getFleetDesc(fleet.fleetType) }}: {{ fleet.power }}</li>
+                                <li v-if="fleet.power > 0 && fleet.fleetType < 6">{{ getFleetDesc(fleet.fleetType) }}: {{ fleet.power }}</li>
                             </template>
                         </ul>
                         <ul class="winner-steps">
