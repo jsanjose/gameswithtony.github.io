@@ -640,7 +640,7 @@ createApp({
         results: [],
         showResults: false,
         computedUpdater: 1,
-        version: "0.2"
+        version: "0.3"
     } },
     mounted: function() {
         this.computedUpdater++;
@@ -685,25 +685,28 @@ createApp({
     },
     methods: {
         start: function () {
+            if (this.players.length === 4) {
+                if (this.numberOfPlayers < 4) {
+                    this.players.pop();
+                }
+
+                if (this.numberOfPlayers < 3) {
+                    this.players.pop();
+                }
+
+                if (this.numberOfPlayers < 2) {
+                    this.players.pop();
+                }
+            }
+            
             this.pageState = PAGE_STATE.Technologies;
-
-            if (this.numberOfPlayers < 4) {
-                this.players.pop();
-            }
-
-            if (this.numberOfPlayers < 3) {
-                this.players.pop();
-            }
-
-            if (this.numberOfPlayers < 2) {
-                this.players.pop();
-            }
 
             window.scrollTo(0,0);
             this.saveGameState();
         },
         showTech: function (event) {
             this.pageState = PAGE_STATE.Technologies;
+            console.log(this.players);
             window.scrollTo(0,0);
             event.preventDefault();
             this.saveGameState();
