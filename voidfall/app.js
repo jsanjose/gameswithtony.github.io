@@ -642,6 +642,17 @@ createApp({
         computedUpdater: 1,
         version: "0.3"
     } },
+    watch: {
+        numberOfPlayers(val) {
+            let numberOfPlayers = val;
+            let nextPlayerNumber = this.players.length + 1;
+    
+            while (this.players.length < numberOfPlayers) {
+                this.players.push(new Player(nextPlayerNumber, 'Player ' + nextPlayerNumber, [], _.clone(Technologies)));
+                nextPlayerNumber = this.players.length + 1;
+            }
+        }
+    },
     mounted: function() {
         this.computedUpdater++;
         if (localStorage.getItem(LOCALSTORAGENAME)) {
