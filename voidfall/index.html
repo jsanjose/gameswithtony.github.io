@@ -165,6 +165,43 @@
             margin-top: 1rem;
         }
 
+        .winner {
+            
+        }
+        
+        .winner h2 {
+            margin-block-end: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .winner-final-fleet {
+            display: flex;
+            gap: 1rem;
+            padding-inline-start: 1rem;
+            padding-left: 1rem;
+            background-color: #ddd;
+            padding: 0.5rem;
+            margin: 0;
+        }
+
+        .winner-final-fleet li {
+            list-style: none;
+            white-space: nowrap;
+            font-size: 0.925rem;
+            color: #000;
+        }
+
+        .winner-steps {
+            padding-inline-start: 1rem;
+            padding-left: 1rem;
+        }
+
+        .winner-steps li {
+            list-style: none;
+            font-size: 0.875rem;
+            padding-bottom: 0.5rem;
+        }
+
         .margin-md {
             margin: 2rem 0;
         }
@@ -295,14 +332,47 @@
                 <button v-on:click="calculate" class="calc-button">&nbsp;&nbsp;Calculate Outcomes&nbsp;&nbsp;</button>
             </p>
             <section v-if="showResults">
-                <section v-if="results.invaderWins">
-                    <p>Invader Wins ({{ results.invaderWins.length }} iterations)</p>
+                <section v-if="results.invaderWins" class="winner">
+                    <h2>Invader Wins</h2>
+                    <article v-for="(win, index) in results.invaderWins">
+                        <em>Final Fleet (v{{index+1}})</em>
+                        <ul class="winner-final-fleet">
+                            <template v-for="fleet in win.winnerFleet">
+                                <li v-if="fleet.power > 0">{{ getFleetDesc(fleet.fleetType) }}: {{ fleet.power }}</li>
+                            </template>
+                        </ul>
+                        <ul class="winner-steps">
+                            <template v-for="step in win.steps">
+                                <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
+                            </template>
+                        </ul>
+                    </article>
                 </section>
-                <section v-if="results.defenderWins">
-                    <p>Defender Wins: {{ results.defenderWins.length }} iterations</p>
+                <section v-if="results.defenderWins" class="winner">
+                    <h2>Defender Wins</h2>
+                    <article v-for="(win, index) in results.defenderWins">
+                        <em>Final Fleet (v{{index+1}})</em>
+                        <ul class="winner-final-fleet">
+                            <template v-for="fleet in win.winnerFleet">
+                                <li v-if="fleet.power > 0">{{ getFleetDesc(fleet.fleetType) }}: {{ fleet.power }}</li>
+                            </template>
+                        </ul>
+                        <ul class="winner-steps">
+                            <template v-for="step in win.steps">
+                                <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
+                            </template>
+                        </ul>
+                    </article>
                 </section>
                 <section v-if="results.ties">
-                    <p>Ties: {{ results.ties.length }} iterations</p>
+                    <h2>Tie</h2>
+                    <article v-for="win in results.ties" class="winner">
+                        <ul class="winner-steps">
+                            <template v-for="step in win.steps">
+                                <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
+                            </template>
+                        </ul>
+                    </article>
                 </section>
             </section>
         </section>
