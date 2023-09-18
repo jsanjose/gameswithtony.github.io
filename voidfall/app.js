@@ -718,7 +718,6 @@ createApp({
         },
         showTech: function (event) {
             this.pageState = PAGE_STATE.Technologies;
-            console.log(this.players);
             window.scrollTo(0,0);
             event.preventDefault();
             this.saveGameState();
