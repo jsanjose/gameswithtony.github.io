@@ -639,6 +639,7 @@ createApp({
         defenderState: new PlayerState(2, -1, '', false, _.cloneDeep(Fleets), [], false, 0, false, false, 0, 0),
         results: [],
         showResults: false,
+        expandAll: true,
         computedUpdater: 1,
         version: "0.35"
     } },
@@ -817,6 +818,11 @@ createApp({
 
             event.preventDefault();
             this.saveGameState();
+        },
+        updateExpandAll: function(event, val) {
+            this.expandAll = val;
+            event.preventDefault();
+            this.computedUpdater++;
         },
         playerByIdHasTech: function(playerid, techid) {
             if (playerid <= 0 || playerid == 1000) { return false; }
