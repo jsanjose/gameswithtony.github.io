@@ -640,7 +640,7 @@ createApp({
         results: [],
         showResults: false,
         computedUpdater: 1,
-        version: "0.3"
+        version: "0.35"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -811,7 +811,9 @@ createApp({
 
             this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].power = this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].power + increment;
 
-            this.showResults = false;
+            if (this.showResults) { // if we're already showing results, re-calculate automatically
+                this.calculate();
+            }
 
             event.preventDefault();
             this.saveGameState();
@@ -916,7 +918,7 @@ createApp({
             let results = [];
             results = _.flattenDeep(this.runCalc(invader, defender, false, 0, [], results));
             let groupedResults = _.groupBy(results, 'winner');
-            console.log(groupedResults);
+            //console.log(groupedResults);
 
             // prepare results
             let preparedResults = {};
