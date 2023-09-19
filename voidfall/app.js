@@ -641,7 +641,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "0.36"
+        version: "0.4"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -854,7 +854,9 @@ createApp({
 
             this.calculationPlayers[calcPlayerIndex].bombardAbsorption = this.calculationPlayers[calcPlayerIndex].bombardAbsorption + increment;
 
-            this.showResults = true;
+            if (this.showResults) { // if we're already showing results, re-calculate automatically
+                this.calculate();
+            }
 
             event.preventDefault();
             this.saveGameState();
@@ -864,7 +866,9 @@ createApp({
 
             this.calculationPlayers[calcPlayerIndex].adjacentSectorsWithShipyards = this.calculationPlayers[calcPlayerIndex].adjacentSectorsWithShipyards + increment;
 
-            this.showResults = true;
+            if (this.showResults) { // if we're already showing results, re-calculate automatically
+                this.calculate();
+            }
 
             event.preventDefault();
             this.saveGameState();
@@ -874,7 +878,9 @@ createApp({
 
             this.calculationPlayers[calcPlayerIndex].adjacentSectorsWithStarbases = this.calculationPlayers[calcPlayerIndex].adjacentSectorsWithStarbases + increment;
 
-            this.showResults = true;
+            if (this.showResults) { // if we're already showing results, re-calculate automatically
+                this.calculate();
+            }
 
             event.preventDefault();
             this.saveGameState();
@@ -902,6 +908,19 @@ createApp({
         getPlayerById: function (id) {
             return _.find(this.players, function(p) { return p.id === id });
         },
+        swap: function() {
+            let tempPlayer = _.cloneDeep(this.defenderState);
+            this.defenderState =  _.cloneDeep(this.invaderState);
+            this.defenderState.isInvader = false;
+            this.invaderState = _.cloneDeep(tempPlayer);
+            this.invaderState.isInvader = true;
+            this.computedUpdater++;
+            this.saveGameState();
+
+            if (this.showResults) { // if we're already showing results, re-calculate automatically
+                this.calculate();
+            }
+        },
         calculate: function () {
             // calculate possible invader/defender outcomes (Voidfall rulebook, page 35)
             let invader = _.cloneDeep(this.invaderState);
@@ -913,11 +932,19 @@ createApp({
             }
 
             if (invader.isHumanPlayer()) {
-                invader.techs = _.cloneDeep(this.getPlayerById(invader.playerid).techs);
+                let player = this.getPlayerById(invader.playerid);
+                invader.techs = _.cloneDeep(player.techs);
+                invader.name = player.name;
+            } else {
+                invader.name = 'Voidborn';
             }
 
             if (defender.isHumanPlayer()) {
-                defender.techs = _.cloneDeep(this.getPlayerById(defender.playerid).techs);
+                let player = this.getPlayerById(defender.playerid);
+                defender.techs = _.cloneDeep(player.techs);
+                defender.name = player.name;
+            } else {
+                defender.name = 'Voidborn';
             }
 
             let results = [];
@@ -948,6 +975,7 @@ createApp({
                     preparedInvaderWins.push({ winnerFleet: value[0].fleets.invaderFleet, steps: value[0].steps });
                 });
                 preparedResults.invaderWins = preparedInvaderWins;
+                preparedResults.invaderName = invader.name;
             }
 
             let defenderWins = groupedResults["3"];
@@ -959,6 +987,7 @@ createApp({
                     preparedDefenderWins.push({ winnerFleet: value[0].fleets.defenderFleet, steps: value[0].steps });
                 });
                 preparedResults.defenderWins = preparedDefenderWins;
+                preparedResults.defenderName = defender.name;
             }
 
             this.results = preparedResults;
@@ -1004,7 +1033,9 @@ createApp({
                         }
                     }
 
+                    let tempResultDesc = resultDesc;
                     for (let damageCombination2 of damageCombinations2) {
+                        resultDesc = tempResultDesc;
                         for (let dc of damageCombination2) {
                             if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} invader ${getFleetDesc(dc.fleetType)} lost. `;
                         }
@@ -1117,7 +1148,7 @@ createApp({
                                 return [...newResults];
                             }
                         } else {
-                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `Defender absorbed all damage.`);
+                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `Defender absorbed all damage. `);
 
                             newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Invader hits first", _.cloneDeep(invader), _.cloneDeep(defender)));
                         }
@@ -1165,7 +1196,7 @@ createApp({
                                     return [...newResults];
                                 }
                             } else {
-                                let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, `Invader absorbed all damage.`);
+                                let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, `Invader absorbed all damage. `);
 
                                 newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Defender hits second", _.cloneDeep(invader), _.cloneDeep(defender)));
                             }
@@ -1235,7 +1266,7 @@ createApp({
                                 return [...newResults];
                             }
                         } else {
-                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, `Invader absorbed all damage`);
+                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, `Invader absorbed all damage. `);
 
                             newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Defender hits first", _.cloneDeep(invader), _.cloneDeep(defender)));
                         }
@@ -1282,7 +1313,7 @@ createApp({
                                     return [...newResults];
                                 }
                             } else {
-                                let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `Defender absorbed all damage`);
+                                let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `Defender absorbed all damage. `);
 
                                 newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Invader hits second", _.cloneDeep(invader), _.cloneDeep(defender)));
                             }
@@ -1339,7 +1370,9 @@ createApp({
                             }
                         }
 
+                        let tempResultDesc = resultDesc;
                         for (let damageCombination2 of damageCombinations2) {
+                            resultDesc = tempResultDesc;
                             for (let dc of damageCombination2) {
                                 if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} invader ${getFleetDesc(dc.fleetType)} lost. `;
                             }

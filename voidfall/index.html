@@ -64,6 +64,7 @@
 
         select {
             padding: 0.5rem;
+            max-width: 150px;
         }
 
         option {
@@ -88,7 +89,7 @@
 
         .menu-links a {
             text-decoration: none;
-            color: darkred;
+            color: #be0000;
             font-size: 1.125rem;
         }
 
@@ -131,6 +132,7 @@
 
         .tech-level {
             font-weight: bold;
+            color: #CCCC00;
         }
 
         .increment {
@@ -159,6 +161,11 @@
             justify-content: space-evenly;
             align-items: baseline;
             gap: 0.5rem;
+        }
+
+        .calc-buttons {
+            display: flex;
+            justify-content: space-between;
         }
 
         .calc-button {
@@ -268,7 +275,7 @@
             <section class="notes">
                 <h2>Notes</h2>
                 <ul>
-                    <li>Keep track of players tech during the game on the Tech page. Tech powers are then included in the calculations.</li>
+                    <li>Keep track of players' tech during the game on the Tech page. Tech powers are then included in the calculations.</li>
                     <li>If you are using Carriers, and they deploy Corvettes, simply increase the Corvette count in the calculator before running the calculation. The app does not automatically deploy Corvettes from Carriers.</li>
                     <li>The app shows all possible outcomes, except for variations where you obviously should recall Corvettes but recall something else instead.</li>
                     <li>Once you have calculated once, any changes to fleet power will auto-recalculate unless you change the invader/defender.</li>
@@ -320,12 +327,12 @@
                         </section>
                     </template>
                     <section class="increment" v-if="calcPlayer.isInvader && calcPlayer.playerid != 1000 && calcPlayer.playerid > 0">
-                        <p class="increment-name"><label :for="'Bombard_' + calcPlayer.id">Use Bombard?</label></p>
+                        <p class="increment-name"><label :for="'Bombard_' + calcPlayer.id">Use Bombard (Nervo)?</label></p>
                         <p class="increment-buttons">
                             <input type="checkbox" v-model="calcPlayer.useBombard" :id="'Bombard_' + calcPlayer.id" />
                         </p>
                     </section>
-                    <section class="increment" v-if="calcPlayer.useBombard">
+                    <section class="increment" v-if="calcPlayer.useBombard && calcPlayer.isInvader">
                         <p class="increment-name">&nbsp;&nbsp;Bombard Absorption</p>
                         <p class="increment-buttons">
                             <a href="#" v-on:click="updateBombardAbsorption($event, calcPlayerIndex, -1)">- 1</a>
@@ -357,15 +364,16 @@
                     </section>
                 </section>
             </section>
-            <p>
+            <p class="calc-buttons">
                 <button v-on:click="calculate" class="calc-button">&nbsp;&nbsp;Calculate Outcomes&nbsp;&nbsp;</button>
+                <button v-on:click="swap" class="calc-button" aria-label="Swap" title="Swap">&rlarr;</button>
             </p>
             <section v-if="showResults">
                 <p class="expand">
                     <a href="#" v-if="!expandAll" v-on:click="updateExpandAll($event, true)">Expand</a><a href="#"  v-if="expandAll" v-on:click="updateExpandAll($event, false)">Collapse</a>
                 </p>
                 <section v-if="results.invaderWins" class="winner">
-                    <h2>Invader Wins</h2>
+                    <h2>Invader ({{ results.invaderName }}) Wins</h2>
                     <article v-if="expandAll" v-for="(win, index) in results.invaderWins">
                         <em>Final Fleet (v{{index+1}})</em>
                         <ul class="winner-final-fleet">
@@ -381,7 +389,7 @@
                     </article>
                 </section>
                 <section v-if="results.defenderWins" class="winner">
-                    <h2>Defender Wins</h2>
+                    <h2>Defender ({{ results.defenderName }}) Wins</h2>
                     <article v-if="expandAll" v-for="(win, index) in results.defenderWins">
                         <em>Final Fleet (v{{index+1}})</em>
                         <ul class="winner-final-fleet">
