@@ -156,6 +156,10 @@
             color: #CCCC00;
         }
 
+        .select-calc-player {
+            margin-block-end: 1rem;
+        }
+
         .increment {
             display: flex;
             flex-shrink: 0;
@@ -363,7 +367,7 @@
         </section>
         <section v-if="this.pageState === 2">
             <h1>Calculator</h1>
-            <section v-for="(calcPlayer, calcPlayerIndex) in calculationPlayers">
+            <section v-for="(calcPlayer, calcPlayerIndex) in calculationPlayers" class="select-calc-player">
                 <label>
                     <template v-if="calcPlayer.isInvader">Invader: </template><template v-if="!calcPlayer.isInvader">Defender: </template>
                     <select v-model="calcPlayer.playerid" @change="calcPlayerChanged(calcPlayerIndex)">
