@@ -641,7 +641,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "0.4"
+        version: "0.41"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1053,6 +1053,15 @@ createApp({
                             resultDetail = new ResultDetail(-1, -1, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `No damage to either side.`);
                         }
                         else {
+
+                            if (defenderAbsorption > 0) {
+                                resultDesc = resultDesc + defenderAbsorption + ' defender absorption. ';
+                            }
+
+                            if (invaderAbsorption > 0) {
+                                resultDesc = resultDesc + invaderAbsorption + ' invader absorption. ';
+                            }
+
                             resultDetail = new ResultDetail(-1, -1, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, resultDesc);
                         }
 
@@ -1126,7 +1135,7 @@ createApp({
                             }
 
                             if (defenderAbsorption > 0) {
-                                resultDesc = resultDesc + defenderAbsorption + ' absorption.';
+                                resultDesc = resultDesc + defenderAbsorption + ' absorption. ';
                             }
 
                             let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, resultDesc);
@@ -1174,7 +1183,7 @@ createApp({
                                 }
 
                                 if (invaderAbsorption > 0) {
-                                    resultDesc = resultDesc + invaderAbsorption + ' absorption.';
+                                    resultDesc = resultDesc + invaderAbsorption + ' absorption. ';
                                 }
 
                                 let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, resultDesc);
@@ -1245,7 +1254,7 @@ createApp({
                             }
 
                             if (invaderAbsorption > 0) {
-                                resultDesc = resultDesc + invaderAbsorption + ' absorption.';
+                                resultDesc = resultDesc + invaderAbsorption + ' absorption. ';
                             }
 
                             let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, resultDesc);
@@ -1291,7 +1300,7 @@ createApp({
                                 }
 
                                 if (defenderAbsorption > 0) {
-                                    resultDesc = resultDesc + defenderAbsorption + ' absorption.';
+                                    resultDesc = resultDesc + defenderAbsorption + ' absorption. ';
                                 }
 
                                 let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, resultDesc);
@@ -1392,11 +1401,11 @@ createApp({
                             else {
 
                                 if (defenderAbsorption > 0) {
-                                    resultDesc = resultDesc + defenderAbsorption + ' defender absorption.';
+                                    resultDesc = resultDesc + defenderAbsorption + ' defender absorption. ';
                                 }
 
                                 if (invaderAbsorption > 0) {
-                                    resultDesc = resultDesc + invaderAbsorption + ' invader absorption.';
+                                    resultDesc = resultDesc + invaderAbsorption + ' invader absorption. ';
                                 }
 
                                 resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, resultDesc);
