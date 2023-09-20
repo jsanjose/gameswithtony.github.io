@@ -1,8 +1,10 @@
 const LOCALSTORAGENAME = "vfgamestate";
 const PAGE_STATE = { StartScreen: 0, Technologies: 1, Calculator: 2 };
 const FLEET_TYPE = { Corvette: 0, Destroyer: 1, Dreadnaught: 2, Carrier: 3, Sentry: 4, Voidborn: 5, Sector_Defense: 6, Starbase: 7 };
-const TECHS = { Sentries: 0, Destroyers: 1, Dreadnaughts: 2, Carriers: 3, DeepSpaceMissiles: 4, EnergyCells: 5, Shields: 6, AutonomousDrones: 7, Targeting: 8, Torpedoes: 9, Starbases: 10
+const TECHS = { Sentries: 0, Destroyers: 1, Dreadnaughts: 2, Carriers: 3, DeepSpaceMissiles: 4, EnergyCells: 5, Shields: 6, AutonomousDrones: 7, Targeting: 8, Torpedoes: 9, Starbases: 10, ArkShips: 11, CentralSurveillance: 12, Cloning: 13, Cybernetics: 14, CombatReplicators: 15, DataRefinery: 16, DecontaminationChambers: 17, Hyperdrive: 18, EscapePods: 19, NeuralMatrix: 20, OrbitalDocks: 21, Robotics: 22, Purifier: 23, SalvageScanner: 24, TacticalTransports: 25, Terraforming: 26, TradeNexus: 27
 };
+const HOUSE_IDS = { NoHouse: 0, Astoran: 1, Belitan: 2, Cortozaar: 3, Dunlork: 4, Fenrax: 5, Kradmor: 6, Marqualos: 7, Nervo: 8, Novaris: 9, Shiveus: 10, TheGwyn: 11, Valnis: 12, Yarvek: 13, Zenor: 14 };
+const HOUSE_ORIGINS = { A: 0, B: 1 };
 
 function getFleetDesc(fleet_type) {
     switch (fleet_type) {
@@ -15,7 +17,143 @@ function getFleetDesc(fleet_type) {
     }
 }
 
+function getHouseDesc(houseid) {
+    switch (houseid) {
+        case HOUSE_IDS.NoHouse: return '';
+        case HOUSE_IDS.Astoran: return 'Astoran';
+        case HOUSE_IDS.Belitan: return 'Belitan';
+        case HOUSE_IDS.Cortozaar: return 'Cortozaar';
+        case HOUSE_IDS.Dunlork: return 'Dunlork';
+        case HOUSE_IDS.Fenrax: return 'Fenrax';
+        case HOUSE_IDS.Kradmor: return 'Kradmor';
+        case HOUSE_IDS.Marqualos: return 'Marqualos';
+        case HOUSE_IDS.Nervo: return 'Nervo';
+        case HOUSE_IDS.Novaris: return 'Novaris';
+        case HOUSE_IDS.Shiveus: return 'Shiveus';
+        case HOUSE_IDS.TheGwyn: return 'TheGwyn';
+        case HOUSE_IDS.Valnis: return 'Valnis';
+        case HOUSE_IDS.Yarvek: return 'Yarvek';
+        case HOUSE_IDS.Zenor: return 'Zenor';
+    }
+}
+
+function getHouseOriginName(originid) {
+    switch (originid) {
+        case HOUSE_ORIGINS.A: return 'A';
+        case HOUSE_ORIGINS.B: return 'B';
+    }
+}
+
 const { createApp } = Vue
+
+// house data
+class HouseOrigin {
+    originid;
+    techid;
+
+    constructor(originid, techid) {
+        this.originid = originid;
+        this.techid = techid;
+    }
+}
+
+class House {
+    id;
+    name;
+    origins = [];
+    constructor(id, name, origins) {
+        this.id = id;
+        this.name = name;
+        this.origins = origins;
+    }
+
+    getStartingTech(originid) {
+        let origin = _.find(this.origins, function(o) { o.id === originid });
+
+        if (origin) { return origin.techid; } else {
+            alert("Origin not found.");
+        }
+    }
+}
+
+let Houses = [
+    new House(HOUSE_IDS.Astoran, getHouseDesc(HOUSE_IDS.Astoran), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.DeepSpaceMissiles),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Sentries)
+    ]),
+    new House(HOUSE_IDS.Belitan, getHouseDesc(HOUSE_IDS.Belitan), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.DeepSpaceMissiles),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.DataRefinery)
+    ]),
+    new House(HOUSE_IDS.Cortozaar, getHouseDesc(HOUSE_IDS.Cortozaar), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Torpedoes),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Starbases)
+    ]),
+    new House(HOUSE_IDS.Dunlork, getHouseDesc(HOUSE_IDS.Dunlork), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.OrbitalDocks),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.EnergyCells)
+    ]),
+    new House(HOUSE_IDS.Fenrax, getHouseDesc(HOUSE_IDS.Fenrax), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Carriers),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.CentralSurveillance)
+    ]),
+    new House(HOUSE_IDS.Kradmor, getHouseDesc(HOUSE_IDS.Kradmor), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.SalvageScanner),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Purifier)
+    ]),
+    new House(HOUSE_IDS.Marqualos, getHouseDesc(HOUSE_IDS.Marqualos), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.AutonomousDrones),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.TradeNexus)
+    ]),
+    new House(HOUSE_IDS.Nervo, getHouseDesc(HOUSE_IDS.Nervo), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Robotics),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.ArkShips)
+    ]),
+    new House(HOUSE_IDS.Novaris, getHouseDesc(HOUSE_IDS.Novaris), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.CombatReplicators),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Cybernetics)
+    ]),
+    new House(HOUSE_IDS.Nervo, getHouseDesc(HOUSE_IDS.Shiveus), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Dreadnaughts),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.DecontaminationChambers)
+    ]),
+    new House(HOUSE_IDS.TheGwyn, getHouseDesc(HOUSE_IDS.TheGwyn), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Terraforming),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.NeuralMatrix)
+    ]),
+    new House(HOUSE_IDS.Valnis, getHouseDesc(HOUSE_IDS.Valnis), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Shields),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.EscapePods)
+    ]),
+    new House(HOUSE_IDS.Novaris, getHouseDesc(HOUSE_IDS.Yarvek), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Hyperdrive),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.TacticalTransports)
+    ]),
+    new House(HOUSE_IDS.Nervo, getHouseDesc(HOUSE_IDS.Zenor), [
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Destroyers),
+        new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Cloning)
+    ])
+]
+
+
+class HouseWithOrigin {
+    id;
+    house;
+    origin;
+    name;
+    constructor(house, origin) {
+        this.id = `${ house.id }_${ origin.originid}`;
+        this.house = house;
+        this.origin = origin;
+        this.name = `${ house.name } - ${ getHouseOriginName(origin.originid) }`
+    }
+}
+const HousesWithOrigins = [];
+for (let house of Houses) {
+    for (let origin of house.origins) {
+        HousesWithOrigins.push(new HouseWithOrigin(house, origin));
+    }
+}
 
 // tech data
 class Technology {
@@ -49,15 +187,23 @@ class Player {
     name = '';
     techs = [];
     unusedTechs = [];
-    constructor(id, name, techs, unusedTechs) {
+    houseWithOrigin;
+    constructor(id, name, techs, unusedTechs, houseWithOrigin) {
         this.id = id;
         this.name = name;
-        this.techs = techs;
+        this.techs = _.filter(techs, function(t) { return t; }); // fixing possible nulls from old save
         this.unusedTechs = unusedTechs;
+        this.houseWithOrigin = houseWithOrigin;
     }
 
     isHumanPlayer() {
         return this.id > 0 && this.id != 1000;
+    }
+
+    isNervo() {
+        if (this.houseWithOrigin && this.houseWithOrigin.house) {
+            return this.houseWithOrigin.house.id === HOUSE_IDS.Nervo;
+        } else return true; // handle old saves
     }
 }
 
@@ -634,6 +780,8 @@ createApp({
             new Player(3, 'Player 3', [], _.clone(Technologies)),
             new Player(4, 'Player 4', [], _.clone(Technologies))
         ],
+        houses: _.clone(Houses),
+        housesWithOrigins: _.clone(HousesWithOrigins),
         technologies: _.clone(Technologies),
         invaderState: new PlayerState(1, -1, '', true, _.cloneDeep(Fleets), [], false, 0, false, false, 0, 0),
         defenderState: new PlayerState(2, -1, '', false, _.cloneDeep(Fleets), [], false, 0, false, false, 0, 0),
@@ -663,7 +811,7 @@ createApp({
             this.numberOfPlayers = gameState.numberOfPlayers;
  
             for (let i=0; i<gameState.players.length; i++) {
-                this.players[i] = new Player(gameState.players[i].id, gameState.players[i].name, gameState.players[i].techs, gameState.players[i].unusedTechs);
+                this.players[i] = new Player(gameState.players[i].id, gameState.players[i].name, gameState.players[i].techs, gameState.players[i].unusedTechs, gameState.players[i].houseWithOrigin);
             }
 
             if (this.numberOfPlayers < 4) {
@@ -677,8 +825,6 @@ createApp({
             if (this.numberOfPlayers < 2) {
                 this.players.pop();
             }
-
-            this.technologies = gameState.technologies;
 
             this.invaderState = new PlayerState(gameState.invaderState.id, gameState.invaderState.playerid, gameState.invaderState.name, gameState.invaderState.isInvader, gameState.invaderState.fleets, gameState.invaderState.techs, gameState.invaderState.useBombard, gameState.invaderState.bombardAbsorption, gameState.invaderState.spendTradeTokenToUseAutonomousDrones, gameState.invaderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.invaderState.adjacentSectorsWithShipyards, gameState.invaderState.adjacentSectorsWithStarbases);
 
@@ -710,6 +856,21 @@ createApp({
                     this.players.pop();
                 }
             }
+
+            // setup techs for houses
+            for (let i=0; i<this.players.length; i++) {
+                if (this.players[i].houseWithOrigin) {
+                    let techid = this.players[i].houseWithOrigin.origin.techid;
+                    let tech = _.find(this.players[i].unusedTechs, function (t) { return t.id === techid });
+                    let unusedTechIndex = _.findIndex(this.players[i].unusedTechs, function (t) { return t.id === techid });
+
+                    if (tech) {
+                        this.addTech(i, tech, unusedTechIndex);
+                    }
+                }
+            }
+
+            console.log(this.players);
             
             this.pageState = PAGE_STATE.Technologies;
 
@@ -920,6 +1081,13 @@ createApp({
             if (this.showResults) { // if we're already showing results, re-calculate automatically
                 this.calculate();
             }
+        },
+        isNervo(playerid) {
+            let player = this.getPlayerById(playerid);
+
+            if (player) {
+                return player.isNervo();
+            } else return false;
         },
         calculate: function () {
             // calculate possible invader/defender outcomes (Voidfall rulebook, page 35)
@@ -1517,7 +1685,6 @@ createApp({
             gameState.pageState = this.pageState;
             gameState.numberOfPlayers = this.numberOfPlayers;
             gameState.players = this.players;
-            gameState.technologies = this.technologies;
             gameState.invaderState = this.invaderState;
             gameState.defenderState = this.defenderState;
 

@@ -58,7 +58,6 @@
 
         input[type='text'], input[type='number'], select {
             color: #000;
-            margin-top: 1rem;
             padding: 0.5rem;
         }
 
@@ -79,6 +78,28 @@
         p {
             margin-block-start: 0;
             margin-top: 0;
+        }
+
+        .player-form {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 1rem;
+            gap: 1rem;
+            border: solid 1px #fff;   
+            margin-block-end: 1rem;
+        }
+
+        .player-form p {
+            margin-block-end: 0;
+        }
+
+        .player-form h2 {
+            width: 100%;
+            margin: 0;
+        }
+
+        .player-form label {
+            margin-inline-end: .25rem;
         }
 
         .menu-links {
@@ -251,23 +272,66 @@
                 <option value="4">4</option>
             </select>
             <section class="margin-md">
-                <h2>Player Names</h2>
-                <p>
-                    <label for="player1">Player 1: </label>
-                    <input type="text" v-model="players[0].name" id="player1" />
-                </p>
-                <p v-if="numberOfPlayers > 1">
-                    <label for="player2">Player 2: </label>
-                    <input type="text" v-model="players[1].name" id="player2" />
-                </p>
-                <p v-if="numberOfPlayers > 2">
-                    <label for="player3">Player 3: </label>
-                    <input type="text" v-model="players[2].name" id="player3" />
-                </p>
-                <p v-if="numberOfPlayers > 3">
-                    <label for="player4">Player 4: </label>
-                    <input type="text" v-model="players[3].name" id="player4" />
-                </p>
+                <article class="player-form">
+                    <h2>Player 1</h2>
+                    <p>
+                        <label for="player1">Name</label>
+                        <input type="text" v-model="players[0].name" id="player1" />
+                    </p>
+                    <p>
+                        <label for="player1">House</label>
+                        <select v-model="players[0].houseWithOrigin">
+                            <option v-for="houseWithOrigin in housesWithOrigins" :value="houseWithOrigin">
+                                {{ houseWithOrigin.name }}
+                            </option>
+                        </select>
+                    </p>
+                </article>
+                <article class="player-form" v-if="numberOfPlayers > 1">
+                    <h2>Player 2</h2>
+                    <p>
+                        <label for="player2">Name</label>
+                        <input type="text" v-model="players[1].name" id="player2" />
+                    </p>
+                    <p>
+                        <label for="player2">House</label>
+                        <select v-model="players[1].houseWithOrigin">
+                            <option v-for="houseWithOrigin in housesWithOrigins" :value="houseWithOrigin">
+                                {{ houseWithOrigin.name }}
+                            </option>
+                        </select>
+                    </p>
+                </article>
+                <article class="player-form" v-if="numberOfPlayers > 2">
+                    <h2>Player 3</h2>
+                    <p>
+                        <label for="player3">Name</label>
+                        <input type="text" v-model="players[2].name" id="player3" />
+                    </p>
+                    <p>
+                        <label for="player3">House</label>
+                        <select v-model="players[2].houseWithOrigin">
+                            <option v-for="houseWithOrigin in housesWithOrigins" :value="houseWithOrigin">
+                                {{ houseWithOrigin.name }}
+                            </option>
+                        </select>
+                    </p>
+                </article>
+                <article class="player-form" v-if="numberOfPlayers > 3">
+                    <h2>Player 4</h2>
+                    <p>
+                        <label for="player4">Name</label>
+                        <input type="text" v-model="players[3].name" id="player4" />
+                    </p>
+                    <p>
+                        <label for="player4">House</label>
+                        <select v-model="players[3].houseWithOrigin">
+                            <option v-for="houseWithOrigin in housesWithOrigins" :value="houseWithOrigin">
+                                {{ houseWithOrigin.name }}
+                            </option>
+                        </select>
+                    </p>
+                </article>
                 <p>
                     <button v-on:click="start">Start Game</button>
                 </p>
@@ -326,7 +390,7 @@
                             </p>
                         </section>
                     </template>
-                    <section class="increment" v-if="calcPlayer.isInvader && calcPlayer.playerid != 1000 && calcPlayer.playerid > 0">
+                    <section class="increment" v-if="calcPlayer.isInvader && calcPlayer.playerid != 1000 && calcPlayer.playerid > 0 && isNervo(calcPlayer.playerid)">
                         <p class="increment-name"><label :for="'Bombard_' + calcPlayer.id">Use Bombard (Nervo)?</label></p>
                         <p class="increment-buttons">
                             <input type="checkbox" v-model="calcPlayer.useBombard" :id="'Bombard_' + calcPlayer.id" />
