@@ -356,7 +356,7 @@
         <section v-if="this.pageState === 1">
             <h1>Technologies</h1>
             <section v-for="(player, playerIndex) in players" :key="player.id">
-                <h2>{{ player.name }}</h2>
+                <h2>{{ player.name }}<template v-if="player.houseWithOrigin">&nbsp;({{ player.houseWithOrigin.house.name }})</template></h2>
                 <section class="tech-list" v-if="player.techs.length > 0">
                     <p class="tech tech--used" v-for="(tech, techIndex) in player.techs" :key="tech.id">{{ tech.name }}<br /><a href="#" :class="{ 'tech-level': !tech.isImproved }"  v-on:click="demoteTech($event, playerIndex, techIndex)">Basic</a> | <a href="#" :class="{ 'tech-level': tech.isImproved }" v-on:click="improveTech($event, playerIndex, techIndex)">Improved</a>&nbsp;&nbsp;&nbsp;/ <a href="#" v-on:click="removeTech($event, playerIndex, techIndex)">X</a></p>
                 </section>

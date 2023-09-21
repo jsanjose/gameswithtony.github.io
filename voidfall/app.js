@@ -5,6 +5,7 @@ const TECHS = { Sentries: 0, Destroyers: 1, Dreadnaughts: 2, Carriers: 3, DeepSp
 };
 const HOUSE_IDS = { NoHouse: 0, Astoran: 1, Belitan: 2, Cortozaar: 3, Dunlork: 4, Fenrax: 5, Kradmor: 6, Marqualos: 7, Nervo: 8, Novaris: 9, Shiveus: 10, TheGwyn: 11, Valnis: 12, Yarvek: 13, Zenor: 14 };
 const HOUSE_ORIGINS = { A: 0, B: 1 };
+SCENARIO_TYPE = { Solo: 0, Cooperative: 1, Competitive: 2 };
 
 function getFleetDesc(fleet_type) {
     switch (fleet_type) {
@@ -113,7 +114,7 @@ let Houses = [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.CombatReplicators),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Cybernetics)
     ]),
-    new House(HOUSE_IDS.Nervo, getHouseDesc(HOUSE_IDS.Shiveus), [
+    new House(HOUSE_IDS.Shiveus, getHouseDesc(HOUSE_IDS.Shiveus), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Dreadnaughts),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.DecontaminationChambers)
     ]),
@@ -125,15 +126,19 @@ let Houses = [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Shields),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.EscapePods)
     ]),
-    new House(HOUSE_IDS.Novaris, getHouseDesc(HOUSE_IDS.Yarvek), [
+    new House(HOUSE_IDS.Yarvek, getHouseDesc(HOUSE_IDS.Yarvek), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Hyperdrive),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.TacticalTransports)
     ]),
-    new House(HOUSE_IDS.Nervo, getHouseDesc(HOUSE_IDS.Zenor), [
+    new House(HOUSE_IDS.Zenor, getHouseDesc(HOUSE_IDS.Zenor), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Destroyers),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Cloning)
     ])
 ]
+
+function getHouseById(houseid) {
+    return _.find(Houses, function(h) { return h.id === houseid; });
+}
 
 
 class HouseWithOrigin {
@@ -179,6 +184,258 @@ let Technologies = [
     new Technology(TECHS.Starbases, "Starbases", false),
     new Technology(TECHS.Targeting, "Targeting", false),
     new Technology(TECHS.Torpedoes, "Torpedoes", false),
+]
+
+function getTechById(techid) {
+    return _.find(Technologies, function(t) { return t.id === techid; });
+}
+
+// scenarios
+class Scenario {
+    id; // referred to as 'reference no.' in the Compendium
+    type;
+    name;
+    numberOfPlayers;
+    aggression;
+    complexity;
+    fallenHouses = []; // fallen houses define techs, whether chosen during Cooperative play or specified in Competitive scenarios
+
+    constructor(id, type, name, numberOfPlayers, aggression, complexity, fallenHouses) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.numberOfPlayers = numberOfPlayers;
+        this.aggression = aggression;
+        this.complexity = complexity
+        this.fallenHouses = fallenHouses;
+    }
+}
+
+// solo and cooperative scenarios have empty fallen houses, as these are determined during setup
+const Scenarios = [
+    new Scenario('C011', SCENARIO_TYPE.Solo, 'First Stand', 1, null, 1, []),
+    new Scenario('C021', SCENARIO_TYPE.Solo, 'And One For All', 1, null, 2, []),
+    new Scenario('C031', SCENARIO_TYPE.Solo, 'Darkest Hour', 1, null, 2, []),
+    new Scenario('C041', SCENARIO_TYPE.Solo, 'Ancient Secrets', 1, null, 3, []),
+    new Scenario('C051', SCENARIO_TYPE.Solo, 'Devil\'s Triangle', 1, null, 3, []),
+    new Scenario('C061', SCENARIO_TYPE.Solo, 'When Darkness Fades', 1, null, 3, []),
+    new Scenario('C071', SCENARIO_TYPE.Solo, 'Today Is Not The Day', 1, null, 4, []),
+    new Scenario('C081', SCENARIO_TYPE.Solo, 'Fall Of Civilization', 1, null, 4, []),
+    new Scenario('C012', SCENARIO_TYPE.Cooperative, 'First Stand', 2, null, 1, []),
+    new Scenario('C022', SCENARIO_TYPE.Cooperative, 'And One For All', 2, null, 2, []),
+    new Scenario('C032', SCENARIO_TYPE.Cooperative, 'Darkest Hour', 2, null, 2, []),
+    new Scenario('C042', SCENARIO_TYPE.Cooperative, 'Ancient Secrets', 2, null, 3, []),
+    new Scenario('C052', SCENARIO_TYPE.Cooperative, 'Devil\'s Triangle', 2, null, 2, []),
+    new Scenario('C062', SCENARIO_TYPE.Cooperative, 'When Darkness Fades', 2, null, 3, []),
+    new Scenario('C072', SCENARIO_TYPE.Cooperative, 'Today Is Not The Day', 2, null, 4, []),
+    new Scenario('C013', SCENARIO_TYPE.Cooperative, 'First Stand', 3, null, 1, []),
+    new Scenario('C023', SCENARIO_TYPE.Cooperative, 'And One For All', 3, null, 2, []),
+    new Scenario('C033', SCENARIO_TYPE.Cooperative, 'Darkest Hour', 3, null, 3, []),
+    new Scenario('C043', SCENARIO_TYPE.Cooperative, 'Ancient Secrets', 3, null, 4, []),
+    new Scenario('C053', SCENARIO_TYPE.Cooperative, 'Devil\'s Triangle', 3, null, 3, []),
+    new Scenario('C063', SCENARIO_TYPE.Cooperative, 'When Darkness Fades', 3, null, 4, []),
+    new Scenario('C034', SCENARIO_TYPE.Cooperative, 'Darkest Hour', 4, null, 3, []),
+    new Scenario('C044', SCENARIO_TYPE.Cooperative, 'Ancient Secrets', 4, null, 4, []),
+    new Scenario('C054', SCENARIO_TYPE.Cooperative, 'Devil\'s Triangle', 4, null, 3, []),
+    new Scenario('C064', SCENARIO_TYPE.Cooperative, 'When Darkness Fades', 4, null, 4, []),
+    new Scenario('X012', SCENARIO_TYPE.Competitive, 'Second Genesis', 2, 4, 2, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ]),
+    new Scenario('X022', SCENARIO_TYPE.Competitive, 'For Peace and Prosperity', 2, 2, 3, [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
+    new Scenario('X032', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 2, 2, 3, [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.TheGwyn)
+    ]),
+    new Scenario('X042', SCENARIO_TYPE.Competitive, 'Novarchon Legacy', 2, 3, 3, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ]),
+    new Scenario('X052', SCENARIO_TYPE.Competitive, 'Art of War', 2, 4, 4, [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Zenor)
+    ]),
+    new Scenario('X062', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 2, 4, 3, [
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
+    new Scenario('X072', SCENARIO_TYPE.Competitive, 'Through the Altered Space', 2, 3, 4, [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
+    new Scenario('X082', SCENARIO_TYPE.Competitive, 'Echoes of the Past', 2, 2, 3, [
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Zenor)
+    ]),
+    new Scenario('X092', SCENARIO_TYPE.Competitive, 'Bastion of Resistance', 2, 3, 3, [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Shiveus)
+    ]),
+    new Scenario('X102', SCENARIO_TYPE.Competitive, 'Kingdom Come', 2, 1, 2, [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Valnis),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ]),
+    new Scenario('X112', SCENARIO_TYPE.Competitive, 'Fractures of Space', 2, 2, 3, [
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ]),
+    new Scenario('X013', SCENARIO_TYPE.Competitive, 'Second Genesis', 3, 4, 2, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ]),
+    new Scenario('X023', SCENARIO_TYPE.Competitive, 'For Peace and Prosperity', 3, 2, 3, [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
+    new Scenario('X033', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 3, 3, 3, [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.TheGwyn)
+    ]),
+    new Scenario('X043', SCENARIO_TYPE.Competitive, 'Novarchon Legacy', 3, 4, 3, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ]),
+    new Scenario('X053', SCENARIO_TYPE.Competitive, 'Art of War', 3, 4, 4, [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Zenor)
+    ]),
+    new Scenario('X063', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 3, 4, 3, [
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
+    new Scenario('X073', SCENARIO_TYPE.Competitive, 'Through the Altered Space', 3, 3, 4, [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
+    new Scenario('X083', SCENARIO_TYPE.Competitive, 'Echoes of the Past', 3, 2, 3, [
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Zenor)
+    ]),
+    new Scenario('X093', SCENARIO_TYPE.Competitive, 'Bastion of Resistance', 3, 3, 3, [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Shiveus)
+    ]),
+    new Scenario('X103', SCENARIO_TYPE.Competitive, 'Kingdom Come', 3, 1, 2, [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Valnis),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ]),
+    new Scenario('X113', SCENARIO_TYPE.Competitive, 'Fractures of Space', 3, 2, 3, [
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ]),
+    new Scenario('X014', SCENARIO_TYPE.Competitive, 'Second Genesis', 4, 3, 2, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ]),
+    new Scenario('X024', SCENARIO_TYPE.Competitive, 'For Peace and Prosperity', 4, 2, 3, [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
+    new Scenario('X034', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 4, 3, 3, [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.TheGwyn)
+    ]),
+    new Scenario('X044', SCENARIO_TYPE.Competitive, 'Novarchon Legacy', 4, 4, 3, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ]),
+    new Scenario('X054', SCENARIO_TYPE.Competitive, 'Art of War', 4, 4, 4, [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Zenor)
+    ]),
+    new Scenario('X064', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 4, 4, 3, [
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
+    new Scenario('X074', SCENARIO_TYPE.Competitive, 'Through the Altered Space', 4, 3, 4, [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
+    new Scenario('X084', SCENARIO_TYPE.Competitive, 'Echoes of the Past', 4, 3, 3, [
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Zenor)
+    ]),
+    new Scenario('X094', SCENARIO_TYPE.Competitive, 'Bastion of Resistance', 4, 3, 3, [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Shiveus)
+    ]),
+    new Scenario('X104', SCENARIO_TYPE.Competitive, 'Kingdom Come', 4, 1, 2, [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Valnis),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ]),
+    new Scenario('X114', SCENARIO_TYPE.Competitive, 'Fractures of Space', 4, 2, 4, [
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Yarvek)
+    ])
 ]
 
 // player classes
@@ -780,6 +1037,8 @@ createApp({
             new Player(3, 'Player 3', [], _.clone(Technologies)),
             new Player(4, 'Player 4', [], _.clone(Technologies))
         ],
+        scenarioType: SCENARIO_TYPE.Solo,
+        chosenScenario: null,
         houses: _.clone(Houses),
         housesWithOrigins: _.clone(HousesWithOrigins),
         technologies: _.clone(Technologies),
@@ -789,7 +1048,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "0.43"
+        version: "0.46"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -830,6 +1089,14 @@ createApp({
 
             this.defenderState = new PlayerState(gameState.defenderState.id, gameState.defenderState.playerid, gameState.defenderState.name, gameState.defenderState.isInvader, gameState.defenderState.fleets, gameState.defenderState.techs, gameState.defenderState.useBombard, gameState.defenderState.bombardAbsorption, gameState.defenderState.spendTradeTokenToUseAutonomousDrones, gameState.defenderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.defenderState.adjacentSectorsWithShipyards, gameState.defenderState.adjacentSectorsWithStarbases);
 
+            if (gameState.hasOwnProperty("scenarioType")) {
+                this.scenarioType = gameState.scenarioType;
+            }
+
+            if (gameState.hasOwnProperty("chosenScenario")) {
+                this.chosenScenario = gameState.chosenScenario;
+            }
+
             this.computedUpdater++;
         }
     },
@@ -839,6 +1106,9 @@ createApp({
                 this.invaderState,
                 this.defenderState
             ]
+        },
+        scenariosByTypeAndPlayers: function() {
+
         }
     },
     methods: {
@@ -869,8 +1139,6 @@ createApp({
                     }
                 }
             }
-
-            console.log(this.players);
             
             this.pageState = PAGE_STATE.Technologies;
 
@@ -1088,6 +1356,9 @@ createApp({
             if (player) {
                 return player.isNervo();
             } else return false;
+        },
+        getHouseById(houseid) {
+            return getHouseById(houseid);
         },
         calculate: function () {
             // calculate possible invader/defender outcomes (Voidfall rulebook, page 35)
@@ -1684,6 +1955,8 @@ createApp({
             let gameState = {};
             gameState.pageState = this.pageState;
             gameState.numberOfPlayers = this.numberOfPlayers;
+            gameState.scenarioType = this.scenarioType;
+            gameState.chosenScenario = this.chosenScenario;
             gameState.players = this.players;
             gameState.invaderState = this.invaderState;
             gameState.defenderState = this.defenderState;
