@@ -7,6 +7,25 @@ const HOUSE_IDS = { NoHouse: 0, Astoran: 1, Belitan: 2, Cortozaar: 3, Dunlork: 4
 const HOUSE_ORIGINS = { A: 0, B: 1 };
 SCENARIO_TYPE = { Solo: 0, Cooperative: 1, Competitive: 2 };
 
+function chooseRandom(min, max, exclude) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    let result = Math.floor(Math.random() * (max - min + 1) + min);
+
+    // assumes at most only one excluded value at a time
+    if (exclude) {
+        if (result === exclude) {
+            if (result === 8) {
+                result = 1;
+            } else {
+                result++;
+            }
+        }
+    }
+
+    return result;
+}
+
 function getFleetDesc(fleet_type) {
     switch (fleet_type) {
         case FLEET_TYPE.Corvette: return 'Corvette';
@@ -45,6 +64,39 @@ function getHouseOriginName(originid) {
     }
 }
 
+function getTechName(techid) {
+    switch (techid) {
+        case TECHS.ArkShips: return 'Ark Ships';
+        case TECHS.AutonomousDrones: return 'Autonomous Drones';
+        case TECHS.Carriers: return 'Carriers';
+        case TECHS.CentralSurveillance: return 'Central Surveillance';
+        case TECHS.Cloning: return 'Cloning';
+        case TECHS.CombatReplicators: return 'Combat Replicators';
+        case TECHS.Cybernetics: return 'Cybernetics';
+        case TECHS.DataRefinery: return 'Data Refinery';
+        case TECHS.DecontaminationChambers: return 'Decontamination Chambers';
+        case TECHS.DeepSpaceMissiles: return 'Deep Space Missiles';
+        case TECHS.Destroyers: return 'Destroyers';
+        case TECHS.Dreadnaughts: return 'Dreadnaughts';
+        case TECHS.EnergyCells: return 'Energy Cells';
+        case TECHS.EscapePods: return 'Escape Pods';
+        case TECHS.Hyperdrive: return 'Hyperdrive';
+        case TECHS.NeuralMatrix: return 'Neural Matrix';
+        case TECHS.OrbitalDocks: return 'Orbital Docks';
+        case TECHS.Purifier: return 'Purifier';
+        case TECHS.Robotics: return 'Robotics';
+        case TECHS.SalvageScanner: return 'SalvageScanner';
+        case TECHS.Sentries: return 'Sentries';
+        case TECHS.Shields: return 'Shields';
+        case TECHS.Starbases: return 'Starbases';
+        case TECHS.TacticalTransports: return 'Tactical Transports';
+        case TECHS.Targeting: return 'Targeting';
+        case TECHS.Terraforming: return 'Terraforming';
+        case TECHS.Torpedoes: return 'Torpedoes';
+        case TECHS.TradeNexus: return 'Trade Nexus';
+    }
+}
+
 const { createApp } = Vue
 
 // house data
@@ -62,10 +114,12 @@ class House {
     id;
     name;
     origins = [];
-    constructor(id, name, origins) {
+    crackedGlassOnFallenHouse = false;
+    constructor(id, name, origins, crackedGlassOnFallenHouse) {
         this.id = id;
         this.name = name;
         this.origins = origins;
+        this.crackedGlassOnFallenHouse = crackedGlassOnFallenHouse;
     }
 
     getStartingTech(originid) {
@@ -81,59 +135,59 @@ let Houses = [
     new House(HOUSE_IDS.Astoran, getHouseDesc(HOUSE_IDS.Astoran), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.DeepSpaceMissiles),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Sentries)
-    ]),
+    ], true),
     new House(HOUSE_IDS.Belitan, getHouseDesc(HOUSE_IDS.Belitan), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.DeepSpaceMissiles),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.DataRefinery)
-    ]),
+    ], false),
     new House(HOUSE_IDS.Cortozaar, getHouseDesc(HOUSE_IDS.Cortozaar), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Torpedoes),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Starbases)
-    ]),
+    ], false),
     new House(HOUSE_IDS.Dunlork, getHouseDesc(HOUSE_IDS.Dunlork), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.OrbitalDocks),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.EnergyCells)
-    ]),
+    ], true),
     new House(HOUSE_IDS.Fenrax, getHouseDesc(HOUSE_IDS.Fenrax), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Carriers),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.CentralSurveillance)
-    ]),
+    ], false),
     new House(HOUSE_IDS.Kradmor, getHouseDesc(HOUSE_IDS.Kradmor), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.SalvageScanner),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Purifier)
-    ]),
+    ], false),
     new House(HOUSE_IDS.Marqualos, getHouseDesc(HOUSE_IDS.Marqualos), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.AutonomousDrones),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.TradeNexus)
-    ]),
+    ], false),
     new House(HOUSE_IDS.Nervo, getHouseDesc(HOUSE_IDS.Nervo), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Robotics),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.ArkShips)
-    ]),
+    ], false),
     new House(HOUSE_IDS.Novaris, getHouseDesc(HOUSE_IDS.Novaris), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.CombatReplicators),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Cybernetics)
-    ]),
+    ], false),
     new House(HOUSE_IDS.Shiveus, getHouseDesc(HOUSE_IDS.Shiveus), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Dreadnaughts),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.DecontaminationChambers)
-    ]),
+    ], true),
     new House(HOUSE_IDS.TheGwyn, getHouseDesc(HOUSE_IDS.TheGwyn), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Terraforming),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.NeuralMatrix)
-    ]),
+    ], false),
     new House(HOUSE_IDS.Valnis, getHouseDesc(HOUSE_IDS.Valnis), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Shields),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.EscapePods)
-    ]),
+    ], false),
     new House(HOUSE_IDS.Yarvek, getHouseDesc(HOUSE_IDS.Yarvek), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Hyperdrive),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.TacticalTransports)
-    ]),
+    ], false),
     new House(HOUSE_IDS.Zenor, getHouseDesc(HOUSE_IDS.Zenor), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Destroyers),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Cloning)
-    ])
+    ], true)
 ]
 
 function getHouseById(houseid) {
@@ -160,11 +214,22 @@ for (let house of Houses) {
     }
 }
 
+function getHouseWithRandomOrigin(houseid) {
+    let housesWithOrigin = _.filter(HousesWithOrigins, function(h) { return h.house.id === houseid });
+
+    if (housesWithOrigin.length > 1) {
+        return housesWithOrigin[chooseRandom(0, 1)];
+    } else {
+        return housesWithOrigin[0];
+    }
+}
+
 // tech data
 class Technology {
     id;
     name;
     isImproved;
+    is
     constructor(id, name, isImproved) {
         this.id = id;
         this.name = name;
@@ -190,6 +255,25 @@ function getTechById(techid) {
     return _.find(Technologies, function(t) { return t.id === techid; });
 }
 
+// tableau tech
+class TableauTech {
+    tech;
+    name;
+    hasVPCard;
+    hasNonVPCard;
+    fallenHouse;
+    fallenHouseName;
+
+    constructor(tech, name, hasVPCard, hasNonVPCard, fallenHouse) {
+        this.tech = tech;
+        this.name = name;
+        this.hasVPCard = hasVPCard;
+        this.hasNonVPCard = hasNonVPCard;
+        this.fallenHouse = fallenHouse;
+        this.fallenHouseName = fallenHouse ? fallenHouse.name : '';
+    }
+}
+
 // scenarios
 class Scenario {
     id; // referred to as 'reference no.' in the Compendium
@@ -199,8 +283,9 @@ class Scenario {
     aggression;
     complexity;
     fallenHouses = []; // fallen houses define techs, whether chosen during Cooperative play or specified in Competitive scenarios
+    recommendedHouses = [];
 
-    constructor(id, type, name, numberOfPlayers, aggression, complexity, fallenHouses) {
+    constructor(id, type, name, numberOfPlayers, aggression, complexity, fallenHouses, recommendedHouses) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -208,6 +293,7 @@ class Scenario {
         this.aggression = aggression;
         this.complexity = complexity
         this.fallenHouses = fallenHouses;
+        this.recommendedHouses = recommendedHouses;
     }
 }
 
@@ -243,198 +329,396 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Yarvek)
+    ], 
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Valnis)
     ]),
     new Scenario('X022', SCENARIO_TYPE.Competitive, 'For Peace and Prosperity', 2, 2, 3, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Valnis)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X032', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 2, 2, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.TheGwyn)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X042', SCENARIO_TYPE.Competitive, 'Novarchon Legacy', 2, 3, 3, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Yarvek)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X052', SCENARIO_TYPE.Competitive, 'Art of War', 2, 4, 4, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.TheGwyn),
         getHouseById(HOUSE_IDS.Zenor)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Valnis)
     ]),
     new Scenario('X062', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 2, 4, 3, [
         getHouseById(HOUSE_IDS.TheGwyn),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Valnis)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Yarvek),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X072', SCENARIO_TYPE.Competitive, 'Through the Altered Space', 2, 3, 4, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Valnis)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X082', SCENARIO_TYPE.Competitive, 'Echoes of the Past', 2, 2, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Zenor)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X092', SCENARIO_TYPE.Competitive, 'Bastion of Resistance', 2, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Shiveus)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X102', SCENARIO_TYPE.Competitive, 'Kingdom Come', 2, 1, 2, [
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis),
         getHouseById(HOUSE_IDS.Yarvek)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.TheGwyn)
     ]),
     new Scenario('X112', SCENARIO_TYPE.Competitive, 'Fractures of Space', 2, 2, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Yarvek)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Valnis)
     ]),
     new Scenario('X013', SCENARIO_TYPE.Competitive, 'Second Genesis', 3, 4, 2, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Yarvek)
+    ], 
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Valnis)
     ]),
     new Scenario('X023', SCENARIO_TYPE.Competitive, 'For Peace and Prosperity', 3, 2, 3, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Valnis)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X033', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 3, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.TheGwyn)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X043', SCENARIO_TYPE.Competitive, 'Novarchon Legacy', 3, 4, 3, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Yarvek)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X053', SCENARIO_TYPE.Competitive, 'Art of War', 3, 4, 4, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.TheGwyn),
         getHouseById(HOUSE_IDS.Zenor)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Valnis)
     ]),
     new Scenario('X063', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 3, 4, 3, [
         getHouseById(HOUSE_IDS.TheGwyn),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Valnis)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Yarvek),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X073', SCENARIO_TYPE.Competitive, 'Through the Altered Space', 3, 3, 4, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Valnis)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X083', SCENARIO_TYPE.Competitive, 'Echoes of the Past', 3, 2, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Zenor)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X093', SCENARIO_TYPE.Competitive, 'Bastion of Resistance', 3, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Shiveus)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X103', SCENARIO_TYPE.Competitive, 'Kingdom Come', 3, 1, 2, [
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis),
         getHouseById(HOUSE_IDS.Yarvek)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.TheGwyn)
     ]),
     new Scenario('X113', SCENARIO_TYPE.Competitive, 'Fractures of Space', 3, 2, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Yarvek)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Valnis)
     ]),
     new Scenario('X014', SCENARIO_TYPE.Competitive, 'Second Genesis', 4, 3, 2, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Yarvek)
+    ], 
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Valnis)
     ]),
     new Scenario('X024', SCENARIO_TYPE.Competitive, 'For Peace and Prosperity', 4, 2, 3, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Valnis)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X034', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 4, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.TheGwyn)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X044', SCENARIO_TYPE.Competitive, 'Novarchon Legacy', 4, 4, 3, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Yarvek)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X054', SCENARIO_TYPE.Competitive, 'Art of War', 4, 4, 4, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.TheGwyn),
         getHouseById(HOUSE_IDS.Zenor)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Fenrax),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Valnis)
     ]),
     new Scenario('X064', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 4, 4, 3, [
         getHouseById(HOUSE_IDS.TheGwyn),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Valnis)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Yarvek),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X074', SCENARIO_TYPE.Competitive, 'Through the Altered Space', 4, 3, 4, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Valnis)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X084', SCENARIO_TYPE.Competitive, 'Echoes of the Past', 4, 3, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Zenor)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X094', SCENARIO_TYPE.Competitive, 'Bastion of Resistance', 4, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Shiveus)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Novaris),
+        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X104', SCENARIO_TYPE.Competitive, 'Kingdom Come', 4, 1, 2, [
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis),
         getHouseById(HOUSE_IDS.Yarvek)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.TheGwyn)
     ]),
     new Scenario('X114', SCENARIO_TYPE.Competitive, 'Fractures of Space', 4, 2, 4, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Yarvek)
+    ],
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Kradmor),
+        getHouseById(HOUSE_IDS.Nervo),
+        getHouseById(HOUSE_IDS.Valnis)
     ])
 ]
 
@@ -1042,13 +1326,15 @@ createApp({
         houses: _.clone(Houses),
         housesWithOrigins: _.clone(HousesWithOrigins),
         technologies: _.clone(Technologies),
+        techTableau: [],
+        fourFallenHouses: [],
         invaderState: new PlayerState(1, -1, '', true, _.cloneDeep(Fleets), [], false, 0, false, false, 0, 0),
         defenderState: new PlayerState(2, -1, '', false, _.cloneDeep(Fleets), [], false, 0, false, false, 0, 0),
         results: [],
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "0.46"
+        version: "0.50"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1097,6 +1383,18 @@ createApp({
                 this.chosenScenario = gameState.chosenScenario;
             }
 
+            if (gameState.hasOwnProperty("techTableau") && gameState.techTableau) {
+                this.techTableau = gameState.techTableau;
+            } else {
+                this.techTableau = [];
+            }
+
+            if (gameState.hasOwnProperty("fourFallenHouses") && gameState.fourFallenHouses) {
+                this.fourFallenHouses = gameState.fourFallenHouses;
+            } else {
+                this.fourFallenHouses = [];
+            }
+
             this.computedUpdater++;
         }
     },
@@ -1108,10 +1406,57 @@ createApp({
             ]
         },
         scenariosByTypeAndPlayers: function() {
-
+            let numberOfPlayers = this.numberOfPlayers;
+            let scenarioType = this.scenarioType;
+            let scenariosByTypeAndPlayers = _.filter(Scenarios, function(s) { return s.numberOfPlayers == numberOfPlayers && s.type == scenarioType });
+            return scenariosByTypeAndPlayers;
         }
     },
     methods: {
+        setRandomHouses: function() {
+            if (this.chosenScenario) {
+                let randomHouses = _.cloneDeep(HousesWithOrigins);
+                randomHouses = _.shuffle(randomHouses);
+
+                this.players[0].houseWithOrigin = getHouseWithRandomOrigin(randomHouses[0].house.id);
+
+                if (this.numberOfPlayers > 1) {
+                    this.players[1].houseWithOrigin = getHouseWithRandomOrigin(randomHouses[1].house.id);
+                }
+
+                if (this.numberOfPlayers > 2) {
+                    this.players[2].houseWithOrigin = getHouseWithRandomOrigin(randomHouses[2].house.id);
+                }
+
+                if (this.numberOfPlayers > 3) {
+                    this.players[3].houseWithOrigin = getHouseWithRandomOrigin(randomHouses[3].house.id);
+                }
+            }
+
+            this.computedUpdater++;
+        },
+        setRandomRecommendedHouses: function() {
+            if (this.chosenScenario) {
+                let recommendedHouses = _.cloneDeep(this.chosenScenario.recommendedHouses);
+                recommendedHouses = _.shuffle(recommendedHouses);
+
+                this.players[0].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[0].id);
+
+                if (this.numberOfPlayers > 1) {
+                    this.players[1].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[1].id);
+                }
+
+                if (this.numberOfPlayers > 2) {
+                    this.players[2].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[2].id);
+                }
+
+                if (this.numberOfPlayers > 3) {
+                    this.players[3].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[3].id);
+                }
+            }
+
+            this.computedUpdater++;
+        },
         start: function () {
             if (this.players.length === 4) {
                 if (this.numberOfPlayers < 4) {
@@ -1127,6 +1472,20 @@ createApp({
                 }
             }
 
+            for (let player of this.players) {
+                if (!player.name || player.name.trim() == '') {
+                    alert("Please enter a name for each player.")
+                    return;
+                }
+
+                if (this.chosenScenario) {
+                    if (!player.houseWithOrigin) {
+                        alert("For scenarios, all players must have a chosen house.");
+                        return;
+                    }
+                }
+            }
+
             // setup techs for houses
             for (let i=0; i<this.players.length; i++) {
                 if (this.players[i].houseWithOrigin) {
@@ -1138,6 +1497,85 @@ createApp({
                         this.addTech(i, tech, unusedTechIndex);
                     }
                 }
+            }
+
+            // setup tech tableau
+            if (this.chosenScenario) {
+
+                let allHousesWithoutChosen = _.cloneDeep(Houses);
+                let chosenHouses = this.players.map((p) => { return p.houseWithOrigin.house });
+                
+                for (let house of chosenHouses) {
+                    allHousesWithoutChosen = _.remove(allHousesWithoutChosen, function(h) { return h.id !== house.id });
+                }
+
+                if (this.scenarioType == SCENARIO_TYPE.Solo || this.scenarioType == SCENARIO_TYPE.Cooperative) {
+                    allHousesWithoutChosen = _.shuffle(allHousesWithoutChosen);
+
+                    // draw 4
+                    let fourFallenHouses = [];
+                    fourFallenHouses.push(allHousesWithoutChosen.shift());
+                    fourFallenHouses.push(allHousesWithoutChosen.shift());
+                    fourFallenHouses.push(allHousesWithoutChosen.shift());
+                    fourFallenHouses.push(allHousesWithoutChosen.shift());
+
+                    let numberOfCrackedGlass = _.filter(fourFallenHouses, function (f) { return f.crackedGlassOnFallenHouse });
+
+                    while (numberOfCrackedGlass < 1 || numberOfCrackedGlass > 3) {
+                        if (numberOfCrackedGlass == 0 || numberOfCrackedGlass == 4) {
+                            fourFallenHouses.pop();
+                            fourFallenHouses.push(allHousesWithoutChosen.shift());
+                        }
+
+                        numberOfCrackedGlass = _.filter(fourFallenHouses, function (f) { return f.crackedGlassOnFallenHouse });
+                    }
+
+                    for (let fallenHouse of fourFallenHouses) {
+                        for (let origin of fallenHouse.origins) {
+                            this.techTableau.push(new TableauTech(origin.techid, getTechName(origin.techid), true, true, fallenHouse));
+                        }
+                    }
+
+                    this.fourFallenHouses = fourFallenHouses;
+                }
+
+                if (this.scenarioType == SCENARIO_TYPE.Competitive) {
+                    // setup techs from fallen houses
+                    for (let fallenHouse of this.chosenScenario.fallenHouses) {
+                        for (let origin of fallenHouse.origins) {
+                            this.techTableau.push(new TableauTech(origin.techid, getTechName(origin.techid), true, true, fallenHouse));
+                        }
+                    }
+
+                    this.fourFallenHouses = this.chosenScenario.fallenHouses;
+                }
+
+                // add tech from player houses
+                if (this.numberOfPlayers > 2) {
+                    for (let player of this.players) {
+                        if (player.houseWithOrigin) {
+                            this.techTableau.push(new TableauTech(player.houseWithOrigin.origin.originid, getTechName(player.houseWithOrigin.origin.techid), false, true, player.houseWithOrigin.house));
+                        }
+                    }
+                }
+
+                let shuffledTableau = _.shuffle(this.techTableau);
+
+                if (this.scenarioType == SCENARIO_TYPE.Solo || this.scenarioType == SCENARIO_TYPE.Cooperative) {
+                    shuffledTableau[0].hasVPCard = false;
+                    shuffledTableau[1].hasVPCard = false;
+
+                    if (this.scenarioType == SCENARIO_TYPE.Solo) {
+                        shuffledTableau[2].hasVPCard = false;
+                        shuffledTableau[3].hasNonVPCard = false;
+                        shuffledTableau[4].hasNonVPCard = false;
+                        shuffledTableau[5].hasNonVPCard = false;
+                        shuffledTableau[6].hasNonVPCard = false;
+                        shuffledTableau[7].hasNonVPCard = false;
+                    }
+                }
+
+                this.techTableau = _.orderBy(shuffledTableau, 'fallenHouseName', 'name');
             }
             
             this.pageState = PAGE_STATE.Technologies;
@@ -1313,6 +1751,19 @@ createApp({
 
             event.preventDefault();
             this.saveGameState();
+        },
+        numberOfPlayersChanged: function(numberOfPlayersIndex) {
+            if (this.numberOfPlayers == 1) {
+                this.scenarioType = SCENARIO_TYPE.Solo;
+            } else {
+                this.scenarioType = null;
+            }
+            this.chosenScenario = null;
+            this.computedUpdater++;
+        },
+        scenarioTypeChanged: function(scenarioTypeIndex) {
+            this.chosenScenario = null;
+            this.computedUpdater++;
         },
         calcPlayerChanged: function(calcPlayerChanged) {
             for (let fleet of this.calculationPlayers[calcPlayerChanged].fleets) {
@@ -1934,6 +2385,10 @@ createApp({
                 ];
                 this.resetPlayerStates();
                 this.results = [];
+                this.techTableau = [];
+                this.fourFallenHouses = [];
+                this.scenarioType = SCENARIO_TYPE.Solo;
+                this.chosenScenario = null;
                 this.showResults = false;
             }
             
@@ -1957,6 +2412,8 @@ createApp({
             gameState.numberOfPlayers = this.numberOfPlayers;
             gameState.scenarioType = this.scenarioType;
             gameState.chosenScenario = this.chosenScenario;
+            gameState.techTableau = this.techTableau;
+            gameState.fourFallenHouses = this.fourFallenHouses;
             gameState.players = this.players;
             gameState.invaderState = this.invaderState;
             gameState.defenderState = this.defenderState;

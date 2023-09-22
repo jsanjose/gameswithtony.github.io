@@ -48,12 +48,28 @@
             font-size: 1.2rem;
         }
 
+        small {
+            font-size: 0.8rem;
+        }
+
         button {
             background-color: darkred;
             color: white;
             cursor: pointer;
             border: none;
             padding: 0.5rem;
+        }
+
+        button.button-secondary {
+            background-color: #ccc;
+            color: #000;
+            font-size: 0.9rem;
+        }
+
+        .random-houses {
+            display: flex;
+            text-align: right;
+            justify-content: flex-end;
         }
 
         input[type='text'], input[type='number'], select {
@@ -64,6 +80,10 @@
         select {
             padding: 0.5rem;
             max-width: 150px;
+        }
+
+        select.wide-select {
+            max-width: 200px;
         }
 
         option {
@@ -122,6 +142,19 @@
             font-weight: bold;
         }
 
+        .separation-header {
+            background-color: #ddd;
+            padding: 0.5rem;
+            margin: 0;
+            color: #000;
+            margin: 0 -1rem;
+        }
+
+        .tech-nav {
+            text-align: center;
+            margin: 1rem;
+        }
+
         .tech-list {
             display: flex;
             flex-wrap: wrap;
@@ -154,6 +187,46 @@
         .tech-level {
             font-weight: bold;
             color: #CCCC00;
+        }
+
+        .tableau-explanation {
+            margin-block-end: 1rem;
+            display: block;
+        }
+
+        .fallen-houses {
+            padding-block-end: 1rem;
+        }
+
+        .tableau-tech {
+            padding: 0.5rem;
+            border: solid 1px darkred;
+        }
+
+        .tableau-tech header {
+            font-size: 0.9rem;
+        }
+
+        .tableau-tech footer dl {
+            margin: 0;
+        }
+
+        .tableau-tech footer dl div {
+            display: block;
+            width: 100%;
+        }
+
+        .tableau-tech footer dl dd, .tableau-tech footer dl dt {
+            font-size: 0.75rem;
+            display: inline;
+        }
+
+        .tableau-tech footer dl dt {
+            font-weight: bold;
+        }
+
+        .tableau-tech footer dl dd {
+            margin: 0 0.25rem;
         }
 
         .select-calc-player {
@@ -268,13 +341,37 @@
     <main id="vf" class="limit-container">
         <section v-if="this.pageState === 0">
             <h1>Voidfall Calculator (v{{version}})</h1>
-            <label for="numberOfPlayers"># of players: </label>
-            <select v-model="numberOfPlayers" id="numberOfPlayers">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
+            <p>
+                <label for="numberOfPlayers"># of players: </label>
+                <select v-model="numberOfPlayers" id="numberOfPlayers" @change="numberOfPlayersChanged(numberOfPlayersIndex)">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </p>
+            <p>
+                <label for="scenarioType">Type of game: </label>
+                <select v-model="scenarioType" id="scenarioType" @change="scenarioTypeChanged(scenarioTypeIndex)">
+                    <option value="0" v-if="numberOfPlayers == 1">Solo</option>
+                    <option value="1" v-if="numberOfPlayers > 1">Cooperative</option>
+                    <option value="2" v-if="numberOfPlayers > 1">Competitive</option>
+                </select>
+            </p>
+            <p v-if="scenariosByTypeAndPlayers && scenariosByTypeAndPlayers.length > 0">
+                <label for="scenarioType">Scenario (optional): </label>
+                <select v-model="chosenScenario" id="chosenScenario">
+                    <option v-for="scenario in scenariosByTypeAndPlayers" :value="scenario">
+                        {{ scenario.name }}
+                    </option>
+                </select>
+            </p>
+            <p v-if="chosenScenario && (scenarioType == 0 || scenarioType == 1)" class="random-houses">
+                <button class="button-secondary" v-on:click="setRandomHouses">Set random house<template v-if="scenarioType == 1">s</template></button>
+            </p>
+            <p v-if="chosenScenario && scenarioType == 2" class="random-houses">
+                <button class="button-secondary" v-on:click="setRandomRecommendedHouses">Set random recommended houses</button>
+            </p>
             <section class="margin-md">
                 <article class="player-form">
                     <h2>Player 1</h2>
@@ -284,7 +381,7 @@
                     </p>
                     <p>
                         <label for="player1">House</label>
-                        <select v-model="players[0].houseWithOrigin">
+                        <select v-model="players[0].houseWithOrigin" class="wide-select">
                             <option v-for="houseWithOrigin in housesWithOrigins" :value="houseWithOrigin">
                                 {{ houseWithOrigin.name }}
                             </option>
@@ -355,6 +452,7 @@
         </nav>
         <section v-if="this.pageState === 1">
             <h1>Technologies</h1>
+            <h2 class="separation-header">Player Combat Tech</h2>
             <section v-for="(player, playerIndex) in players" :key="player.id">
                 <h2>{{ player.name }}<template v-if="player.houseWithOrigin">&nbsp;({{ player.houseWithOrigin.house.name }})</template></h2>
                 <section class="tech-list" v-if="player.techs.length > 0">
@@ -362,6 +460,36 @@
                 </section>
                 <section class="tech-list">
                     <p class="tech" v-for="(tech, techIndex) in player.unusedTechs" :key="tech.id" v-on:click="addTech(playerIndex, tech, techIndex)">{{ tech.name }}</p>
+                </section>
+            </section>
+            <section v-if="chosenScenario">
+                <a name="tableau"></a><h2 class="separation-header">Tableau</h2>
+                <small class="tableau-explanation">A tech tableau generated for '{{ chosenScenario.name }}' and the chosen player houses.</small>
+                <section class="fallen-houses">
+                    Fallen Houses: <span v-for="fallenHouse in fourFallenHouses">{{ fallenHouse.name }}&nbsp;&nbsp;</span>
+                </section>
+                <section class="tech-list">
+                    <article v-for="tableauTech in techTableau" class="tableau-tech">
+                        <header>
+                            {{ tableauTech.name }}
+                        </header>
+                        <footer>
+                            <dl>
+                                <div>
+                                    <dt>House:</dt>
+                                    <dd>{{ tableauTech.fallenHouseName }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Card w/ VP?:</dt>
+                                    <dd>{{ tableauTech.hasVPCard ? 'Yes' : 'No' }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Card w/out VP?:</dt>
+                                    <dd>{{ tableauTech.hasNonVPCard ? 'Yes' : 'No' }}</dd>
+                                </div>
+                            </dl>
+                        </footer>
+                    </article>
                 </section>
             </section>
         </section>
