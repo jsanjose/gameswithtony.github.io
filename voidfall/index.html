@@ -69,7 +69,7 @@
         .random-houses {
             display: flex;
             text-align: right;
-            justify-content: flex-end;
+            justify-content: center;
         }
 
         input[type='text'], input[type='number'], select {
@@ -105,7 +105,7 @@
             flex-wrap: wrap;
             padding: 1rem;
             gap: 1rem;
-            border: solid 1px #fff;   
+            border: solid 1px #be0000;   
             margin-block-end: 1rem;
         }
 
@@ -120,6 +120,11 @@
 
         .player-form label {
             margin-inline-end: .25rem;
+            font-size: 0.9rem;
+        }
+
+        .player-form select, .player-form input, .player-form h2 {
+            font-size: 0.9rem;
         }
 
         .menu-links {
@@ -148,6 +153,18 @@
             margin: 0;
             color: #000;
             margin: 0 -1rem;
+        }
+
+        .technologies-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .technologies-header a, .technologies-header a:visited {
+            color: lightblue;
+            display: inline;
+            font-size: 0.8rem;
+            margin-inline-start: 1rem;
         }
 
         .tech-nav {
@@ -190,6 +207,7 @@
         }
 
         .tableau-explanation {
+            margin-block-start: 0.5rem;
             margin-block-end: 1rem;
             display: block;
         }
@@ -327,6 +345,10 @@
             font-size: 0.9rem;
         }
 
+        .margin {
+            margin: 1rem 0;
+        }
+
         .margin-md {
             margin: 2rem 0;
         }
@@ -372,7 +394,7 @@
             <p v-if="chosenScenario && scenarioType == 2" class="random-houses">
                 <button class="button-secondary" v-on:click="setRandomRecommendedHouses">Set random recommended houses</button>
             </p>
-            <section class="margin-md">
+            <section class="margin">
                 <article class="player-form">
                     <h2>Player 1</h2>
                     <p>
@@ -440,6 +462,7 @@
             <section class="notes">
                 <h2>Notes</h2>
                 <ul>
+                    <li>If you choose a scenario, the app will generate the fallen houses and tech tableau for you. You'll find it on the bottom of the 'Tech' page after starting a game.</li>
                     <li>Keep track of players' tech during the game on the Tech page. Tech powers are then included in the calculations.</li>
                     <li>If you are using Carriers, and they deploy Corvettes, simply increase the Corvette count in the calculator before running the calculation. The app does not automatically deploy Corvettes from Carriers.</li>
                     <li>The app shows all possible outcomes, except for variations where you obviously should recall Corvettes but recall something else instead.</li>
@@ -451,7 +474,10 @@
             <a href="#" v-on:click="newgame($event)" class="menu-link">New Game</a>&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="menu-link"  v-on:click="showTech($event)" :class="{  'selected': pageState === 1 }">Tech</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" class="menu-link" v-on:click="showCalculator($event)" :class="{  'selected': pageState === 2 }">Calc</a>
         </nav>
         <section v-if="this.pageState === 1">
-            <h1>Technologies</h1>
+            <header class="technologies-header">
+                <h1>Technologies</h1>
+                <template v-if="chosenScenario"><a href="#tableau">(View Tableau)</a></template>
+            </header>
             <h2 class="separation-header">Player Combat Tech</h2>
             <section v-for="(player, playerIndex) in players" :key="player.id">
                 <h2>{{ player.name }}<template v-if="player.houseWithOrigin">&nbsp;({{ player.houseWithOrigin.house.name }})</template></h2>
@@ -464,7 +490,7 @@
             </section>
             <section v-if="chosenScenario">
                 <a name="tableau"></a><h2 class="separation-header">Tableau</h2>
-                <small class="tableau-explanation">A tech tableau generated for '{{ chosenScenario.name }}' and the chosen player houses.</small>
+                <small class="tableau-explanation">An initial tech tableau generated for '{{ chosenScenario.name }}' and the chosen player houses.</small>
                 <section class="fallen-houses">
                     Fallen Houses: <span v-for="fallenHouse in fourFallenHouses">{{ fallenHouse.name }}&nbsp;&nbsp;</span>
                 </section>
