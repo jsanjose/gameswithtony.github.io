@@ -100,6 +100,28 @@
             margin-top: 0;
         }
 
+        .app-start-header {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            padding-block-start: 1rem;
+        }
+
+        .app-title {
+            margin: 0;
+        }
+
+        .app-version {
+            margin: 0;
+            font-size: 0.8rem;
+        }
+
+        .app-explanation {
+            margin-block-start: 0.1rem;
+            margin-block-end: 1rem;
+            display: block;
+        }
+
         .player-form {
             display: flex;
             flex-wrap: wrap;
@@ -357,12 +379,16 @@
             max-width: 800px;
         }
     </style>
-    <title>Voidfall Calculator</title>
+    <title>Voidfall Helper: House randomizer, tech tableau generator, and combat calculator</title>
 </head>
 <body>
     <main id="vf" class="limit-container">
         <section v-if="this.pageState === 0">
-            <h1>Voidfall Calculator (v{{version}})</h1>
+            <header class="app-start-header">
+                <h1 class="app-title">Voidfall Helper</h1>
+                <p class="app-version">(v{{version}})</p>
+            </header>
+            <small class="app-explanation">House randomizer, tech tableau generator, and combat calculator.</small>
             <p>
                 <label for="numberOfPlayers"># of players: </label>
                 <select v-model="numberOfPlayers" id="numberOfPlayers" @change="numberOfPlayersChanged(numberOfPlayersIndex)">
