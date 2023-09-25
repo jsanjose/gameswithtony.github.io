@@ -386,7 +386,7 @@ createApp({
         selectedSetAsideItem: null,
         stepsItemMoved: 0,
         computedUpdater: 1,
-        version: "0.25"
+        version: "0.26"
     } },
     watch: {
         
@@ -517,10 +517,10 @@ createApp({
         selectItem(item, event) {
             if (this.selectedItem === item) {
                 this.selectedItem = null; // deselect on second tap
-                this.stepsItemMoved = 0;
             } else {
                 this.selectedItem = item;
             }
+            this.stepsItemMoved = 0;
             this.selectedSetAsideItem = null;
             this.saveGameState();
             this.computedUpdater++;

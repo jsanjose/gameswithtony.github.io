@@ -331,7 +331,7 @@
                 <button v-on:click="returnItemAsideToGrid($event, 1)" v-if="currentAutomaGridSide.length > 1">2nd Row</button>&nbsp;&nbsp;&nbsp;
                 <button v-on:click="deselectSetAsideItem($event)" style="border-color: #000;">&nbsp;X&nbsp;</button>
             </section>
-            <section v-if="canCollapse && !selectedItem" class="grid-buttons">
+            <section v-if="canCollapse && !selectedItem && !selectedSetAsideItem" class="grid-buttons">
                 <button v-on:click="collapse($event)">Collapse</button>
             </section>
             <a href="#" v-on:click="setItemTypeInFocus(0)" :class="[{'bold': itemTypeInFocus == 0}]">Actions</a>
