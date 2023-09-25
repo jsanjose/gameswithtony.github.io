@@ -226,7 +226,7 @@
             align-items: center;
             position: fixed;
             bottom: 0;
-            padding: 1rem;
+            padding: 0.5rem 1rem 1rem 1rem;
             width: 100vw;
             background-color: #333;
             border-top: solid 1px #47443f;
@@ -270,7 +270,7 @@
 
         .move-item-buttons p {
             margin-block-start: 0;
-            margin-block-end: 0.25rem;
+            margin-block-end: 1rem;
         }
 
         .move-item-buttons button, .grid-buttons button {
@@ -319,7 +319,7 @@
         </section>
         <nav class="lower-menu">
             <section v-if="selectedItem" class="move-item-buttons">
-                <p>{{ selectedItem.name }}</p>
+                <p>{{ selectedItem.name }}<template v-if="stepsItemMoved != 0">&nbsp;&nbsp;(<template v-if="stepsItemMoved < 0">&darr;</template><template v-if="stepsItemMoved > 0">&uarr;</template> {{ Math.abs(stepsItemMoved) }})</template></p>
                 <button v-on:click="moveSelectedItemUp($event)">Up</button>&nbsp;&nbsp;&nbsp;
                 <button v-on:click="moveSelectedItemDown($event)">Down</button>&nbsp;&nbsp;&nbsp;
                 <button v-on:click="setSelectedItemAside($event)" v-if="itemTypeInFocus == 1 || (itemTypeInFocus == 0 && selectedItem.id == 3) || (itemTypeInFocus == 0 && selectedItem.id == 9)">Set Aside</button>&nbsp;&nbsp;&nbsp;

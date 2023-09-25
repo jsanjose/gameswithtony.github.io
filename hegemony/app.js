@@ -384,8 +384,9 @@ createApp({
         itemTypeInFocus: PRIORITY_GRID_ITEM_TYPE.Action,
         selectedItem: null,
         selectedSetAsideItem: null,
+        stepsItemMoved: 0,
         computedUpdater: 1,
-        version: "0.2"
+        version: "0.25"
     } },
     watch: {
         
@@ -405,6 +406,10 @@ createApp({
             this.itemTypeInFocus = gameState.itemTypeInFocus;
             this.selectedItem = gameState.selectedItem;
             this.selectedSetAsideItem = gameState.selectedSetAsideItem;
+
+            if (gameState.hasOwnProperty("stepsItemMoved")) {
+                this.stepsItemMoved = gameState.stepsItemMoved;
+            }
         }
     },
     computed: {
@@ -469,6 +474,7 @@ createApp({
             gameState.itemTypeInFocus = this.itemTypeInFocus;
             gameState.selectedItem = this.selectedItem;
             gameState.selectedSetAsideItem = this.selectedSetAsideItem;
+            gameState.stepsItemMoved = this.stepsItemMoved
 
             localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
             this.computedUpdater++;
@@ -484,6 +490,7 @@ createApp({
                 this.automaInFocus = PLAYER_CLASS.Capitalist;
                 this.itemTypeInFocus = PRIORITY_GRID_ITEM_TYPE.Action;
                 this.selectedItem = null;
+                this.stepsItemMoved = 0;
                 this.selectedSetAsideItem = null;
                 this.saveGameState();
                 this.computedUpdater++;
@@ -492,17 +499,29 @@ createApp({
         },
         setAutomaInFocus(index) {
             this.selectedItem = null;
+            this.selectedSetAsideItem = null;
+            this.stepsItemMoved = 0;
             this.saveGameState();
             this.computedUpdater++;
         },
         setItemTypeInFocus(itemtypeid) {
-            if (this.itemTypeInFocus != itemtypeid) this.selectedItem = null;
+            if (this.itemTypeInFocus != itemtypeid) {
+                this.selectedItem = null;
+                this.selectedSetAsideItem = null;
+                this.stepsItemMoved = 0;
+            }
             this.itemTypeInFocus = itemtypeid;
             this.saveGameState();
             this.computedUpdater++;
         },
         selectItem(item, event) {
-            this.selectedItem = item;
+            if (this.selectedItem === item) {
+                this.selectedItem = null; // deselect on second tap
+                this.stepsItemMoved = 0;
+            } else {
+                this.selectedItem = item;
+            }
+            this.selectedSetAsideItem = null;
             this.saveGameState();
             this.computedUpdater++;
             event.preventDefault();
@@ -510,6 +529,7 @@ createApp({
         moveSelectedItemUp(event) {
             let item = this.selectedItem;
             this.currentAutoma.moveGridItemUp(item.griditemtype, item.id, 1);
+            this.stepsItemMoved++;
             this.saveGameState();
             this.computedUpdater++;
             event.preventDefault();
@@ -517,6 +537,7 @@ createApp({
         moveSelectedItemDown(event) {
             let item = this.selectedItem;
             this.currentAutoma.moveGridItemDown(item.griditemtype, item.id, 1);
+            this.stepsItemMoved--;
             this.saveGameState();
             this.computedUpdater++;
             event.preventDefault();
@@ -525,18 +546,25 @@ createApp({
             let item = this.selectedItem;
             this.currentAutoma.setItemAside(item.griditemtype, item.id);
             this.selectedItem = null;
+            this.stepsItemMoved = 0;
             this.saveGameState();
             this.computedUpdater++;
             event.preventDefault();
         },
         deselectItem(event) {
             this.selectedItem = null;
+            this.stepsItemMoved = 0;
             this.saveGameState();
             this.computedUpdater++;
             event.preventDefault();
         },
         selectItemSetAside(item, event) {
-            this.selectedSetAsideItem = item;
+            if (this.selectedSetAsideItem === item) {
+                this.selectedSetAsideItem = null; // deselect on second tap
+            } else {
+                this.selectedSetAsideItem = item;
+            }
+            this.selectedItem = null;
             this.saveGameState();
             this.computedUpdater++;
             event.preventDefault();
