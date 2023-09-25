@@ -178,7 +178,12 @@ class Automa {
                             new PriorityGridItem(getPolicyTypeById(POLICY_TYPE.Education)),
                         ]
                     ]
-                )
+                );
+
+                this.prioritygrid.policiesaside = [
+                    new PriorityGridItem(getPolicyTypeById(POLICY_TYPE.Taxation)),
+                    new PriorityGridItem(getPolicyTypeById(POLICY_TYPE.Immigration))
+                ];
             }
 
             if (playerclass === PLAYER_CLASS.Capitalist) {
@@ -206,7 +211,12 @@ class Automa {
                             new PriorityGridItem(getPolicyTypeById(POLICY_TYPE.Taxation))
                         ]
                     ]
-                )
+                );
+
+                this.prioritygrid.policiesaside = [
+                    new PriorityGridItem(getPolicyTypeById(POLICY_TYPE.FiscalPolicy)),
+                    new PriorityGridItem(getPolicyTypeById(POLICY_TYPE.Education))
+                ];
             }
 
             if (playerclass === PLAYER_CLASS.Middle) {
@@ -231,7 +241,13 @@ class Automa {
                             new PriorityGridItem(getPolicyTypeById(POLICY_TYPE.Immigration))
                         ]
                     ]
-                )
+                );
+
+                this.prioritygrid.policiesaside = [
+                    new PriorityGridItem(getPolicyTypeById(POLICY_TYPE.LaborMarket)),
+                    new PriorityGridItem(getPolicyTypeById(POLICY_TYPE.HealthcareAndBenefits)),
+                    new PriorityGridItem(getPolicyTypeById(POLICY_TYPE.ForeignTrade))
+                ];
             }
         }
     }
@@ -369,7 +385,7 @@ createApp({
         selectedItem: null,
         selectedSetAsideItem: null,
         computedUpdater: 1,
-        version: "0.1"
+        version: "0.2"
     } },
     watch: {
         
