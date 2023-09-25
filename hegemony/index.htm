@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             /* policies */
@@ -32,6 +32,27 @@
             --state: #939598;
             --grey: #b2b2b2;
 
+            /* actions */
+            --aw: #ffcc00;
+            --bgs: #94c11f;
+            --pb: #a4acb1;
+            --dem: #c00d0d;
+            --str: #e30613;
+            --sa: #ea5297;
+            --lb: #951b82;
+            --bc: #008bd1;
+            --sfm: #e73431;
+            --sc: #f09400;
+
+            /* policies */
+            --fp: #0085b9;
+            --lm: #7d73a3;
+            --tax: #b15099;
+            --hb: #c00d0d;
+            --edu: #ea8d00;
+            --ft: #ac8859;
+            --imm: #70706f;
+
             /* items */
             --influence: #951b81;
             --food: #80923e;
@@ -49,22 +70,278 @@
         body {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
             min-height: 100vh;
             background-color: #000;
             padding-bottom: 150px;
         }
 
+        main {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .app-header {
+            padding: 0 1rem;
+        }
+
+        .app-header h1 {
+            margin-block-end: 0;
+        }
+
+        .app-header p {
+            margin: 0;
+            padding: 0.25rem 0;
+            font-size: 0.8rem;
+        }
+
         h1, h2 {
             font-weight: 400;
+        }
+
+        .limit-container {
+            max-width: 350px;
+            min-width: 350px;
+        }
+
+        .priority-grid {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            flex-direction: column-reverse;
+        }
+
+        .priority-grid-row {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 1rem;
+            overflow-x: auto;
+        }
+        
+        .priority-grid.priority-grid--actions .priority-grid-row {
+            flex-direction: row-reverse;
+            border-inline-end: solid 2px #f9b234;
+            padding-inline-end: 1rem;
+        }
+
+        .priority-grid.priority-grid--policies .priority-grid-row {
+            flex-direction: row;
+            border-inline-start: solid 2px #f9b234;
+            padding-inline-start: 1rem;
+        }
+
+        .item {
+            width: 60px;
+            max-width: 60px;
+            min-width: 60px;
+            border: solid 1px #000;
+            color: #fff;
+            padding: 8px 7px;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        a.item, a.item:visited {
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .item--selected {
+            border: solid 1px #fff;
+        }
+
+        .item--aw {
+            background-color: var(--aw);
+        }
+
+        .item--bgs {
+            background-color: var(--bgs);
+        }
+
+        .item--pb {
+            background-color: var(--pb);
+        }
+
+        .item--dem {
+            background-color: var(--dem);
+        }
+
+        .item--str {
+            background-color: var(--str);
+        }
+
+        .item--sa {
+            background-color: var(--sa);
+        }
+
+        .item--lb {
+            background-color: var(--lb);
+        }
+
+        .item--bc {
+            background-color: var(--bc);
+        }
+
+        .item--sfm {
+            background-color: var(--sfm);
+        }
+
+        .item--sc {
+            background-color: var(--sc);
+        }
+
+        .item--fp {
+            background-color: var(--fp);
+        }
+
+        .item--lm {
+            background-color: var(--lm);
+        }
+
+        .item--tax {
+            background-color: var(--tax);
+        }
+
+        .item--hb {
+            background-color: var(--hb);
+        }
+
+        .item--edu {
+            background-color: var(--edu);
+        }
+
+        .item--ft {
+            background-color: var(--ft);
+        }
+
+        .item--imm {
+            background-color: var(--imm);
+        }
+
+        .lower-menu {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            padding: 1rem;
+            width: 100vw;
+            background-color: #333;
+            border-top: solid 1px #47443f;
+            margin: 0;
+            gap: 1rem;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .items-set-aside-section {
+            margin: 0 2rem;
+        }
+
+        .items-set-aside {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .new-game {
+            margin-block-start: 2rem;
+        }
+
+        .new-game a, .new-game a:visited {
+            color: #be0000;
+            font-size: 0.9rem;
+        }
+
+        .grid-buttons {
+            width: 100vw;
+            margin: 0;
+            padding-bottom: 0.5rem;
+        }
+
+        .move-item-buttons {
+            width: 100vw;
+            margin: 0;
+            border-bottom: solid 1px #fff;
+            padding-bottom: 0.5rem;
+        }
+
+        .move-item-buttons p {
+            margin-block-start: 0;
+            margin-block-end: 0.25rem;
+        }
+
+        .move-item-buttons button, .grid-buttons button {
+            color: #fff;
+            background-color: #333;
+            border: solid 1px #fff;
+            padding: 0.25rem 0.5rem;
+        }
+
+        select {
+            padding: 0.5rem;
+        }
+
+        select, option {
+            color: #000;
+        }
+
+        .bold {
+            font-weight: bold;
         }
     </style>
     <title>Hegemony Digital Automa</title>
 </head>
 <body>
-    <main id="hg" class="limit-container">
-        <h1>Hegemony Digital Automa</h1>
+    <main id="hg">
+        <header class="app-header">
+            <h1>Hegemony Automa Helper (v{{ version }})</h1>
+            <p>Top Two: {{ topTwoDesc }}</p>
+        </header>
+        <section class="limit-container">
+            <section class="priority-grid" :class="itemTypeInFocusClass">
+                <section class="priority-grid-row" v-for="row in currentAutomaGridSide">
+                    <a class="item" :class="[action.item.cssclass, (selectedItem && action.item.id == selectedItem.id && action.item.griditemtype == selectedItem.griditemtype) ? 'item--selected' : '']" v-for="action in row" href="#" v-on:click="selectItem(action.item, $event)">{{ action.item.acronym }}</a>
+                    <a class="item" v-if="row.length == 0" style="border: none;">&nbsp;</a>
+                </section>
+            </section>
+        </section>
+        <section v-if="currentAutomaGridSideSetAside.length > 0" class="items-set-aside-section">
+            <h2>Set Aside</h2>
+            <div class="items-set-aside">
+                <a class="item" :class="[action.item.cssclass, (selectedSetAsideItem && action.item.id == selectedSetAsideItem.id && action.item.griditemtype == selectedSetAsideItem.griditemtype) ? 'item--selected' : '']" v-for="action in currentAutomaGridSideSetAside" href="#" v-on:click="selectItemSetAside(action.item, $event)">{{ action.item.acronym }}</a>
+            </div>
+        </section>
+        <section class="new-game">
+            <a href="#" v-on:click="newgame($event)">New Game</a>
+        </section>
+        <nav class="lower-menu">
+            <section v-if="selectedItem" class="move-item-buttons">
+                <p>{{ selectedItem.name }}</p>
+                <button v-on:click="moveSelectedItemUp($event)">Up</button>&nbsp;&nbsp;&nbsp;
+                <button v-on:click="moveSelectedItemDown($event)">Down</button>&nbsp;&nbsp;&nbsp;
+                <button v-on:click="setSelectedItemAside($event)" v-if="itemTypeInFocus == 1 || (itemTypeInFocus == 0 && selectedItem.id == 3) || (itemTypeInFocus == 0 && selectedItem.id == 9)">Set Aside</button>&nbsp;&nbsp;&nbsp;
+                <button v-on:click="deselectItem($event)" style="border-color: #000;">&nbsp;X&nbsp;</button>
+            </section>
+            <section v-if="selectedSetAsideItem" class="move-item-buttons">
+                <p>{{ selectedSetAsideItem.name }}</p>
+                <button v-on:click="returnItemAsideToGrid($event, 0)">1st Row</button>&nbsp;&nbsp;&nbsp;
+                <button v-on:click="returnItemAsideToGrid($event, 1)" v-if="currentAutomaGridSide.length > 1">2nd Row</button>&nbsp;&nbsp;&nbsp;
+                <button v-on:click="deselectSetAsideItem($event)" style="border-color: #000;">&nbsp;X&nbsp;</button>
+            </section>
+            <section v-if="canCollapse && !selectedItem" class="grid-buttons">
+                <button v-on:click="collapse($event)">Collapse</button>
+            </section>
+            <a href="#" v-on:click="setItemTypeInFocus(0)" :class="[{'bold': itemTypeInFocus == 0}]">Actions</a>
+            <select v-model="automaInFocus" @change="setAutomaInFocus(index)">
+                <option value="0">Working</option>
+                <option value="1">Middle</option>
+                <option value="2">Capitalist</option>
+            </select>
+            <a href="#" v-on:click="setItemTypeInFocus(1)" :class="[{'bold': itemTypeInFocus == 1}]">Policies</a>
+        </nav>
     </main>
     <script src="app.js"></script>
 </body>

@@ -1,4 +1,5 @@
 const LOCALSTORAGENAME = "hggamestate";
+const PAGE_STATE = { StartScreen: 0, Grid: 1 };
 const PLAYER_TYPE = { Human: 0, SimpleAutoma: 0, AdvancedAutoma: 1 };
 const PLAYER_CLASS = { Working: 0, Middle: 1, Capitalist: 2, State: 3 };
 const ACTION_TYPE = { AssignWorkers: 0, BuildCompany: 1, BuyGoodsAndServices: 2, Demonstration: 3, Lobby: 4, ProposeBill: 5, SellCompany: 6, SellToTheForeignMarket: 7, SpecialAction: 8, Strike: 9 };
@@ -47,29 +48,43 @@ function getPolicyTypeName(policytypeid) {
     }
 }
 
+function getPolicyTypeAcronym(policytypeid) {
+    switch (policytypeid) {
+        case POLICY_TYPE.FiscalPolicy: return 'FP';
+        case POLICY_TYPE.LaborMarket: return 'LM';
+        case POLICY_TYPE.Taxation: return 'TAX';
+        case POLICY_TYPE.HealthcareAndBenefits: return 'H&B';
+        case POLICY_TYPE.Education: return 'EDU';
+        case POLICY_TYPE.ForeignTrade: return 'FT';
+        case POLICY_TYPE.Immigration: return 'IMM';
+    }
+}
+
 class ActionType {
     id;
     acronym;
     griditemtype;
-    constructor(id) {
+    cssclass;
+    constructor(id, cssclass) {
         this.id = id;
         this.name = getActionTypeName(id);
         this.acronym = getActionTypeAcronym(id);
+        this.cssclass = cssclass;
         this.griditemtype = PRIORITY_GRID_ITEM_TYPE.Action;
     }
 }
 
 const ActionTypes = [
-    new ActionType(ACTION_TYPE.BuildCompany),
-    new ActionType(ACTION_TYPE.BuyGoodsAndServices),
-    new ActionType(ACTION_TYPE.Demonstration),
-    new ActionType(ACTION_TYPE.Lobby),
-    new ActionType(ACTION_TYPE.ProposeBill),
-    new ActionType(ACTION_TYPE.SellCompany),
-    new ActionType(ACTION_TYPE.SellToTheForeignMarket),
-    new ActionType(ACTION_TYPE.AssignWorkers),
-    new ActionType(ACTION_TYPE.SpecialAction),
-    new ActionType(ACTION_TYPE.Strike)
+    new ActionType(ACTION_TYPE.BuildCompany, 'item--bc'),
+    new ActionType(ACTION_TYPE.BuyGoodsAndServices, 'item--bgs'),
+    new ActionType(ACTION_TYPE.Demonstration, 'item--dem'),
+    new ActionType(ACTION_TYPE.Lobby, 'item--lb'),
+    new ActionType(ACTION_TYPE.ProposeBill, 'item--pb'),
+    new ActionType(ACTION_TYPE.SellCompany, 'item--sc'),
+    new ActionType(ACTION_TYPE.SellToTheForeignMarket, 'item--sfm'),
+    new ActionType(ACTION_TYPE.AssignWorkers, 'item--aw'),
+    new ActionType(ACTION_TYPE.SpecialAction, 'item--sa'),
+    new ActionType(ACTION_TYPE.Strike, 'item--str')
 ]
 
 function getActionTypeById(actiontypeid) {
@@ -81,22 +96,26 @@ class PolicyType {
     name;
     isWelfareState;
     griditemtype;
-    constructor(id, isWelfareState) {
+    acronym;
+    cssclass;
+    constructor(id, isWelfareState, cssclass, acronym) {
         this.id = id;
         this.name = getPolicyTypeName(id);
         this.isWelfareState = isWelfareState;
+        this.acronym = getPolicyTypeAcronym(id);
+        this.cssclass = cssclass;
         this.griditemtype = PRIORITY_GRID_ITEM_TYPE.Policy;
     }
 }
 
 const PolicyTypes = [
-    new PolicyType(POLICY_TYPE.FiscalPolicy, false),
-    new PolicyType(POLICY_TYPE.LaborMarket, false),
-    new PolicyType(POLICY_TYPE.Taxation, false),
-    new PolicyType(POLICY_TYPE.HealthcareAndBenefits, true),
-    new PolicyType(POLICY_TYPE.Education, true),
-    new PolicyType(POLICY_TYPE.ForeignTrade, false),
-    new PolicyType(POLICY_TYPE.Immigration, false)
+    new PolicyType(POLICY_TYPE.FiscalPolicy, false, 'item--fp'),
+    new PolicyType(POLICY_TYPE.LaborMarket, false, 'item--lm'),
+    new PolicyType(POLICY_TYPE.Taxation, false, 'item--tax'),
+    new PolicyType(POLICY_TYPE.HealthcareAndBenefits, true, 'item--hb'),
+    new PolicyType(POLICY_TYPE.Education, true, 'item--edu'),
+    new PolicyType(POLICY_TYPE.ForeignTrade, false, 'item--ft'),
+    new PolicyType(POLICY_TYPE.Immigration, false, 'item--imm')
 ]
 
 function getPolicyTypeById(policytypeid) {
@@ -114,6 +133,8 @@ class PriorityGridItem {
 class PriorityGrid {
     actions = [[]]; // 2D array
     policies = [[]]; // 2D array
+    actionsaside = [];
+    policiesaside = [];
     constructor(actions, policies) {
         this.actions = actions;
         this.policies = policies;
@@ -125,11 +146,11 @@ class Automa {
     automatype;
     playerclass;
     prioritygrid;
-    setasideitems;
-    constructor(automatype, playerclass, prioritygrid, setasideitems) {
+    constructor(automatype, playerclass, prioritygrid) {
         this.automatype = automatype;
         this.playerclass = playerclass;
-        this.setasideitems = setasideitems;
+
+        if (prioritygrid) this.prioritygrid = prioritygrid;
         
         if (!prioritygrid && automatype == PLAYER_TYPE.AdvancedAutoma) { // starting grids
             if (playerclass === PLAYER_CLASS.Working) {
@@ -219,6 +240,11 @@ class Automa {
         return griditemtype === PRIORITY_GRID_ITEM_TYPE.Action ? this.prioritygrid.actions : this.prioritygrid.policies;
     }
 
+    getGridAreaSetAside(griditemtype) {
+        return griditemtype === PRIORITY_GRID_ITEM_TYPE.Action ? this.prioritygrid.actionsaside : this.prioritygrid.policiesaside;
+    }
+
+
     moveGridItemUp(griditemtype, itemid, numberOfMoves) {
         let gridarea = this.getGridArea(griditemtype);
 
@@ -244,17 +270,75 @@ class Automa {
         gridarea[row].splice(rowIndex, 1);
     }
 
-    collapseEmptyRows(griditemtype) {
+    moveGridItemDown(griditemtype, itemid, numberOfMoves) {
         let gridarea = this.getGridArea(griditemtype);
-        _.remove(gridarea, function(g) { return !_.isArray(g) || g.length === 0 });
+
+        let row = 0;
+        let rowIndex = -1;
+        for (let gridarearow of gridarea) {
+            rowIndex = _.findIndex(gridarearow, function(r) { return r.item.id === itemid });    
+            if (rowIndex > -1) {
+                break;
+            }
+            row++;
+        }
+
+        let item = gridarea[row][rowIndex];
+
+        let rowsAdded = 0;
+        let origRow = row;
+        for (let i=origRow; i < numberOfMoves; i++) {
+            if (origRow - numberOfMoves < 0) { // add new row if needed
+                gridarea.unshift([]);
+                rowsAdded++;
+                row++;
+            }
+        }
+
+        gridarea[row - numberOfMoves].push(item);
+        gridarea[row].splice(rowIndex, 1);
     }
 
     setItemAside(griditemtype, itemid) {
+        let gridarea = this.getGridArea(griditemtype);
+        let gridareaaside = this.getGridAreaSetAside(griditemtype);
 
+        let row = 0;
+        let rowIndex = -1;
+        for (let gridarearow of gridarea) {
+            rowIndex = _.findIndex(gridarearow, function(r) { return r.item.id === itemid });    
+            if (rowIndex > -1) {
+                break;
+            }
+            row++;
+        }
+
+        let item = gridarea[row][rowIndex];
+
+        gridareaaside.push(item);
+        gridarea[row].splice(rowIndex, 1);
     }
 
-    returnItemToGrid(griditemtype, itemid) {
-        
+    returnItemToGrid(griditemtype, itemid, placement) {
+        let gridarea = this.getGridArea(griditemtype);
+        let gridareaaside = this.getGridAreaSetAside(griditemtype);
+        let asideitem = _.find(gridareaaside, function(a) { return a.item.id === itemid });    
+
+        if (placement == 1 && gridarea.length > 1 && asideitem) { // end of second from bottom row
+            gridarea[1].push(asideitem);
+            _.remove(gridareaaside, function(a) { return a.item.id === itemid });
+            return;
+        }
+
+        if (gridarea.length > 0 && asideitem) { // end of bottom row
+            gridarea[0].push(asideitem);
+            _.remove(gridareaaside, function(a) { return a.item.id === itemid });
+        }
+    }
+
+    collapseEmptyRows(griditemtype) {
+        let gridarea = this.getGridArea(griditemtype);
+        _.remove(gridarea, function(g) { return !_.isArray(g) || g.length === 0 });
     }
 }
 
@@ -275,12 +359,17 @@ const { createApp } = Vue
 createApp({
     data() { return {
         numberOfPlayersIncludingAutoma: 1,
+        pageState: PAGE_STATE.Grid,
         players: [],
         WorkingClassAutoma: new Automa(PLAYER_TYPE.AdvancedAutoma, PLAYER_CLASS.Working),
         CapitalistClassAutoma: new Automa(PLAYER_TYPE.AdvancedAutoma, PLAYER_CLASS.Capitalist),
         MiddleClassAutoma: new Automa(PLAYER_TYPE.AdvancedAutoma, PLAYER_CLASS.Middle),
+        automaInFocus: PLAYER_CLASS.Capitalist,
+        itemTypeInFocus: PRIORITY_GRID_ITEM_TYPE.Action,
+        selectedItem: null,
+        selectedSetAsideItem: null,
         computedUpdater: 1,
-        version: "0.01"
+        version: "0.1"
     } },
     watch: {
         
@@ -289,25 +378,172 @@ createApp({
         this.computedUpdater++;
         if (localStorage.getItem(LOCALSTORAGENAME)) {
             let gameState = JSON.parse(localStorage.getItem(LOCALSTORAGENAME));
-            this.computedUpdater++;
+
+            this.numberOfPlayersIncludingAutoma = gameState.numberOfPlayersIncludingAutoma;
+            this.pageState = gameState.pageState;
+            this.players = gameState.players;
+            this.WorkingClassAutoma = new Automa(gameState.WorkingClassAutoma.automatype, gameState.WorkingClassAutoma.playerclass, gameState.WorkingClassAutoma.prioritygrid);
+            this.CapitalistClassAutoma = new Automa(gameState.CapitalistClassAutoma.automatype, gameState.CapitalistClassAutoma.playerclass, gameState.CapitalistClassAutoma.prioritygrid);
+            this.MiddleClassAutoma = new Automa(gameState.MiddleClassAutoma.automatype, gameState.MiddleClassAutoma.playerclass, gameState.MiddleClassAutoma.prioritygrid);
+            this.automaInFocus = gameState.automaInFocus;
+            this.itemTypeInFocus = gameState.itemTypeInFocus;
+            this.selectedItem = gameState.selectedItem;
+            this.selectedSetAsideItem = gameState.selectedSetAsideItem;
         }
     },
     computed: {
-        
+        currentAutoma: function() {
+            if (this.automaInFocus == PLAYER_CLASS.Working) return this.WorkingClassAutoma;
+            if (this.automaInFocus == PLAYER_CLASS.Middle) return this.MiddleClassAutoma;
+            if (this.automaInFocus == PLAYER_CLASS.Capitalist) return this.CapitalistClassAutoma;
+        },
+        currentAutomaGridSide: function() {
+            if (this.itemTypeInFocus == PRIORITY_GRID_ITEM_TYPE.Action) return this.currentAutoma.prioritygrid.actions;
+            if (this.itemTypeInFocus == PRIORITY_GRID_ITEM_TYPE.Policy) return this.currentAutoma.prioritygrid.policies;
+        },
+        currentAutomaGridSideSetAside: function() {
+            if (this.itemTypeInFocus == PRIORITY_GRID_ITEM_TYPE.Action) return this.currentAutoma.prioritygrid.actionsaside;
+            if (this.itemTypeInFocus == PRIORITY_GRID_ITEM_TYPE.Policy) return this.currentAutoma.prioritygrid.policiesaside;
+        },
+        itemTypeInFocusClass: function() {
+            return this.itemTypeInFocus == PRIORITY_GRID_ITEM_TYPE.Action ? "priority-grid--actions" : "priority-grid--policies"
+        },
+        canCollapse: function() {
+            let canCollapse = false;
+            for (let gridrow of this.currentAutomaGridSide) {
+                if (!_.isArray(gridrow) || gridrow.length === 0) {
+                    return true;
+                }
+            }
+            return canCollapse;
+        },
+        topTwoDesc: function() {
+            let topTwo = [];
+            let reversedGridSide = _.reverse(_.cloneDeep(this.currentAutomaGridSide));
+            for (let gridrow of reversedGridSide) {
+                for (let griditem of gridrow) {
+                    topTwo.push(griditem);
+                    if (topTwo.length == 2) break;
+                }
+                if (topTwo.length == 2) break;
+            }
+
+            let topTwoDesc = '';
+            for (let top of topTwo) {
+                topTwoDesc = topTwoDesc + top.item.name + ', '
+            }
+
+            return topTwoDesc.slice(0, -2);
+        }
     },
     methods: {
         start: function() {
 
         },
-        newgame: function() {
-
-        },
         saveGameState: function() {
             let gameState = {};
 
-            localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
+            gameState.numberOfPlayersIncludingAutoma = this.numberOfPlayersIncludingAutoma;
+            gameState.pageState = this.pageState;
+            gameState.players = this.players;
+            gameState.WorkingClassAutoma = this.WorkingClassAutoma;
+            gameState.CapitalistClassAutoma = this.CapitalistClassAutoma;
+            gameState.MiddleClassAutoma = this.MiddleClassAutoma;
+            gameState.automaInFocus = this.automaInFocus;
+            gameState.itemTypeInFocus = this.itemTypeInFocus;
+            gameState.selectedItem = this.selectedItem;
+            gameState.selectedSetAsideItem = this.selectedSetAsideItem;
 
+            localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(gameState));
             this.computedUpdater++;
+        },
+        newgame: function(event) {
+            if (confirm('Are you sure you want to start a new game?\n\nThis will reset ALL automas.')) {
+                this.numberOfPlayersIncludingAutoma = 1;
+                this.pageState = PAGE_STATE.Grid;
+                this.players = [];
+                this.WorkingClassAutoma = new Automa(PLAYER_TYPE.AdvancedAutoma, PLAYER_CLASS.Working);
+                this.CapitalistClassAutoma = new Automa(PLAYER_TYPE.AdvancedAutoma, PLAYER_CLASS.Capitalist);
+                this.MiddleClassAutoma = new Automa(PLAYER_TYPE.AdvancedAutoma, PLAYER_CLASS.Middle);
+                this.automaInFocus = PLAYER_CLASS.Capitalist;
+                this.itemTypeInFocus = PRIORITY_GRID_ITEM_TYPE.Action;
+                this.selectedItem = null;
+                this.selectedSetAsideItem = null;
+                this.saveGameState();
+                this.computedUpdater++;
+            }
+            event.preventDefault();
+        },
+        setAutomaInFocus(index) {
+            this.selectedItem = null;
+            this.saveGameState();
+            this.computedUpdater++;
+        },
+        setItemTypeInFocus(itemtypeid) {
+            if (this.itemTypeInFocus != itemtypeid) this.selectedItem = null;
+            this.itemTypeInFocus = itemtypeid;
+            this.saveGameState();
+            this.computedUpdater++;
+        },
+        selectItem(item, event) {
+            this.selectedItem = item;
+            this.saveGameState();
+            this.computedUpdater++;
+            event.preventDefault();
+        },
+        moveSelectedItemUp(event) {
+            let item = this.selectedItem;
+            this.currentAutoma.moveGridItemUp(item.griditemtype, item.id, 1);
+            this.saveGameState();
+            this.computedUpdater++;
+            event.preventDefault();
+        },
+        moveSelectedItemDown(event) {
+            let item = this.selectedItem;
+            this.currentAutoma.moveGridItemDown(item.griditemtype, item.id, 1);
+            this.saveGameState();
+            this.computedUpdater++;
+            event.preventDefault();
+        },
+        setSelectedItemAside(event) {
+            let item = this.selectedItem;
+            this.currentAutoma.setItemAside(item.griditemtype, item.id);
+            this.selectedItem = null;
+            this.saveGameState();
+            this.computedUpdater++;
+            event.preventDefault();
+        },
+        deselectItem(event) {
+            this.selectedItem = null;
+            this.saveGameState();
+            this.computedUpdater++;
+            event.preventDefault();
+        },
+        selectItemSetAside(item, event) {
+            this.selectedSetAsideItem = item;
+            this.saveGameState();
+            this.computedUpdater++;
+            event.preventDefault();
+        },
+        deselectSetAsideItem(event) {
+            this.selectedSetAsideItem = null;
+            this.saveGameState();
+            this.computedUpdater++;
+            event.preventDefault();
+        },
+        returnItemAsideToGrid(event, placement) {
+            let item = this.selectedSetAsideItem;
+            this.currentAutoma.returnItemToGrid(item.griditemtype, item.id, placement);
+            this.selectedSetAsideItem = null;
+            this.saveGameState();
+            this.computedUpdater++;
+            event.preventDefault();
+        },
+        collapse(event) {
+            this.currentAutoma.collapseEmptyRows(this.itemTypeInFocus);
+            this.saveGameState();
+            this.computedUpdater++;
+            event.preventDefault();
         }
     }
 }).mount("#hg");
