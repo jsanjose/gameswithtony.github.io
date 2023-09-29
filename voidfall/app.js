@@ -1805,6 +1805,7 @@ createApp({
             }
 
             navigator.clipboard.writeText(calc);
+            event.preventDefault();
             alert('Combat summary copied to clipboard.');
         },
         playerByIdHasTech: function(playerid, techid) {
