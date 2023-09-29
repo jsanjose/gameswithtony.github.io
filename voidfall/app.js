@@ -1334,7 +1334,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "0.55"
+        version: "0.56"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1711,11 +1711,11 @@ createApp({
                     }
                 }
 
-                calc += '---\n';
-                for (let fleet of calcPlayer.fleets) {
-                    if (fleet.power > 0) {
-                        calc += fleet.name + ': ' + fleet.power + '\n';
-                    }
+                if (calcPlayer.fleets && calcPlayer.fleets.length > 0) {
+                    let fleetsummary = _.map(_.filter(calcPlayer.fleets, function(f) { return f.power > 0 }), function (fleet) { 
+                        return fleet.name + ': ' + fleet.power;
+                    });
+                    calc += '[' + _.join(fleetsummary, ', ') + ']' + '\n';
                 }
 
                 if (calcPlayer.isInvader && this.playerHasAutonomousDrones(calcPlayer.playerid)) {
@@ -1734,9 +1734,6 @@ createApp({
                     calc += 'Adjacent Sectors w/ Shipyards: ' + calcPlayer.adjacentSectorsWithShipyards + '\n';
                     calc += 'Adjacent Sectors w/ Starbases: ' + calcPlayer.adjacentSectorsWithStarbases + '\n';
                 }
-
-
-                calc += '---\n';
 
                 calc += '\n'
             }
