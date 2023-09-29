@@ -1334,7 +1334,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "0.52"
+        version: "0.55"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1689,6 +1689,123 @@ createApp({
             this.expandAll = val;
             event.preventDefault();
             this.computedUpdater++;
+        },
+        shareCalc: function(event) {
+            let calc = '';
+
+            // players
+            for (let calcPlayer of this.calculationPlayers) {
+                calc += calcPlayer.isInvader ? "INVADER" : "DEFENDER";
+                calc += "\n";
+
+                if (calcPlayer.playerid != 1000) {
+                    const player = this.getPlayerById(calcPlayer.playerid);
+
+                    if (player.techs && player.techs.length > 0) {
+                        calc += 'Tech: ';
+                        let technames = _.map(player.techs, function (t) { 
+                            return t.name + (t.isImproved ? ' (Improved)' : '');
+                        });
+
+                        calc += _.join(technames, ', ') + '\n';
+                    }
+                }
+
+                calc += '---\n';
+                for (let fleet of calcPlayer.fleets) {
+                    if (fleet.power > 0) {
+                        calc += fleet.name + ': ' + fleet.power + '\n';
+                    }
+                }
+
+                if (calcPlayer.isInvader && this.playerHasAutonomousDrones(calcPlayer.playerid)) {
+                    calc += 'Returned Trade Token (Drones)?: ' + (calcPlayer.spendTradeTokenToUseAutonomousDrones ? 'Yes' : 'No') + '\n';
+                }
+
+                if (calcPlayer.useBombard && calcPlayer.isInvader) {
+                    calc += 'Bombard Absorption (Nervo): ' + calcPlayer.bombardAbsorption + '\n';
+                }
+
+                if (calcPlayer.isInvader && this.playerHasBasicDeepSpaceMissiles(calcPlayer.playerid)) {
+                    calc += 'Spent 1 Energy (Deep Space Missiles)?: ' + (calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles ? 'Yes' : 'No') + '\n';
+                }
+
+                if ((!calcPlayer.isInvader && this.playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)) || ((calcPlayer.isInvader && this.playerHasBasicDeepSpaceMissiles(calcPlayer.playerid) && calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles) || (calcPlayer.isInvader && this.playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)))) {
+                    calc += 'Adjacent Sectors w/ Shipyards: ' + calcPlayer.adjacentSectorsWithShipyards + '\n';
+                    calc += 'Adjacent Sectors w/ Starbases: ' + calcPlayer.adjacentSectorsWithStarbases + '\n';
+                }
+
+
+                calc += '---\n';
+
+                calc += '\n'
+            }
+
+            // outcome
+            calc += 'OUTCOMES' + '\n';
+            if (this.results.invaderWins) {
+                calc += '---\n';
+                calc += 'Invader Wins' + '\n';
+
+                let winIndex = 1;
+                for (let win of this.results.invaderWins) {
+                    calc += 'Final Fleet (v' + winIndex + ') [';
+                    calc += _.join(_.map(_.filter(win.winnerFleet, function(f) {
+                        return (f.power > 0 && f.fleetType < 6);
+                    }), function(fleet) { 
+                        return (getFleetDesc(fleet.fleetType) + ': ' + fleet.power);
+                    }), ', ');
+
+                    calc += ']\n';
+                    for (let step of win.steps) {
+                        calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                    }
+
+                    calc += '\n';
+                    winIndex++;
+                }
+            }
+
+            if (this.results.defenderWins) {
+                calc += '---\n';
+                calc += 'Defender Wins' + '\n';
+
+                let winIndex = 1;
+                for (let win of this.results.defenderWins) {
+                    calc += 'Final Fleet (v' + winIndex + ') [';
+                    calc += _.join(_.map(_.filter(win.winnerFleet, function(f) {
+                        return (f.power > 0 && f.fleetType < 6);
+                    }), function(fleet) { 
+                        return (getFleetDesc(fleet.fleetType) + ': ' + fleet.power);
+                    }), ', ');
+
+                    calc += ']\n';
+                    for (let step of win.steps) {
+                        calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                    }
+
+                    calc += '\n';
+                    winIndex++;
+                }
+            }
+
+            if (this.results.ties) {
+                calc += '---\n';
+                calc += 'Ties' + '\n';
+
+                let winIndex = 1;
+                for (let win of this.results.ties) {
+                    for (let step of win.steps) {
+                        calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                    }
+
+                    calc += '\n';
+                    winIndex++;
+                }
+            }
+
+            navigator.clipboard.writeText(calc);
+            alert('Combat summary copied to clipboard.');
         },
         playerByIdHasTech: function(playerid, techid) {
             if (playerid <= 0 || playerid == 1000) { return false; }

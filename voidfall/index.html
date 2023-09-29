@@ -618,7 +618,7 @@
             </p>
             <section v-if="showResults">
                 <p class="expand">
-                    <a href="#" v-if="!expandAll" v-on:click="updateExpandAll($event, true)">Expand</a><a href="#"  v-if="expandAll" v-on:click="updateExpandAll($event, false)">Collapse</a>
+                    <a href="#" v-if="!expandAll" v-on:click="updateExpandAll($event, true)">Expand</a><a href="#"  v-if="expandAll" v-on:click="updateExpandAll($event, false)">Collapse</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="shareCalc($event)">Share</a>
                 </p>
                 <section v-if="results.invaderWins" class="winner">
                     <h2>Invader ({{ results.invaderName }}) Wins</h2>
