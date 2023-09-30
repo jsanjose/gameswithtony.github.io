@@ -386,7 +386,7 @@ createApp({
         selectedSetAsideItem: null,
         stepsItemMoved: 0,
         computedUpdater: 1,
-        version: "0.26"
+        version: "0.3"
     } },
     watch: {
         
@@ -428,6 +428,45 @@ createApp({
         },
         itemTypeInFocusClass: function() {
             return this.itemTypeInFocus == PRIORITY_GRID_ITEM_TYPE.Action ? "priority-grid--actions" : "priority-grid--policies"
+        },
+        currentAutomaImage: function() {
+            if (this.automaInFocus == PLAYER_CLASS.Working) return 'images/WC.png';
+            if (this.automaInFocus == PLAYER_CLASS.Middle) return 'images/MC.png';
+            if (this.automaInFocus == PLAYER_CLASS.Capitalist) return 'images/CC.png';
+        },
+        itemInFocusImage: function() {
+            let item = null;
+            let url = null;
+
+            if (this.selectedItem && this.itemTypeInFocus == PRIORITY_GRID_ITEM_TYPE.Action) {
+                item = this.selectedItem;
+            } else if (this.selectedSetAsideItem) {
+                item = this.selectedSetAsideItem;
+            }
+
+            if (item) {
+                switch (item.id) {
+                    case ACTION_TYPE.AssignWorkers && this.currentAutoma.playerclass === PLAYER_CLASS.Working: { url = 'AW_WC.png'; break; }
+                    case ACTION_TYPE.AssignWorkers && this.currentAutoma.playerclass === PLAYER_CLASS.Middle: { url = 'AW_MC.png';break; }
+                    case ACTION_TYPE.BuildCompany: { url = 'BC.png'; break; }
+                    case ACTION_TYPE.BuyGoodsAndServices: { url = 'BGS.png'; break; }
+                    case ACTION_TYPE.Demonstration: { url = 'DEM.png'; break; }
+                    case ACTION_TYPE.Lobby: { url = 'LOB.png'; break; }
+                    case ACTION_TYPE.ProposeBill: { url = 'PB.png'; break; }
+                    case ACTION_TYPE.SellCompany: { url = 'SC.png'; break; }
+                    case ACTION_TYPE.SellToTheForeignMarket: { url = 'SFM.png'; break; }
+                    case ACTION_TYPE.SpecialAction: { url = 'SA.png'; break; }
+                    case ACTION_TYPE.Strike: { url = 'STR.png'; break; }
+                }
+            } else {
+                url = null;
+            }
+
+            if (url) {
+                return 'images/' + url;
+            }
+
+            return null;
         },
         canCollapse: function() {
             let canCollapse = false;

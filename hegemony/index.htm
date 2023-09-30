@@ -84,9 +84,15 @@
 
         .app-header {
             padding: 0 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-block-start: 0.5rem;
+            width: 100%;
         }
 
         .app-header h1 {
+            margin-block-start: 0;
             margin-block-end: 0;
         }
 
@@ -103,6 +109,7 @@
         .limit-container {
             max-width: 350px;
             min-width: 350px;
+            margin-top: 1rem;
         }
 
         .priority-grid {
@@ -226,7 +233,7 @@
             align-items: center;
             position: fixed;
             bottom: 0;
-            padding: 0.5rem 1rem 1rem 1rem;
+            padding: 0rem 1rem 1rem 1rem;
             width: 100vw;
             background-color: #333;
             border-top: solid 1px #47443f;
@@ -234,6 +241,32 @@
             gap: 1rem;
             flex-wrap: wrap;
             text-align: center;
+        }
+
+        .bottom-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            padding-top: 0.5rem;
+        }
+
+        .item-in-focus {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.675rem;
+            margin: -0.5rem -1rem 0 -1rem;
+            background-color: #444;
+        }
+
+        .item-in-focus--policies {
+            padding: 0.5rem 1rem;
+        }
+
+        .collapse {
+            padding-block-start: 0.5rem;
+            padding-block-end: 0 !important;
         }
 
         .items-set-aside-section {
@@ -253,6 +286,13 @@
         .new-game a, .new-game a:visited {
             color: #be0000;
             font-size: 0.9rem;
+        }
+
+        .new-game p {
+            font-size: 0.75rem;
+            margin-block-start: 0.25rem;
+            text-align: center;
+            color: #bbb;
         }
 
         .grid-buttons {
@@ -292,13 +332,30 @@
             font-weight: bold;
         }
     </style>
+    <link rel="preload" as="image" href="images/AW_MC.png">
+    <link rel="preload" as="image" href="images/AW_WC.png">
+    <link rel="preload" as="image" href="images/BC.png">
+    <link rel="preload" as="image" href="images/BGS.png">
+    <link rel="preload" as="image" href="images/DEM.png">
+    <link rel="preload" as="image" href="images/LOB.png">
+    <link rel="preload" as="image" href="images/PB.png">
+    <link rel="preload" as="image" href="images/SA.png">
+    <link rel="preload" as="image" href="images/SC.png">
+    <link rel="preload" as="image" href="images/SFM.png">
+    <link rel="preload" as="image" href="images/STR.png">
+    <link rel="preload" as="image" href="images/WC.png">
+    <link rel="preload" as="image" href="images/MC.png">
+    <link rel="preload" as="image" href="images/CC.png">
     <title>Hegemony Automa Helper</title>
 </head>
 <body>
     <main id="hg">
         <header class="app-header">
-            <h1>Hegemony Automa Helper (v{{ version }})</h1>
-            <p>Top Two: {{ topTwoDesc }}</p>
+            <img v-bind:src="currentAutomaImage" style="width: 40px;" />
+            <div>
+                <h1>Hegemony Automa Helper</h1>
+                <p>Top 2: {{ topTwoDesc }}</p>
+            </div>
         </header>
         <section class="limit-container">
             <section class="priority-grid" :class="itemTypeInFocusClass">
@@ -316,31 +373,34 @@
         </section>
         <section class="new-game">
             <a href="#" v-on:click="newgame($event)">New Game</a>
+            <p>(v{{ version }})</p>
         </section>
         <nav class="lower-menu">
             <section v-if="selectedItem" class="move-item-buttons">
-                <p>{{ selectedItem.name }}<template v-if="stepsItemMoved != 0">&nbsp;&nbsp;(<template v-if="stepsItemMoved < 0">&darr;</template><template v-if="stepsItemMoved > 0">&uarr;</template> {{ Math.abs(stepsItemMoved) }})</template></p>
+                <p class="item-in-focus" :class="[{ 'item-in-focus--policies': itemTypeInFocus == 1 }]"><img v-bind:src="itemInFocusImage" style="width: 50px;" v-if="itemTypeInFocus == 0" />{{ selectedItem.name }}<template v-if="stepsItemMoved != 0">&nbsp;&nbsp;(<template v-if="stepsItemMoved < 0">&darr;</template><template v-if="stepsItemMoved > 0">&uarr;</template> {{ Math.abs(stepsItemMoved) }})</template></p>
                 <button v-on:click="moveSelectedItemUp($event)">Up</button>&nbsp;&nbsp;&nbsp;
                 <button v-on:click="moveSelectedItemDown($event)">Down</button>&nbsp;&nbsp;&nbsp;
                 <button v-on:click="setSelectedItemAside($event)" v-if="itemTypeInFocus == 1 || (itemTypeInFocus == 0 && selectedItem.id == 3) || (itemTypeInFocus == 0 && selectedItem.id == 9)">Set Aside</button>&nbsp;&nbsp;&nbsp;
                 <button v-on:click="deselectItem($event)" style="border-color: #000;">&nbsp;X&nbsp;</button>
             </section>
             <section v-if="selectedSetAsideItem" class="move-item-buttons">
-                <p>{{ selectedSetAsideItem.name }}</p>
+                <p class="item-in-focus" :class="[{ 'item-in-focus--policies': itemTypeInFocus == 1 }]"><img v-bind:src="itemInFocusImage" style="width: 50px;" v-if="itemTypeInFocus == 0" />{{ selectedSetAsideItem.name }}</p>
                 <button v-on:click="returnItemAsideToGrid($event, 0)">1st Row</button>&nbsp;&nbsp;&nbsp;
                 <button v-on:click="returnItemAsideToGrid($event, 1)" v-if="currentAutomaGridSide.length > 1">2nd Row</button>&nbsp;&nbsp;&nbsp;
                 <button v-on:click="deselectSetAsideItem($event)" style="border-color: #000;">&nbsp;X&nbsp;</button>
             </section>
-            <section v-if="canCollapse && !selectedItem && !selectedSetAsideItem" class="grid-buttons">
+            <section v-if="canCollapse && !selectedItem && !selectedSetAsideItem" class="grid-buttons collapse">
                 <button v-on:click="collapse($event)">Collapse</button>
             </section>
-            <a href="#" v-on:click="setItemTypeInFocus(0)" :class="[{'bold': itemTypeInFocus == 0}]">Actions</a>
-            <select v-model="automaInFocus" @change="setAutomaInFocus(index)">
-                <option value="0">Working</option>
-                <option value="1">Middle</option>
-                <option value="2">Capitalist</option>
-            </select>
-            <a href="#" v-on:click="setItemTypeInFocus(1)" :class="[{'bold': itemTypeInFocus == 1}]">Policies</a>
+            <section class="bottom-buttons">
+                <a href="#" v-on:click="setItemTypeInFocus(0)" :class="[{'bold': itemTypeInFocus == 0}]">Actions</a>
+                <select v-model="automaInFocus" @change="setAutomaInFocus(index)">
+                    <option value="0">Working</option>
+                    <option value="1">Middle</option>
+                    <option value="2">Capitalist</option>
+                </select>
+                <a href="#" v-on:click="setItemTypeInFocus(1)" :class="[{'bold': itemTypeInFocus == 1}]">Policies</a>
+            </section>
         </nav>
     </main>
     <script src="app.js"></script>
