@@ -1334,7 +1334,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "0.56"
+        version: "0.57"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1417,6 +1417,9 @@ createApp({
             if (this.chosenScenario) {
                 let randomHouses = _.cloneDeep(HousesWithOrigins);
                 randomHouses = _.shuffle(randomHouses);
+                randomHouses = _.uniqWith(randomHouses, function (a,b) {
+                    return a.house.id === b.house.id;
+                });
 
                 this.players[0].houseWithOrigin = getHouseWithRandomOrigin(randomHouses[0].house.id);
 
