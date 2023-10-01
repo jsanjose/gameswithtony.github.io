@@ -378,6 +378,21 @@
         .limit-container {
             max-width: 800px;
         }
+
+        .games-footer {
+            border-top: solid 1px #fff;
+        }
+
+        .games-footer p {
+            font-size: 0.9rem;
+            text-align: center;
+            margin-block-start: 0.25rem;
+            margin-block-end: 0.25rem;
+        }
+
+        .games-footer a, .games-footer a:visited {
+            color: #be0000;
+        }
     </style>
     <title>Voidfall Helper: House randomizer, tech tableau generator, and combat calculator</title>
 </head>
@@ -495,6 +510,14 @@
                     <li>Once you have calculated once, any changes to fleet power will auto-recalculate unless you change the invader/defender.</li>
                 </ul>
             </section>
+            <footer class="games-footer">
+                <p>
+                    <a href="https://gameswithtony.com">gameswithtony.com</a>
+                </p>
+                <p>
+                    Not affiliated with Mindclash Games
+                </p>
+            </footer>
         </section>
         <nav class="menu-links" v-if="this.pageState ===  1 || this.pageState === 2">
             <a href="#" v-on:click="newgame($event)" class="menu-link">New Game</a>&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="menu-link"  v-on:click="showTech($event)" :class="{  'selected': pageState === 1 }">Tech</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" class="menu-link" v-on:click="showCalculator($event)" :class="{  'selected': pageState === 2 }">Calc</a>
