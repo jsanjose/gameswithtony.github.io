@@ -1078,6 +1078,10 @@ class PlayerState {
 
                 totalAbsorption = totalAbsorption + this.totalDreadnaughtFleetPower();
 
+                if (this.totalDreadnaughtFleetPower() > 0) {
+                    absDescription.push('+' + this.totalDreadnaughtFleetPower() + ' Invader Abs (Dreadnaughts)');
+                }
+
                 if (this.hasAutonomousDrones() && this.spendTradeTokenToUseAutonomousDrones) {
                     totalAbsorption = totalAbsorption + 1;
                     absDescription.push('+1 Invader Abs (Drones)');
@@ -1389,7 +1393,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.2"
+        version: "1.21"
     } },
     watch: {
         numberOfPlayers(val) {
