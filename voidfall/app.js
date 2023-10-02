@@ -137,7 +137,7 @@ let Houses = [
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Sentries)
     ], true),
     new House(HOUSE_IDS.Belitan, getHouseDesc(HOUSE_IDS.Belitan), [
-        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.DeepSpaceMissiles),
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Targeting),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.DataRefinery)
     ], false),
     new House(HOUSE_IDS.Cortozaar, getHouseDesc(HOUSE_IDS.Cortozaar), [
@@ -959,6 +959,15 @@ class PlayerState {
         return _.find(this.techs, function(t) { return t.id === TECHS.AutonomousDrones });
     }
 
+    hasBasicAutonomousDrones() {
+        const tech = _.find(this.techs, function(t) { return t.id === TECHS.AutonomousDrones });
+
+        if (tech) {
+            return !tech.isImproved;
+        }
+        return false;
+    }
+
     hasImprovedAutonomousDrones() {
         const tech = _.find(this.techs, function(t) { return t.id === TECHS.AutonomousDrones });
 
@@ -1048,6 +1057,7 @@ class PlayerState {
 
     absorption(isApproachStep) {
         let totalAbsorption = 0;
+        let absDescription = [];
 
         if ((isApproachStep && this.totalApproachAbsorption === null) || (!isApproachStep && this.totalSalvoAbsorption === null)) {
 
@@ -1055,6 +1065,7 @@ class PlayerState {
             if (!this.isInvader && isApproachStep) {
                 if (this.hasImprovedShields() && this.totalCorvetteFleetPower() > 0) {
                     totalAbsorption = totalAbsorption + 1;
+                    absDescription.push('+1 Defender Abs (Improved Shields)');
                 }
             }
 
@@ -1062,16 +1073,19 @@ class PlayerState {
             if (this.isInvader && isApproachStep) {
                 if (this.hasImprovedShields() && this.totalCorvetteFleetPower() > 0) {
                     totalAbsorption = totalAbsorption + 1;
+                    absDescription.push('+1 Invader Abs (Improved Shields)');
                 }
 
                 totalAbsorption = totalAbsorption + this.totalDreadnaughtFleetPower();
 
                 if (this.hasAutonomousDrones() && this.spendTradeTokenToUseAutonomousDrones) {
                     totalAbsorption = totalAbsorption + 1;
+                    absDescription.push('+1 Invader Abs (Drones)');
                 }
 
                 if (this.useBombard) {
                     totalAbsorption = totalAbsorption + this.bombardAbsorption;
+                    absDescription.push('+' + this.bombardAbsorption + ' Invader Abs (Bombard)');
                 }
             }
 
@@ -1080,11 +1094,20 @@ class PlayerState {
             if (!this.isInvader && !isApproachStep) {
                 if (this.hasShields() && this.totalCorvetteFleetPower() > 0) {
                     totalAbsorption = totalAbsorption + 1;
+                    absDescription.push('+1 Defender Abs (Shields)');
                 }
 
                 totalAbsorption = totalAbsorption + this.totalDreadnaughtFleetPower();
 
+                if (this.totalDreadnaughtFleetPower() > 0) {
+                    absDescription.push('+' + this.totalDreadnaughtFleetPower() + ' Defender Abs (Dreadnaught)');
+                }
+
                 totalAbsorption = totalAbsorption + this.totalCarrierFleetPower();
+
+                if (this.totalCarrierFleetPower() > 0) {
+                    absDescription.push('+' + this.totalCarrierFleetPower() + ' Defender Abs (Carrier)');
+                }
             }
 
             // invader salvo
@@ -1092,18 +1115,22 @@ class PlayerState {
             if (this.isInvader && !isApproachStep) {
                 if (this.hasShields() && this.totalCorvetteFleetPower() > 0) {
                     totalAbsorption = totalAbsorption + 1;
+                    absDescription.push('+1 Invader Abs (Shields)');
                 }
 
-                if (this.hasAutonomousDrones() && this.spendTradeTokenToUseAutonomousDrones) {
+                if (this.hasBasicAutonomousDrones() && this.spendTradeTokenToUseAutonomousDrones) {
                     totalAbsorption = totalAbsorption + 1;
+                    absDescription.push('+1 Invader Abs (Drones)');
                 }
 
                 if (this.hasImprovedAutonomousDrones() && this.spendTradeTokenToUseAutonomousDrones) {
                     totalAbsorption = totalAbsorption + 2;
+                    absDescription.push('+2 Invader Abs (Improved Drones)');
                 }
 
                 if (this.useBombard) {
                     totalAbsorption = totalAbsorption + this.bombardAbsorption;
+                    absDescription.push('+' + this.bombardAbsorption + ' Invader Abs (Bombard)');
                 }
             }
 
@@ -1114,11 +1141,12 @@ class PlayerState {
             }
         }
 
-        return isApproachStep ? this.totalApproachAbsorption : this.totalSalvoAbsorption;
+        return [isApproachStep ? this.totalApproachAbsorption : this.totalSalvoAbsorption, absDescription.length > 0 ? _.join(absDescription, ", ") : ''];
     }
 
     damage(isApproachStep, isFirstSalvoStep) {
         let totalDamage = 0;
+        let dmgDescription = [];
 
         // defender approach
         if (!this.isInvader && isApproachStep) {
@@ -1129,28 +1157,36 @@ class PlayerState {
             if (this.hasImprovedDeepSpaceMissiles()) {
                 totalDamage = totalDamage + this.adjacentSectorsWithStarbases;
                 totalDamage = totalDamage + (this.adjacentSectorsWithShipyards * 2);
+
+                if (this.adjacentSectorsWithStarbases + (this.adjacentSectorsWithShipyards * 2) > 0)
+                dmgDescription.push('+' + this.adjacentSectorsWithStarbases + (this.adjacentSectorsWithShipyards * 2) + ' Defender Dmg (Improved Deep Space Missiles)');
             }
 
             if (this.hasEnergyCellTech() && totalDamage > 0) {
                 totalDamage = totalDamage + 1;
+                dmgDescription.push('+1 Defender Dmg (Energy Cells)');
             }
         }
 
         // invader approach
         if (this.isInvader && isApproachStep) {
-            if (this.hasImprovedDestroyers && this.totalDestroyerFleetPower() > 0) {
+            if (this.hasImprovedDestroyers() && this.totalDestroyerFleetPower() > 0) {
                 totalDamage = totalDamage + 1;
+                dmgDescription.push('+1 Invader Dmg (Improved Destroyers)');
             }
 
             if (this.hasBasicDeepSpaceMissiles() && this.spendEnergyToUseBasicDeepSpaceMissiles && (this.adjacentSectorsWithShipyards + this.adjacentSectorsWithStarbases > 0)) {
                 totalDamage = totalDamage + 1;
+                dmgDescription.push('+1 Invader Dmg (Deep Space Missiles)');
             }
 
             if (this.hasImprovedDeepSpaceMissiles() && (this.adjacentSectorsWithShipyards + this.adjacentSectorsWithStarbases > 0)) {
                 if (this.adjacentSectorsWithShipyards + this.adjacentSectorsWithStarbases > 1) {
                     totalDamage = totalDamage + 2;
+                    dmgDescription.push('+2 Invader Dmg (Improved Deep Space Missiles)');
                 } else {
                     totalDamage = totalDamage + 1;
+                    dmgDescription.push('+1 Invader Dmg (Improved Deep Space Missiles)');
                 }
             }
         }
@@ -1160,10 +1196,12 @@ class PlayerState {
             totalDamage = 1; // base damage is always 1
             if (this.hasBasicTorpedoes() && this.totalCorvetteFleetPower() > 0 && isFirstSalvoStep) {
                 totalDamage = totalDamage + 1;
+                dmgDescription.push('+1 Defender Dmg (Torpedoes)');
             }
 
             if (this.hasImprovedTorpedoes() && this.totalCorvetteFleetPower() > 0) {
                 totalDamage = totalDamage + 1;
+                dmgDescription.push('+1 Defender Dmg (Improved Torpedoes)');
             }
         }
 
@@ -1172,18 +1210,24 @@ class PlayerState {
             totalDamage = 1; // base damage is always 1
             if (this.hasBasicTorpedoes() && this.totalCorvetteFleetPower() > 0 && isFirstSalvoStep) {
                 totalDamage = totalDamage + 1;
+                dmgDescription.push('+1 Invader Dmg (Torpedoes)');
             }
 
             if (this.hasImprovedTorpedoes() && this.totalCorvetteFleetPower() > 0) {
                 totalDamage = totalDamage + 1;
+                dmgDescription.push('+1 Invader Dmg (Improved Torpedoes)');
             }
 
             if (isFirstSalvoStep) {
                 totalDamage = totalDamage + this.totalDestroyerFleetPower();
+
+                if (this.totalDestroyerFleetPower() > 0) {
+                    dmgDescription.push('+' + this.totalDestroyerFleetPower() + ' Invader Dmg (Destroyers)');
+                }
             }
         }
 
-        return totalDamage;
+        return [totalDamage, dmgDescription.length > 0 ? _.join(dmgDescription, ", ") : ''];
     }
 
     calculateDamageCombinations(damageToApply) {
@@ -1345,7 +1389,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.1"
+        version: "1.2"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -2021,8 +2065,10 @@ createApp({
             // approach
             if (!hasAbsorptionStepRun) {
                 
-                let defenderAbsorption = defender.absorption(true);
-                let invaderDamage = invader.damage(true, false);
+                let defenderAbsorption, absDefDescription;
+                [defenderAbsorption, absDefDescription] = defender.absorption(true);
+                let invaderDamage, dmgInvDescription;
+                [invaderDamage, dmgInvDescription] = invader.damage(true, false);
                 let invaderDamageToApply =  Math.max(0, invaderDamage - defenderAbsorption);
                 let damageCombinations = defender.calculateDamageCombinations(invaderDamageToApply);
                 defender.updateAbsorptionUsed(invaderDamage, true);
@@ -2030,8 +2076,10 @@ createApp({
                 let wasDamageFullyAbsorbed = invaderDamageToApply === 0;
                 if (wasDamageFullyAbsorbed) { invaderDamageToApply = 1; } // temporary for the loop
 
-                let invaderAbsorption = invader.absorption(true);
-                let defenderDamage = defender.damage(true, false);
+                let invaderAbsorption, absInvDescription;
+                [invaderAbsorption, absInvDescription] = invader.absorption(true);
+                let defenderDamage, dmgDefDescription;
+                [defenderDamage, dmgDefDescription] = defender.damage(true, false);
                 let defenderDamageToApply =  Math.max(0, defenderDamage - invaderAbsorption);
                 let damageCombinations2 = invader.calculateDamageCombinations(defenderDamageToApply);
                 invader.updateAbsorptionUsed(defenderDamage, true);
@@ -2041,6 +2089,14 @@ createApp({
 
                 for (let damageCombination of damageCombinations) {
                     let resultDesc = '';
+                    let absDmgDetails = [];
+                    if (absInvDescription != '') absDmgDetails.push(absInvDescription);
+                    if (absDefDescription != '') absDmgDetails.push(absDefDescription);
+                    if (dmgInvDescription != '') absDmgDetails.push(dmgInvDescription);
+                    if (dmgDefDescription != '') absDmgDetails.push(dmgDefDescription);
+                    resultDesc += absDmgDetails.length > 0 ? '[' : '';
+                    resultDesc = resultDesc + _.join(absDmgDetails, ", ");
+                    resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                     for (let dc of damageCombination) {
                         if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} defender ${getFleetDesc(dc.fleetType)} lost. `;
                     }
@@ -2069,19 +2125,12 @@ createApp({
                         let resultDetail = null;
 
                         if (wasDamageFullyAbsorbed && wasDamageFullyAbsorbed2) {
-                            resultDetail = new ResultDetail(-1, -1, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `No damage to either side.`);
+                            resultDetail = new ResultDetail(-1, -1, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `${resultDesc}No damage to either side.`);
                         }
                         else {
 
-                            if (defenderAbsorption > 0) {
-                                resultDesc = resultDesc + defenderAbsorption + ' defender absorption. ';
-                            }
-
-                            if (invaderAbsorption > 0) {
-                                resultDesc = resultDesc + invaderAbsorption + ' invader absorption. ';
-                            }
-
                             resultDetail = new ResultDetail(-1, -1, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, resultDesc);
+
                         }
 
                         newSteps2.push(new ResultStep(STEP_TYPE.Approach, salvoNumber, resultDetail, "Invader and Defender hit simultaneously", _.cloneDeep(invader), _.cloneDeep(defender)));
@@ -2132,8 +2181,10 @@ createApp({
                 salvoNumber = salvoNumber + 1;
 
                 if (initiative.invaderInitiative > initiative.defenderInitiative) {
-                    let defenderAbsorption = defender.absorption(false);
-                    let invaderDamage = invader.damage(false, salvoNumber === 1);
+                    let defenderAbsorption, absDefDescription;
+                    [defenderAbsorption, absDefDescription] = defender.absorption(false);
+                    let invaderDamage, dmgInvDescription;
+                    [invaderDamage, dmgInvDescription] = invader.damage(false, salvoNumber === 1);
                     let invaderDamageToApply = Math.max(0, invaderDamage - defenderAbsorption);
                     let damageCombinations = defender.calculateDamageCombinations(invaderDamageToApply);
                     defender.updateAbsorptionUsed(invaderDamage, false);
@@ -2144,6 +2195,12 @@ createApp({
                     for (let damageCombination of damageCombinations) {
                         let newSteps = [...steps];
                         let resultDesc = '';
+                        let absDmgDetails = [];
+                        if (absDefDescription != '') absDmgDetails.push(absDefDescription);
+                        if (dmgInvDescription != '') absDmgDetails.push(dmgInvDescription);
+                        resultDesc += absDmgDetails.length > 0 ? '[' : '';
+                        resultDesc = resultDesc + _.join(absDmgDetails, ", ");
+                        resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                         for (let dc of damageCombination) {
                             if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} defender ${getFleetDesc(dc.fleetType)} lost. `;
                         }
@@ -2151,10 +2208,6 @@ createApp({
                             for (let dc of damageCombination) {
                                 let fleet = defender.getFleet(dc.fleetType);
                                 fleet.power = fleet.power - dc.damage;
-                            }
-
-                            if (defenderAbsorption > 0) {
-                                resultDesc = resultDesc + defenderAbsorption + ' absorption. ';
                             }
 
                             let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, resultDesc);
@@ -2176,13 +2229,15 @@ createApp({
                                 return [...newResults];
                             }
                         } else {
-                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `Defender absorbed all damage. `);
+                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `${resultDesc}Defender absorbed all damage. `);
 
                             newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Invader hits first", _.cloneDeep(invader), _.cloneDeep(defender)));
                         }
 
-                        let invaderAbsorption = invader.absorption(false);
-                        let defenderDamage = defender.damage(false, salvoNumber === 1);
+                        let invaderAbsorption, absInvDescription;
+                        [invaderAbsorption, absInvDescription] = invader.absorption(false);
+                        let defenderDamage, dmgDefDescription;
+                        [defenderDamage, dmgDefDescription] = defender.damage(false, salvoNumber === 1);
                         let defenderDamageToApply =  Math.max(0, defenderDamage - invaderAbsorption);
                         let damageCombinations = invader.calculateDamageCombinations(defenderDamageToApply);
                         invader.updateAbsorptionUsed(defenderDamage, false);
@@ -2191,6 +2246,12 @@ createApp({
                         if (wasDamageFullyAbsorbed2) { defenderDamageToApply = 1; } // temporary for the loop
                         for (let damageCombination of damageCombinations) {
                             let resultDesc = '';
+                            let absDmgDetails = [];
+                            if (absInvDescription != '') absDmgDetails.push(absInvDescription);
+                            if (dmgDefDescription != '') absDmgDetails.push(dmgDefDescription);
+                            resultDesc += absDmgDetails.length > 0 ? '[' : '';
+                            resultDesc = resultDesc + _.join(absDmgDetails, ", ");
+                            resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                             for (let dc of damageCombination) {
                                 if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} invader ${getFleetDesc(dc.fleetType)} lost. `;
                             }
@@ -2199,10 +2260,6 @@ createApp({
                                 for (let dc of damageCombination) {
                                     let fleet = invader.getFleet(dc.fleetType);
                                     fleet.power = fleet.power - dc.damage;
-                                }
-
-                                if (invaderAbsorption > 0) {
-                                    resultDesc = resultDesc + invaderAbsorption + ' absorption. ';
                                 }
 
                                 let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, resultDesc);
@@ -2224,7 +2281,7 @@ createApp({
                                     return [...newResults];
                                 }
                             } else {
-                                let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, `Invader absorbed all damage. `);
+                                let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, `${resultDesc}Invader absorbed all damage. `);
 
                                 newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Defender hits second", _.cloneDeep(invader), _.cloneDeep(defender)));
                             }
@@ -2251,8 +2308,10 @@ createApp({
 
                 if (initiative.invaderInitiative < initiative.defenderInitiative) {
 
-                    let invaderAbsorption = invader.absorption(false);
-                    let defenderDamage = defender.damage(false, salvoNumber === 1);
+                    let invaderAbsorption, absInvDescription;
+                    [invaderAbsorption, absInvDescription] = invader.absorption(false);
+                    let defenderDamage, dmgDefDescription;
+                    [defenderDamage, dmgDefDescription] = defender.damage(false, salvoNumber === 1);
                     let defenderDamageToApply =  Math.max(0, defenderDamage - invaderAbsorption);
                     let damageCombinations = invader.calculateDamageCombinations(defenderDamageToApply);
                     invader.updateAbsorptionUsed(defenderDamage, false);
@@ -2261,6 +2320,12 @@ createApp({
                     if (wasDamageFullyAbsorbed) { defenderDamageToApply = 1; } // temporary for the loop
                     for (let damageCombination of damageCombinations) {
                         let resultDesc = '';
+                        let absDmgDetails = [];
+                        if (absInvDescription != '') absDmgDetails.push(absInvDescription);
+                        if (dmgDefDescription != '') absDmgDetails.push(dmgDefDescription);
+                        resultDesc += absDmgDetails.length > 0 ? '[' : '';
+                        resultDesc = resultDesc + _.join(absDmgDetails, ", ");
+                        resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                         for (let dc of damageCombination) {
                             if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} invader ${getFleetDesc(dc.fleetType)} lost. `;
                         }
@@ -2270,10 +2335,6 @@ createApp({
                             for (let dc of damageCombination) {
                                 let fleet = invader.getFleet(dc.fleetType);
                                 fleet.power = fleet.power - dc.damage;
-                            }
-
-                            if (invaderAbsorption > 0) {
-                                resultDesc = resultDesc + invaderAbsorption + ' absorption. ';
                             }
 
                             let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, resultDesc);
@@ -2294,13 +2355,15 @@ createApp({
                                 return [...newResults];
                             }
                         } else {
-                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, `Invader absorbed all damage. `);
+                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, `${resultDesc}Invader absorbed all damage. `);
 
                             newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Defender hits first", _.cloneDeep(invader), _.cloneDeep(defender)));
                         }
 
-                        let defenderAbsorption = defender.absorption(false);
-                        let invaderDamage = invader.damage(false, salvoNumber === 1);
+                        let defenderAbsorption, absDefDescription;
+                        [defenderAbsorption, absDefDescription] = defender.absorption(false);
+                        let invaderDamage, dmgInvDescription;
+                        [invaderDamage, dmgInvDescription] = invader.damage(false, salvoNumber === 1);
                         let invaderDamageToApply =  Math.max(0, invaderDamage - defenderAbsorption);
                         let damageCombinations = defender.calculateDamageCombinations(invaderDamageToApply);
                         defender.updateAbsorptionUsed(invaderDamage, false);
@@ -2308,6 +2371,12 @@ createApp({
                         if (wasDamageFullyAbsorbed2) { invaderDamageToApply = 1; } // temporary for the loop
                         for (let damageCombination of damageCombinations) {
                             let resultDesc = '';
+                            let absDmgDetails = [];
+                            if (absDefDescription != '') absDmgDetails.push(absDefDescription);
+                            if (dmgInvDescription != '') absDmgDetails.push(dmgInvDescription);
+                            resultDesc += absDmgDetails.length > 0 ? '[' : '';
+                            resultDesc = resultDesc + _.join(absDmgDetails, ", ");
+                            resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                             for (let dc of damageCombination) {
                                 if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} defender ${getFleetDesc(dc.fleetType)} lost. `;
                             }
@@ -2316,10 +2385,6 @@ createApp({
                                 for (let dc of damageCombination) {
                                     let fleet = defender.getFleet(dc.fleetType);
                                     fleet.power = fleet.power - dc.damage;
-                                }
-
-                                if (defenderAbsorption > 0) {
-                                    resultDesc = resultDesc + defenderAbsorption + ' absorption. ';
                                 }
 
                                 let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, resultDesc);
@@ -2341,7 +2406,7 @@ createApp({
                                     return [...newResults];
                                 }
                             } else {
-                                let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `Defender absorbed all damage. `);
+                                let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `${resultDesc}Defender absorbed all damage. `);
 
                                 newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Invader hits second", _.cloneDeep(invader), _.cloneDeep(defender)));
                             }
@@ -2367,8 +2432,10 @@ createApp({
 
                 if (initiative.invaderInitiative === initiative.defenderInitiative) {
 
-                    let defenderAbsorption = defender.absorption(false);
-                    let invaderDamage = invader.damage(false, salvoNumber === 1);
+                    let defenderAbsorption, absDefDescription;
+                    [defenderAbsorption, absDefDescription] = defender.absorption(false);
+                    let invaderDamage, dmgInvDescription;
+                    [invaderDamage, dmgInvDescription] = invader.damage(false, salvoNumber === 1);
                     let invaderDamageToApply =  Math.max(0, invaderDamage - defenderAbsorption);
                     let damageCombinations = defender.calculateDamageCombinations(invaderDamageToApply);
                     defender.updateAbsorptionUsed(invaderDamage, false);
@@ -2376,8 +2443,10 @@ createApp({
                     let wasDamageFullyAbsorbed = invaderDamageToApply === 0;
                     if (wasDamageFullyAbsorbed) { invaderDamageToApply = 1; } // temporary for the loop
 
-                    let invaderAbsorption = invader.absorption(false);
-                    let defenderDamage = defender.damage(false, salvoNumber === 1);
+                    let invaderAbsorption, absInvDescription;
+                    [invaderAbsorption, absInvDescription] = invader.absorption(false);
+                    let defenderDamage, dmgDefDescription;
+                    [defenderDamage, dmgDefDescription] = defender.damage(false, salvoNumber === 1);
                     let defenderDamageToApply =  Math.max(0, defenderDamage - invaderAbsorption);
                     let damageCombinations2 = invader.calculateDamageCombinations(defenderDamageToApply);
                     invader.updateAbsorptionUsed(defenderDamage, false);
@@ -2387,6 +2456,14 @@ createApp({
 
                     for (let damageCombination of damageCombinations) {
                         let resultDesc = '';
+                        let absDmgDetails = [];
+                        if (absInvDescription != '') absDmgDetails.push(absInvDescription);
+                        if (absDefDescription != '') absDmgDetails.push(absDefDescription);
+                        if (dmgInvDescription != '') absDmgDetails.push(dmgInvDescription);
+                        if (dmgDefDescription != '') absDmgDetails.push(dmgDefDescription);
+                        resultDesc += absDmgDetails.length > 0 ? '[' : '';
+                        resultDesc = resultDesc + _.join(absDmgDetails, ", ");
+                        resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                         for (let dc of damageCombination) {
                             if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} defender ${getFleetDesc(dc.fleetType)} lost. `;
                         }
@@ -2415,19 +2492,12 @@ createApp({
                             let resultDetail = null;
 
                             if (wasDamageFullyAbsorbed && wasDamageFullyAbsorbed2) {
-                                resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `No damage to either side.`);
+                                resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `${resultDesc}No damage to either side.`);
                             }
                             else {
 
-                                if (defenderAbsorption > 0) {
-                                    resultDesc = resultDesc + defenderAbsorption + ' defender absorption. ';
-                                }
-
-                                if (invaderAbsorption > 0) {
-                                    resultDesc = resultDesc + invaderAbsorption + ' invader absorption. ';
-                                }
-
                                 resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, resultDesc);
+
                             }
 
                             newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Invader and Defender hit simultaneously", _.cloneDeep(invader), _.cloneDeep(defender)));
@@ -2484,16 +2554,20 @@ createApp({
             }
         },
         calculateAbsorption: function(invader, defender, isApproachStep) {
-            const invaderAbsorption = invader.absorption(isApproachStep);
-            const defenderAbsorption = defender.absorption(isApproachStep);
+            let invaderAbsorption, absInvDescription;
+            [invaderAbsorption, absInvDescription] = invader.absorption(isApproachStep);
+            let defenderAbsorption, absDefDescription;
+            [defenderAbsorption, absDefDescription] = defender.absorption(isApproachStep);
             return {
                 invaderAbsorption: invaderAbsorption,
                 defenderAbsorption: defenderAbsorption
             }
         },
         calculateDamage: function(invader, defender, isApproachStep, isFirstSalvoStep) {
-            const invaderDamage = invader.damage(isApproachStep, isFirstSalvoStep);
-            const defenderDamage = defender.damage(isApproachStep, isFirstSalvoStep);
+            let invaderDamage, dmgInvDescription;
+            [invaderDamage, dmgInvDescription] = invader.damage(isApproachStep, isFirstSalvoStep);
+            let defenderDamage, dmgDefDescription;
+            [defenderDamage, dmgDefDescription] = defender.damage(isApproachStep, isFirstSalvoStep);
             return {
                 invaderDamage: invaderDamage,
                 defenderDamage: defenderDamage
