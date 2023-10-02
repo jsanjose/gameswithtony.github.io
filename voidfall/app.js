@@ -871,8 +871,13 @@ class PlayerState {
         return _.find(this.fleets, function(f) { return f.fleetType === fleetType });
     }
 
-    hasTargetingTech() {
-        return _.find(this.techs, function(t) { return t.id === TECHS.Targeting });
+    hasBasicTargetingTech() {
+        const tech = _.find(this.techs, function(t) { return t.id === TECHS.Targeting });
+
+        if (tech) {
+            return !tech.isImproved;
+        }
+        return false;
     }
 
     hasImprovedTargetingTech() {
@@ -995,10 +1000,6 @@ class PlayerState {
 
     initiative() {
         // initiative should be calculated at the beginning of each salvo step
-        if (this.hasImprovedTargetingTech()) {
-            return 10000;
-        }
-
         let totalInitiative = 0;
         const corvetteFleetPower = this.totalCorvetteFleetPower();
         const destroyerFleetPower = this.totalDestroyerFleetPower();
@@ -1020,6 +1021,16 @@ class PlayerState {
         const sentryFleetPower = this.totalSentryFleetPower();
         if (this.isInvader) {
             totalInitiative = totalInitiative + sentryFleetPower;
+        }
+
+        if (corvetteFleetPower > 0 && this.hasBasicTargetingTech()) {
+            totalInitiative = totalInitiative + 5;
+        }
+
+        if (totalInitiative > 0) {
+            if (this.hasImprovedTargetingTech()) {
+                return 10000;
+            }
         }
 
         return totalInitiative;
@@ -1334,7 +1345,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.0"
+        version: "1.1"
     } },
     watch: {
         numberOfPlayers(val) {
