@@ -576,6 +576,7 @@
         </section>
         <section v-if="this.pageState === 2">
             <h1>Calculator</h1>
+            <textarea id="copytextarea" style="position: absolute; left: -99999px;" contenteditable="true"></textarea>
             <section v-for="(calcPlayer, calcPlayerIndex) in calculationPlayers" class="select-calc-player">
                 <label>
                     <template v-if="calcPlayer.isInvader">Invader: </template><template v-if="!calcPlayer.isInvader">Defender: </template>

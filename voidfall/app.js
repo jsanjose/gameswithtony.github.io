@@ -1488,7 +1488,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.31"
+        version: "1.4"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1959,7 +1959,21 @@ createApp({
                 }
             }
 
-            navigator.clipboard.writeText(calc);
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(calc);
+            } else {
+                document.getElementById("copytextarea").value = calc;
+                let a, s, e = document.getElementById("copytextarea");
+                navigator.userAgent.match(/ipad|iphone/i) ? (a = document.createRange(),
+                a.selectNodeContents(e),
+                s = window.getSelection(),
+                s.removeAllRanges(),
+                s.addRange(a),
+                e.setSelectionRange(0, 999999)) : e.select(),
+                document.execCommand("copy"),
+                e.blur();
+            }
+
             event.preventDefault();
             alert('Combat summary copied to clipboard.');
         },
