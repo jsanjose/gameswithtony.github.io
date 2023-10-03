@@ -214,11 +214,12 @@ for (let house of Houses) {
     }
 }
 
-function getHouseWithRandomOrigin(houseid) {
+function getHouseWithRandomOrigin(houseid, isTutorial) {
     let housesWithOrigin = _.filter(HousesWithOrigins, function(h) { return h.house.id === houseid });
 
     if (housesWithOrigin.length > 1) {
-        return housesWithOrigin[chooseRandom(0, 1)];
+        if (!isTutorial) return housesWithOrigin[chooseRandom(0, 1)];
+        else return housesWithOrigin[0];
     } else {
         return housesWithOrigin[0];
     }
@@ -299,6 +300,18 @@ class Scenario {
 
 // solo and cooperative scenarios have empty fallen houses, as these are determined during setup
 const Scenarios = [
+    new Scenario('T', SCENARIO_TYPE.Solo, 'Tutorial', 1, null, 1, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.TheGwyn)
+    ], 
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
     new Scenario('C011', SCENARIO_TYPE.Solo, 'First Stand', 1, null, 1, []),
     new Scenario('C021', SCENARIO_TYPE.Solo, 'And One For All', 1, null, 2, []),
     new Scenario('C031', SCENARIO_TYPE.Solo, 'Darkest Hour', 1, null, 2, []),
@@ -307,6 +320,18 @@ const Scenarios = [
     new Scenario('C061', SCENARIO_TYPE.Solo, 'When Darkness Fades', 1, null, 3, []),
     new Scenario('C071', SCENARIO_TYPE.Solo, 'Today Is Not The Day', 1, null, 4, []),
     new Scenario('C081', SCENARIO_TYPE.Solo, 'Fall Of Civilization', 1, null, 4, []),
+    new Scenario('T', SCENARIO_TYPE.Cooperative, 'Tutorial', 2, null, 1, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.TheGwyn)
+    ], 
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
     new Scenario('C012', SCENARIO_TYPE.Cooperative, 'First Stand', 2, null, 1, []),
     new Scenario('C022', SCENARIO_TYPE.Cooperative, 'And One For All', 2, null, 2, []),
     new Scenario('C032', SCENARIO_TYPE.Cooperative, 'Darkest Hour', 2, null, 2, []),
@@ -314,16 +339,46 @@ const Scenarios = [
     new Scenario('C052', SCENARIO_TYPE.Cooperative, 'Devil\'s Triangle', 2, null, 2, []),
     new Scenario('C062', SCENARIO_TYPE.Cooperative, 'When Darkness Fades', 2, null, 3, []),
     new Scenario('C072', SCENARIO_TYPE.Cooperative, 'Today Is Not The Day', 2, null, 4, []),
+    new Scenario('T', SCENARIO_TYPE.Cooperative, 'Tutorial', 3, null, 1, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.TheGwyn)
+    ], 
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
     new Scenario('C013', SCENARIO_TYPE.Cooperative, 'First Stand', 3, null, 1, []),
     new Scenario('C023', SCENARIO_TYPE.Cooperative, 'And One For All', 3, null, 2, []),
     new Scenario('C033', SCENARIO_TYPE.Cooperative, 'Darkest Hour', 3, null, 3, []),
     new Scenario('C043', SCENARIO_TYPE.Cooperative, 'Ancient Secrets', 3, null, 4, []),
     new Scenario('C053', SCENARIO_TYPE.Cooperative, 'Devil\'s Triangle', 3, null, 3, []),
     new Scenario('C063', SCENARIO_TYPE.Cooperative, 'When Darkness Fades', 3, null, 4, []),
+    new Scenario('T', SCENARIO_TYPE.Cooperative, 'Tutorial', 4, null, 1, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.TheGwyn)
+    ], 
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]),
     new Scenario('C034', SCENARIO_TYPE.Cooperative, 'Darkest Hour', 4, null, 3, []),
     new Scenario('C044', SCENARIO_TYPE.Cooperative, 'Ancient Secrets', 4, null, 4, []),
     new Scenario('C054', SCENARIO_TYPE.Cooperative, 'Devil\'s Triangle', 4, null, 3, []),
     new Scenario('C064', SCENARIO_TYPE.Cooperative, 'When Darkness Fades', 4, null, 4, []),
+    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 2, 4, 2, [], [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.TheGwyn)
+    ]), 
     new Scenario('X012', SCENARIO_TYPE.Competitive, 'Second Genesis', 2, 4, 2, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Kradmor),
@@ -456,6 +511,12 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
+    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 3, 4, 2, [], [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]), 
     new Scenario('X013', SCENARIO_TYPE.Competitive, 'Second Genesis', 3, 4, 2, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Kradmor),
@@ -588,6 +649,12 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
+    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 4, 4, 2, [], [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Valnis)
+    ]), 
     new Scenario('X014', SCENARIO_TYPE.Competitive, 'Second Genesis', 4, 3, 2, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Kradmor),
@@ -1158,6 +1225,18 @@ class PlayerState {
             totalDamage = totalDamage + this.totalStarbase();
             totalDamage = totalDamage + this.totalSentryFleetPower();
 
+            if (this.totalSectorDefense() > 0) {
+                dmgDescription.push('+' + this.totalSectorDefense() + ' Defender Dmg (Sector Defenses)');
+            }
+
+            if (this.totalStarbase() > 0) {
+                dmgDescription.push('+' + this.totalStarbase() + ' Defender Dmg (Starbases)');
+            }
+
+            if (this.totalSentryFleetPower() > 0) {
+                dmgDescription.push('+' + this.totalSentryFleetPower() + ' Defender Dmg (Sentries)');
+            }
+
             if (this.hasImprovedDeepSpaceMissiles()) {
                 totalDamage = totalDamage + this.adjacentSectorsWithStarbases;
                 totalDamage = totalDamage + (this.adjacentSectorsWithShipyards * 2);
@@ -1393,7 +1472,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.21"
+        version: "1.3"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1501,19 +1580,20 @@ createApp({
             if (this.chosenScenario) {
                 let recommendedHouses = _.cloneDeep(this.chosenScenario.recommendedHouses);
                 recommendedHouses = _.shuffle(recommendedHouses);
+                let isTutorial = this.chosenScenario.id == 'T' ? true : false;
 
-                this.players[0].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[0].id);
+                this.players[0].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[0].id, isTutorial);
 
                 if (this.numberOfPlayers > 1) {
-                    this.players[1].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[1].id);
+                    this.players[1].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[1].id, isTutorial);
                 }
 
                 if (this.numberOfPlayers > 2) {
-                    this.players[2].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[2].id);
+                    this.players[2].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[2].id, isTutorial);
                 }
 
                 if (this.numberOfPlayers > 3) {
-                    this.players[3].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[3].id);
+                    this.players[3].houseWithOrigin = getHouseWithRandomOrigin(recommendedHouses[3].id, isTutorial);
                 }
             }
 
@@ -1571,7 +1651,7 @@ createApp({
                     allHousesWithoutChosen = _.remove(allHousesWithoutChosen, function(h) { return h.id !== house.id });
                 }
 
-                if (this.scenarioType == SCENARIO_TYPE.Solo || this.scenarioType == SCENARIO_TYPE.Cooperative) {
+                if (this.chosenScenario.id != 'T' && (this.scenarioType == SCENARIO_TYPE.Solo || this.scenarioType == SCENARIO_TYPE.Cooperative)) {
                     allHousesWithoutChosen = _.shuffle(allHousesWithoutChosen);
 
                     // draw 4
@@ -1601,7 +1681,7 @@ createApp({
                     this.fourFallenHouses = fourFallenHouses;
                 }
 
-                if (this.scenarioType == SCENARIO_TYPE.Competitive) {
+                if (this.chosenScenario.id == 'T' || this.scenarioType == SCENARIO_TYPE.Competitive) {
                     // setup techs from fallen houses
                     for (let fallenHouse of this.chosenScenario.fallenHouses) {
                         for (let origin of fallenHouse.origins) {
@@ -1942,6 +2022,10 @@ createApp({
             this.chosenScenario = null;
             this.computedUpdater++;
         },
+        chosenScenarioChanged: function(chosenScenarioIndex) {
+            if (this.chosenScenario == "None") this.chosenScenario = null;
+            this.computedUpdater++;
+        },
         calcPlayerChanged: function(calcPlayerChanged) {
             for (let fleet of this.calculationPlayers[calcPlayerChanged].fleets) {
                 fleet.power = 0;
@@ -2128,8 +2212,22 @@ createApp({
 
                         let resultDetail = null;
 
-                        if (wasDamageFullyAbsorbed && wasDamageFullyAbsorbed2) {
-                            resultDetail = new ResultDetail(-1, -1, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `${resultDesc}No damage to either side.`);
+                        if (wasDamageFullyAbsorbed || wasDamageFullyAbsorbed2) {
+                            let zeroDamageDesc = '';
+
+                            if (wasDamageFullyAbsorbed && invaderDamage > 0) {
+                                zeroDamageDesc += `${invaderDamage} Invader dmg fully absorbed by Defender. `
+                            }
+                            if (wasDamageFullyAbsorbed2 && defenderDamage > 0) {
+                                zeroDamageDesc += `${defenderDamage} Defender dmg fully absorbed by Invader.`
+                            }
+                            if (invaderDamage == 0) {
+                                zeroDamageDesc += `Invader has no approach dmg capability. `;
+                            }
+                            if (defenderDamage == 0) {
+                                zeroDamageDesc += `Defender has no approach dmg capability.`;
+                            }
+                            resultDetail = new ResultDetail(-1, -1, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `${resultDesc}${zeroDamageDesc} `);
                         }
                         else {
 
@@ -2495,8 +2593,16 @@ createApp({
 
                             let resultDetail = null;
 
-                            if (wasDamageFullyAbsorbed && wasDamageFullyAbsorbed2) {
-                                resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `${resultDesc}No damage to either side.`);
+                            if (wasDamageFullyAbsorbed || wasDamageFullyAbsorbed2) {
+                                let zeroDamageDesc = '';
+
+                                if (wasDamageFullyAbsorbed && invaderDamage > 0) {
+                                    zeroDamageDesc += `${invaderDamage} Invader dmg fully absorbed by Defender. `
+                                }
+                                if (wasDamageFullyAbsorbed2 && defenderDamage > 0) {
+                                    zeroDamageDesc += `${defenderDamage} Defender dmg fully absorbed by Invader.`
+                                }
+                                resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `${resultDesc}${zeroDamageDesc}`);
                             }
                             else {
 

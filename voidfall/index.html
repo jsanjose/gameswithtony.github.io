@@ -310,6 +310,11 @@
             margin-top: 1rem;
         }
 
+        span.power {
+            min-width: 11px;
+            text-align: center;
+        }
+
         .winner {
             
         }
@@ -422,17 +427,18 @@
                 </select>
             </p>
             <p v-if="scenariosByTypeAndPlayers && scenariosByTypeAndPlayers.length > 0">
-                <label for="scenarioType">Scenario (optional): </label>
-                <select v-model="chosenScenario" id="chosenScenario">
+                <label for="chosenScenario">Scenario (optional): </label>
+                <select v-model="chosenScenario" id="chosenScenario" @change="chosenScenarioChanged(chosenScenarioIndex)">
+                    <option v-if="chosenScenario && chosenScenario != 'None'" value="None">None</option>
                     <option v-for="scenario in scenariosByTypeAndPlayers" :value="scenario">
                         {{ scenario.name }}
                     </option>
                 </select>
             </p>
-            <p v-if="chosenScenario && (scenarioType == 0 || scenarioType == 1)" class="random-houses">
+            <p v-if="chosenScenario && chosenScenario.id != 'T' && (scenarioType == 0 || scenarioType == 1)" class="random-houses">
                 <button class="button-secondary" v-on:click="setRandomHouses">Set random house<template v-if="scenarioType == 1">s</template></button>
             </p>
-            <p v-if="chosenScenario && scenarioType == 2" class="random-houses">
+            <p v-if="chosenScenario && (scenarioType == 2 || chosenScenario.id == 'T')" class="random-houses">
                 <button class="button-secondary" v-on:click="setRandomRecommendedHouses">Set random recommended houses</button>
             </p>
             <section class="margin">
@@ -541,7 +547,7 @@
                 <a name="tableau"></a><h2 class="separation-header">Tableau</h2>
                 <small class="tableau-explanation">An initial tech tableau generated for '{{ chosenScenario.name }}' and the chosen player houses.</small>
                 <section class="fallen-houses">
-                    Fallen Houses: <span v-for="fallenHouse in fourFallenHouses">{{ fallenHouse.name }}&nbsp;&nbsp;</span>
+                    <template v-if="chosenScenario.id != 'T'"">Fallen Houses:</template><template v-if="chosenScenario.id == 'T'"">Tutorial Tech Houses:</template> <span v-for="fallenHouse in fourFallenHouses">{{ fallenHouse.name }}&nbsp;&nbsp;</span>
                 </section>
                 <section class="tech-list">
                     <article v-for="tableauTech in techTableau" class="tableau-tech">
