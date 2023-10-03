@@ -3,7 +3,7 @@ const PAGE_STATE = { StartScreen: 0, Technologies: 1, Calculator: 2 };
 const FLEET_TYPE = { Corvette: 0, Destroyer: 1, Dreadnaught: 2, Carrier: 3, Sentry: 4, Voidborn: 5, Sector_Defense: 6, Starbase: 7 };
 const TECHS = { Sentries: 0, Destroyers: 1, Dreadnaughts: 2, Carriers: 3, DeepSpaceMissiles: 4, EnergyCells: 5, Shields: 6, AutonomousDrones: 7, Targeting: 8, Torpedoes: 9, Starbases: 10, ArkShips: 11, CentralSurveillance: 12, Cloning: 13, Cybernetics: 14, CombatReplicators: 15, DataRefinery: 16, DecontaminationChambers: 17, Hyperdrive: 18, EscapePods: 19, NeuralMatrix: 20, OrbitalDocks: 21, Robotics: 22, Purifier: 23, SalvageScanner: 24, TacticalTransports: 25, Terraforming: 26, TradeNexus: 27
 };
-const HOUSE_IDS = { NoHouse: 0, Astoran: 1, Belitan: 2, Cortozaar: 3, Dunlork: 4, Fenrax: 5, Kradmor: 6, Marqualos: 7, Nervo: 8, Novaris: 9, Shiveus: 10, TheGwyn: 11, Valnis: 12, Yarvek: 13, Zenor: 14 };
+const HOUSE_IDS = { NoHouse: 0, Astoran: 1, Belitan: 2, Cortozaar: 3, Dunlork: 4, Fenrax: 5, Kradmor: 6, Marqualos: 7, Nervo: 8, Novaris: 9, Shiveus: 10, Thegwyn: 11, Valnis: 12, Yarvek: 13, Zenor: 14 };
 const HOUSE_ORIGINS = { A: 0, B: 1 };
 SCENARIO_TYPE = { Solo: 0, Cooperative: 1, Competitive: 2 };
 
@@ -50,7 +50,7 @@ function getHouseDesc(houseid) {
         case HOUSE_IDS.Nervo: return 'Nervo';
         case HOUSE_IDS.Novaris: return 'Novaris';
         case HOUSE_IDS.Shiveus: return 'Shiveus';
-        case HOUSE_IDS.TheGwyn: return 'TheGwyn';
+        case HOUSE_IDS.Thegwyn: return 'Thegwyn';
         case HOUSE_IDS.Valnis: return 'Valnis';
         case HOUSE_IDS.Yarvek: return 'Yarvek';
         case HOUSE_IDS.Zenor: return 'Zenor';
@@ -172,7 +172,7 @@ let Houses = [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Dreadnaughts),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.DecontaminationChambers)
     ], true),
-    new House(HOUSE_IDS.TheGwyn, getHouseDesc(HOUSE_IDS.TheGwyn), [
+    new House(HOUSE_IDS.Thegwyn, getHouseDesc(HOUSE_IDS.Thegwyn), [
         new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Terraforming),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.NeuralMatrix)
     ], false),
@@ -304,7 +304,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
-        getHouseById(HOUSE_IDS.TheGwyn)
+        getHouseById(HOUSE_IDS.Thegwyn)
     ], 
     [
         getHouseById(HOUSE_IDS.Belitan),
@@ -324,7 +324,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
-        getHouseById(HOUSE_IDS.TheGwyn)
+        getHouseById(HOUSE_IDS.Thegwyn)
     ], 
     [
         getHouseById(HOUSE_IDS.Belitan),
@@ -343,7 +343,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
-        getHouseById(HOUSE_IDS.TheGwyn)
+        getHouseById(HOUSE_IDS.Thegwyn)
     ], 
     [
         getHouseById(HOUSE_IDS.Belitan),
@@ -361,7 +361,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
-        getHouseById(HOUSE_IDS.TheGwyn)
+        getHouseById(HOUSE_IDS.Thegwyn)
     ], 
     [
         getHouseById(HOUSE_IDS.Belitan),
@@ -373,11 +373,17 @@ const Scenarios = [
     new Scenario('C044', SCENARIO_TYPE.Cooperative, 'Ancient Secrets', 4, null, 4, []),
     new Scenario('C054', SCENARIO_TYPE.Cooperative, 'Devil\'s Triangle', 4, null, 3, []),
     new Scenario('C064', SCENARIO_TYPE.Cooperative, 'When Darkness Fades', 4, null, 4, []),
-    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 2, 4, 2, [], [
+    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 2, 1, 1, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
-        getHouseById(HOUSE_IDS.TheGwyn)
+        getHouseById(HOUSE_IDS.Thegwyn)
+    ], 
+    [
+        getHouseById(HOUSE_IDS.Belitan),
+        getHouseById(HOUSE_IDS.Cortozaar),
+        getHouseById(HOUSE_IDS.Dunlork),
+        getHouseById(HOUSE_IDS.Valnis)
     ]), 
     new Scenario('X012', SCENARIO_TYPE.Competitive, 'Second Genesis', 2, 4, 2, [
         getHouseById(HOUSE_IDS.Astoran),
@@ -400,14 +406,14 @@ const Scenarios = [
     [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Nervo),
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X032', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 2, 2, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Nervo),
-        getHouseById(HOUSE_IDS.TheGwyn)
+        getHouseById(HOUSE_IDS.Thegwyn)
     ],
     [
         getHouseById(HOUSE_IDS.Fenrax),
@@ -430,7 +436,7 @@ const Scenarios = [
     new Scenario('X052', SCENARIO_TYPE.Competitive, 'Art of War', 2, 4, 4, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Zenor)
     ],
     [
@@ -440,7 +446,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Valnis)
     ]),
     new Scenario('X062', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 2, 4, 3, [
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Valnis)
@@ -484,7 +490,7 @@ const Scenarios = [
     [
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Novaris),
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X102', SCENARIO_TYPE.Competitive, 'Kingdom Come', 2, 1, 2, [
@@ -497,7 +503,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Kradmor),
-        getHouseById(HOUSE_IDS.TheGwyn)
+        getHouseById(HOUSE_IDS.Thegwyn)
     ]),
     new Scenario('X112', SCENARIO_TYPE.Competitive, 'Fractures of Space', 2, 2, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
@@ -511,7 +517,12 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 3, 4, 2, [], [
+    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 3, 1, 1, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Thegwyn)
+    ], [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
@@ -538,14 +549,14 @@ const Scenarios = [
     [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Nervo),
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X033', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 3, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Nervo),
-        getHouseById(HOUSE_IDS.TheGwyn)
+        getHouseById(HOUSE_IDS.Thegwyn)
     ],
     [
         getHouseById(HOUSE_IDS.Fenrax),
@@ -568,7 +579,7 @@ const Scenarios = [
     new Scenario('X053', SCENARIO_TYPE.Competitive, 'Art of War', 3, 4, 4, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Zenor)
     ],
     [
@@ -578,7 +589,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Valnis)
     ]),
     new Scenario('X063', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 3, 4, 3, [
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Valnis)
@@ -622,7 +633,7 @@ const Scenarios = [
     [
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Novaris),
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X103', SCENARIO_TYPE.Competitive, 'Kingdom Come', 3, 1, 2, [
@@ -635,7 +646,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Kradmor),
-        getHouseById(HOUSE_IDS.TheGwyn)
+        getHouseById(HOUSE_IDS.Thegwyn)
     ]),
     new Scenario('X113', SCENARIO_TYPE.Competitive, 'Fractures of Space', 3, 2, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
@@ -649,7 +660,12 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 4, 4, 2, [], [
+    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 4, 1, 1, [
+        getHouseById(HOUSE_IDS.Astoran),
+        getHouseById(HOUSE_IDS.Marqualos),
+        getHouseById(HOUSE_IDS.Shiveus),
+        getHouseById(HOUSE_IDS.Thegwyn)
+    ], [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
@@ -676,14 +692,14 @@ const Scenarios = [
     [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Nervo),
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
     new Scenario('X034', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 4, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Nervo),
-        getHouseById(HOUSE_IDS.TheGwyn)
+        getHouseById(HOUSE_IDS.Thegwyn)
     ],
     [
         getHouseById(HOUSE_IDS.Fenrax),
@@ -706,7 +722,7 @@ const Scenarios = [
     new Scenario('X054', SCENARIO_TYPE.Competitive, 'Art of War', 4, 4, 4, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Zenor)
     ],
     [
@@ -716,7 +732,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Valnis)
     ]),
     new Scenario('X064', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 4, 4, 3, [
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Valnis)
@@ -760,7 +776,7 @@ const Scenarios = [
     [
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Novaris),
-        getHouseById(HOUSE_IDS.TheGwyn),
+        getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
     new Scenario('X104', SCENARIO_TYPE.Competitive, 'Kingdom Come', 4, 1, 2, [
@@ -773,7 +789,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Kradmor),
-        getHouseById(HOUSE_IDS.TheGwyn)
+        getHouseById(HOUSE_IDS.Thegwyn)
     ]),
     new Scenario('X114', SCENARIO_TYPE.Competitive, 'Fractures of Space', 4, 2, 4, [
         getHouseById(HOUSE_IDS.Dunlork),
@@ -1472,7 +1488,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.3"
+        version: "1.31"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -2219,13 +2235,13 @@ createApp({
                                 zeroDamageDesc += `${invaderDamage} Invader dmg fully absorbed by Defender. `
                             }
                             if (wasDamageFullyAbsorbed2 && defenderDamage > 0) {
-                                zeroDamageDesc += `${defenderDamage} Defender dmg fully absorbed by Invader.`
+                                zeroDamageDesc += `${defenderDamage} Defender dmg fully absorbed by Invader. `
                             }
                             if (invaderDamage == 0) {
                                 zeroDamageDesc += `Invader has no approach dmg capability. `;
                             }
                             if (defenderDamage == 0) {
-                                zeroDamageDesc += `Defender has no approach dmg capability.`;
+                                zeroDamageDesc += `Defender has no approach dmg capability. `;
                             }
                             resultDetail = new ResultDetail(-1, -1, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `${resultDesc}${zeroDamageDesc} `);
                         }
