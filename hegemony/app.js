@@ -398,7 +398,7 @@ createApp({
         selectedSetAsideItem: null,
         stepsItemMoved: 0,
         computedUpdater: 1,
-        version: "0.4"
+        version: "0.45"
     } },
     watch: {
         
@@ -567,7 +567,7 @@ createApp({
         },
         startEndTurn(event) {
             if (this.currentAutoma.isTurnStarted) {
-                if (confirm(`Are you sure you want to end the ${this.currentAutoma.getPlayerClassAcronym()} turn?`));
+                if (confirm(`Are you sure you want to end the ${this.currentAutoma.getPlayerClassAcronym()} turn?`))
                 {
                     this.selectedItem = null;
                     this.selectedSetAsideItem = null;
@@ -581,17 +581,28 @@ createApp({
                 ];
 
                 let startNewTurn = false;
+                let foundOtherStartedAutoma = false;
+                let canceledNewTurn = false;
                 for (let automa of automas) {
                     if (automa.playerclass != this.currentAutoma.playerclass && automa.isTurnStarted) {
+                        foundOtherStartedAutoma = true;
                         if (confirm(`WARNING: This will automatically end the ${automa.getPlayerClassAcronym()} automa\'s turn.\n\nAre you sure you want to start the ${this.currentAutoma.getPlayerClassAcronym()} turn?`)) {
                             automa.isTurnStarted = false;
                             this.currentAutoma.isTurnStarted = true;
                             startNewTurn = true;
+                        } else {
+                            canceledNewTurn = true;
                         }
-                    } else {
-                        this.currentAutoma.isTurnStarted = true;
-                        startNewTurn = true;
                     }
+                }
+
+                if (foundOtherStartedAutoma && canceledNewTurn) {
+                    return;
+                }
+
+                if (!foundOtherStartedAutoma && !this.currentAutoma.isTurnStarted) {
+                    this.currentAutoma.isTurnStarted = true;
+                    startNewTurn = true;
                 }
 
                 if (startNewTurn) {
