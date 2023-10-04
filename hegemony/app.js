@@ -65,12 +65,14 @@ class ActionType {
     acronym;
     griditemtype;
     cssclass;
+    stepsItemMoved = 0;
     constructor(id, cssclass) {
         this.id = id;
         this.name = getActionTypeName(id);
         this.acronym = getActionTypeAcronym(id);
         this.cssclass = cssclass;
         this.griditemtype = PRIORITY_GRID_ITEM_TYPE.Action;
+        this.stepsItemMoved = 0;
     }
 }
 
@@ -98,6 +100,7 @@ class PolicyType {
     griditemtype;
     acronym;
     cssclass;
+    stepsItemMoved = 0;
     constructor(id, isWelfareState, cssclass, acronym) {
         this.id = id;
         this.name = getPolicyTypeName(id);
@@ -105,6 +108,7 @@ class PolicyType {
         this.acronym = getPolicyTypeAcronym(id);
         this.cssclass = cssclass;
         this.griditemtype = PRIORITY_GRID_ITEM_TYPE.Policy;
+        this.stepsItemMoved = 0;
     }
 }
 
@@ -125,7 +129,7 @@ function getPolicyTypeById(policytypeid) {
 // priority grid (advanced automa)
 class PriorityGridItem {
     item;
-    constructor(item) {
+    constructor(item, stepsItemMoved) {
         this.item = item;
     }
 }
@@ -146,9 +150,11 @@ class Automa {
     automatype;
     playerclass;
     prioritygrid;
-    constructor(automatype, playerclass, prioritygrid) {
+    isTurnStarted;
+    constructor(automatype, playerclass, prioritygrid, isTurnStarted) {
         this.automatype = automatype;
         this.playerclass = playerclass;
+        this.isTurnStarted = isTurnStarted;
 
         if (prioritygrid) this.prioritygrid = prioritygrid;
         
@@ -250,6 +256,12 @@ class Automa {
                 ];
             }
         }
+    }
+
+    getPlayerClassAcronym() {
+        if (this.playerclass === PLAYER_CLASS.Working) return "WC";
+        if (this.playerclass === PLAYER_CLASS.Middle) return "MC";
+        if (this.playerclass === PLAYER_CLASS.Capitalist) return "CC";
     }
 
     getGridArea(griditemtype) {
@@ -386,7 +398,7 @@ createApp({
         selectedSetAsideItem: null,
         stepsItemMoved: 0,
         computedUpdater: 1,
-        version: "0.3"
+        version: "0.4"
     } },
     watch: {
         
@@ -396,12 +408,26 @@ createApp({
         if (localStorage.getItem(LOCALSTORAGENAME)) {
             let gameState = JSON.parse(localStorage.getItem(LOCALSTORAGENAME));
 
+
+            // fix missing new properties in old saves
+            if (!gameState.WorkingClassAutoma.hasOwnProperty("isTurnStarted") || gameState.WorkingClassAutoma.isTurnStarted === null) {
+                this.WorkingClassAutoma.isTurnStarted = false;
+            }
+
+            if (!gameState.MiddleClassAutoma.hasOwnProperty("isTurnStarted") || gameState.MiddleClassAutoma.isTurnStarted === null) {
+                this.MiddleClassAutoma.isTurnStarted = false;
+            }
+
+            if (!gameState.CapitalistClassAutoma.hasOwnProperty("isTurnStarted") || gameState.CapitalistClassAutoma.isTurnStarted === null) {
+                this.CapitalistClassAutoma.isTurnStarted = false;
+            }
+
             this.numberOfPlayersIncludingAutoma = gameState.numberOfPlayersIncludingAutoma;
             this.pageState = gameState.pageState;
             this.players = gameState.players;
-            this.WorkingClassAutoma = new Automa(gameState.WorkingClassAutoma.automatype, gameState.WorkingClassAutoma.playerclass, gameState.WorkingClassAutoma.prioritygrid);
-            this.CapitalistClassAutoma = new Automa(gameState.CapitalistClassAutoma.automatype, gameState.CapitalistClassAutoma.playerclass, gameState.CapitalistClassAutoma.prioritygrid);
-            this.MiddleClassAutoma = new Automa(gameState.MiddleClassAutoma.automatype, gameState.MiddleClassAutoma.playerclass, gameState.MiddleClassAutoma.prioritygrid);
+            this.WorkingClassAutoma = new Automa(gameState.WorkingClassAutoma.automatype, gameState.WorkingClassAutoma.playerclass, gameState.WorkingClassAutoma.prioritygrid, gameState.WorkingClassAutoma.isTurnStarted);
+            this.CapitalistClassAutoma = new Automa(gameState.CapitalistClassAutoma.automatype, gameState.CapitalistClassAutoma.playerclass, gameState.CapitalistClassAutoma.prioritygrid, gameState.CapitalistClassAutoma.isTurnStarted);
+            this.MiddleClassAutoma = new Automa(gameState.MiddleClassAutoma.automatype, gameState.MiddleClassAutoma.playerclass, gameState.MiddleClassAutoma.prioritygrid, gameState.MiddleClassAutoma.isTurnStarted);
             this.automaInFocus = gameState.automaInFocus;
             this.itemTypeInFocus = gameState.itemTypeInFocus;
             this.selectedItem = gameState.selectedItem;
@@ -428,6 +454,9 @@ createApp({
         },
         itemTypeInFocusClass: function() {
             return this.itemTypeInFocus == PRIORITY_GRID_ITEM_TYPE.Action ? "priority-grid--actions" : "priority-grid--policies"
+        },
+        isTurnStartedClass: function() {
+            return !this.currentAutoma.isTurnStarted ? "turn-not-started" : null;
         },
         currentAutomaImage: function() {
             if (this.automaInFocus == PLAYER_CLASS.Working) return 'images/WC.png';
@@ -536,10 +565,61 @@ createApp({
             }
             event.preventDefault();
         },
+        startEndTurn(event) {
+            if (this.currentAutoma.isTurnStarted) {
+                if (confirm(`Are you sure you want to end the ${this.currentAutoma.getPlayerClassAcronym()} turn?`));
+                {
+                    this.selectedItem = null;
+                    this.selectedSetAsideItem = null;
+                    this.currentAutoma.isTurnStarted = false;
+                }
+            } else {
+                let automas = [
+                    this.WorkingClassAutoma,
+                    this.MiddleClassAutoma,
+                    this.CapitalistClassAutoma
+                ];
+
+                let startNewTurn = false;
+                for (let automa of automas) {
+                    if (automa.playerclass != this.currentAutoma.playerclass && automa.isTurnStarted) {
+                        if (confirm(`WARNING: This will automatically end the ${automa.getPlayerClassAcronym()} automa\'s turn.\n\nAre you sure you want to start the ${this.currentAutoma.getPlayerClassAcronym()} turn?`)) {
+                            automa.isTurnStarted = false;
+                            this.currentAutoma.isTurnStarted = true;
+                            startNewTurn = true;
+                        }
+                    } else {
+                        this.currentAutoma.isTurnStarted = true;
+                        startNewTurn = true;
+                    }
+                }
+
+                if (startNewTurn) {
+                    // reset all card moves to 0
+                    for (let automa of automas) {
+                        for (let row of automa.prioritygrid.actions) {
+                            for (let rowitem of row) {
+                                rowitem.item.stepsItemMoved = 0;
+                            }
+                        }
+
+                        for (let row of automa.prioritygrid.policies) {
+                            for (let rowitem of row) {
+                                rowitem.item.stepsItemMoved = 0;
+                            }
+                        }
+                    }
+
+                    this.selectedItem = null;
+                    this.selectedSetAsideItem = null;
+                }
+            }
+            this.saveGameState();
+            event.preventDefault();
+        },
         setAutomaInFocus(index) {
             this.selectedItem = null;
             this.selectedSetAsideItem = null;
-            this.stepsItemMoved = 0;
             this.saveGameState();
             this.computedUpdater++;
         },
@@ -547,19 +627,22 @@ createApp({
             if (this.itemTypeInFocus != itemtypeid) {
                 this.selectedItem = null;
                 this.selectedSetAsideItem = null;
-                this.stepsItemMoved = 0;
             }
             this.itemTypeInFocus = itemtypeid;
             this.saveGameState();
             this.computedUpdater++;
         },
         selectItem(item, event) {
+            if (!this.currentAutoma.isTurnStarted) {
+                alert(`Start the ${this.currentAutoma.getPlayerClassAcronym()} turn to adjust cards.`);
+                return;
+            }
+
             if (this.selectedItem === item) {
                 this.selectedItem = null; // deselect on second tap
             } else {
                 this.selectedItem = item;
             }
-            this.stepsItemMoved = 0;
             this.selectedSetAsideItem = null;
             this.saveGameState();
             this.computedUpdater++;
@@ -568,7 +651,7 @@ createApp({
         moveSelectedItemUp(event) {
             let item = this.selectedItem;
             this.currentAutoma.moveGridItemUp(item.griditemtype, item.id, 1);
-            this.stepsItemMoved++;
+            item.stepsItemMoved++;
             this.saveGameState();
             this.computedUpdater++;
             event.preventDefault();
@@ -576,7 +659,7 @@ createApp({
         moveSelectedItemDown(event) {
             let item = this.selectedItem;
             this.currentAutoma.moveGridItemDown(item.griditemtype, item.id, 1);
-            this.stepsItemMoved--;
+            item.stepsItemMoved--;
             this.saveGameState();
             this.computedUpdater++;
             event.preventDefault();
@@ -585,19 +668,22 @@ createApp({
             let item = this.selectedItem;
             this.currentAutoma.setItemAside(item.griditemtype, item.id);
             this.selectedItem = null;
-            this.stepsItemMoved = 0;
+            item.stepsItemMoved = 0;
             this.saveGameState();
             this.computedUpdater++;
             event.preventDefault();
         },
         deselectItem(event) {
             this.selectedItem = null;
-            this.stepsItemMoved = 0;
             this.saveGameState();
             this.computedUpdater++;
             event.preventDefault();
         },
         selectItemSetAside(item, event) {
+            if (!this.currentAutoma.isTurnStarted) {
+                alert(`Start the ${this.currentAutoma.getPlayerClassAcronym()} turn to adjust cards.`);
+                return;
+            }
             if (this.selectedSetAsideItem === item) {
                 this.selectedSetAsideItem = null; // deselect on second tap
             } else {

@@ -117,6 +117,10 @@
             margin-top: 1rem;
         }
 
+        .turn-not-started .item {
+            opacity: 0.5;
+        }
+
         .priority-grid {
             display: flex;
             gap: 1rem;
@@ -284,6 +288,14 @@
             flex-wrap: wrap;
         }
 
+        .turn-button {
+            color: #fff;
+            background-color: #333;
+            border: solid 1px #fff;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.9rem;
+        }
+
         .new-game {
             margin-block-start: 2rem;
         }
@@ -362,7 +374,7 @@
                 <p>Top 2: {{ topTwoDesc }}</p>
             </div>
         </header>
-        <section class="limit-container">
+        <section class="limit-container" :class="isTurnStartedClass">
             <section class="priority-grid" :class="itemTypeInFocusClass">
                 <section class="priority-grid-row" v-for="row in currentAutomaGridSide">
                     <a class="item" :class="[action.item.cssclass, (selectedItem && action.item.id == selectedItem.id && action.item.griditemtype == selectedItem.griditemtype) ? 'item--selected' : '']" v-for="action in row" href="#" v-on:click="selectItem(action.item, $event)">{{ action.item.acronym }}</a>
@@ -370,19 +382,19 @@
                 </section>
             </section>
         </section>
-        <section v-if="currentAutomaGridSideSetAside.length > 0" class="items-set-aside-section">
+        <section v-if="currentAutomaGridSideSetAside.length > 0" class="items-set-aside-section" :class="isTurnStartedClass">
             <h2>Set Aside</h2>
             <div class="items-set-aside">
                 <a class="item" :class="[action.item.cssclass, (selectedSetAsideItem && action.item.id == selectedSetAsideItem.id && action.item.griditemtype == selectedSetAsideItem.griditemtype) ? 'item--selected' : '']" v-for="action in currentAutomaGridSideSetAside" href="#" v-on:click="selectItemSetAside(action.item, $event)">{{ action.item.acronym }}</a>
             </div>
         </section>
         <section class="new-game">
-            <a href="#" v-on:click="newgame($event)">New Game</a>
+            <button class="turn-button" v-on:click="startEndTurn($event)"><template v-if="!currentAutoma.isTurnStarted">Start {{ currentAutoma.getPlayerClassAcronym() }} Turn</template><template v-if="currentAutoma.isTurnStarted">End {{ currentAutoma.getPlayerClassAcronym() }} Turn</template></button>&nbsp;|&nbsp;<a href="#" v-on:click="newgame($event)">New Game</a>
             <p>(v{{ version }})</p>
         </section>
         <nav class="lower-menu">
             <section v-if="selectedItem" class="move-item-buttons">
-                <p class="item-in-focus" :class="[{ 'item-in-focus--policies': itemTypeInFocus == 1 }]"><img v-bind:src="itemInFocusImage" style="width: 50px;" v-if="itemTypeInFocus == 0" />{{ selectedItem.name }}<template v-if="stepsItemMoved != 0">&nbsp;&nbsp;(<template v-if="stepsItemMoved < 0">&darr;</template><template v-if="stepsItemMoved > 0">&uarr;</template> {{ Math.abs(stepsItemMoved) }})</template></p>
+                <p class="item-in-focus" :class="[{ 'item-in-focus--policies': itemTypeInFocus == 1 }]"><img v-bind:src="itemInFocusImage" style="width: 50px;" v-if="itemTypeInFocus == 0" />{{ selectedItem.name }}<template v-if="selectedItem.stepsItemMoved != 0">&nbsp;&nbsp;(<template v-if="selectedItem.stepsItemMoved < 0">&darr;</template><template v-if="selectedItem.stepsItemMoved > 0">&uarr;</template> {{ Math.abs(selectedItem.stepsItemMoved) }})</template></p>
                 <button v-on:click="moveSelectedItemUp($event)">Up</button>&nbsp;&nbsp;&nbsp;
                 <button v-on:click="moveSelectedItemDown($event)">Down</button>&nbsp;&nbsp;&nbsp;
                 <button v-on:click="setSelectedItemAside($event)" v-if="itemTypeInFocus == 1 || (itemTypeInFocus == 0 && selectedItem.id == 3) || (itemTypeInFocus == 0 && selectedItem.id == 9)">Set Aside</button>&nbsp;&nbsp;&nbsp;
