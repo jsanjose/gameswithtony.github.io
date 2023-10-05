@@ -85,7 +85,7 @@ function getTechName(techid) {
         case TECHS.OrbitalDocks: return 'Orbital Docks';
         case TECHS.Purifier: return 'Purifier';
         case TECHS.Robotics: return 'Robotics';
-        case TECHS.SalvageScanner: return 'SalvageScanner';
+        case TECHS.SalvageScanner: return 'Salvage Scanner';
         case TECHS.Sentries: return 'Sentries';
         case TECHS.Shields: return 'Shields';
         case TECHS.Starbases: return 'Starbases';
@@ -1488,7 +1488,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.4"
+        version: "1.5"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1712,7 +1712,7 @@ createApp({
                 if (this.numberOfPlayers > 2) {
                     for (let player of this.players) {
                         if (player.houseWithOrigin) {
-                            this.techTableau.push(new TableauTech(player.houseWithOrigin.origin.originid, getTechName(player.houseWithOrigin.origin.techid), false, true, player.houseWithOrigin.house));
+                            this.techTableau.push(new TableauTech(player.houseWithOrigin.origin.techid, getTechName(player.houseWithOrigin.origin.techid), false, true, player.houseWithOrigin.house));
                         }
                     }
                 }
@@ -1734,6 +1734,22 @@ createApp({
                 }
 
                 this.techTableau = _.orderBy(shuffledTableau, 'fallenHouseName', 'name');
+
+                // for scenarios, remove 'unused tech' from players that aren't in the tableau
+                for (let i=0; i<this.players.length; i++) {
+                    let allTechs = _.clone(Technologies);
+                    for (let tech of allTechs) {
+                        let inTableauIndex = _.findIndex(this.techTableau, function(t) { 
+                            return t.tech === tech.id;
+                        });
+
+                        if (inTableauIndex == -1) {
+                            _.remove(this.players[i].unusedTechs, function(t) {
+                                return t.id === tech.id;
+                            });
+                        }
+                    }
+                }
             }
             
             this.pageState = PAGE_STATE.Technologies;
