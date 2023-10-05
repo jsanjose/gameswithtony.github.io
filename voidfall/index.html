@@ -600,14 +600,14 @@
                         <section class="increment">
                             <p class="increment-name"><label :for="'AutonomousDrones_' + calcPlayer.id">Return Trade Token (Drones)?</label></p>
                             <p class="increment-buttons">
-                                <input type="checkbox" v-model="calcPlayer.spendTradeTokenToUseAutonomousDrones" :id="'AutonomousDrones_' + calcPlayer.id" />
+                                <input type="checkbox" v-model="calcPlayer.spendTradeTokenToUseAutonomousDrones" :id="'AutonomousDrones_' + calcPlayer.id" @change="updateCheckbox()" />
                             </p>
                         </section>
                     </template>
                     <section class="increment" v-if="calcPlayer.isInvader && calcPlayer.playerid != 1000 && calcPlayer.playerid > 0 && isNervo(calcPlayer.playerid)">
                         <p class="increment-name"><label :for="'Bombard_' + calcPlayer.id">Use Bombard (Nervo)?</label></p>
                         <p class="increment-buttons">
-                            <input type="checkbox" v-model="calcPlayer.useBombard" :id="'Bombard_' + calcPlayer.id" />
+                            <input type="checkbox" v-model="calcPlayer.useBombard" :id="'Bombard_' + calcPlayer.id" @change="updateCheckbox()" />
                         </p>
                     </section>
                     <section class="increment" v-if="calcPlayer.useBombard && calcPlayer.isInvader">
@@ -621,7 +621,31 @@
                     <section class="increment" v-if="(calcPlayer.isInvader && playerHasBasicDeepSpaceMissiles(calcPlayer.playerid))">
                         <p class="increment-name"><label :for="'DeepSpaceMissiles_' + calcPlayer.id">Spend 1 Energy (Deep Space Missiles)?</label></p>
                         <p class="increment-buttons">
-                            <input type="checkbox" v-model="calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles" :id="'DeepSpaceMissiles_' + calcPlayer.id" />
+                            <input type="checkbox" v-model="calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles" :id="'DeepSpaceMissiles_' + calcPlayer.id" @change="updateCheckbox()" />
+                        </p>
+                    </section>
+                    <section class="increment" v-if="(calcPlayer.isInvader && calcPlayer.isVoidborn() && (scenarioType == 0 || scenarioType == 1))">
+                        <p class="increment-name"><label :for="'plusFiveInitiative_' + calcPlayer.id">+5 Initiative (War card)</label></p>
+                        <p class="increment-buttons">
+                            <input type="checkbox" v-model="calcPlayer.plusFiveVoidbornInitiative" :id="'plusFiveInitiative_' + calcPlayer.id" @change="updateCheckbox()" />
+                        </p>
+                    </section>
+                    <section class="increment" v-if="(calcPlayer.isInvader && calcPlayer.isVoidborn() && (scenarioType == 0 || scenarioType == 1))">
+                        <p class="increment-name"><label :for="'plusOneVoidbornApproachAbsorption_' + calcPlayer.id">+1 Approach absorption (War card)</label></p>
+                        <p class="increment-buttons">
+                            <input type="checkbox" v-model="calcPlayer.plusOneVoidbornApproachAbsorption" :id="'plusOneVoidbornApproachAbsorption_' + calcPlayer.id" @change="updateCheckbox()" />
+                        </p>
+                    </section>
+                    <section class="increment" v-if="(calcPlayer.isInvader && calcPlayer.isVoidborn() && (scenarioType == 0 || scenarioType == 1))">
+                        <p class="increment-name"><label :for="'plusOneVoidbornSalvoAbsorption_' + calcPlayer.id">+1 Salvo absorption (War card - Easy)</label></p>
+                        <p class="increment-buttons">
+                            <input type="checkbox" v-model="calcPlayer.plusOneVoidbornSalvoAbsorption" :id="'plusOneVoidbornSalvoAbsorption_' + calcPlayer.id" @change="updateCheckbox()" />
+                        </p>
+                    </section>
+                    <section class="increment" v-if="(calcPlayer.isInvader && calcPlayer.isVoidborn() && (scenarioType == 0 || scenarioType == 1))">
+                        <p class="increment-name"><label :for="'plusTwoVoidbornSalvoAbsorption_' + calcPlayer.id">+2 Salvo absorption (War card - Norm/Hard)</label></p>
+                        <p class="increment-buttons">
+                            <input type="checkbox" v-model="calcPlayer.plusTwoVoidbornSalvoAbsorption" :id="'plusTwoVoidbornSalvoAbsorption_' + calcPlayer.id" @change="updateCheckbox()" />
                         </p>
                     </section>
                     <section class="increment" v-if="(!calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)) || ((calcPlayer.isInvader && playerHasBasicDeepSpaceMissiles(calcPlayer.playerid) && calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles) || (calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)))">

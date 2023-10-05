@@ -875,10 +875,14 @@ class PlayerState {
     spendEnergyToUseBasicDeepSpaceMissiles = false;
     adjacentSectorsWithShipyards = 0;
     adjacentSectorsWithStarbases = 0;
+    plusOneVoidbornApproachAbsorption = false;
+    plusOneVoidbornSalvoAbsorption = false;
+    plusTwoVoidbornSalvoAbsorption = false;
+    plusFiveVoidbornInitiative = false;
     totalApproachAbsorption = null;
     totalSalvoAbsorption = null;
     
-    constructor(id, playerid, name, isInvader, fleets, techs, useBombard, bombardAbsorption, spendTradeTokenToUseAutonomousDrones, spendEnergyToUseBasicDeepSpaceMissiles, adjacentSectorsWithShipyards, adjacentSectorsWithStarbases) {
+    constructor(id, playerid, name, isInvader, fleets, techs, useBombard, bombardAbsorption, spendTradeTokenToUseAutonomousDrones, spendEnergyToUseBasicDeepSpaceMissiles, adjacentSectorsWithShipyards, adjacentSectorsWithStarbases, plusOneVoidbornApproachAbsorption, plusOneVoidbornSalvoAbsorption, plusTwoVoidbornSalvoAbsorption, plusFiveVoidbornInitiative) {
         this.id = id;
         this.playerid = playerid;
         this.name = name;
@@ -891,6 +895,10 @@ class PlayerState {
         this.spendEnergyToUseBasicDeepSpaceMissiles = spendEnergyToUseBasicDeepSpaceMissiles;
         this.adjacentSectorsWithShipyards = adjacentSectorsWithShipyards;
         this.adjacentSectorsWithStarbases = adjacentSectorsWithStarbases;
+        this.plusOneVoidbornApproachAbsorption = plusOneVoidbornApproachAbsorption;
+        this.plusOneVoidbornSalvoAbsorption = plusOneVoidbornSalvoAbsorption;
+        this.plusTwoVoidbornSalvoAbsorption = plusTwoVoidbornSalvoAbsorption;
+        this.plusFiveVoidbornInitiative = plusFiveVoidbornInitiative;
         this.totalApproachAbsorption = null;
         this.totalSalvoAbsorption = null;
     }
@@ -915,6 +923,10 @@ class PlayerState {
 
     isHumanPlayer() {
         return this.playerid > 0 && this.playerid != 1000;
+    }
+
+    isVoidborn() {
+        return this.playerid == 1000;
     }
 
     totalCorvetteFleetPower() {
@@ -1125,6 +1137,10 @@ class PlayerState {
             }
         }
 
+        if (this.isVoidborn() && this.plusFiveVoidbornInitiative) {
+            totalInitiative = totalInitiative + 5;
+        }
+
         return totalInitiative;
     }
 
@@ -1174,6 +1190,11 @@ class PlayerState {
                     totalAbsorption = totalAbsorption + this.bombardAbsorption;
                     absDescription.push('+' + this.bombardAbsorption + ' Invader Abs (Bombard)');
                 }
+
+                if (this.isVoidborn() && this.plusOneVoidbornApproachAbsorption) {
+                    totalAbsorption = totalAbsorption + 1;
+                    absDescription.push('+1 Invader Abs (War card)');
+                }
             }
 
             // defender salvo
@@ -1218,6 +1239,16 @@ class PlayerState {
                 if (this.useBombard) {
                     totalAbsorption = totalAbsorption + this.bombardAbsorption;
                     absDescription.push('+' + this.bombardAbsorption + ' Invader Abs (Bombard)');
+                }
+
+                if (this.isVoidborn() && this.plusOneVoidbornSalvoAbsorption) {
+                    totalAbsorption = totalAbsorption + 1;
+                    absDescription.push('+1 Invader Abs (War card - Easy)');
+                }
+
+                if (this.isVoidborn() && this.plusTwoVoidbornSalvoAbsorption) {
+                    totalAbsorption = totalAbsorption + 2;
+                    absDescription.push('+2 Invader Abs (War card - Normal/Hard)');
                 }
             }
 
@@ -1488,7 +1519,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.5"
+        version: "1.54"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1525,9 +1556,9 @@ createApp({
                 this.players.pop();
             }
 
-            this.invaderState = new PlayerState(gameState.invaderState.id, gameState.invaderState.playerid, gameState.invaderState.name, gameState.invaderState.isInvader, gameState.invaderState.fleets, gameState.invaderState.techs, gameState.invaderState.useBombard, gameState.invaderState.bombardAbsorption, gameState.invaderState.spendTradeTokenToUseAutonomousDrones, gameState.invaderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.invaderState.adjacentSectorsWithShipyards, gameState.invaderState.adjacentSectorsWithStarbases);
+            this.invaderState = new PlayerState(gameState.invaderState.id, gameState.invaderState.playerid, gameState.invaderState.name, gameState.invaderState.isInvader, gameState.invaderState.fleets, gameState.invaderState.techs, gameState.invaderState.useBombard, gameState.invaderState.bombardAbsorption, gameState.invaderState.spendTradeTokenToUseAutonomousDrones, gameState.invaderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.invaderState.adjacentSectorsWithShipyards, gameState.invaderState.adjacentSectorsWithStarbases, gameState.invaderState.plusOneVoidbornApproachAbsorption, gameState.invaderState.plusOneVoidbornSalvoAbsorption, gameState.invaderState.plusTwoVoidbornSalvoAbsorption, gameState.invaderState.plusFiveVoidbornInitiative);
 
-            this.defenderState = new PlayerState(gameState.defenderState.id, gameState.defenderState.playerid, gameState.defenderState.name, gameState.defenderState.isInvader, gameState.defenderState.fleets, gameState.defenderState.techs, gameState.defenderState.useBombard, gameState.defenderState.bombardAbsorption, gameState.defenderState.spendTradeTokenToUseAutonomousDrones, gameState.defenderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.defenderState.adjacentSectorsWithShipyards, gameState.defenderState.adjacentSectorsWithStarbases);
+            this.defenderState = new PlayerState(gameState.defenderState.id, gameState.defenderState.playerid, gameState.defenderState.name, gameState.defenderState.isInvader, gameState.defenderState.fleets, gameState.defenderState.techs, gameState.defenderState.useBombard, gameState.defenderState.bombardAbsorption, gameState.defenderState.spendTradeTokenToUseAutonomousDrones, gameState.defenderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.defenderState.adjacentSectorsWithShipyards, gameState.defenderState.adjacentSectorsWithStarbases, gameState.defenderState.plusOneVoidbornApproachAbsorption, gameState.defenderState.plusOneVoidbornSalvoAbsorption, gameState.defenderState.plusTwoVoidbornSalvoAbsorption, gameState.defenderState.plusFiveVoidbornInitiative);
 
             if (gameState.hasOwnProperty("scenarioType")) {
                 this.scenarioType = gameState.scenarioType;
@@ -1909,6 +1940,22 @@ createApp({
                     calc += 'Adjacent Sectors w/ Starbases: ' + calcPlayer.adjacentSectorsWithStarbases + '\n';
                 }
 
+                if (calcPlayer.isVoidborn() && calcPlayer.plusFiveVoidbornInitiative) {
+                    calc += '+5 Initiative (War card): Yes\n';
+                }
+
+                if (calcPlayer.isVoidborn() && calcPlayer.plusOneVoidbornApproachAbsorption) {
+                    calc += '+1 Approach Absorption (War card): Yes\n';
+                }
+
+                if (calcPlayer.isVoidborn() && calcPlayer.plusOneVoidbornSalvoAbsorption) {
+                    calc += '+1 Salvo Absorption (War card - Easy): Yes\n';
+                }
+
+                if (calcPlayer.isVoidborn() && calcPlayer.plusTwoVoidbornSalvoAbsorption) {
+                    calc += '+2 Salvo Absorption (War card - Normal/Hard): Yes\n';
+                }
+
                 calc += '\n'
             }
 
@@ -2055,6 +2102,12 @@ createApp({
             event.preventDefault();
             this.saveGameState();
         },
+        updateCheckbox: function() {
+            if (this.showResults) { // if we're already showing results, re-calculate automatically
+                this.calculate();
+            }
+            this.saveGameState();
+        },
         numberOfPlayersChanged: function(numberOfPlayersIndex) {
             if (this.numberOfPlayers == 1) {
                 this.scenarioType = SCENARIO_TYPE.Solo;
@@ -2082,6 +2135,10 @@ createApp({
             this.calculationPlayers[calcPlayerChanged].spendEnergyToUseBasicDeepSpaceMissiles = false;
             this.calculationPlayers[calcPlayerChanged].adjacentSectorsWithShipyards = 0;
             this.calculationPlayers[calcPlayerChanged].adjacentSectorsWithStarbases = 0;
+            this.calculationPlayers[calcPlayerChanged].plusFiveVoidbornInitiative = false;
+            this.calculationPlayers[calcPlayerChanged].plusOneVoidbornApproachAbsorption = false;
+            this.calculationPlayers[calcPlayerChanged].plusOneVoidbornSalvoAbsorption = false;
+            this.calculationPlayers[calcPlayerChanged].plusTwoVoidbornSalvoAbsorption = false;
             this.showResults = false;
 
             // copy techs
