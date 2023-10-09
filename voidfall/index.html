@@ -341,9 +341,25 @@
             color: #000;
         }
 
+        .combat-version {
+            padding: 0.25rem;
+            padding-inline-start: 0.5rem;
+            padding-left: 0.5rem;
+            background-color: #444;
+            color: #fff;
+            margin: 0;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .combat-version-arrow {
+            float: right;
+        }
+
         .winner-steps {
             padding-inline-start: 1rem;
             padding-left: 1rem;
+            margin-block-start: 0.25rem;
         }
 
         .winner-steps li {
@@ -683,11 +699,14 @@
                                 <li v-if="fleet.power > 0 && fleet.fleetType < 6">{{ getFleetDesc(fleet.fleetType) }}: {{ fleet.power }}</li>
                             </template>
                         </ul>
-                        <ul class="winner-steps">
-                            <template v-for="step in win.steps">
-                                <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
-                            </template>
-                        </ul>
+                        <template v-for="combat in win.combats">
+                            <p class="combat-version" v-on:click="expandCollapseCombat($event, combat)">Combat v{{combat.combatVersion}}<span class="combat-version-arrow"><template v-if="!combat.showCombat">&#9660;</template><template v-if="combat.showCombat">&#9650;</template></span></p>
+                            <ul class="winner-steps">
+                                <template v-for="step in combat.steps" v-if="combat.showCombat">
+                                    <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
+                                </template>
+                            </ul>
+                        </template>
                     </article>
                 </section>
                 <section v-if="results.defenderWins" class="winner">
@@ -699,21 +718,27 @@
                                 <li v-if="fleet.power > 0 && fleet.fleetType < 6">{{ getFleetDesc(fleet.fleetType) }}: {{ fleet.power }}</li>
                             </template>
                         </ul>
-                        <ul class="winner-steps">
-                            <template v-for="step in win.steps">
-                                <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
-                            </template>
-                        </ul>
+                        <template v-for="combat in win.combats">
+                            <p class="combat-version" v-on:click="expandCollapseCombat($event, combat)">Combat v{{combat.combatVersion}}<span class="combat-version-arrow"><template v-if="!combat.showCombat">&#9660;</template><template v-if="combat.showCombat">&#9650;</template></span></p>
+                            <ul class="winner-steps">
+                                <template v-for="step in combat.steps" v-if="combat.showCombat">
+                                    <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
+                                </template>
+                            </ul>
+                        </template>
                     </article>
                 </section>
                 <section v-if="results.ties">
                     <h2>Tie</h2>
                     <article v-if="expandAll" v-for="win in results.ties" class="winner">
-                        <ul class="winner-steps">
-                            <template v-for="step in win.steps">
-                                <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
-                            </template>
-                        </ul>
+                        <template v-for="combat in win.combats">
+                            <p class="combat-version" v-on:click="expandCollapseCombat($event, combat)">Combat v{{combat.combatVersion}}<span class="combat-version-arrow"><template v-if="!combat.showCombat">&#9660;</template><template v-if="combat.showCombat">&#9650;</template></span></p>
+                            <ul class="winner-steps">
+                                    <template v-for="step in combat.steps" v-if="combat.showCombat">
+                                        <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
+                                    </template>
+                            </ul>
+                        </template>
                     </article>
                 </section>
             </section>

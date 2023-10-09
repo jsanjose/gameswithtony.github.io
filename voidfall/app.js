@@ -1519,7 +1519,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.54"
+        version: "1.6"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1895,6 +1895,11 @@ createApp({
             event.preventDefault();
             this.computedUpdater++;
         },
+        expandCollapseCombat: function(event, combat) {
+            combat.showCombat = !combat.showCombat;
+            event.preventDefault();
+            this.computedUpdater++;
+        },
         shareCalc: function(event) {
             let calc = '';
 
@@ -1975,8 +1980,13 @@ createApp({
                     }), ', ');
 
                     calc += ']\n';
-                    for (let step of win.steps) {
-                        calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                    for (let combat of win.combats) {
+                        if (combat.showCombat) {
+                            calc += "\nCombat v" + combat.combatVersion + "\n";
+                            for (let step of combat.steps) {
+                                calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                            }
+                        }
                     }
 
                     calc += '\n';
@@ -1998,8 +2008,13 @@ createApp({
                     }), ', ');
 
                     calc += ']\n';
-                    for (let step of win.steps) {
-                        calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                    for (let combat of win.combats) {
+                        if (combat.showCombat) {
+                            calc += "\nCombat v" + combat.combatVersion + "\n";
+                            for (let step of combat.steps) {
+                                calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                            }
+                        }
                     }
 
                     calc += '\n';
@@ -2013,8 +2028,13 @@ createApp({
 
                 let winIndex = 1;
                 for (let win of this.results.ties) {
-                    for (let step of win.steps) {
-                        calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                    for (let combat of win.combats) {
+                        if (combat.showCombat) {
+                            calc += "\nCombat v" + combat.combatVersion + "\n";
+                            for (let step of combat.steps) {
+                                calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                            }
+                        }
                     }
 
                     calc += '\n';
@@ -2214,8 +2234,13 @@ createApp({
             if (ties) {
                 groupedTies = _.groupBy(_.orderBy(ties, ["sortableId"], ["desc"]), "sortableId");
                 let preparedTies = [];
+                preparedTies.combats = [];
                 Object.entries(groupedTies).forEach(([key, value]) => {
-                    preparedTies.push({ invaderFleet: value[0].fleets.invaderFleet, defenderFleet: value[0].fleets.defenderFleet, steps: value[0].steps });
+                    let combats = [];
+                    for (let i=0;i<value.length;i++) {
+                        combats.push({ steps: value[i].steps, combatVersion: i+1, showCombat: i===0 ? true : false });
+                    }
+                    preparedTies.push({ invaderFleet: value[0].fleets.invaderFleet, defenderFleet: value[0].fleets.defenderFleet, combats: combats });
                 });
                 preparedResults.ties = preparedTies;
             }
@@ -2226,7 +2251,11 @@ createApp({
                 groupedInvaderWins = _.groupBy(_.orderBy(invaderWins, ["sortableId"], ["desc"]), "sortableId");
                 let preparedInvaderWins = [];
                 Object.entries(groupedInvaderWins).forEach(([key, value]) => {
-                    preparedInvaderWins.push({ winnerFleet: value[0].fleets.invaderFleet, steps: value[0].steps });
+                    let combats = [];
+                    for (let i=0;i<value.length;i++) {
+                        combats.push({ steps: value[i].steps, combatVersion: i+1, showCombat: i===0 ? true : false });
+                    }
+                    preparedInvaderWins.push({ winnerFleet: value[0].fleets.invaderFleet, combats: combats });
                 });
                 preparedResults.invaderWins = preparedInvaderWins;
                 preparedResults.invaderName = invader.name;
@@ -2238,7 +2267,11 @@ createApp({
                 groupedDefenderWins = _.groupBy(_.orderBy(defenderWins, "sortableId", ["sortableId"], ["desc"]), "sortableId");
                 let preparedDefenderWins = [];
                 Object.entries(groupedDefenderWins).forEach(([key, value]) => {
-                    preparedDefenderWins.push({ winnerFleet: value[0].fleets.defenderFleet, steps: value[0].steps });
+                    let combats = [];
+                    for (let i=0;i<value.length;i++) {
+                        combats.push({ steps: value[i].steps, combatVersion: i+1, showCombat: i===0 ? true : false });
+                    }
+                    preparedDefenderWins.push({ winnerFleet: value[0].fleets.defenderFleet, combats: combats });
                 });
                 preparedResults.defenderWins = preparedDefenderWins;
                 preparedResults.defenderName = defender.name;
