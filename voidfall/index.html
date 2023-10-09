@@ -294,6 +294,14 @@
             white-space: nowrap;
         }
 
+        .increment-name small {
+            display: block;
+            line-height: 0.9rem;
+            font-size: 0.8rem;
+            padding-block-start: 0.25rem;
+            padding-right: 0.25rem;
+        }
+
         .increment-buttons {
             display: inline-flex;
             justify-content: space-evenly;
@@ -604,7 +612,7 @@
                 <section v-if="calcPlayer.playerid > 0">
                     <template v-for="(playerFleet, playerFleetIndex) in calcPlayer.fleets">
                         <section class="increment" v-if="showFleet(calcPlayerIndex, playerFleetIndex)">
-                            <p class="increment-name">{{ playerFleet.name }}</p>
+                            <p class="increment-name">{{ playerFleet.name }}<template v-if="playerFleet.fleetType == 3"><small>If Carriers deploy Corvettes, increase Corvettes above.</small></template></p>
                             <p class="increment-buttons">
                                 <a href="#" v-on:click="updatePlayerFleet($event, calcPlayerIndex, playerFleetIndex, -1)">- 1</a>
                                 <span class="power">{{ playerFleet.power }}</span>
