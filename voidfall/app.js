@@ -1519,7 +1519,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.61"
+        version: "1.62"
     } },
     watch: {
         numberOfPlayers(val) {
