@@ -2228,10 +2228,13 @@ createApp({
 
             // prepare results
             let preparedResults = {};
+            preparedResults.multipleOutcomes = false;
+            let totalTypesOfWins = 0;
             
             let ties = groupedResults["1"];
             let groupedTies;
             if (ties) {
+                totalTypesOfWins++;
                 groupedTies = _.groupBy(_.orderBy(ties, ["sortableId"], ["desc"]), "sortableId");
                 let preparedTies = [];
                 preparedTies.combats = [];
@@ -2248,7 +2251,9 @@ createApp({
             let invaderWins = groupedResults["2"];
             let groupedInvaderWins;
             if (invaderWins) {
+                totalTypesOfWins++;
                 groupedInvaderWins = _.groupBy(_.orderBy(invaderWins, ["sortableId"], ["desc"]), "sortableId");
+                preparedResults.multipleOutcomes = preparedResults.multipleOutcomes || Object.entries(groupedInvaderWins).length > 1;
                 let preparedInvaderWins = [];
                 Object.entries(groupedInvaderWins).forEach(([key, value]) => {
                     let combats = [];
@@ -2264,7 +2269,9 @@ createApp({
             let defenderWins = groupedResults["3"];
             let groupedDefenderWins;
             if (defenderWins) { 
+                totalTypesOfWins++;
                 groupedDefenderWins = _.groupBy(_.orderBy(defenderWins, "sortableId", ["sortableId"], ["desc"]), "sortableId");
+                preparedResults.multipleOutcomes = preparedResults.multipleOutcomes || groupedDefenderWins.length > 1;
                 let preparedDefenderWins = [];
                 Object.entries(groupedDefenderWins).forEach(([key, value]) => {
                     let combats = [];
@@ -2276,6 +2283,8 @@ createApp({
                 preparedResults.defenderWins = preparedDefenderWins;
                 preparedResults.defenderName = defender.name;
             }
+
+            preparedResults.multipleOutcomes = preparedResults.multipleOutcomes || totalTypesOfWins > 1;
 
             this.results = preparedResults;
             this.showResults = true;

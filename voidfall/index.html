@@ -323,8 +323,11 @@
             text-align: center;
         }
 
-        .winner {
-            
+        .multiple-outcomes {
+            font-size: 0.9rem;
+            line-height: 1rem;
+            border: solid 1px #ccc;
+            padding: 0.5rem;
         }
         
         .winner h2 {
@@ -695,6 +698,7 @@
                 <button v-on:click="swap" class="calc-button" aria-label="Swap" title="Swap">&rlarr;</button>
             </p>
             <section v-if="showResults">
+                <p v-if="results.multipleOutcomes" class="multiple-outcomes">NOTE: There are multiple possible outcomes. Check details to determine which will happen in your game.</p>
                 <p class="expand">
                     <a href="#" v-if="!expandAll" v-on:click="updateExpandAll($event, true)">Expand</a><a href="#"  v-if="expandAll" v-on:click="updateExpandAll($event, false)">Collapse</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="shareCalc($event)">Share</a>
                 </p>
