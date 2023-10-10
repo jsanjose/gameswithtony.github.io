@@ -871,6 +871,7 @@ class PlayerState {
     techs = [];
     useBombard = false;
     bombardAbsorption = 0;
+    bombardSalvoAbsorption = 0;
     spendTradeTokenToUseAutonomousDrones = false;
     spendEnergyToUseBasicDeepSpaceMissiles = false;
     adjacentSectorsWithShipyards = 0;
@@ -879,10 +880,11 @@ class PlayerState {
     plusOneVoidbornSalvoAbsorption = false;
     plusTwoVoidbornSalvoAbsorption = false;
     plusFiveVoidbornInitiative = false;
+    plusXVoidbornSalvoAbsorption = false;
     totalApproachAbsorption = null;
     totalSalvoAbsorption = null;
     
-    constructor(id, playerid, name, isInvader, fleets, techs, useBombard, bombardAbsorption, spendTradeTokenToUseAutonomousDrones, spendEnergyToUseBasicDeepSpaceMissiles, adjacentSectorsWithShipyards, adjacentSectorsWithStarbases, plusOneVoidbornApproachAbsorption, plusOneVoidbornSalvoAbsorption, plusTwoVoidbornSalvoAbsorption, plusFiveVoidbornInitiative) {
+    constructor(id, playerid, name, isInvader, fleets, techs, useBombard, bombardAbsorption, spendTradeTokenToUseAutonomousDrones, spendEnergyToUseBasicDeepSpaceMissiles, adjacentSectorsWithShipyards, adjacentSectorsWithStarbases, plusOneVoidbornApproachAbsorption, plusOneVoidbornSalvoAbsorption, plusTwoVoidbornSalvoAbsorption, plusFiveVoidbornInitiative, bombardSalvoAbsorption, plusXVoidbornSalvoAbsorption) {
         this.id = id;
         this.playerid = playerid;
         this.name = name;
@@ -899,6 +901,8 @@ class PlayerState {
         this.plusOneVoidbornSalvoAbsorption = plusOneVoidbornSalvoAbsorption;
         this.plusTwoVoidbornSalvoAbsorption = plusTwoVoidbornSalvoAbsorption;
         this.plusFiveVoidbornInitiative = plusFiveVoidbornInitiative;
+        this.bombardSalvoAbsorption = bombardSalvoAbsorption ? bombardSalvoAbsorption : 0;
+        this.plusXVoidbornSalvoAbsorption = plusXVoidbornSalvoAbsorption ? plusXVoidbornSalvoAbsorption : 0;
         this.totalApproachAbsorption = null;
         this.totalSalvoAbsorption = null;
     }
@@ -1098,10 +1102,6 @@ class PlayerState {
         return this.hasShields() || this.hasTorpedoes();
     }
 
-    isDamagePlayerWouldntChoose(fleetType) {
-        return fleetType !== FLEET_TYPE.Corvette && !this.hasCorvetteRelatedTech() && this.totalCorvetteFleetPower() > 0;
-    }
-
     initiative() {
         // initiative should be calculated at the beginning of each salvo step
         let totalInitiative = 0;
@@ -1154,6 +1154,7 @@ class PlayerState {
         }
     }
 
+    // "totalDefenderImprovedTechs" is to support Galactic Event H (Cycle 2)
     absorption(isApproachStep) {
         let totalAbsorption = 0;
         let absDescription = [];
@@ -1186,7 +1187,7 @@ class PlayerState {
                     absDescription.push('+1 Invader Abs (Drones)');
                 }
 
-                if (this.useBombard) {
+                if (this.useBombard && this.bombardAbsorption > 0) {
                     totalAbsorption = totalAbsorption + this.bombardAbsorption;
                     absDescription.push('+' + this.bombardAbsorption + ' Invader Abs (Bombard)');
                 }
@@ -1236,9 +1237,9 @@ class PlayerState {
                     absDescription.push('+2 Invader Abs (Improved Drones)');
                 }
 
-                if (this.useBombard) {
-                    totalAbsorption = totalAbsorption + this.bombardAbsorption;
-                    absDescription.push('+' + this.bombardAbsorption + ' Invader Abs (Bombard)');
+                if (this.useBombard && this.bombardSalvoAbsorption > 0) {
+                    totalAbsorption = totalAbsorption + this.bombardSalvoAbsorption;
+                    absDescription.push('+' + this.bombardSalvoAbsorption + ' Invader Abs (Bombard)');
                 }
 
                 if (this.isVoidborn() && this.plusOneVoidbornSalvoAbsorption) {
@@ -1249,6 +1250,12 @@ class PlayerState {
                 if (this.isVoidborn() && this.plusTwoVoidbornSalvoAbsorption) {
                     totalAbsorption = totalAbsorption + 2;
                     absDescription.push('+2 Invader Abs (War card - Normal/Hard)');
+                }
+
+                // Galactic Event H (Cycle 2)
+                if (this.isVoidborn() && this.plusXVoidbornSalvoAbsorption) {
+                    totalAbsorption = totalAbsorption + this.plusXVoidbornSalvoAbsorption;
+                    absDescription.push('+' + this.plusXVoidbornSalvoAbsorption +' Invader Abs (Cycle 2 - Event H)');
                 }
             }
 
@@ -1285,11 +1292,10 @@ class PlayerState {
             }
 
             if (this.hasImprovedDeepSpaceMissiles()) {
-                totalDamage = totalDamage + this.adjacentSectorsWithStarbases;
-                totalDamage = totalDamage + (this.adjacentSectorsWithShipyards * 2);
+                totalDamage = Math.min(new Number(this.adjacentSectorsWithStarbases) + new Number(this.adjacentSectorsWithShipyards), 2);
 
-                if (this.adjacentSectorsWithStarbases + (this.adjacentSectorsWithShipyards * 2) > 0)
-                dmgDescription.push('+' + this.adjacentSectorsWithStarbases + (this.adjacentSectorsWithShipyards * 2) + ' Defender Dmg (Improved Deep Space Missiles)');
+                if (totalDamage > 0)
+                dmgDescription.push('+' + totalDamage + ' Defender Dmg (Improved Deep Space Missiles)');
             }
 
             if (this.hasEnergyCellTech() && totalDamage > 0) {
@@ -1310,14 +1316,11 @@ class PlayerState {
                 dmgDescription.push('+1 Invader Dmg (Deep Space Missiles)');
             }
 
-            if (this.hasImprovedDeepSpaceMissiles() && (this.adjacentSectorsWithShipyards + this.adjacentSectorsWithStarbases > 0)) {
-                if (this.adjacentSectorsWithShipyards + this.adjacentSectorsWithStarbases > 1) {
-                    totalDamage = totalDamage + 2;
-                    dmgDescription.push('+2 Invader Dmg (Improved Deep Space Missiles)');
-                } else {
-                    totalDamage = totalDamage + 1;
-                    dmgDescription.push('+1 Invader Dmg (Improved Deep Space Missiles)');
-                }
+            if (this.hasImprovedDeepSpaceMissiles()) {
+                totalDamage = Math.min(new Number(this.adjacentSectorsWithStarbases) + new Number(this.adjacentSectorsWithShipyards), 2);
+
+                if (totalDamage > 0)
+                dmgDescription.push('+' + totalDamage + ' Invader Dmg (Improved Deep Space Missiles)');
             }
         }
 
@@ -1395,10 +1398,10 @@ class PlayerState {
         }
 
         // check if we're not dropping Corvettes when we could
-        let misusingCorvettes = false;
         let totalCorvetteFleetPower = this.totalCorvetteFleetPower();
+        let totalSentryFleetPower = this.totalSentryFleetPower();
         let hasCorvetteRelatedTech = this.hasCorvetteRelatedTech();
-        let canPrioritizeCorvettes = totalCorvetteFleetPower > 0 && !hasCorvetteRelatedTech;
+        let canPrioritizeCorvettes = totalCorvetteFleetPower > 0 && !hasCorvetteRelatedTech && totalSentryFleetPower === 0; // can't prioritize Corvettes at all if there are Sentries, even if the player has no Corvette tech
 
         for (let distribution of allDistributions) {
             let corvetteUsage = _.filter(distribution, function(d) { return d.fleetType === FLEET_TYPE.Corvette });
@@ -1413,7 +1416,7 @@ class PlayerState {
         let distributionsToReturn = [];
         let isMisusingCorvettes = _.filter(allDistributions, function(d) { return d.misusingCorvettes });
         let isNotMisusingCorvettes = _.filter(allDistributions, function(d) { return !d.misusingCorvettes });
-        if (canPrioritizeCorvettes && isNotMisusingCorvettes.length === 0) {
+        if (canPrioritizeCorvettes && isMisusingCorvettes.length === 0) {
             distributionsToReturn = allDistributions;
         }
         else if (canPrioritizeCorvettes && isNotMisusingCorvettes && isNotMisusingCorvettes.length > 0) {
@@ -1519,7 +1522,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.63"
+        version: "1.64"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1556,9 +1559,9 @@ createApp({
                 this.players.pop();
             }
 
-            this.invaderState = new PlayerState(gameState.invaderState.id, gameState.invaderState.playerid, gameState.invaderState.name, gameState.invaderState.isInvader, gameState.invaderState.fleets, gameState.invaderState.techs, gameState.invaderState.useBombard, gameState.invaderState.bombardAbsorption, gameState.invaderState.spendTradeTokenToUseAutonomousDrones, gameState.invaderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.invaderState.adjacentSectorsWithShipyards, gameState.invaderState.adjacentSectorsWithStarbases, gameState.invaderState.plusOneVoidbornApproachAbsorption, gameState.invaderState.plusOneVoidbornSalvoAbsorption, gameState.invaderState.plusTwoVoidbornSalvoAbsorption, gameState.invaderState.plusFiveVoidbornInitiative);
+            this.invaderState = new PlayerState(gameState.invaderState.id, gameState.invaderState.playerid, gameState.invaderState.name, gameState.invaderState.isInvader, gameState.invaderState.fleets, gameState.invaderState.techs, gameState.invaderState.useBombard, gameState.invaderState.bombardAbsorption, gameState.invaderState.spendTradeTokenToUseAutonomousDrones, gameState.invaderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.invaderState.adjacentSectorsWithShipyards, gameState.invaderState.adjacentSectorsWithStarbases, gameState.invaderState.plusOneVoidbornApproachAbsorption, gameState.invaderState.plusOneVoidbornSalvoAbsorption, gameState.invaderState.plusTwoVoidbornSalvoAbsorption, gameState.invaderState.plusFiveVoidbornInitiative, gameState.invaderState.bombardSalvoAbsorption, gameState.invaderState.plusXVoidbornSalvoAbsorption);
 
-            this.defenderState = new PlayerState(gameState.defenderState.id, gameState.defenderState.playerid, gameState.defenderState.name, gameState.defenderState.isInvader, gameState.defenderState.fleets, gameState.defenderState.techs, gameState.defenderState.useBombard, gameState.defenderState.bombardAbsorption, gameState.defenderState.spendTradeTokenToUseAutonomousDrones, gameState.defenderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.defenderState.adjacentSectorsWithShipyards, gameState.defenderState.adjacentSectorsWithStarbases, gameState.defenderState.plusOneVoidbornApproachAbsorption, gameState.defenderState.plusOneVoidbornSalvoAbsorption, gameState.defenderState.plusTwoVoidbornSalvoAbsorption, gameState.defenderState.plusFiveVoidbornInitiative);
+            this.defenderState = new PlayerState(gameState.defenderState.id, gameState.defenderState.playerid, gameState.defenderState.name, gameState.defenderState.isInvader, gameState.defenderState.fleets, gameState.defenderState.techs, gameState.defenderState.useBombard, gameState.defenderState.bombardAbsorption, gameState.defenderState.spendTradeTokenToUseAutonomousDrones, gameState.defenderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.defenderState.adjacentSectorsWithShipyards, gameState.defenderState.adjacentSectorsWithStarbases, gameState.defenderState.plusOneVoidbornApproachAbsorption, gameState.defenderState.plusOneVoidbornSalvoAbsorption, gameState.defenderState.plusTwoVoidbornSalvoAbsorption, gameState.defenderState.plusFiveVoidbornInitiative, gameState.defenderState.bombardSalvoAbsorption, gameState.defenderState.plusXVoidbornSalvoAbsorption);
 
             if (gameState.hasOwnProperty("scenarioType")) {
                 this.scenarioType = gameState.scenarioType;
@@ -1933,7 +1936,8 @@ createApp({
                 }
 
                 if (calcPlayer.useBombard && calcPlayer.isInvader) {
-                    calc += 'Bombard Absorption (Nervo): ' + calcPlayer.bombardAbsorption + '\n';
+                    calc += 'Bombard Approach Abs (Nervo): ' + calcPlayer.bombardAbsorption + '\n';
+                    calc += 'Bombard Salvo Abs (Nervo): ' + calcPlayer.bombardSalvoAbsorption + '\n';
                 }
 
                 if (calcPlayer.isInvader && this.playerHasBasicDeepSpaceMissiles(calcPlayer.playerid)) {
@@ -1959,6 +1963,10 @@ createApp({
 
                 if (calcPlayer.isVoidborn() && calcPlayer.plusTwoVoidbornSalvoAbsorption) {
                     calc += '+2 Salvo Absorption (War card - Normal/Hard): Yes\n';
+                }
+
+                if (calcPlayer.isVoidborn() && calcPlayer.plusXVoidbornSalvoAbsorption) {
+                    calc += '+' + calcPlayer.plusXVoidbornSalvoAbsorption + ' Salvo Absorption (Cycle 2 - Event H): Yes\n';
                 }
 
                 calc += '\n'
@@ -2086,10 +2094,34 @@ createApp({
         playerHasStarbases: function(playerid) {
             return this.playerByIdHasTech(playerid, TECHS.Starbases);
         },
-        updateBombardAbsorption: function(event, calcPlayerIndex, increment) {
+        updateBombardApproachAbsorption: function(event, calcPlayerIndex, increment) {
             if (increment < 0 && this.calculationPlayers[calcPlayerIndex].bombardAbsorption === 0) { return };
 
             this.calculationPlayers[calcPlayerIndex].bombardAbsorption = this.calculationPlayers[calcPlayerIndex].bombardAbsorption + increment;
+
+            if (this.showResults) { // if we're already showing results, re-calculate automatically
+                this.calculate();
+            }
+
+            event.preventDefault();
+            this.saveGameState();
+        },
+        updateBombardSalvoAbsorption: function(event, calcPlayerIndex, increment) {
+            if (increment < 0 && this.calculationPlayers[calcPlayerIndex].bombardSalvoAbsorption === 0) { return };
+
+            this.calculationPlayers[calcPlayerIndex].bombardSalvoAbsorption = this.calculationPlayers[calcPlayerIndex].bombardSalvoAbsorption + increment;
+
+            if (this.showResults) { // if we're already showing results, re-calculate automatically
+                this.calculate();
+            }
+
+            event.preventDefault();
+            this.saveGameState();
+        },
+        updatePlusXVoidbornSalvoAbsorption: function(event, calcPlayerIndex, increment) {
+            if (increment < 0 && this.calculationPlayers[calcPlayerIndex].plusXVoidbornSalvoAbsorption === 0) { return };
+
+            this.calculationPlayers[calcPlayerIndex].plusXVoidbornSalvoAbsorption = this.calculationPlayers[calcPlayerIndex].plusXVoidbornSalvoAbsorption + increment;
 
             if (this.showResults) { // if we're already showing results, re-calculate automatically
                 this.calculate();
@@ -2152,6 +2184,7 @@ createApp({
             this.calculationPlayers[calcPlayerChanged].spendTradeTokenToUseAutonomousDrones = false;
             this.calculationPlayers[calcPlayerChanged].useBombard = false;
             this.calculationPlayers[calcPlayerChanged].bombardAbsorption = 0;
+            this.calculationPlayers[calcPlayerChanged].bombardSalvoAbsorption = 0;
             this.calculationPlayers[calcPlayerChanged].spendEnergyToUseBasicDeepSpaceMissiles = false;
             this.calculationPlayers[calcPlayerChanged].adjacentSectorsWithShipyards = 0;
             this.calculationPlayers[calcPlayerChanged].adjacentSectorsWithStarbases = 0;
@@ -2159,6 +2192,7 @@ createApp({
             this.calculationPlayers[calcPlayerChanged].plusOneVoidbornApproachAbsorption = false;
             this.calculationPlayers[calcPlayerChanged].plusOneVoidbornSalvoAbsorption = false;
             this.calculationPlayers[calcPlayerChanged].plusTwoVoidbornSalvoAbsorption = false;
+            this.calculationPlayers[calcPlayerChanged].plusXVoidbornSalvoAbsorption = 0;
             this.showResults = false;
 
             // copy techs
@@ -2806,26 +2840,6 @@ createApp({
             return {
                 invaderInitiative: invaderInitiative,
                 defenderInitiative: defenderInitiative
-            }
-        },
-        calculateAbsorption: function(invader, defender, isApproachStep) {
-            let invaderAbsorption, absInvDescription;
-            [invaderAbsorption, absInvDescription] = invader.absorption(isApproachStep);
-            let defenderAbsorption, absDefDescription;
-            [defenderAbsorption, absDefDescription] = defender.absorption(isApproachStep);
-            return {
-                invaderAbsorption: invaderAbsorption,
-                defenderAbsorption: defenderAbsorption
-            }
-        },
-        calculateDamage: function(invader, defender, isApproachStep, isFirstSalvoStep) {
-            let invaderDamage, dmgInvDescription;
-            [invaderDamage, dmgInvDescription] = invader.damage(isApproachStep, isFirstSalvoStep);
-            let defenderDamage, dmgDefDescription;
-            [defenderDamage, dmgDefDescription] = defender.damage(isApproachStep, isFirstSalvoStep);
-            return {
-                invaderDamage: invaderDamage,
-                defenderDamage: defenderDamage
             }
         },
         getFleetDesc(fleetType) {

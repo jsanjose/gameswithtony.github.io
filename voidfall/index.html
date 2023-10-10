@@ -574,7 +574,7 @@
                 <a name="tableau"></a><h2 class="separation-header">Tableau</h2>
                 <small class="tableau-explanation">An initial tech tableau generated for '{{ chosenScenario.name }}' and the chosen player houses.</small>
                 <section class="fallen-houses">
-                    <template v-if="chosenScenario.id != 'T'"">Fallen Houses:</template><template v-if="chosenScenario.id == 'T'"">Tutorial Tech Houses:</template> <span v-for="fallenHouse in fourFallenHouses">{{ fallenHouse.name }}&nbsp;&nbsp;</span>
+                    <template v-if="chosenScenario.id != 'T'">Fallen Houses:</template><template v-if="chosenScenario.id == 'T'">Tutorial Tech Houses:</template> <span v-for="fallenHouse in fourFallenHouses">{{ fallenHouse.name }}&nbsp;&nbsp;</span>
                 </section>
                 <section class="tech-list">
                     <article v-for="tableauTech in techTableau" class="tableau-tech">
@@ -615,7 +615,7 @@
                 <section v-if="calcPlayer.playerid > 0">
                     <template v-for="(playerFleet, playerFleetIndex) in calcPlayer.fleets">
                         <section class="increment" v-if="showFleet(calcPlayerIndex, playerFleetIndex)">
-                            <p class="increment-name">{{ playerFleet.name }}<template v-if="playerFleet.fleetType == 3"><small>If Carriers deploy Corvettes, increase Corvettes above.</small></template></p>
+                            <p class="increment-name">{{ playerFleet.name }}<template v-if="calcPlayer.isInvader && playerFleet.fleetType == 3"><small>If Invader Carriers deploy Corvettes, increase Corvettes above.</small></template></p>
                             <p class="increment-buttons">
                                 <a href="#" v-on:click="updatePlayerFleet($event, calcPlayerIndex, playerFleetIndex, -1)">- 1</a>
                                 <span class="power">{{ playerFleet.power }}</span>
@@ -638,11 +638,19 @@
                         </p>
                     </section>
                     <section class="increment" v-if="calcPlayer.useBombard && calcPlayer.isInvader">
-                        <p class="increment-name">&nbsp;&nbsp;Bombard Absorption</p>
+                        <p class="increment-name">&nbsp;&nbsp;Bombard Approach Abs</p>
                         <p class="increment-buttons">
-                            <a href="#" v-on:click="updateBombardAbsorption($event, calcPlayerIndex, -1)">- 1</a>
+                            <a href="#" v-on:click="updateBombardApproachAbsorption($event, calcPlayerIndex, -1)">- 1</a>
                             <span class="power">{{ calcPlayer.bombardAbsorption }}</span>
-                            <a href="#" v-on:click="updateBombardAbsorption($event, calcPlayerIndex, 1)">+ 1</a>
+                            <a href="#" v-on:click="updateBombardApproachAbsorption($event, calcPlayerIndex, 1)">+ 1</a>
+                        </p>
+                    </section>
+                    <section class="increment" v-if="calcPlayer.useBombard && calcPlayer.isInvader">
+                        <p class="increment-name">&nbsp;&nbsp;Bombard Salvo Abs</p>
+                        <p class="increment-buttons">
+                            <a href="#" v-on:click="updateBombardSalvoAbsorption($event, calcPlayerIndex, -1)">- 1</a>
+                            <span class="power">{{ calcPlayer.bombardSalvoAbsorption }}</span>
+                            <a href="#" v-on:click="updateBombardSalvoAbsorption($event, calcPlayerIndex, 1)">+ 1</a>
                         </p>
                     </section>
                     <section class="increment" v-if="(calcPlayer.isInvader && playerHasBasicDeepSpaceMissiles(calcPlayer.playerid))">
@@ -673,6 +681,14 @@
                         <p class="increment-name"><label :for="'plusTwoVoidbornSalvoAbsorption_' + calcPlayer.id">+2 Salvo absorption (War card - Norm/Hard)</label></p>
                         <p class="increment-buttons">
                             <input type="checkbox" v-model="calcPlayer.plusTwoVoidbornSalvoAbsorption" :id="'plusTwoVoidbornSalvoAbsorption_' + calcPlayer.id" @change="updateCheckbox()" />
+                        </p>
+                    </section>
+                    <section class="increment" v-if="calcPlayer.isInvader && calcPlayer.isVoidborn()">
+                        <p class="increment-name"><label :for="'plusXVoidbornSalvoAbsorption_' + calcPlayer.id">+X Salvo absorption (Cycle 2 - Event H)</label></p>
+                        <p class="increment-buttons">
+                            <a href="#" v-on:click="updatePlusXVoidbornSalvoAbsorption($event, calcPlayerIndex, -1)">- 1</a>
+                            <span class="power">{{ calcPlayer.plusXVoidbornSalvoAbsorption }}</span>
+                            <a href="#" v-on:click="updatePlusXVoidbornSalvoAbsorption($event, calcPlayerIndex, 1)">+ 1</a>
                         </p>
                     </section>
                     <section class="increment" v-if="(!calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)) || ((calcPlayer.isInvader && playerHasBasicDeepSpaceMissiles(calcPlayer.playerid) && calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles) || (calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)))">
