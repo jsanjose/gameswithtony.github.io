@@ -1154,6 +1154,14 @@ class PlayerState {
         }
     }
 
+    resetAbsorptionUsed(attack, isApproachStep) {
+        if (isApproachStep) {
+            this.totalApproachAbsorption = this.totalApproachAbsorption + attack;
+        } else {
+            this.totalSalvoAbsorption = this.totalSalvoAbsorption + attack;
+        }
+    }
+
     absorption(isApproachStep) {
         let totalAbsorption = 0;
         let absDescription = [];
@@ -1521,7 +1529,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.67"
+        version: "1.68"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -2472,6 +2480,7 @@ createApp({
                     for (let damageCombination of damageCombinations) {
                         let newSteps = [...steps];
                         let resultDesc = '';
+                        let tempInvaderTotalSalvoAbsorption;
                         let absDmgDetails = [];
                         if (absDefDescription != '') absDmgDetails.push(absDefDescription);
                         if (dmgInvDescription != '') absDmgDetails.push(dmgInvDescription);
@@ -2513,6 +2522,7 @@ createApp({
                         [defenderDamage, dmgDefDescription] = defender.damage(false, salvoNumber === 1);
                         let defenderDamageToApply =  Math.max(0, defenderDamage - invaderAbsorption);
                         let damageCombinations = invader.calculateDamageCombinations(defenderDamageToApply);
+                        tempInvaderTotalSalvoAbsorption = invader.totalSalvoAbsorption;
                         invader.updateAbsorptionUsed(defenderDamage, false);
                         if (defenderDamageToApply < 0) { defenderDamageToApply = 0; }
                         let wasDamageFullyAbsorbed2 = defenderDamageToApply === 0;
@@ -2575,6 +2585,8 @@ createApp({
                                 fleet.power = fleet.power + dc.damage;
                             }
                         }
+                        invader.totalSalvoAbsorption = tempInvaderTotalSalvoAbsorption;
+                        if (salvoNumber === 1) invader.totalSalvoAbsorption = null;
                     }
                     return [...results];
                 }
@@ -2593,6 +2605,7 @@ createApp({
                     if (wasDamageFullyAbsorbed) { defenderDamageToApply = 1; } // temporary for the loop
                     for (let damageCombination of damageCombinations) {
                         let resultDesc = '';
+                        let tempDefenderTotalSalvoAbsorption;
                         let absDmgDetails = [];
                         if (absInvDescription != '') absDmgDetails.push(absInvDescription);
                         if (dmgDefDescription != '') absDmgDetails.push(dmgDefDescription);
@@ -2635,6 +2648,7 @@ createApp({
                         [invaderDamage, dmgInvDescription] = invader.damage(false, salvoNumber === 1);
                         let invaderDamageToApply =  Math.max(0, invaderDamage - defenderAbsorption);
                         let damageCombinations = defender.calculateDamageCombinations(invaderDamageToApply);
+                        tempDefenderTotalSalvoAbsorption = defender.totalSalvoAbsorption;
                         defender.updateAbsorptionUsed(invaderDamage, false);
                         let wasDamageFullyAbsorbed2 = invaderDamageToApply === 0;
                         if (wasDamageFullyAbsorbed2) { invaderDamageToApply = 1; } // temporary for the loop
@@ -2696,6 +2710,8 @@ createApp({
                                 fleet.power = fleet.power + dc.damage;
                             }
                         }
+                        defender.totalSalvoAbsorption = tempDefenderTotalSalvoAbsorption;
+                        if (salvoNumber === 1) defender.totalSalvoAbsorption = null;
                     }
                     return [...results];
                 }
