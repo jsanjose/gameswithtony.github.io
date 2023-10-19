@@ -398,7 +398,7 @@ createApp({
         selectedSetAsideItem: null,
         stepsItemMoved: 0,
         computedUpdater: 1,
-        version: "0.45"
+        version: "1.0"
     } },
     watch: {
         
