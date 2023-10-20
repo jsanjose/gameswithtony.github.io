@@ -417,6 +417,11 @@ var app = new Vue({
 
                     let newcharacter = createCharacter(3000+i, this.main_schemes[i].name, threat, TYPE.MainScheme);
 
+                    if (this.main_schemes[i].useCounter) {
+                        newcharacter.useCounter = true;
+                        newcharacter.counter = this.main_schemes[i].counter;
+                    }
+
                     if (this.main_schemes[i].type === 'main_scheme' && this.main_schemes[i].basethreat > 0 && this.main_schemes[i].basethreatfixed) {
                         newcharacter.hitpoints = this.main_schemes[i].basethreat;
                     } else if (this.main_schemes[i].type === 'main_scheme' && this.main_schemes[i].basethreat > 0 && !this.main_schemes[i].basethreatfixed) {

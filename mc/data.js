@@ -36,6 +36,12 @@ let heroes = [
         "hitpoints": 12
     },
     {
+        "name": "Colossus",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 14
+    },
+    {
         "name": "Doctor Strange",
         "isSelected": false,
         "type": "hero",
@@ -130,6 +136,12 @@ let heroes = [
         "isSelected": false,
         "type": "hero",
         "hitpoints": 10
+    },
+    {
+        "name": "Shadowcat",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 9
     },
     {
         "name": "She-Hulk",
@@ -227,6 +239,20 @@ let villains = [
         "isSelected": false,
         "type": "villain",
         "hitpoints": 14,
+        "hitpointsper": true
+    },
+    {
+        "name": "Avalanche",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 18,
+        "hitpointsper": true
+    },
+    {
+        "name": "Blob",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 16,
         "hitpointsper": true
     },
     {
@@ -366,6 +392,20 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Magneto",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 18,
+        "hitpointsper": true
+    },
+    {
+        "name": "Master Mold",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 12,
+        "hitpointsper": true
+    },
+    {
         "name": "Mysterio",
         "isSelected": false,
         "type": "villain",
@@ -378,6 +418,15 @@ let villains = [
         "type": "villain",
         "hitpoints": 14,
         "hitpointsper": true
+    },
+    {
+        "name": "Nimrod's Portal",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["Future Past"]
     },
     {
         "name": "Norman Osborn",
@@ -398,6 +447,13 @@ let villains = [
         "isSelected": false,
         "type": "villain",
         "hitpoints": 9,
+        "hitpointsper": true
+    },
+    {
+        "name": "Pyro",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 14,
         "hitpointsper": true
     },
     {
@@ -422,6 +478,13 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Sabretooth",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 13,
+        "hitpointsper": true
+    },
+    {
         "name": "Sandman",
         "isSelected": false,
         "type": "villain",
@@ -433,6 +496,13 @@ let villains = [
         "isSelected": false,
         "type": "villain",
         "hitpoints": 10,
+        "hitpointsper": true
+    },
+    {
+        "name": "Sentinels (Wideawake)",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 16,
         "hitpointsper": true
     },
     {
@@ -458,6 +528,13 @@ let villains = [
     },
     {
         "name": "Thunderball",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 13,
+        "hitpointsper": true
+    },
+    {
+        "name": "Toad",
         "isSelected": false,
         "type": "villain",
         "hitpoints": 13,
@@ -526,6 +603,17 @@ let main_schemes = [
         "basethreatfixed": true,
         "belongstotype": "villain",
         "belongsto": ["Ultron"]
+    },
+    {
+        "name": "Asteroid M",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 5,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "useCounter": true,
+        "counter": 0,
+        "belongsto": ["Magneto"]
     },
     {
         "name": "Attack on Knowhere",
@@ -602,6 +690,17 @@ let main_schemes = [
         "basethreat": 3,
         "belongstotype": "villain",
         "belongsto": ["Mysterio"]
+    },
+    {
+        "name": "Factory Online",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 6,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "useCounter": true,
+        "counter": 0,
+        "belongsto": ["Magneto"]
     },
     {
         "name": "Hapless Pedestrians",
@@ -706,6 +805,15 @@ let main_schemes = [
         "belongsto": ["The Hood"]
     },
     {
+        "name": "Master Mold's Agenda",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 8,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Master Mold"]
+    },
+    {
         "name": "Maze of Mirrors",
         "isSelected": false,
         "type": "main_scheme",
@@ -740,6 +848,15 @@ let main_schemes = [
         "basethreat": 1,
         "belongstotype": "villain",
         "belongsto": ["Red Skull"]
+    },
+    {
+        "name": "Night of the Sentinels",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 0,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Sentinels (Wideawake)"]
     },
     {
         "name": "None Shall Pass",
@@ -806,6 +923,15 @@ let main_schemes = [
         "belongsto": ["Doctor Octopus", "Electro", "Hobgoblin", "Kraven The Hunter", "Scorpion", "Vulture"]
     },
     {
+        "name": "Stalked by Sabretooth",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 0,
+        "basethreat": 0,
+        "belongstotype": "villain",
+        "belongsto": ["Sabretooth"]
+    },
+    {
         "name": "Take What Is Mine",
         "isSelected": false,
         "type": "main_scheme",
@@ -822,6 +948,15 @@ let main_schemes = [
         "basethreat": 2,
         "belongstotype": "villain",
         "belongsto": ["Drang"]
+    },
+    {
+        "name": "The Atrium",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 7,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Avalanche", "Blob", "Pyro", "Toad"]
     },
     {
         "name": "The Armies of Thanos",
@@ -842,6 +977,15 @@ let main_schemes = [
         "belongsto": ["Nebula (Villain)"]
     },
     {
+        "name": "The Basketball Court",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 7,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Avalanche", "Blob", "Pyro", "Toad"]
+    },
+    {
         "name": "The Break-In!",
         "isSelected": false,
         "type": "main_scheme",
@@ -852,6 +996,24 @@ let main_schemes = [
         "belongsto": ["Rhino"]
     },
     {
+        "name": "The Brotherhood Strikes!",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 0,
+        "basethreat": 0,
+        "belongstotype": "villain",
+        "belongsto": ["Avalanche", "Blob", "Pyro", "Toad"]
+    },
+    {
+        "name": "The Cafeteria",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 7,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Avalanche", "Blob", "Pyro", "Toad"]
+    },
+    {
         "name": "The Chronopolis",
         "isSelected": false,
         "type": "main_scheme",
@@ -860,6 +1022,15 @@ let main_schemes = [
         "basethreatfixed": true,
         "belongstotype": "villain",
         "belongsto": ["Kang (Immortus)"]
+    },
+    {
+        "name": "The Courtyard",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 7,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Avalanche", "Blob", "Pyro", "Toad"]
     },
     {
         "name": "The Crimson Cowl",
@@ -912,6 +1083,15 @@ let main_schemes = [
         "isSelected": false,
         "type": "main_scheme",
         "threat": 12,
+        "basethreat": 0,
+        "belongstotype": "villain",
+        "belongsto": ["Thanos"]
+    },
+    {
+        "name": "The Injured Senator",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 9,
         "basethreat": 0,
         "belongstotype": "villain",
         "belongsto": ["Thanos"]
@@ -995,6 +1175,26 @@ let main_schemes = [
         "belongsto": ["Red Skull"]
     },
     {
+        "name": "The Rule of Magnus",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 7,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "useCounter": true,
+        "counter": 0,
+        "belongsto": ["Magneto"]
+    },
+    {
+        "name": "The Sentinel Factory",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 6,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": ["Master Mold"]
+    },
+    {
         "name": "Under Siege",
         "isSelected": false,
         "type": "main_scheme",
@@ -1055,6 +1255,16 @@ let side_schemes = [
         "belongsto": ["A Mess of Things"]
     },
     {
+        "name": "Abduction Protocols",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Sabretooth"]
+    },
+    {
         "name": "Analysis Paralysis",
         "isSelected": false,
         "type": "side_scheme",
@@ -1102,6 +1312,16 @@ let side_schemes = [
         "belongsto": ["GMW Campaign"]
     },
     {
+        "name": "Bastion's Machinations",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Future Past"]
+    },
+    {
         "name": "Beast Mode",
         "isSelected": false,
         "type": "side_scheme",
@@ -1128,6 +1348,15 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "villain",
         "belongsto": ["Drang"]
+    },
+    {
+        "name": "Boarding Party",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Magneto"]
     },
     {
         "name": "Bombardment",
@@ -1381,6 +1610,16 @@ let side_schemes = [
         "belongsto": ["Klaw"]
     },
     {
+        "name": "Defensive Protocols",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["MTS Campaign"]
+    },
+    {
         "name": "Dirt Trap",
         "isSelected": false,
         "type": "side_scheme",
@@ -1408,6 +1647,15 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "villain",
         "belongsto": ["Ultron"]
+    },
+    {
+        "name": "Enemy of my Enemy",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["MG Campaign"]
     },
     {
         "name": "Extortion of Seismic Proportion",
@@ -1447,6 +1695,16 @@ let side_schemes = [
         "belongsto": ["State of Emergency"]
     },
     {
+        "name": "Feral Rage",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Sabretooth"]
+    },
+    {
         "name": "Festering Mass",
         "isSelected": false,
         "type": "side_scheme",
@@ -1457,6 +1715,33 @@ let side_schemes = [
         "belongsto": ["Venom Goblin"]
     },
     {
+        "name": "Find the Norn Stones",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["MTS Campaign"]
+    },
+    {
+        "name": "Find the Prisoners",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["MG Campaign"]
+    },
+    {
+        "name": "Find the Senator",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "belongstotype": "villain",
+        "belongsto": ["Sabretooth"]
+    },
+    {
         "name": "Fool's Paradise",
         "isSelected": false,
         "type": "side_scheme",
@@ -1464,6 +1749,15 @@ let side_schemes = [
         "basethreat": 6,
         "belongstotype": "module",
         "belongsto": ["Personal Nightmare"]
+    },
+    {
+        "name": "Frightened Police",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["MG Campaign"]
     },
     {
         "name": "Fugitive Recovery",
@@ -1554,6 +1848,16 @@ let side_schemes = [
         "belongsto": ["Iron Spider's Sinister Six"]
     },
     {
+        "name": "Guard the Bell Tower",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Venom"]
+    },
+    {
         "name": "Guerilla Tactics",
         "isSelected": false,
         "type": "side_scheme",
@@ -1562,6 +1866,16 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "module",
         "belongsto": ["GMW Campaign"]
+    },
+    {
+        "name": "Hack Sanctuary's Computer",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["MTS Campaign"]
     },
     {
         "name": "Hall of Nastrond",
@@ -1688,6 +2002,25 @@ let side_schemes = [
         "belongsto": ["Iron Man"]
     },
     {
+        "name": "Insert Virus Program",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Master Mold"]
+    },
+    {
+        "name": "Intruder Alert",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Master Mold"]
+    },
+    {
         "name": "Invasive AI",
         "isSelected": false,
         "type": "side_scheme",
@@ -1753,52 +2086,13 @@ let side_schemes = [
         "belongsto": ["Venom"]
     },
     {
-        "name": "Bomb Scare",
+        "name": "Landing Craft",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
         "basethreat": 2,
         "belongstotype": "module",
         "belongsto": ["Armies of Titan"]
-    },
-    {
-        "name": "Defensive Protocols",
-        "isSelected": false,
-        "type": "side_scheme",
-        "threat": 2,
-        "basethreat": 2,
-        "basethreatfixed": true,
-        "belongstotype": "module",
-        "belongsto": ["MTS Campaign"]
-    },
-    {
-        "name": "Find the Norn Stones",
-        "isSelected": false,
-        "type": "side_scheme",
-        "threat": 3,
-        "basethreat": 3,
-        "belongstotype": "module",
-        "belongsto": ["MTS Campaign"]
-    },
-    {
-        "name": "Guard the Bell Tower",
-        "isSelected": false,
-        "type": "side_scheme",
-        "threat": 3,
-        "basethreat": 3,
-        "basethreatfixed": true,
-        "belongstotype": "villain",
-        "belongsto": ["Venom"]
-    },
-    {
-        "name": "Hack Sanctuary's Computer",
-        "isSelected": false,
-        "type": "side_scheme",
-        "threat": 2,
-        "basethreat": 2,
-        "basethreatfixed": true,
-        "belongstotype": "module",
-        "belongsto": ["MTS Campaign"]
     },
     {
         "name": "Lashing Out",
@@ -1907,6 +2201,26 @@ let side_schemes = [
         "belongsto": ["Red Skull"]
     },
     {
+        "name": "Medical Emergency",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Sabretooth"]
+    },
+    {
+        "name": "Mutants at the Mall",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Sabretooth"]
+    },
+    {
         "name": "Self-Experimentation",
         "isSelected": false,
         "type": "side_scheme",
@@ -1924,6 +2238,45 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "module",
         "belongsto": ["Goblin Gear"]
+    },
+    {
+        "name": "Magentic Mayhem",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Magneto"]
+    },
+    {
+        "name": "Magnetically Sealed",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Magneto"]
+    },
+    {
+        "name": "Magneto's Fortress",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "belongstotype": "module",
+        "belongsto": ["MG Campaign"]
+    },
+    {
+        "name": "Metamorphic Mayhem",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Mystique"]
     },
     {
         "name": "Mother's Orders",
@@ -1992,6 +2345,15 @@ let side_schemes = [
         "belongsto": ["MTS Campaign"]
     },
     {
+        "name": "Operation Zero Tolerance",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["Zero Tolerance"]
+    },
+    {
         "name": "Oppressive Armada",
         "isSelected": false,
         "type": "side_scheme",
@@ -1999,6 +2361,15 @@ let side_schemes = [
         "basethreat": 1,
         "belongstotype": "villain",
         "belongsto": ["Drang"]
+    },
+    {
+        "name": "Orbital Decay",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Magneto"]
     },
     {
         "name": "Oscorp Manufacturing",
@@ -2125,6 +2496,16 @@ let side_schemes = [
         "belongsto": ["Red Skull"]
     },
     {
+        "name": "Protect the Students",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Avalanche", "Blob", "Pyro", "Toad"]
+    },
+    {
         "name": "Rampage",
         "isSelected": false,
         "type": "side_scheme",
@@ -2133,6 +2514,15 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "villain",
         "belongsto": ["Kang (The Conqueror)", "Kang (Immortus)", "Kang (Iron Lad)", "Kang (Rama-Tut)", "Kang (Scarlet Centurion)"]
+    },
+    {
+        "name": "Rampaging Juggernaut",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Colossus"]
     },
     {
         "name": "Reactor Meltdown",
@@ -2161,6 +2551,15 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "hero",
         "belongsto": ["Ghost-Spider"]
+    },
+    {
+        "name": "Relentless Robots",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["Sentinels"]
     },
     {
         "name": "Retrieve Odin's Armor",
@@ -2198,6 +2597,15 @@ let side_schemes = [
         "basethreat": 1,
         "belongstotype": "module",
         "belongsto": ["Running Interference"]
+    },
+    {
+        "name": "Sabotage Master Mold",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Magneto"]
     },
     {
         "name": "Sanctuary",
@@ -2238,6 +2646,15 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "module",
         "belongsto": ["MTS Campaign"]
+    },
+    {
+        "name": "Seized!",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": ["Magneto"]
     },
     {
         "name": "Self-Preservation",
@@ -2295,6 +2712,15 @@ let side_schemes = [
         "belongsto": ["Ronan"]
     },
     {
+        "name": "Surprise Attack",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "belongstotype": "module",
+        "belongsto": ["MG Campaign"]
+    },
+    {
         "name": "Taskmaster's Training Camp",
         "isSelected": false,
         "type": "side_scheme",
@@ -2350,6 +2776,16 @@ let side_schemes = [
         "belongsto": ["Anachronauts"]
     },
     {
+        "name": "The Brotherhood",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Brotherhood"]
+    },
+    {
         "name": "The Doomsday Chair",
         "isSelected": false,
         "type": "side_scheme",
@@ -2358,6 +2794,15 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "module",
         "belongsto": ["The Doomsday Chair"]
+    },
+    {
+        "name": "The Hellfire Club",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Shadowcat"]
     },
     {
         "name": "The Masters of Evil",
@@ -2563,6 +3008,16 @@ let side_schemes = [
         "belongsto": ["Under Attack"]
     },
     {
+        "name": "Under Siege",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 0,
+        "basethreat": 0,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Avalanche", "Blob", "Pyro", "Toad"]
+    },
+    {
         "name": "Universal Church of Truth",
         "isSelected": false,
         "type": "side_scheme",
@@ -2648,6 +3103,14 @@ let minions = [
         "belongsto": ["Ultron"]
     },
     {
+        "name": "Amelia Voght",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Acolytes"]
+    },
+    {
         "name": "Ancient Warrior",
         "isSelected": false,
         "type": "minion",
@@ -2694,6 +3157,14 @@ let minions = [
         "hitpoints": 4,
         "belongstotype": "hero",
         "belongsto": ["Quicksilver"]
+    },
+    {
+        "name": "Avalanche (Brotherhood)",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Brotherhood"]
     },
     {
         "name": "Baron Mordo",
@@ -2768,6 +3239,14 @@ let minions = [
         "belongsto": ["Band of Badoon"]
     },
     {
+        "name": "Bastion",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 10,
+        "belongstotype": "module",
+        "belongsto": ["Future Past"]
+    },
+    {
         "name": "Beetle",
         "isSelected": false,
         "type": "minion",
@@ -2831,6 +3310,14 @@ let minions = [
         "hitpointsper": true,
         "belongstotype": "module",
         "belongsto": ["Band of Badoon"]
+    },
+    {
+        "name": "Blob",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Brotherhood"]
     },
     {
         "name": "Bombshell",
@@ -2961,6 +3448,14 @@ let minions = [
         "belongsto": ["Anachronauts"]
     },
     {
+        "name": "Delgado",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Acolytes"]
+    },
+    {
         "name": "Doctor Octopus",
         "isSelected": false,
         "type": "minion",
@@ -3047,6 +3542,14 @@ let minions = [
         "hitpoints": 5,
         "belongstotype": "module",
         "belongsto": ["Personal Nightmare"]
+    },
+    {
+        "name": "Fabion Cortez",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Acolytes"]
     },
     {
         "name": "Frost Giant",
@@ -3136,6 +3639,14 @@ let minions = [
         "hitpoints": 8,
         "belongstotype": "module",
         "belongsto": ["Badoon Headhunter"]
+    },
+    {
+        "name": "Hellfire Pawn",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "belongstotype": "hero",
+        "belongsto": ["Shadowcat"]
     },
     {
         "name": "Hired Gun",
@@ -3240,6 +3751,14 @@ let minions = [
         "hitpoints": 6,
         "belongstotype": "module",
         "belongsto": ["The Inheritors"]
+    },
+    {
+        "name": "Juggernaut",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 8,
+        "belongstotype": "hero",
+        "belongsto": ["Colossus"]
     },
     {
         "name": "Kang (Master of Time)",
@@ -3442,6 +3961,22 @@ let minions = [
         "belongsto": ["The Inheritors"]
     },
     {
+        "name": "M-Type Sentinel",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "villain",
+        "belongsto": ["Magneto"]
+    },
+    {
+        "name": "Mystique",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 9,
+        "belongstotype": "module",
+        "belongsto": ["Mystique"]
+    },
+    {
         "name": "Nebula",
         "isSelected": false,
         "type": "minion",
@@ -3457,6 +3992,14 @@ let minions = [
         "hitpointsper": true,
         "belongstotype": "villain",
         "belongsto": ["Hela"]
+    },
+    {
+        "name": "Nimrod",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 9,
+        "belongstotype": "module",
+        "belongsto": ["Future Past"]
     },
     {
         "name": "Outrider",
@@ -3521,6 +4064,14 @@ let minions = [
         "hitpoints": 4,
         "belongstotype": "module",
         "belongsto": ["Menagerie Medley"]
+    },
+    {
+        "name": "Pyro",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Brotherhood"]
     },
     {
         "name": "Radioactive Man",
@@ -3593,6 +4144,62 @@ let minions = [
         "hitpoints": 6,
         "belongstotype": "module",
         "belongsto": ["Sinister Assault"]
+    },
+    {
+        "name": "Sentinel Mark II",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 2,
+        "belongstotype": "module",
+        "belongsto": ["Zero Tolerance"]
+    },
+    {
+        "name": "Sentinel Mark III",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Zero Tolerance"]
+    },
+    {
+        "name": "Sentinel Mark IV",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "villain",
+        "belongsto": ["Sentinels (Wideawake)"]
+    },
+    {
+        "name": "Sentinel Mark V",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Sentinels"]
+    },
+    {
+        "name": "Sentinel Mark VI",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Sentinels"]
+    },
+    {
+        "name": "Sentinel Mark VIII",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 8,
+        "belongstotype": "villain",
+        "belongsto": ["Master Mold"]
+    },
+    {
+        "name": "Senyaka",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Acolytes"]
     },
     {
         "name": "Servant Bot",
@@ -3796,6 +4403,14 @@ let minions = [
         "belongsto": ["Titania"]
     },
     {
+        "name": "Toad",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Brotherhood"]
+    },
+    {
         "name": "Tombstone",
         "isSelected": false,
         "type": "minion",
@@ -3826,6 +4441,14 @@ let minions = [
         "hitpoints": 6,
         "belongstotype": "hero",
         "belongsto": ["Vision"]
+    },
+    {
+        "name": "Unuscione",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "belongstotype": "module",
+        "belongsto": ["Acolytes"]
     },
     {
         "name": "Vera",
@@ -3882,6 +4505,14 @@ let minions = [
         "hitpoints": 3,
         "belongstotype": "module",
         "belongsto": ["Sinister Syndicate"]
+    },
+    {
+        "name": "White Queen",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "hero",
+        "belongsto": ["Shadowcat"]
     },
     {
         "name": "Whirlwind",
@@ -4051,6 +4682,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Boom Boom",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Brawn",
         "isSelected": false,
         "type": "ally",
@@ -4073,6 +4710,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Cannonball",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Captain America",
@@ -4112,6 +4755,12 @@ let allies = [
     },
     {
         "name": "Cloud 9",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Colossus",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -4285,6 +4934,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Jubilee",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Kaluu",
         "isSelected": false,
         "type": "ally",
@@ -4301,6 +4956,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 4
+    },
+    {
+        "name": "Lockheed",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Lockjaw",
@@ -4325,6 +4986,18 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Magik",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Magneto",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 5
     },
     {
         "name": "Major Victory",
@@ -4423,6 +5096,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Nightcrawler",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Odin",
         "isSelected": false,
         "type": "ally",
@@ -4447,7 +5126,19 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Polaris",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Power Man",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Professor X",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -4483,6 +5174,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Rictor",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Rocket Raccoon",
         "isSelected": false,
         "type": "ally",
@@ -4507,6 +5204,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Senator Kelly",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 9
+    },
+    {
         "name": "Sentry",
         "isSelected": false,
         "type": "ally",
@@ -4514,6 +5217,12 @@ let allies = [
     },
     {
         "name": "Shang-Chi",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Shadowcat",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -4753,10 +5462,16 @@ let allies = [
         "hitpoints": 4
     },
     {
-        "name": "Wrath",
+        "name": "Wolfsbane",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Wolverine",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
     },
     {
         "name": "Wonder Man",
@@ -4766,6 +5481,12 @@ let allies = [
     },
     {
         "name": "Wong",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Wrath",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -4932,6 +5653,14 @@ let countercards = [
         "belongsto": ["Nebula (Villain)"]
     },
     {
+        "name": "Organic Steel",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Colossus"]
+    },
+    {
         "name": "Pacification",
         "isSelected": false,
         "type": "counter",
@@ -5058,6 +5787,9 @@ let modules = [
         "name": "A Mess of Things"
     },
     {
+        "name": "Acolytes"
+    },
+    {
         "name": "Anachronauts"
     },
     {
@@ -5082,6 +5814,9 @@ let modules = [
         "name": "Bomb Scare"
     },
     {
+        "name": "Brotherhood"
+    },
+    {
         "name": "Brothers Grimm"
     },
     {
@@ -5101,6 +5836,9 @@ let modules = [
     },
     {
         "name": "Frost Giants"
+    },
+    {
+        "name": "Future Past"
     },
     {
         "name": "Galactic Artifacts"
@@ -5139,10 +5877,16 @@ let modules = [
         "name": "Menagerie Medley"
     },
     {
+        "name": "MG Campaign"
+    },
+    {
         "name": "Mister Hyde"
     },
     {
         "name": "MTS Campaign"
+    },
+    {
+        "name": "Mystique"
     },
     {
         "name": "Osborn Tech"
@@ -5158,6 +5902,9 @@ let modules = [
     },
     {
         "name": "Running Interference"
+    },
+    {
+        "name": "Sentinels"
     },
     {
         "name": "Ship Command"
@@ -5200,6 +5947,9 @@ let modules = [
     },
     {
         "name": "Wrecking Crew"
+    },
+    {
+        "name": "Zero Tolerance"
     }
 ]
 

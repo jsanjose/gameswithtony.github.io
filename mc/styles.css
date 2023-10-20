@@ -169,6 +169,10 @@ body {
     margin-left: 0.5rem;
 }
 
+.threat + .counter {
+    padding-top: 0.5rem;
+}
+
 .countercard {
     display: flex;
     width: 100%;
