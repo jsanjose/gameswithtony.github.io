@@ -36,6 +36,12 @@ let heroes = [
         "hitpoints": 12
     },
     {
+        "name": "Cyclops",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
+    },
+    {
         "name": "Colossus",
         "isSelected": false,
         "type": "hero",
@@ -118,6 +124,12 @@ let heroes = [
         "isSelected": false,
         "type": "hero",
         "hitpoints": 10
+    },
+    {
+        "name": "Phoenix",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 9
     },
     {
         "name": "Quicksilver",
@@ -1495,6 +1507,16 @@ let side_schemes = [
         "belongsto": ["Norman Osborn", "Green Goblin"]
     },
     {
+        "name": "Consume the World",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": ["Phoenix"]
+    },
+    {
         "name": "Coordinated Effort",
         "isSelected": false,
         "type": "side_scheme",
@@ -1778,6 +1800,15 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "module",
         "belongsto": ["GMW Campaign"]
+    },
+    {
+        "name": "Genetic Manipulation",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "belongstotype": "hero",
+        "belongsto": ["Cyclops"]
     },
     {
         "name": "Generation Why?",
@@ -3440,6 +3471,14 @@ let minions = [
         "belongsto": ["The Inheritors"]
     },
     {
+        "name": "Dark Phoenix",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "hero",
+        "belongsto": ["Phoenix"]
+    },
+    {
         "name": "Deathunt 9000",
         "isSelected": false,
         "type": "minion",
@@ -3959,6 +3998,14 @@ let minions = [
         "hitpoints": 5,
         "belongstotype": "module",
         "belongsto": ["The Inheritors"]
+    },
+    {
+        "name": "Mr. Sinister",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "hero",
+        "belongsto": ["Cyclops"]
     },
     {
         "name": "M-Type Sentinel",
@@ -4614,6 +4661,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Alex",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Angela",
         "isSelected": false,
         "type": "ally",
@@ -4632,6 +4685,18 @@ let allies = [
         "hitpoints": 3,
         "useCounter": true,
         "counter": 0
+    },
+    {
+        "name": "Banshee",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Beast",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Beta Ray Bill",
@@ -4668,6 +4733,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Blindfold",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Blue Marvel",
@@ -4778,6 +4849,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Cyclops",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Daredevil",
         "isSelected": false,
         "type": "ally",
@@ -4794,6 +4871,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 5
+    },
+    {
+        "name": "Dust",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Elektra",
@@ -5036,6 +5119,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Marvel Girl",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Ms. Marvel",
         "isSelected": false,
         "type": "ally",
@@ -5114,6 +5203,12 @@ let allies = [
         "hitpoints": 4
     },
     {
+        "name": "Phoenix",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Pinpoint",
         "isSelected": false,
         "type": "ally",
@@ -5184,6 +5279,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Rockslide",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 6
     },
     {
         "name": "Ronin",
@@ -5334,6 +5435,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Storm",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Thor",
@@ -5675,6 +5782,14 @@ let countercards = [
         "counter": 2,
         "belongstotype": "hero",
         "belongsto": ["Rocket Raccoon"]
+    },
+    {
+        "name": "Phoenix Force",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 4,
+        "belongstotype": "hero",
+        "belongsto": ["Phoenix"]
     },
     {
         "name": "Plasma Pistol",
