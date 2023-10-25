@@ -1529,7 +1529,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.68"
+        version: "1.7"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -2519,7 +2519,7 @@ createApp({
                         let invaderAbsorption, absInvDescription;
                         [invaderAbsorption, absInvDescription] = invader.absorption(false);
                         let defenderDamage, dmgDefDescription;
-                        [defenderDamage, dmgDefDescription] = defender.damage(false, salvoNumber === 1);
+                        [defenderDamage, dmgDefDescription] = initiative.defenderInitiative == 0 ? [0, null] : defender.damage(false, salvoNumber === 1);
                         let defenderDamageToApply =  Math.max(0, defenderDamage - invaderAbsorption);
                         let damageCombinations = invader.calculateDamageCombinations(defenderDamageToApply);
                         tempInvaderTotalSalvoAbsorption = invader.totalSalvoAbsorption;
@@ -2561,7 +2561,7 @@ createApp({
                                         results.push(result);
                                     }
                                 } else {
-                                    let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, `${resultDesc}Invader absorbed all damage. `);
+                                    let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0,  initiative.defenderInitiative == 0 ? `Defender has no salvo dmg capability. ` : `${resultDesc}Invader absorbed all damage. `);
 
                                     newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Defender hits second", _.cloneDeep(invader), _.cloneDeep(defender)));
                                 }
@@ -2596,7 +2596,7 @@ createApp({
                     let invaderAbsorption, absInvDescription;
                     [invaderAbsorption, absInvDescription] = invader.absorption(false);
                     let defenderDamage, dmgDefDescription;
-                    [defenderDamage, dmgDefDescription] = defender.damage(false, salvoNumber === 1);
+                    [defenderDamage, dmgDefDescription] = initiative.defenderInitiative == 0 ? [0, null] : defender.damage(false, salvoNumber === 1);
                     let defenderDamageToApply =  Math.max(0, defenderDamage - invaderAbsorption);
                     let damageCombinations = invader.calculateDamageCombinations(defenderDamageToApply);
                     invader.updateAbsorptionUsed(defenderDamage, false);
@@ -2637,7 +2637,7 @@ createApp({
                                 results.push(result);
                             }
                         } else {
-                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, `${resultDesc}Invader absorbed all damage. `);
+                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, initiative.defenderInitiative == 0 ? `Defender has no salvo dmg capability. ` : `${resultDesc}Invader absorbed all damage. `);
 
                             newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Defender hits first", _.cloneDeep(invader), _.cloneDeep(defender)));
                         }
@@ -2732,7 +2732,7 @@ createApp({
                     let invaderAbsorption, absInvDescription;
                     [invaderAbsorption, absInvDescription] = invader.absorption(false);
                     let defenderDamage, dmgDefDescription;
-                    [defenderDamage, dmgDefDescription] = defender.damage(false, salvoNumber === 1);
+                    [defenderDamage, dmgDefDescription] = initiative.defenderInitiative == 0 ? [0, null] : defender.damage(false, salvoNumber === 1);
                     let defenderDamageToApply =  Math.max(0, defenderDamage - invaderAbsorption);
                     let damageCombinations2 = invader.calculateDamageCombinations(defenderDamageToApply);
                     invader.updateAbsorptionUsed(defenderDamage, false);
@@ -2784,7 +2784,10 @@ createApp({
                                     zeroDamageDesc += `${invaderDamage} Invader dmg fully absorbed by Defender. `
                                 }
                                 if (wasDamageFullyAbsorbed2 && defenderDamage > 0) {
-                                    zeroDamageDesc += `${defenderDamage} Defender dmg fully absorbed by Invader.`
+                                    zeroDamageDesc += `${defenderDamage} Defender dmg fully absorbed by Invader. `
+                                }
+                                if (wasDamageFullyAbsorbed2 && defenderDamage == 0) {
+                                    zeroDamageDesc += `Defender has no salvo dmg capability. `
                                 }
                                 resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `${resultDesc}${zeroDamageDesc}`);
                             }
