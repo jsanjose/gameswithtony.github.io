@@ -1,7 +1,7 @@
 const LOCALSTORAGENAME = "vfgamestate";
 const PAGE_STATE = { StartScreen: 0, Technologies: 1, Calculator: 2 };
-const FLEET_TYPE = { Corvette: 0, Destroyer: 1, Dreadnaught: 2, Carrier: 3, Sentry: 4, Voidborn: 5, Sector_Defense: 6, Starbase: 7 };
-const TECHS = { Sentries: 0, Destroyers: 1, Dreadnaughts: 2, Carriers: 3, DeepSpaceMissiles: 4, EnergyCells: 5, Shields: 6, AutonomousDrones: 7, Targeting: 8, Torpedoes: 9, Starbases: 10, ArkShips: 11, CentralSurveillance: 12, Cloning: 13, Cybernetics: 14, CombatReplicators: 15, DataRefinery: 16, DecontaminationChambers: 17, Hyperdrive: 18, EscapePods: 19, NeuralMatrix: 20, OrbitalDocks: 21, Robotics: 22, Purifier: 23, SalvageScanner: 24, TacticalTransports: 25, Terraforming: 26, TradeNexus: 27
+const FLEET_TYPE = { Corvette: 0, Destroyer: 1, Dreadnought: 2, Carrier: 3, Sentry: 4, Voidborn: 5, Sector_Defense: 6, Starbase: 7 };
+const TECHS = { Sentries: 0, Destroyers: 1, Dreadnoughts: 2, Carriers: 3, DeepSpaceMissiles: 4, EnergyCells: 5, Shields: 6, AutonomousDrones: 7, Targeting: 8, Torpedoes: 9, Starbases: 10, ArkShips: 11, CentralSurveillance: 12, Cloning: 13, Cybernetics: 14, CombatReplicators: 15, DataRefinery: 16, DecontaminationChambers: 17, Hyperdrive: 18, EscapePods: 19, NeuralMatrix: 20, OrbitalDocks: 21, Robotics: 22, Purifier: 23, SalvageScanner: 24, TacticalTransports: 25, Terraforming: 26, TradeNexus: 27
 };
 const HOUSE_IDS = { NoHouse: 0, Astoran: 1, Belitan: 2, Cortozaar: 3, Dunlork: 4, Fenrax: 5, Kradmor: 6, Marqualos: 7, Nervo: 8, Novaris: 9, Shiveus: 10, Thegwyn: 11, Valnis: 12, Yarvek: 13, Zenor: 14 };
 const HOUSE_ORIGINS = { A: 0, B: 1 };
@@ -30,7 +30,7 @@ function getFleetDesc(fleet_type) {
     switch (fleet_type) {
         case FLEET_TYPE.Corvette: return 'Corvette';
         case FLEET_TYPE.Destroyer: return 'Destroyer';
-        case FLEET_TYPE.Dreadnaught: return 'Dreadnaught';
+        case FLEET_TYPE.Dreadnought: return 'Dreadnought';
         case FLEET_TYPE.Carrier: return 'Carrier';
         case FLEET_TYPE.Sentry: return 'Sentry';
         case FLEET_TYPE.Voidborn: return 'Voidborn';
@@ -77,7 +77,7 @@ function getTechName(techid) {
         case TECHS.DecontaminationChambers: return 'Decontamination Chambers';
         case TECHS.DeepSpaceMissiles: return 'Deep Space Missiles';
         case TECHS.Destroyers: return 'Destroyers';
-        case TECHS.Dreadnaughts: return 'Dreadnaughts';
+        case TECHS.Dreadnoughts: return 'Dreadnoughts';
         case TECHS.EnergyCells: return 'Energy Cells';
         case TECHS.EscapePods: return 'Escape Pods';
         case TECHS.Hyperdrive: return 'Hyperdrive';
@@ -169,7 +169,7 @@ let Houses = [
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.Cybernetics)
     ], false),
     new House(HOUSE_IDS.Shiveus, getHouseDesc(HOUSE_IDS.Shiveus), [
-        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Dreadnaughts),
+        new HouseOrigin(HOUSE_ORIGINS.A, TECHS.Dreadnoughts),
         new HouseOrigin(HOUSE_ORIGINS.B, TECHS.DecontaminationChambers)
     ], true),
     new House(HOUSE_IDS.Thegwyn, getHouseDesc(HOUSE_IDS.Thegwyn), [
@@ -243,7 +243,7 @@ let Technologies = [
     new Technology(TECHS.Carriers, "Carriers", false),
     new Technology(TECHS.DeepSpaceMissiles, "Deep Space Missiles", false),
     new Technology(TECHS.Destroyers, "Destroyers", false),
-    new Technology(TECHS.Dreadnaughts, "Dreadnaughts", false),
+    new Technology(TECHS.Dreadnoughts, "Dreadnoughts", false),
     new Technology(TECHS.EnergyCells, "Energy Cells", false),
     new Technology(TECHS.Sentries, "Sentries", false),
     new Technology(TECHS.Shields, "Shields", false),
@@ -845,7 +845,7 @@ class PlayerFleet {
 let Fleets = [
     new PlayerFleet(FLEET_TYPE.Corvette, 'Corvettes', 0),
     new PlayerFleet(FLEET_TYPE.Destroyer, 'Destroyers', 0),
-    new PlayerFleet(FLEET_TYPE.Dreadnaught, 'Dreadnaughts', 0),
+    new PlayerFleet(FLEET_TYPE.Dreadnought, 'Dreadnoughts', 0),
     new PlayerFleet(FLEET_TYPE.Carrier, 'Carriers', 0),
     new PlayerFleet(FLEET_TYPE.Sentry, 'Sentries', 0),
     new PlayerFleet(FLEET_TYPE.Voidborn, 'Voidborn', 0),
@@ -912,7 +912,7 @@ class PlayerState {
             return "V" + this.totalVoidbornFleetPower();
         } else {
             let str = "PLYR_";
-            str = str + this.totalDreadnaughtFleetPower() + this.totalDestroyerFleetPower() + this.totalSentryFleetPower() + this.totalCarrierFleetPower() + this.totalCorvetteFleetPower();
+            str = str + this.totalDreadnoughtFleetPower() + this.totalDestroyerFleetPower() + this.totalSentryFleetPower() + this.totalCarrierFleetPower() + this.totalCorvetteFleetPower();
             return str;
         }
     }
@@ -941,8 +941,8 @@ class PlayerState {
         return _.find(this.fleets, function(f) { return f.fleetType === FLEET_TYPE.Destroyer }).power;
     }
 
-    totalDreadnaughtFleetPower() {
-        return _.find(this.fleets, function(f) { return f.fleetType === FLEET_TYPE.Dreadnaught }).power;
+    totalDreadnoughtFleetPower() {
+        return _.find(this.fleets, function(f) { return f.fleetType === FLEET_TYPE.Dreadnought }).power;
     }
 
     totalCarrierFleetPower() {
@@ -1036,8 +1036,8 @@ class PlayerState {
         return false;
     }
 
-    hasImprovedDreadnaughts() {
-        const tech = _.find(this.techs, function(t) { return t.id === TECHS.Dreadnaughts });
+    hasImprovedDreadnoughts() {
+        const tech = _.find(this.techs, function(t) { return t.id === TECHS.Dreadnoughts });
 
         if (tech) {
             return tech.isImproved;
@@ -1107,7 +1107,7 @@ class PlayerState {
         let totalInitiative = 0;
         const corvetteFleetPower = this.totalCorvetteFleetPower();
         const destroyerFleetPower = this.totalDestroyerFleetPower();
-        const dreadnaughtFleetPower = this.totalDreadnaughtFleetPower();
+        const dreadnaughtFleetPower = this.totalDreadnoughtFleetPower();
         const carrierFleetPower = this.totalCarrierFleetPower(); 
         const totalVoidbornFleetPower = this.totalVoidbornFleetPower();
         let initialInitiative = corvetteFleetPower + destroyerFleetPower + dreadnaughtFleetPower + carrierFleetPower + totalVoidbornFleetPower;
@@ -1183,10 +1183,10 @@ class PlayerState {
                     absDescription.push('+1 Invader Abs (Improved Shields)');
                 }
 
-                totalAbsorption = totalAbsorption + this.totalDreadnaughtFleetPower();
+                totalAbsorption = totalAbsorption + this.totalDreadnoughtFleetPower();
 
-                if (this.totalDreadnaughtFleetPower() > 0) {
-                    absDescription.push('+' + this.totalDreadnaughtFleetPower() + ' Invader Abs (Dreadnaughts)');
+                if (this.totalDreadnoughtFleetPower() > 0) {
+                    absDescription.push('+' + this.totalDreadnoughtFleetPower() + ' Invader Abs (Dreadnoughts)');
                 }
 
                 if (this.hasAutonomousDrones() && this.spendTradeTokenToUseAutonomousDrones) {
@@ -1213,10 +1213,10 @@ class PlayerState {
                     absDescription.push('+1 Defender Abs (Shields)');
                 }
 
-                totalAbsorption = totalAbsorption + this.totalDreadnaughtFleetPower();
+                totalAbsorption = totalAbsorption + this.totalDreadnoughtFleetPower();
 
-                if (this.totalDreadnaughtFleetPower() > 0) {
-                    absDescription.push('+' + this.totalDreadnaughtFleetPower() + ' Defender Abs (Dreadnaught)');
+                if (this.totalDreadnoughtFleetPower() > 0) {
+                    absDescription.push('+' + this.totalDreadnoughtFleetPower() + ' Defender Abs (Dreadnought)');
                 }
 
                 totalAbsorption = totalAbsorption + this.totalCarrierFleetPower();
@@ -1413,7 +1413,7 @@ class PlayerState {
         for (let distribution of allDistributions) {
             let corvetteUsage = _.filter(distribution, function(d) { return d.fleetType === FLEET_TYPE.Corvette });
             let corvetteUsageSum = _.sumBy(corvetteUsage, 'damage');
-            let nonCorvetteUsage = _.filter(distribution, function(d) { return d.fleetType === FLEET_TYPE.Carrier || d.fleetType === FLEET_TYPE.Destroyer || d.fleetType === FLEET_TYPE.Dreadnaught || d.fleetType === FLEET_TYPE.Sentry });
+            let nonCorvetteUsage = _.filter(distribution, function(d) { return d.fleetType === FLEET_TYPE.Carrier || d.fleetType === FLEET_TYPE.Destroyer || d.fleetType === FLEET_TYPE.Dreadnought || d.fleetType === FLEET_TYPE.Sentry });
             let nonCorvetteUsageSum = _.sumBy(nonCorvetteUsage, 'damage');
             if (canPrioritizeCorvettes && nonCorvetteUsageSum > 0 && corvetteUsageSum < totalCorvetteFleetPower) {
                 distribution.misusingCorvettes = true;
@@ -1529,7 +1529,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.7"
+        version: "1.71"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1851,7 +1851,7 @@ createApp({
             }
 
             // dreadnaughts
-            if (player && !_.find(player.techs, function(t) { return t.id === TECHS.Dreadnaughts }) && this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].fleetType === FLEET_TYPE.Dreadnaught) {
+            if (player && !_.find(player.techs, function(t) { return t.id === TECHS.Dreadnoughts }) && this.calculationPlayers[calcPlayerIndex].fleets[playerFleetIndex].fleetType === FLEET_TYPE.Dreadnought) {
                 showFleet = false;
             }
 
@@ -2206,6 +2206,8 @@ createApp({
             let player = this.getPlayerById(this.calculationPlayers[calcPlayerChanged].playerid);
             if (player && player.isHumanPlayer()) {
                 this.calculationPlayers[calcPlayerChanged].techs = player.techs;
+            } else if (this.calculationPlayers[calcPlayerChanged].playerid == 1000) {
+                this.calculationPlayers[calcPlayerChanged].techs = null;
             }
             this.computedUpdater++;
             this.saveGameState();
