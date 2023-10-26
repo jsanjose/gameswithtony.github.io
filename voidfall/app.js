@@ -1302,7 +1302,7 @@ class PlayerState {
                 let minMissileDamage = Math.min((new Number(this.adjacentSectorsWithStarbases) + new Number(this.adjacentSectorsWithShipyards)), 2);
                 totalDamage = totalDamage + minMissileDamage;
 
-                if (totalDamage > 0)
+                if (minMissileDamage > 0)
                 dmgDescription.push('+' + minMissileDamage + ' Defender Dmg (Improved Deep Space Missiles)');
             }
 
