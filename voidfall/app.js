@@ -1325,10 +1325,11 @@ class PlayerState {
             }
 
             if (this.hasImprovedDeepSpaceMissiles()) {
-                totalDamage = Math.min(new Number(this.adjacentSectorsWithStarbases) + new Number(this.adjacentSectorsWithShipyards), 2);
+                let minMissileDamage = Math.min(new Number(this.adjacentSectorsWithStarbases) + new Number(this.adjacentSectorsWithShipyards), 2)
+                totalDamage = totalDamage + minMissileDamage;
 
-                if (totalDamage > 0)
-                dmgDescription.push('+' + totalDamage + ' Invader Dmg (Improved Deep Space Missiles)');
+                if (minMissileDamage > 0)
+                dmgDescription.push('+' + minMissileDamage + ' Invader Dmg (Improved Deep Space Missiles)');
             }
         }
 
@@ -1530,7 +1531,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.72"
+        version: "1.73"
     } },
     watch: {
         numberOfPlayers(val) {
