@@ -66,6 +66,12 @@
             font-size: 0.9rem;
         }
 
+        select.lang {
+            font-size: 0.8rem;
+            padding: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
         .random-houses {
             display: flex;
             text-align: right;
@@ -118,7 +124,7 @@
 
         .app-explanation {
             margin-block-start: 0.1rem;
-            margin-block-end: 1rem;
+            margin-block-end: 0.25rem;
             display: block;
         }
 
@@ -432,12 +438,16 @@
     <main id="vf" class="limit-container">
         <section v-if="this.pageState === 0">
             <header class="app-start-header">
-                <h1 class="app-title">Voidfall Helper</h1>
+                <h1 class="app-title">{{ langStrs[appLang]["appTitle"] }}</h1>
                 <p class="app-version">(v{{version}})</p>
             </header>
-            <small class="app-explanation">House randomizer, tech tableau generator, and combat calculator.</small>
+            <small class="app-explanation">{{ langStrs[appLang]["appSubtitle"] }}</small>
+            <select id="lang" class="lang" v-model="appLang" @change="appLangChanged()">
+                <option value="en">English</option>
+                <option value="fr">français</option>
+            </select>
             <p>
-                <label for="numberOfPlayers"># of players: </label>
+                <label for="numberOfPlayers">{{ langStrs[appLang]["numOfPlayers"] }}: </label>
                 <select v-model="numberOfPlayers" id="numberOfPlayers" @change="numberOfPlayersChanged(numberOfPlayersIndex)">
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -446,15 +456,15 @@
                 </select>
             </p>
             <p>
-                <label for="scenarioType">Type of game: </label>
+                <label for="scenarioType">{{ langStrs[appLang]["typeOfGame"] }}: </label>
                 <select v-model="scenarioType" id="scenarioType" @change="scenarioTypeChanged(scenarioTypeIndex)">
-                    <option value="0" v-if="numberOfPlayers == 1">Solo</option>
-                    <option value="1" v-if="numberOfPlayers > 1">Cooperative</option>
-                    <option value="2" v-if="numberOfPlayers > 1">Competitive</option>
+                    <option value="0" v-if="numberOfPlayers == 1">{{ langStrs[appLang]["solo"] }}</option>
+                    <option value="1" v-if="numberOfPlayers > 1">{{ langStrs[appLang]["cooperative"] }}</option>
+                    <option value="2" v-if="numberOfPlayers > 1">{{ langStrs[appLang]["competitive"] }}</option>
                 </select>
             </p>
             <p v-if="scenariosByTypeAndPlayers && scenariosByTypeAndPlayers.length > 0">
-                <label for="chosenScenario">Scenario (optional): </label>
+                <label for="chosenScenario">{{ langStrs[appLang]["scenarioOptional"] }}: </label>
                 <select v-model="chosenScenario" id="chosenScenario" @change="chosenScenarioChanged(chosenScenarioIndex)">
                     <option v-if="chosenScenario && chosenScenario != 'None'" value="None">None</option>
                     <option v-for="scenario in scenariosByTypeAndPlayers" :value="scenario">
@@ -463,20 +473,20 @@
                 </select>
             </p>
             <p v-if="chosenScenario && chosenScenario.id != 'T' && (scenarioType == 0 || scenarioType == 1)" class="random-houses">
-                <button class="button-secondary" v-on:click="setRandomHouses">Set random house<template v-if="scenarioType == 1">s</template></button>
+                <button class="button-secondary" v-on:click="setRandomHouses"><template v-if="scenarioType == 0">{{ langStrs[appLang]["setRandomHouse"] }}</template><template v-if="scenarioType == 1">{{ langStrs[appLang]["setRandomHouses"] }}</template></button>
             </p>
             <p v-if="chosenScenario && (scenarioType == 2 || chosenScenario.id == 'T')" class="random-houses">
-                <button class="button-secondary" v-on:click="setRandomRecommendedHouses">Set random recommended houses</button>
+                <button class="button-secondary" v-on:click="setRandomRecommendedHouses">{{ langStrs[appLang]["setRandomRecommendedHouses"] }}</button>
             </p>
             <section class="margin">
                 <article class="player-form">
-                    <h2>Player 1</h2>
+                    <h2>{{ langStrs[appLang]["player"] }} 1</h2>
                     <p>
-                        <label for="player1">Name</label>
+                        <label for="player1">{{ langStrs[appLang]["playerName"] }}</label>
                         <input type="text" v-model="players[0].name" id="player1" />
                     </p>
                     <p>
-                        <label for="player1">House</label>
+                        <label for="player1">{{ langStrs[appLang]["playerHouse"] }}</label>
                         <select v-model="players[0].houseWithOrigin" class="wide-select">
                             <option v-for="houseWithOrigin in housesWithOrigins" :value="houseWithOrigin">
                                 {{ houseWithOrigin.name }}
@@ -485,13 +495,13 @@
                     </p>
                 </article>
                 <article class="player-form" v-if="numberOfPlayers > 1">
-                    <h2>Player 2</h2>
+                    <h2>{{ langStrs[appLang]["player"] }} 2</h2>
                     <p>
-                        <label for="player2">Name</label>
+                        <label for="player2">{{ langStrs[appLang]["playerName"] }}</label>
                         <input type="text" v-model="players[1].name" id="player2" />
                     </p>
                     <p>
-                        <label for="player2">House</label>
+                        <label for="player2">{{ langStrs[appLang]["playerHouse"] }}</label>
                         <select v-model="players[1].houseWithOrigin">
                             <option v-for="houseWithOrigin in housesWithOrigins" :value="houseWithOrigin">
                                 {{ houseWithOrigin.name }}
@@ -500,13 +510,13 @@
                     </p>
                 </article>
                 <article class="player-form" v-if="numberOfPlayers > 2">
-                    <h2>Player 3</h2>
+                    <h2>{{ langStrs[appLang]["player"] }} 3</h2>
                     <p>
-                        <label for="player3">Name</label>
+                        <label for="player3">{{ langStrs[appLang]["playerName"] }}</label>
                         <input type="text" v-model="players[2].name" id="player3" />
                     </p>
                     <p>
-                        <label for="player3">House</label>
+                        <label for="player3">{{ langStrs[appLang]["playerHouse"] }}</label>
                         <select v-model="players[2].houseWithOrigin">
                             <option v-for="houseWithOrigin in housesWithOrigins" :value="houseWithOrigin">
                                 {{ houseWithOrigin.name }}
@@ -515,13 +525,13 @@
                     </p>
                 </article>
                 <article class="player-form" v-if="numberOfPlayers > 3">
-                    <h2>Player 4</h2>
+                    <h2>{{ langStrs[appLang]["player"] }} 4</h2>
                     <p>
-                        <label for="player4">Name</label>
+                        <label for="player4">{{ langStrs[appLang]["playerName"] }}</label>
                         <input type="text" v-model="players[3].name" id="player4" />
                     </p>
                     <p>
-                        <label for="player4">House</label>
+                        <label for="player4">{{ langStrs[appLang]["playerHouse"] }}</label>
                         <select v-model="players[3].houseWithOrigin">
                             <option v-for="houseWithOrigin in housesWithOrigins" :value="houseWithOrigin">
                                 {{ houseWithOrigin.name }}
@@ -530,17 +540,17 @@
                     </p>
                 </article>
                 <p>
-                    <button v-on:click="start">Start Game</button>
+                    <button v-on:click="start">{{ langStrs[appLang]["startGame"] }}</button>
                 </p>
             </section>
             <section class="notes">
-                <h2>Notes</h2>
+                <h2>{{ langStrs[appLang]["notes"] }}</h2>
                 <ul>
-                    <li>If you choose a scenario, the app will generate the fallen houses and tech tableau for you. You'll find it on the bottom of the 'Tech' page after starting a game.</li>
-                    <li>Keep track of players' tech during the game on the Tech page. Tech powers are then included in the calculations.</li>
-                    <li>If you are using Carriers, and they deploy Corvettes, simply increase the Corvette count in the calculator before running the calculation. The app does not automatically deploy Corvettes from Carriers.</li>
-                    <li>The app shows all possible outcomes, except for variations where you obviously should recall Corvettes but recall something else instead.</li>
-                    <li>Once you have calculated once, any changes to fleet power will auto-recalculate unless you change the invader/defender.</li>
+                    <li>{{ langStrs[appLang]["note1"] }}</li>
+                    <li>{{ langStrs[appLang]["note2"] }}</li>
+                    <li>{{ langStrs[appLang]["note3"] }}</li>
+                    <li>{{ langStrs[appLang]["note4"] }}</li>
+                    <li>{{ langStrs[appLang]["note5"] }}</li>
                 </ul>
             </section>
             <footer class="games-footer">
@@ -548,23 +558,23 @@
                     <a href="https://gameswithtony.com">gameswithtony.com</a>
                 </p>
                 <p>
-                    Not affiliated with Mindclash Games
+                    {{ langStrs[appLang]["notAffiliated"] }}
                 </p>
             </footer>
         </section>
         <nav class="menu-links" v-if="this.pageState ===  1 || this.pageState === 2">
-            <a href="#" v-on:click="newgame($event)" class="menu-link">New Game</a>&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="menu-link"  v-on:click="showTech($event)" :class="{  'selected': pageState === 1 }">Tech</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" class="menu-link" v-on:click="showCalculator($event)" :class="{  'selected': pageState === 2 }">Calc</a>
+            <a href="#" v-on:click="newgame($event)" class="menu-link">{{ langStrs[appLang]["newGame"] }}</a>&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="menu-link"  v-on:click="showTech($event)" :class="{  'selected': pageState === 1 }">{{ langStrs[appLang]["techLink"] }}</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" class="menu-link" v-on:click="showCalculator($event)" :class="{  'selected': pageState === 2 }">{{ langStrs[appLang]["calcLink"] }}</a>
         </nav>
         <section v-if="this.pageState === 1">
             <header class="technologies-header">
-                <h1>Technologies</h1>
-                <template v-if="chosenScenario"><a href="#tableau">(View Tableau)</a></template>
+                <h1>{{ langStrs[appLang]["technologies"] }}</h1>
+                <template v-if="chosenScenario"><a href="#tableau">({{ langStrs[appLang]["viewTableau"] }})</a></template>
             </header>
-            <h2 class="separation-header">Player Combat Tech</h2>
+            <h2 class="separation-header">{{ langStrs[appLang]["playerCombatTech"] }}</h2>
             <section v-for="(player, playerIndex) in players" :key="player.id">
                 <h2>{{ player.name }}<template v-if="player.houseWithOrigin">&nbsp;({{ player.houseWithOrigin.house.name }})</template></h2>
                 <section class="tech-list" v-if="player.techs.length > 0">
-                    <p class="tech tech--used" v-for="(tech, techIndex) in player.techs" :key="tech.id">{{ tech.name }}<br /><a href="#" :class="{ 'tech-level': !tech.isImproved }"  v-on:click="demoteTech($event, playerIndex, techIndex)">Basic</a> | <a href="#" :class="{ 'tech-level': tech.isImproved }" v-on:click="improveTech($event, playerIndex, techIndex)">Improved</a>&nbsp;&nbsp;&nbsp;/ <a href="#" v-on:click="removeTech($event, playerIndex, techIndex)">X</a></p>
+                    <p class="tech tech--used" v-for="(tech, techIndex) in player.techs" :key="tech.id">{{ tech.name }}<br /><a href="#" :class="{ 'tech-level': !tech.isImproved }"  v-on:click="demoteTech($event, playerIndex, techIndex)">{{ langStrs[appLang]["techBasic"] }}</a> | <a href="#" :class="{ 'tech-level': tech.isImproved }" v-on:click="improveTech($event, playerIndex, techIndex)">{{ langStrs[appLang]["techImproved"] }}</a>&nbsp;&nbsp;&nbsp;/ <a href="#" v-on:click="removeTech($event, playerIndex, techIndex)">X</a></p>
                 </section>
                 <section class="tech-list">
                     <p class="tech" v-for="(tech, techIndex) in player.unusedTechs" :key="tech.id" v-on:click="addTech(playerIndex, tech, techIndex)">{{ tech.name }}</p>
@@ -572,9 +582,9 @@
             </section>
             <section v-if="chosenScenario">
                 <a name="tableau"></a><h2 class="separation-header">Tableau</h2>
-                <small class="tableau-explanation">An initial tech tableau generated for '{{ chosenScenario.name }}' and the chosen player houses.</small>
+                <small class="tableau-explanation">{{ langStrs[appLang]["tableauExplanation"].replace('${0}', chosenScenario.name) }}</small>
                 <section class="fallen-houses">
-                    <template v-if="chosenScenario.id != 'T'">Fallen Houses:</template><template v-if="chosenScenario.id == 'T'">Tutorial Tech Houses:</template> <span v-for="fallenHouse in fourFallenHouses">{{ fallenHouse.name }}&nbsp;&nbsp;</span>
+                    <template v-if="chosenScenario.id != 'T'">{{ langStrs[appLang]["fallenHouses"] }}:</template><template v-if="chosenScenario.id == 'T'">{{ langStrs[appLang]["tutorialTechHouses"] }}:</template> <span v-for="fallenHouse in fourFallenHouses">{{ fallenHouse.name }}&nbsp;&nbsp;</span>
                 </section>
                 <section class="tech-list">
                     <article v-for="tableauTech in techTableau" class="tableau-tech">
@@ -584,16 +594,16 @@
                         <footer>
                             <dl>
                                 <div>
-                                    <dt>House:</dt>
+                                    <dt>{{ langStrs[appLang]["playerHouse"] }}:</dt>
                                     <dd>{{ tableauTech.fallenHouseName }}</dd>
                                 </div>
                                 <div>
-                                    <dt>Card w/ VP?:</dt>
-                                    <dd>{{ tableauTech.hasVPCard ? 'Yes' : 'No' }}</dd>
+                                    <dt>{{ langStrs[appLang]["cardWithVP"] }}:</dt>
+                                    <dd>{{ tableauTech.hasVPCard ? langStrs[appLang]["yes"] : langStrs[appLang]["no"] }}</dd>
                                 </div>
                                 <div>
-                                    <dt>Card w/out VP?:</dt>
-                                    <dd>{{ tableauTech.hasNonVPCard ? 'Yes' : 'No' }}</dd>
+                                    <dt>{{ langStrs[appLang]["cardWithoutVP"] }}:</dt>
+                                    <dd>{{ tableauTech.hasNonVPCard ? langStrs[appLang]["yes"] : langStrs[appLang]["no"] }}</dd>
                                 </div>
                             </dl>
                         </footer>
@@ -602,14 +612,14 @@
             </section>
         </section>
         <section v-if="this.pageState === 2">
-            <h1>Calculator</h1>
+            <h1>{{ langStrs[appLang]["calculator"] }}</h1>
             <textarea id="copytextarea" style="position: absolute; left: -99999px;" contenteditable="true"></textarea>
             <section v-for="(calcPlayer, calcPlayerIndex) in calculationPlayers" class="select-calc-player">
                 <label>
-                    <template v-if="calcPlayer.isInvader">Invader: </template><template v-if="!calcPlayer.isInvader">Defender: </template>
+                    <template v-if="calcPlayer.isInvader">{{ langStrs[appLang]["invader"] }}: </template><template v-if="!calcPlayer.isInvader">{{ langStrs[appLang]["defender"] }}: </template>
                     <select v-model="calcPlayer.playerid" @change="calcPlayerChanged(calcPlayerIndex)">
                         <option v-for="(player, index) in players" :value="player.id">{{ player.name }}</option>
-                        <option value="1000">Voidborn</option>
+                        <option value="1000">{{ langStrs[appLang]["fleetVoidborn"] }}</option>
                     </select>
                 </label>
                 <section v-if="calcPlayer.playerid > 0">
@@ -772,6 +782,7 @@
             </section>
         </section>
     </main>
+    <script src="lang-str.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

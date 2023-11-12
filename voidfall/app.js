@@ -28,13 +28,13 @@ function chooseRandom(min, max, exclude) {
 
 function getFleetDesc(fleet_type) {
     switch (fleet_type) {
-        case FLEET_TYPE.Corvette: return 'Corvette';
-        case FLEET_TYPE.Destroyer: return 'Destroyer';
-        case FLEET_TYPE.Dreadnought: return 'Dreadnought';
-        case FLEET_TYPE.Carrier: return 'Carrier';
-        case FLEET_TYPE.Sentry: return 'Sentry';
-        case FLEET_TYPE.Voidborn: return 'Voidborn';
-    }
+        case FLEET_TYPE.Corvette: return langStrings[lang]['fleetCorvette'];
+        case FLEET_TYPE.Destroyer: return langStrings[lang]['fleetDestroyer'];
+        case FLEET_TYPE.Dreadnought: return langStrings[lang]['fleetDreadnought'];
+        case FLEET_TYPE.Carrier: return langStrings[lang]['fleetCarrier'];
+        case FLEET_TYPE.Sentry: return langStrings[lang]['fleetSentry'];
+        case FLEET_TYPE.Voidborn: return langStrings[lang]['fleetVoidborn'];
+    }    
 }
 
 function getHouseDesc(houseid) {
@@ -66,35 +66,35 @@ function getHouseOriginName(originid) {
 
 function getTechName(techid) {
     switch (techid) {
-        case TECHS.ArkShips: return 'Ark Ships';
-        case TECHS.AutonomousDrones: return 'Autonomous Drones';
-        case TECHS.Carriers: return 'Carriers';
-        case TECHS.CentralSurveillance: return 'Central Surveillance';
-        case TECHS.Cloning: return 'Cloning';
-        case TECHS.CombatReplicators: return 'Combat Replicators';
-        case TECHS.Cybernetics: return 'Cybernetics';
-        case TECHS.DataRefinery: return 'Data Refinery';
-        case TECHS.DecontaminationChambers: return 'Decontamination Chambers';
-        case TECHS.DeepSpaceMissiles: return 'Deep Space Missiles';
-        case TECHS.Destroyers: return 'Destroyers';
-        case TECHS.Dreadnoughts: return 'Dreadnoughts';
-        case TECHS.EnergyCells: return 'Energy Cells';
-        case TECHS.EscapePods: return 'Escape Pods';
-        case TECHS.Hyperdrive: return 'Hyperdrive';
-        case TECHS.NeuralMatrix: return 'Neural Matrix';
-        case TECHS.OrbitalDocks: return 'Orbital Docks';
-        case TECHS.Purifier: return 'Purifier';
-        case TECHS.Robotics: return 'Robotics';
-        case TECHS.SalvageScanner: return 'Salvage Scanner';
-        case TECHS.Sentries: return 'Sentries';
-        case TECHS.Shields: return 'Shields';
-        case TECHS.Starbases: return 'Starbases';
-        case TECHS.TacticalTransports: return 'Tactical Transports';
-        case TECHS.Targeting: return 'Targeting';
-        case TECHS.Terraforming: return 'Terraforming';
-        case TECHS.Torpedoes: return 'Torpedoes';
-        case TECHS.TradeNexus: return 'Trade Nexus';
-    }
+        case TECHS.ArkShips: return langStrings[lang]['techArkShips'];
+        case TECHS.AutonomousDrones: return langStrings[lang]['techAutonomousDrones'];
+        case TECHS.Carriers: return langStrings[lang]['techCarriers'];
+        case TECHS.CentralSurveillance: return langStrings[lang]['techCentralSurveillance'];
+        case TECHS.Cloning: return langStrings[lang]['techCloning'];
+        case TECHS.CombatReplicators: return langStrings[lang]['techCombatReplicators'];
+        case TECHS.Cybernetics: return langStrings[lang]['techCybernetics'];
+        case TECHS.DataRefinery: return langStrings[lang]['techDataRefinery'];
+        case TECHS.DecontaminationChambers: return langStrings[lang]['techDecontaminationChambers'];
+        case TECHS.DeepSpaceMissiles: return langStrings[lang]['techDeepSpaceMissiles'];
+        case TECHS.Destroyers: return langStrings[lang]['techDestroyers'];
+        case TECHS.Dreadnoughts: return langStrings[lang]['techDreadnoughts'];
+        case TECHS.EnergyCells: return langStrings[lang]['techEnergyCells'];
+        case TECHS.EscapePods: return langStrings[lang]['techEscapePods'];
+        case TECHS.Hyperdrive: return langStrings[lang]['techHyperdrive'];
+        case TECHS.NeuralMatrix: return langStrings[lang]['techNeuralMatrix'];
+        case TECHS.OrbitalDocks: return langStrings[lang]['techOrbitalDocks'];
+        case TECHS.Purifier: return langStrings[lang]['techPurifier'];
+        case TECHS.Robotics: return langStrings[lang]['techRobotics'];
+        case TECHS.SalvageScanner: return langStrings[lang]['techSalvageScanner'];
+        case TECHS.Sentries: return langStrings[lang]['techSentries'];
+        case TECHS.Shields: return langStrings[lang]['techShields'];
+        case TECHS.Starbases: return langStrings[lang]['techStarbases'];
+        case TECHS.TacticalTransports: return langStrings[lang]['techTacticalTransports'];
+        case TECHS.Targeting: return langStrings[lang]['techTargeting'];
+        case TECHS.Terraforming: return langStrings[lang]['techTerraforming'];
+        case TECHS.Torpedoes: return langStrings[lang]['techTorpedoes'];
+        case TECHS.TradeNexus: return langStrings[lang]['techTradeNexus'];
+    }    
 }
 
 const { createApp } = Vue
@@ -239,17 +239,17 @@ class Technology {
 }
 
 let Technologies = [
-    new Technology(TECHS.AutonomousDrones, "Autonomous Drones", false),
-    new Technology(TECHS.Carriers, "Carriers", false),
-    new Technology(TECHS.DeepSpaceMissiles, "Deep Space Missiles", false),
-    new Technology(TECHS.Destroyers, "Destroyers", false),
-    new Technology(TECHS.Dreadnoughts, "Dreadnoughts", false),
-    new Technology(TECHS.EnergyCells, "Energy Cells", false),
-    new Technology(TECHS.Sentries, "Sentries", false),
-    new Technology(TECHS.Shields, "Shields", false),
-    new Technology(TECHS.Starbases, "Starbases", false),
-    new Technology(TECHS.Targeting, "Targeting", false),
-    new Technology(TECHS.Torpedoes, "Torpedoes", false),
+    new Technology(TECHS.AutonomousDrones, langStrings[lang]['techAutonomousDrones'], false),
+    new Technology(TECHS.Carriers, langStrings[lang]['techCarriers'], false),
+    new Technology(TECHS.DeepSpaceMissiles, langStrings[lang]['techDeepSpaceMissiles'], false),
+    new Technology(TECHS.Destroyers, langStrings[lang]['techDestroyers'], false),
+    new Technology(TECHS.Dreadnoughts, langStrings[lang]['techDreadnoughts'], false),
+    new Technology(TECHS.EnergyCells, langStrings[lang]['techEnergyCells'], false),
+    new Technology(TECHS.Sentries, langStrings[lang]['techSentries'], false),
+    new Technology(TECHS.Shields, langStrings[lang]['techShields'], false),
+    new Technology(TECHS.Starbases, langStrings[lang]['techStarbases'], false),
+    new Technology(TECHS.Targeting, langStrings[lang]['techTargeting'], false),
+    new Technology(TECHS.Torpedoes, langStrings[lang]['techTorpedoes'], false),
 ]
 
 function getTechById(techid) {
@@ -300,7 +300,7 @@ class Scenario {
 
 // solo and cooperative scenarios have empty fallen houses, as these are determined during setup
 const Scenarios = [
-    new Scenario('T', SCENARIO_TYPE.Solo, 'Tutorial', 1, null, 1, [
+    new Scenario('T', SCENARIO_TYPE.Solo, langStrings[lang]['scenarioTutorial'], 1, null, 1, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
@@ -312,15 +312,15 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('C011', SCENARIO_TYPE.Solo, 'First Stand', 1, null, 1, []),
-    new Scenario('C021', SCENARIO_TYPE.Solo, 'And One For All', 1, null, 2, []),
-    new Scenario('C031', SCENARIO_TYPE.Solo, 'Darkest Hour', 1, null, 2, []),
-    new Scenario('C041', SCENARIO_TYPE.Solo, 'Ancient Secrets', 1, null, 3, []),
-    new Scenario('C051', SCENARIO_TYPE.Solo, 'Devil\'s Triangle', 1, null, 3, []),
-    new Scenario('C061', SCENARIO_TYPE.Solo, 'When Darkness Fades', 1, null, 3, []),
-    new Scenario('C071', SCENARIO_TYPE.Solo, 'Today Is Not The Day', 1, null, 4, []),
-    new Scenario('C081', SCENARIO_TYPE.Solo, 'Fall Of Civilization', 1, null, 4, []),
-    new Scenario('T', SCENARIO_TYPE.Cooperative, 'Tutorial', 2, null, 1, [
+    new Scenario('C011', SCENARIO_TYPE.Solo, langStrings[lang]['scenarioS01'], 1, null, 1, []),
+    new Scenario('C021', SCENARIO_TYPE.Solo, langStrings[lang]['scenarioS02'], 1, null, 2, []),
+    new Scenario('C031', SCENARIO_TYPE.Solo, langStrings[lang]['scenarioS03'], 1, null, 2, []),
+    new Scenario('C041', SCENARIO_TYPE.Solo, langStrings[lang]['scenarioS04'], 1, null, 3, []),
+    new Scenario('C051', SCENARIO_TYPE.Solo, langStrings[lang]['scenarioS05'], 1, null, 3, []),
+    new Scenario('C061', SCENARIO_TYPE.Solo, langStrings[lang]['scenarioS06'], 1, null, 3, []),
+    new Scenario('C071', SCENARIO_TYPE.Solo, langStrings[lang]['scenarioS07'], 1, null, 4, []),
+    new Scenario('C081', SCENARIO_TYPE.Solo, langStrings[lang]['scenarioS08'], 1, null, 4, []),
+    new Scenario('T', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioTutorial'], 2, null, 1, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
@@ -332,14 +332,14 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('C012', SCENARIO_TYPE.Cooperative, 'First Stand', 2, null, 1, []),
-    new Scenario('C022', SCENARIO_TYPE.Cooperative, 'And One For All', 2, null, 2, []),
-    new Scenario('C032', SCENARIO_TYPE.Cooperative, 'Darkest Hour', 2, null, 2, []),
-    new Scenario('C042', SCENARIO_TYPE.Cooperative, 'Ancient Secrets', 2, null, 3, []),
-    new Scenario('C052', SCENARIO_TYPE.Cooperative, 'Devil\'s Triangle', 2, null, 2, []),
-    new Scenario('C062', SCENARIO_TYPE.Cooperative, 'When Darkness Fades', 2, null, 3, []),
-    new Scenario('C072', SCENARIO_TYPE.Cooperative, 'Today Is Not The Day', 2, null, 4, []),
-    new Scenario('T', SCENARIO_TYPE.Cooperative, 'Tutorial', 3, null, 1, [
+    new Scenario('C012', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS01'], 2, null, 1, []),
+    new Scenario('C022', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS02'], 2, null, 2, []),
+    new Scenario('C032', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS03'], 2, null, 2, []),
+    new Scenario('C042', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS04'], 2, null, 3, []),
+    new Scenario('C052', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS05'], 2, null, 2, []),
+    new Scenario('C062', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS06'], 2, null, 3, []),
+    new Scenario('C072', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS07'], 2, null, 4, []),
+    new Scenario('T', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioTutorial'], 3, null, 1, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
@@ -351,13 +351,13 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('C013', SCENARIO_TYPE.Cooperative, 'First Stand', 3, null, 1, []),
-    new Scenario('C023', SCENARIO_TYPE.Cooperative, 'And One For All', 3, null, 2, []),
-    new Scenario('C033', SCENARIO_TYPE.Cooperative, 'Darkest Hour', 3, null, 3, []),
-    new Scenario('C043', SCENARIO_TYPE.Cooperative, 'Ancient Secrets', 3, null, 4, []),
-    new Scenario('C053', SCENARIO_TYPE.Cooperative, 'Devil\'s Triangle', 3, null, 3, []),
-    new Scenario('C063', SCENARIO_TYPE.Cooperative, 'When Darkness Fades', 3, null, 4, []),
-    new Scenario('T', SCENARIO_TYPE.Cooperative, 'Tutorial', 4, null, 1, [
+    new Scenario('C013', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS01'], 3, null, 1, []),
+    new Scenario('C023', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS02'], 3, null, 2, []),
+    new Scenario('C033', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS03'], 3, null, 3, []),
+    new Scenario('C043', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS04'], 3, null, 4, []),
+    new Scenario('C053', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS05'], 3, null, 3, []),
+    new Scenario('C063', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS06'], 3, null, 4, []),
+    new Scenario('T', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioTutorial'], 4, null, 1, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
@@ -369,11 +369,11 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('C034', SCENARIO_TYPE.Cooperative, 'Darkest Hour', 4, null, 3, []),
-    new Scenario('C044', SCENARIO_TYPE.Cooperative, 'Ancient Secrets', 4, null, 4, []),
-    new Scenario('C054', SCENARIO_TYPE.Cooperative, 'Devil\'s Triangle', 4, null, 3, []),
-    new Scenario('C064', SCENARIO_TYPE.Cooperative, 'When Darkness Fades', 4, null, 4, []),
-    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 2, 1, 1, [
+    new Scenario('C034', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS03'], 4, null, 3, []),
+    new Scenario('C044', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS04'], 4, null, 4, []),
+    new Scenario('C054', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS05'], 4, null, 3, []),
+    new Scenario('C064', SCENARIO_TYPE.Cooperative, langStrings[lang]['scenarioS06'], 4, null, 4, []),
+    new Scenario('T', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioTutorial'], 2, 1, 1, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
@@ -385,7 +385,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Valnis)
     ]), 
-    new Scenario('X012', SCENARIO_TYPE.Competitive, 'Second Genesis', 2, 4, 2, [
+    new Scenario('X012', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC01'], 2, 4, 2, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Shiveus),
@@ -397,7 +397,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('X022', SCENARIO_TYPE.Competitive, 'For Peace and Prosperity', 2, 2, 3, [
+    new Scenario('X022', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC02'], 2, 2, 3, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Marqualos),
@@ -409,7 +409,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X032', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 2, 2, 3, [
+    new Scenario('X032', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC03'], 2, 2, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Nervo),
@@ -421,7 +421,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
-    new Scenario('X042', SCENARIO_TYPE.Competitive, 'Novarchon Legacy', 2, 3, 3, [
+    new Scenario('X042', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC04'], 2, 3, 3, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Novaris),
@@ -433,7 +433,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X052', SCENARIO_TYPE.Competitive, 'Art of War', 2, 4, 4, [
+    new Scenario('X052', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC05'], 2, 4, 4, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Thegwyn),
@@ -445,7 +445,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('X062', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 2, 4, 3, [
+    new Scenario('X062', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC06'], 2, 4, 3, [
         getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
@@ -457,7 +457,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Yarvek),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X072', SCENARIO_TYPE.Competitive, 'Through the Altered Space', 2, 3, 4, [
+    new Scenario('X072', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC07'], 2, 3, 4, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Fenrax),
@@ -469,7 +469,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X082', SCENARIO_TYPE.Competitive, 'Echoes of the Past', 2, 2, 3, [
+    new Scenario('X082', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC08'], 2, 2, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Marqualos),
@@ -481,7 +481,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
-    new Scenario('X092', SCENARIO_TYPE.Competitive, 'Bastion of Resistance', 2, 3, 3, [
+    new Scenario('X092', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC09'], 2, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Nervo),
@@ -493,7 +493,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
-    new Scenario('X102', SCENARIO_TYPE.Competitive, 'Kingdom Come', 2, 1, 2, [
+    new Scenario('X102', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC10'], 2, 1, 2, [
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis),
@@ -505,7 +505,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Thegwyn)
     ]),
-    new Scenario('X112', SCENARIO_TYPE.Competitive, 'Fractures of Space', 2, 2, 3, [
+    new Scenario('X112', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC11'], 2, 2, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
@@ -517,7 +517,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 3, 1, 1, [
+    new Scenario('T', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioTutorial'], 3, 1, 1, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
@@ -528,7 +528,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Valnis)
     ]), 
-    new Scenario('X013', SCENARIO_TYPE.Competitive, 'Second Genesis', 3, 4, 2, [
+    new Scenario('X013', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC01'], 3, 4, 2, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Shiveus),
@@ -540,7 +540,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('X023', SCENARIO_TYPE.Competitive, 'For Peace and Prosperity', 3, 2, 3, [
+    new Scenario('X023', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC02'], 3, 2, 3, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Marqualos),
@@ -552,7 +552,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X033', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 3, 3, 3, [
+    new Scenario('X033', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC03'], 3, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Nervo),
@@ -564,7 +564,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
-    new Scenario('X043', SCENARIO_TYPE.Competitive, 'Novarchon Legacy', 3, 4, 3, [
+    new Scenario('X043', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC04'], 3, 4, 3, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Novaris),
@@ -576,7 +576,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X053', SCENARIO_TYPE.Competitive, 'Art of War', 3, 4, 4, [
+    new Scenario('X053', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC05'], 3, 4, 4, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Thegwyn),
@@ -588,7 +588,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('X063', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 3, 4, 3, [
+    new Scenario('X063', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC06'], 3, 4, 3, [
         getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
@@ -600,7 +600,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Yarvek),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X073', SCENARIO_TYPE.Competitive, 'Through the Altered Space', 3, 3, 4, [
+    new Scenario('X073', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC07'], 3, 3, 4, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Fenrax),
@@ -612,7 +612,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X083', SCENARIO_TYPE.Competitive, 'Echoes of the Past', 3, 2, 3, [
+    new Scenario('X083', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC08'], 3, 2, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Marqualos),
@@ -624,7 +624,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
-    new Scenario('X093', SCENARIO_TYPE.Competitive, 'Bastion of Resistance', 3, 3, 3, [
+    new Scenario('X093', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC09'], 3, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Nervo),
@@ -636,7 +636,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
-    new Scenario('X103', SCENARIO_TYPE.Competitive, 'Kingdom Come', 3, 1, 2, [
+    new Scenario('X103', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC10'], 3, 1, 2, [
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis),
@@ -648,7 +648,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Thegwyn)
     ]),
-    new Scenario('X113', SCENARIO_TYPE.Competitive, 'Fractures of Space', 3, 2, 3, [
+    new Scenario('X113', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC11'], 3, 2, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
@@ -660,7 +660,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('T', SCENARIO_TYPE.Competitive, 'Tutorial', 4, 1, 1, [
+    new Scenario('T', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioTutorial'], 4, 1, 1, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Shiveus),
@@ -671,7 +671,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Valnis)
     ]), 
-    new Scenario('X014', SCENARIO_TYPE.Competitive, 'Second Genesis', 4, 3, 2, [
+    new Scenario('X014', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC01'], 4, 3, 2, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Shiveus),
@@ -683,7 +683,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('X024', SCENARIO_TYPE.Competitive, 'For Peace and Prosperity', 4, 2, 3, [
+    new Scenario('X024', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC02'], 4, 2, 3, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Marqualos),
@@ -695,7 +695,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X034', SCENARIO_TYPE.Competitive, 'Foundations of the Future', 4, 3, 3, [
+    new Scenario('X034', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC03'], 4, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Nervo),
@@ -707,7 +707,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
-    new Scenario('X044', SCENARIO_TYPE.Competitive, 'Novarchon Legacy', 4, 4, 3, [
+    new Scenario('X044', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC04'], 4, 4, 3, [
         getHouseById(HOUSE_IDS.Astoran),
         getHouseById(HOUSE_IDS.Marqualos),
         getHouseById(HOUSE_IDS.Novaris),
@@ -719,7 +719,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X054', SCENARIO_TYPE.Competitive, 'Art of War', 4, 4, 4, [
+    new Scenario('X054', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC05'], 4, 4, 4, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Thegwyn),
@@ -731,7 +731,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis)
     ]),
-    new Scenario('X064', SCENARIO_TYPE.Competitive, 'Whirling Destinies', 4, 4, 3, [
+    new Scenario('X064', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC06'], 4, 4, 3, [
         getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
@@ -743,7 +743,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Yarvek),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X074', SCENARIO_TYPE.Competitive, 'Through the Altered Space', 4, 3, 4, [
+    new Scenario('X074', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC07'], 4, 3, 4, [
         getHouseById(HOUSE_IDS.Belitan),
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Fenrax),
@@ -755,7 +755,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Shiveus),
         getHouseById(HOUSE_IDS.Zenor)
     ]),
-    new Scenario('X084', SCENARIO_TYPE.Competitive, 'Echoes of the Past', 4, 3, 3, [
+    new Scenario('X084', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC08'], 4, 3, 3, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Marqualos),
@@ -767,7 +767,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Novaris),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
-    new Scenario('X094', SCENARIO_TYPE.Competitive, 'Bastion of Resistance', 4, 3, 3, [
+    new Scenario('X094', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC09'], 4, 3, 3, [
         getHouseById(HOUSE_IDS.Cortozaar),
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Nervo),
@@ -779,7 +779,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Thegwyn),
         getHouseById(HOUSE_IDS.Yarvek)
     ]),
-    new Scenario('X104', SCENARIO_TYPE.Competitive, 'Kingdom Come', 4, 1, 2, [
+    new Scenario('X104', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC10'], 4, 1, 2, [
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Nervo),
         getHouseById(HOUSE_IDS.Valnis),
@@ -791,7 +791,7 @@ const Scenarios = [
         getHouseById(HOUSE_IDS.Kradmor),
         getHouseById(HOUSE_IDS.Thegwyn)
     ]),
-    new Scenario('X114', SCENARIO_TYPE.Competitive, 'Fractures of Space', 4, 2, 4, [
+    new Scenario('X114', SCENARIO_TYPE.Competitive, langStrings[lang]['scenarioC11'], 4, 2, 4, [
         getHouseById(HOUSE_IDS.Dunlork),
         getHouseById(HOUSE_IDS.Fenrax),
         getHouseById(HOUSE_IDS.Novaris),
@@ -843,14 +843,14 @@ class PlayerFleet {
 }
 
 let Fleets = [
-    new PlayerFleet(FLEET_TYPE.Corvette, 'Corvettes', 0),
-    new PlayerFleet(FLEET_TYPE.Destroyer, 'Destroyers', 0),
-    new PlayerFleet(FLEET_TYPE.Dreadnought, 'Dreadnoughts', 0),
-    new PlayerFleet(FLEET_TYPE.Carrier, 'Carriers', 0),
-    new PlayerFleet(FLEET_TYPE.Sentry, 'Sentries', 0),
-    new PlayerFleet(FLEET_TYPE.Voidborn, 'Voidborn', 0),
-    new PlayerFleet(FLEET_TYPE.Sector_Defense, 'Sector Defenses', 0),
-    new PlayerFleet(FLEET_TYPE.Starbase, 'Starbases', 0)
+    new PlayerFleet(FLEET_TYPE.Corvette, langStrings[lang]['fleetCorvettePlural'], 0),
+    new PlayerFleet(FLEET_TYPE.Destroyer, langStrings[lang]['fleetDestroyerPlural'], 0),
+    new PlayerFleet(FLEET_TYPE.Dreadnought, langStrings[lang]['fleetDreadnoughtPlural'], 0),
+    new PlayerFleet(FLEET_TYPE.Carrier, langStrings[lang]['fleetCarrierPlural'], 0),
+    new PlayerFleet(FLEET_TYPE.Sentry, langStrings[lang]['fleetSentryPlural'], 0),
+    new PlayerFleet(FLEET_TYPE.Voidborn, langStrings[lang]['fleetVoidbornPlural'], 0),
+    new PlayerFleet(FLEET_TYPE.Sector_Defense, langStrings[lang]['fleetSectorDefensePlural'], 0),
+    new PlayerFleet(FLEET_TYPE.Starbase, langStrings[lang]['fleetStarbasesPlural'], 0)
 ];
 
 class PlayerDamageOption {
@@ -1511,12 +1511,14 @@ class ResultDetail {
 createApp({
     data() { return {
         numberOfPlayers: 1,
+        appLang: "en",
+        langStrs: langStrings, // from lang-str.js
         pageState: PAGE_STATE.StartScreen,
         players: [
-            new Player(1, 'Player 1', [], _.clone(Technologies)),
-            new Player(2, 'Player 2', [], _.clone(Technologies)),
-            new Player(3, 'Player 3', [], _.clone(Technologies)),
-            new Player(4, 'Player 4', [], _.clone(Technologies))
+            new Player(1, langStrings[lang]["player"] + ' 1', [], _.clone(Technologies)),
+            new Player(2, langStrings[lang]["player"] + ' 2', [], _.clone(Technologies)),
+            new Player(3, langStrings[lang]["player"] + ' 3', [], _.clone(Technologies)),
+            new Player(4, langStrings[lang]["player"] + ' 4', [], _.clone(Technologies))
         ],
         scenarioType: SCENARIO_TYPE.Solo,
         chosenScenario: null,
@@ -1539,7 +1541,7 @@ createApp({
             let nextPlayerNumber = this.players.length + 1;
     
             while (this.players.length < numberOfPlayers) {
-                this.players.push(new Player(nextPlayerNumber, 'Player ' + nextPlayerNumber, [], _.clone(Technologies)));
+                this.players.push(new Player(nextPlayerNumber, langStrings[lang]["player"] + ' ' + nextPlayerNumber, [], _.clone(Technologies)));
                 nextPlayerNumber = this.players.length + 1;
             }
         }
@@ -1551,9 +1553,19 @@ createApp({
 
             this.pageState = gameState.pageState;
             this.numberOfPlayers = gameState.numberOfPlayers;
+            this.appLang = lang; // from lang-str.js
  
-            for (let i=0; i<gameState.players.length; i++) {
-                this.players[i] = new Player(gameState.players[i].id, gameState.players[i].name, gameState.players[i].techs, gameState.players[i].unusedTechs, gameState.players[i].houseWithOrigin);
+            if (this.pageState != PAGE_STATE.StartScreen) {
+                for (let i=0; i<gameState.players.length; i++) {
+                    this.players[i] = new Player(gameState.players[i].id, gameState.players[i].name, gameState.players[i].techs, gameState.players[i].unusedTechs, gameState.players[i].houseWithOrigin);
+                }
+            } else {
+                this.players = [
+                    new Player(1, langStrings[lang]["player"] + ' 1', [], _.clone(Technologies)),
+                    new Player(2, langStrings[lang]["player"] + ' 2', [], _.clone(Technologies)),
+                    new Player(3, langStrings[lang]["player"] + ' 3', [], _.clone(Technologies)),
+                    new Player(4, langStrings[lang]["player"] + ' 4', [], _.clone(Technologies))
+                ];
             }
 
             if (this.numberOfPlayers < 4) {
@@ -2168,6 +2180,10 @@ createApp({
                 this.calculate();
             }
             this.saveGameState();
+        },
+        appLangChanged: function() {
+            localStorage.setItem("VoidfallLang", this.appLang);
+            location.reload();
         },
         numberOfPlayersChanged: function(numberOfPlayersIndex) {
             if (this.numberOfPlayers == 1) {
@@ -2856,13 +2872,12 @@ createApp({
         },
         newgame: function (event) {
             if (confirm('Are you sure you want to clear the app and start a new game?')) {
-                this.pageState = PAGE_STATE.StartScreen;
                 this.numberOfPlayers = 1;
                 this.players = [
-                    new Player(1, 'Player 1', [], _.clone(Technologies)),
-                    new Player(2, 'Player 2', [], _.clone(Technologies)),
-                    new Player(3, 'Player 3', [], _.clone(Technologies)),
-                    new Player(4, 'Player 4', [], _.clone(Technologies))
+                    new Player(1, langStrings[lang]["player"] + ' 1', [], _.clone(Technologies)),
+                    new Player(2, langStrings[lang]["player"] + ' 2', [], _.clone(Technologies)),
+                    new Player(3, langStrings[lang]["player"] + ' 3', [], _.clone(Technologies)),
+                    new Player(4, langStrings[lang]["player"] + ' 4', [], _.clone(Technologies))
                 ];
                 this.resetPlayerStates();
                 this.results = [];
@@ -2871,6 +2886,8 @@ createApp({
                 this.scenarioType = SCENARIO_TYPE.Solo;
                 this.chosenScenario = null;
                 this.showResults = false;
+                this.saveGameState();
+                this.pageState = PAGE_STATE.StartScreen;
             }
             
             window.scrollTo(0,0);
