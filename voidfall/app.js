@@ -2087,7 +2087,7 @@ createApp({
             }
 
             event.preventDefault();
-            alert('Combat summary copied to clipboard.');
+            alert(langStrings[lang]["combatSummaryCopied"]);
         },
         playerByIdHasTech: function(playerid, techid) {
             if (playerid <= 0 || playerid == 1000) { return false; }

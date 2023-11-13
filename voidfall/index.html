@@ -625,7 +625,7 @@
                 <section v-if="calcPlayer.playerid > 0">
                     <template v-for="(playerFleet, playerFleetIndex) in calcPlayer.fleets">
                         <section class="increment" v-if="showFleet(calcPlayerIndex, playerFleetIndex)">
-                            <p class="increment-name">{{ playerFleet.name }}<template v-if="calcPlayer.isInvader && playerFleet.fleetType == 3"><small>If Invader Carriers deploy Corvettes, increase Corvettes above.</small></template></p>
+                            <p class="increment-name">{{ playerFleet.name }}<template v-if="calcPlayer.isInvader && playerFleet.fleetType == 3"><small>{{ langStrs[appLang]["carrierMessage"] }}</small></template></p>
                             <p class="increment-buttons">
                                 <a href="#" v-on:click="updatePlayerFleet($event, calcPlayerIndex, playerFleetIndex, -1)">- 1</a>
                                 <span class="power">{{ playerFleet.power }}</span>
@@ -635,20 +635,20 @@
                     </template>
                     <template v-if="calcPlayer.isInvader && playerHasAutonomousDrones(calcPlayer.playerid)">
                         <section class="increment">
-                            <p class="increment-name"><label :for="'AutonomousDrones_' + calcPlayer.id">Return Trade Token (Drones)?</label></p>
+                            <p class="increment-name"><label :for="'AutonomousDrones_' + calcPlayer.id">{{ langStrs[appLang]["returnTradeTokenDrones"] }}</label></p>
                             <p class="increment-buttons">
                                 <input type="checkbox" v-model="calcPlayer.spendTradeTokenToUseAutonomousDrones" :id="'AutonomousDrones_' + calcPlayer.id" @change="updateCheckbox()" />
                             </p>
                         </section>
                     </template>
                     <section class="increment" v-if="calcPlayer.isInvader && calcPlayer.playerid != 1000 && calcPlayer.playerid > 0 && isNervo(calcPlayer.playerid)">
-                        <p class="increment-name"><label :for="'Bombard_' + calcPlayer.id">Use Bombard (Nervo)?</label></p>
+                        <p class="increment-name"><label :for="'Bombard_' + calcPlayer.id">{{ langStrs[appLang]["useBombard"] }}</label></p>
                         <p class="increment-buttons">
                             <input type="checkbox" v-model="calcPlayer.useBombard" :id="'Bombard_' + calcPlayer.id" @change="updateCheckbox()" />
                         </p>
                     </section>
                     <section class="increment" v-if="calcPlayer.useBombard && calcPlayer.isInvader">
-                        <p class="increment-name">&nbsp;&nbsp;Bombard Approach Abs</p>
+                        <p class="increment-name">&nbsp;&nbsp;{{ langStrs[appLang]["bombardApproachAbs"] }}</p>
                         <p class="increment-buttons">
                             <a href="#" v-on:click="updateBombardApproachAbsorption($event, calcPlayerIndex, -1)">- 1</a>
                             <span class="power">{{ calcPlayer.bombardAbsorption }}</span>
@@ -656,7 +656,7 @@
                         </p>
                     </section>
                     <section class="increment" v-if="calcPlayer.useBombard && calcPlayer.isInvader">
-                        <p class="increment-name">&nbsp;&nbsp;Bombard Salvo Abs</p>
+                        <p class="increment-name">&nbsp;&nbsp;{{ langStrs[appLang]["bombardSalvoAbs"] }}</p>
                         <p class="increment-buttons">
                             <a href="#" v-on:click="updateBombardSalvoAbsorption($event, calcPlayerIndex, -1)">- 1</a>
                             <span class="power">{{ calcPlayer.bombardSalvoAbsorption }}</span>
@@ -664,37 +664,37 @@
                         </p>
                     </section>
                     <section class="increment" v-if="(calcPlayer.isInvader && playerHasBasicDeepSpaceMissiles(calcPlayer.playerid))">
-                        <p class="increment-name"><label :for="'DeepSpaceMissiles_' + calcPlayer.id">Spend 1 Energy (Deep Space Missiles)?</label></p>
+                        <p class="increment-name"><label :for="'DeepSpaceMissiles_' + calcPlayer.id">{{ langStrs[appLang]["spendEnergyDSM"] }}</label></p>
                         <p class="increment-buttons">
                             <input type="checkbox" v-model="calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles" :id="'DeepSpaceMissiles_' + calcPlayer.id" @change="updateCheckbox()" />
                         </p>
                     </section>
                     <section class="increment" v-if="(calcPlayer.isInvader && calcPlayer.isVoidborn() && (scenarioType == 0 || scenarioType == 1))">
-                        <p class="increment-name"><label :for="'plusFiveInitiative_' + calcPlayer.id">+5 Initiative (War card)</label></p>
+                        <p class="increment-name"><label :for="'plusFiveInitiative_' + calcPlayer.id">{{ langStrs[appLang]["initiativeWarCard"] }}</label></p>
                         <p class="increment-buttons">
                             <input type="checkbox" v-model="calcPlayer.plusFiveVoidbornInitiative" :id="'plusFiveInitiative_' + calcPlayer.id" @change="updateCheckbox()" />
                         </p>
                     </section>
                     <section class="increment" v-if="(calcPlayer.isInvader && calcPlayer.isVoidborn() && (scenarioType == 0 || scenarioType == 1))">
-                        <p class="increment-name"><label :for="'plusOneVoidbornApproachAbsorption_' + calcPlayer.id">+1 Approach absorption (War card)</label></p>
+                        <p class="increment-name"><label :for="'plusOneVoidbornApproachAbsorption_' + calcPlayer.id">{{ langStrs[appLang]["approachAbsWarCard"] }}</label></p>
                         <p class="increment-buttons">
                             <input type="checkbox" v-model="calcPlayer.plusOneVoidbornApproachAbsorption" :id="'plusOneVoidbornApproachAbsorption_' + calcPlayer.id" @change="updateCheckbox()" />
                         </p>
                     </section>
                     <section class="increment" v-if="(calcPlayer.isInvader && calcPlayer.isVoidborn() && (scenarioType == 0 || scenarioType == 1))">
-                        <p class="increment-name"><label :for="'plusOneVoidbornSalvoAbsorption_' + calcPlayer.id">+1 Salvo absorption (War card - Easy)</label></p>
+                        <p class="increment-name"><label :for="'plusOneVoidbornSalvoAbsorption_' + calcPlayer.id">{{ langStrs[appLang]["salvoAbsWarCardEasy"] }}</label></p>
                         <p class="increment-buttons">
                             <input type="checkbox" v-model="calcPlayer.plusOneVoidbornSalvoAbsorption" :id="'plusOneVoidbornSalvoAbsorption_' + calcPlayer.id" @change="updateCheckbox()" />
                         </p>
                     </section>
                     <section class="increment" v-if="(calcPlayer.isInvader && calcPlayer.isVoidborn() && (scenarioType == 0 || scenarioType == 1))">
-                        <p class="increment-name"><label :for="'plusTwoVoidbornSalvoAbsorption_' + calcPlayer.id">+2 Salvo absorption (War card - Norm/Hard)</label></p>
+                        <p class="increment-name"><label :for="'plusTwoVoidbornSalvoAbsorption_' + calcPlayer.id">{{ langStrs[appLang]["salvoAbsWarCardHard"] }}</label></p>
                         <p class="increment-buttons">
                             <input type="checkbox" v-model="calcPlayer.plusTwoVoidbornSalvoAbsorption" :id="'plusTwoVoidbornSalvoAbsorption_' + calcPlayer.id" @change="updateCheckbox()" />
                         </p>
                     </section>
                     <section class="increment" v-if="calcPlayer.isInvader && calcPlayer.isVoidborn()">
-                        <p class="increment-name"><label :for="'plusXVoidbornSalvoAbsorption_' + calcPlayer.id">+X Salvo absorption (Cycle 2 - Event H)</label></p>
+                        <p class="increment-name"><label :for="'plusXVoidbornSalvoAbsorption_' + calcPlayer.id">{{ langStrs[appLang]["salvoAbsCycle2EventH"] }}</label></p>
                         <p class="increment-buttons">
                             <a href="#" v-on:click="updatePlusXVoidbornSalvoAbsorption($event, calcPlayerIndex, -1)">- 1</a>
                             <span class="power">{{ calcPlayer.plusXVoidbornSalvoAbsorption }}</span>
@@ -702,7 +702,7 @@
                         </p>
                     </section>
                     <section class="increment" v-if="(!calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)) || ((calcPlayer.isInvader && playerHasBasicDeepSpaceMissiles(calcPlayer.playerid) && calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles) || (calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)))">
-                        <p class="increment-name">Adjacent Sectors w/ Shipyards</p>
+                        <p class="increment-name">{{ langStrs[appLang]["adjacentSectorsWithShipyards"] }}</p>
                         <p class="increment-buttons">
                             <a href="#" v-on:click="updateAdjacentSectorsWithShipyards($event, calcPlayerIndex, -1)">- 1</a>
                             <span class="power">{{ calcPlayer.adjacentSectorsWithShipyards }}</span>
@@ -710,7 +710,7 @@
                         </p>
                     </section>
                     <section class="increment" v-if="(!calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)) || ((calcPlayer.isInvader && playerHasBasicDeepSpaceMissiles(calcPlayer.playerid) && calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles) || (calcPlayer.isInvader && playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)))">
-                        <p class="increment-name">Adjacent Sectors w/ Starbases</p>
+                        <p class="increment-name">{{ langStrs[appLang]["adjacentSectorsWithStarbases"] }}</p>
                         <p class="increment-buttons">
                             <a href="#" v-on:click="updateAdjacentSectorsWithStarbases($event, calcPlayerIndex, -1)">- 1</a>
                             <span class="power">{{ calcPlayer.adjacentSectorsWithStarbases }}</span>
@@ -720,28 +720,28 @@
                 </section>
             </section>
             <p class="calc-buttons">
-                <button v-on:click="calculate" class="calc-button">&nbsp;&nbsp;Calculate Outcomes&nbsp;&nbsp;</button>
-                <button v-on:click="swap" class="calc-button" aria-label="Swap" title="Swap">&rlarr;</button>
+                <button v-on:click="calculate" class="calc-button">&nbsp;&nbsp;{{ langStrs[appLang]["calculateOutcomes"] }}&nbsp;&nbsp;</button>
+                <button v-on:click="swap" class="calc-button" aria-label="Swap" :title="langStrs[appLang]['swap']">&rlarr;</button>
             </p>
             <section v-if="showResults">
-                <p v-if="results.multipleOutcomes" class="multiple-outcomes">NOTE: There are multiple possible outcomes. Check details to determine which will happen in your game.</p>
+                <p v-if="results.multipleOutcomes" class="multiple-outcomes">{{ langStrs[appLang]["multipleOutcomes"] }}</p>
                 <p class="expand">
-                    <a href="#" v-if="!expandAll" v-on:click="updateExpandAll($event, true)">Expand</a><a href="#"  v-if="expandAll" v-on:click="updateExpandAll($event, false)">Collapse</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="shareCalc($event)">Share</a>
+                    <a href="#" v-if="!expandAll" v-on:click="updateExpandAll($event, true)">Expand</a><a href="#"  v-if="expandAll" v-on:click="updateExpandAll($event, false)">{{ langStrs[appLang]["collapse"] }}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="shareCalc($event)">{{ langStrs[appLang]["share"] }}</a>
                 </p>
                 <section v-if="results.invaderWins" class="winner">
-                    <h2>Invader ({{ results.invaderName }}) Wins</h2>
+                    <h2>{{ langStrs[appLang]["invaderWins"].replace('${0}', results.invaderName) }}</h2>
                     <article v-if="expandAll" v-for="(win, index) in results.invaderWins">
-                        <em>Final Fleet (v{{index+1}})</em>
+                        <em>{{ langStrs[appLang]["finalFleet"].replace('${0}', index+1) }}</em>
                         <ul class="winner-final-fleet">
                             <template v-for="fleet in win.winnerFleet">
                                 <li v-if="fleet.power > 0 && fleet.fleetType < 6">{{ getFleetDesc(fleet.fleetType) }}: {{ fleet.power }}</li>
                             </template>
                         </ul>
                         <template v-for="combat in win.combats">
-                            <p class="combat-version" v-on:click="expandCollapseCombat($event, combat)">Combat v{{combat.combatVersion}}<span class="combat-version-arrow"><template v-if="!combat.showCombat">&#9660;</template><template v-if="combat.showCombat">&#9650;</template></span></p>
+                            <p class="combat-version" v-on:click="expandCollapseCombat($event, combat)">{{ langStrs[appLang]["combatVersion"].replace('${0}', combat.combatVersion) }}<span class="combat-version-arrow"><template v-if="!combat.showCombat">&#9660;</template><template v-if="combat.showCombat">&#9650;</template></span></p>
                             <ul class="winner-steps">
                                 <template v-for="step in combat.steps" v-if="combat.showCombat">
-                                    <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
+                                    <li><template v-if="step.stepType === 0">{{ langStrs[appLang]["approach"] }}</template><template v-if="step.stepType === 1">{{ langStrs[appLang]["salvo"] }} {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
                                 </template>
                             </ul>
                         </template>
@@ -750,17 +750,17 @@
                 <section v-if="results.defenderWins" class="winner">
                     <h2>Defender ({{ results.defenderName }}) Wins</h2>
                     <article v-if="expandAll" v-for="(win, index) in results.defenderWins">
-                        <em>Final Fleet (v{{index+1}})</em>
+                        <em>{{ langStrs[appLang]["finalFleet"].replace('${0}', index+1) }}</em>
                         <ul class="winner-final-fleet">
                             <template v-for="fleet in win.winnerFleet">
                                 <li v-if="fleet.power > 0 && fleet.fleetType < 6">{{ getFleetDesc(fleet.fleetType) }}: {{ fleet.power }}</li>
                             </template>
                         </ul>
                         <template v-for="combat in win.combats">
-                            <p class="combat-version" v-on:click="expandCollapseCombat($event, combat)">Combat v{{combat.combatVersion}}<span class="combat-version-arrow"><template v-if="!combat.showCombat">&#9660;</template><template v-if="combat.showCombat">&#9650;</template></span></p>
+                            <p class="combat-version" v-on:click="expandCollapseCombat($event, combat)">{{ langStrs[appLang]["combatVersion"].replace('${0}', combat.combatVersion) }}<span class="combat-version-arrow"><template v-if="!combat.showCombat">&#9660;</template><template v-if="combat.showCombat">&#9650;</template></span></p>
                             <ul class="winner-steps">
                                 <template v-for="step in combat.steps" v-if="combat.showCombat">
-                                    <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
+                                    <li><template v-if="step.stepType === 0">{{ langStrs[appLang]["approach"] }}</template><template v-if="step.stepType === 1">{{ langStrs[appLang]["salvo"] }} {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
                                 </template>
                             </ul>
                         </template>
@@ -770,10 +770,10 @@
                     <h2>Tie</h2>
                     <article v-if="expandAll" v-for="win in results.ties" class="winner">
                         <template v-for="combat in win.combats">
-                            <p class="combat-version" v-on:click="expandCollapseCombat($event, combat)">Combat v{{combat.combatVersion}}<span class="combat-version-arrow"><template v-if="!combat.showCombat">&#9660;</template><template v-if="combat.showCombat">&#9650;</template></span></p>
+                            <p class="combat-version" v-on:click="expandCollapseCombat($event, combat)">{{ langStrs[appLang]["combatVersion"].replace('${0}', combat.combatVersion) }}<span class="combat-version-arrow"><template v-if="!combat.showCombat">&#9660;</template><template v-if="combat.showCombat">&#9650;</template></span></p>
                             <ul class="winner-steps">
                                     <template v-for="step in combat.steps" v-if="combat.showCombat">
-                                        <li><template v-if="step.stepType === 0">Approach</template><template v-if="step.stepType === 1">Salvo {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
+                                        <li><template v-if="step.stepType === 0">{{ langStrs[appLang]["approach"] }}</template><template v-if="step.stepType === 1">{{ langStrs[appLang]["salvo"] }} {{ step.salvoNumber }}</template>: {{ step.desc }}<template v-if="step.stepType === 1"> ({{ step.details.invaderInitiative }}/{{ step.details.defenderInitiative }})</template>: {{ step.details.desc }}</li>
                                     </template>
                             </ul>
                         </template>
