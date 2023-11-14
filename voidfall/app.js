@@ -1172,7 +1172,7 @@ class PlayerState {
             if (!this.isInvader && isApproachStep) {
                 if (this.hasImprovedShields() && this.totalCorvetteFleetPower() > 0) {
                     totalAbsorption = totalAbsorption + 1;
-                    absDescription.push('+1 Defender Abs (Improved Shields)');
+                    absDescription.push(langStrings[lang]['plusDefenderAbsorption'].replace('${0}', '1').replace('${1}', langStrings[lang]['improvedShields']));
                 }
             }
 
@@ -1180,28 +1180,28 @@ class PlayerState {
             if (this.isInvader && isApproachStep) {
                 if (this.hasImprovedShields() && this.totalCorvetteFleetPower() > 0) {
                     totalAbsorption = totalAbsorption + 1;
-                    absDescription.push('+1 Invader Abs (Improved Shields)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', '1').replace('${1}', langStrings[lang]['improvedShields']));
                 }
 
                 totalAbsorption = totalAbsorption + this.totalDreadnoughtFleetPower();
 
                 if (this.totalDreadnoughtFleetPower() > 0) {
-                    absDescription.push('+' + this.totalDreadnoughtFleetPower() + ' Invader Abs (Dreadnoughts)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', this.totalDreadnoughtFleetPower()).replace('${1}', langStrings[lang]['techDreadnoughts']));
                 }
 
                 if (this.hasAutonomousDrones() && this.spendTradeTokenToUseAutonomousDrones) {
                     totalAbsorption = totalAbsorption + 1;
-                    absDescription.push('+1 Invader Abs (Drones)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', '1').replace('${1}', langStrings[lang]['drones']));
                 }
 
                 if (this.useBombard && this.bombardAbsorption > 0) {
                     totalAbsorption = totalAbsorption + this.bombardAbsorption;
-                    absDescription.push('+' + this.bombardAbsorption + ' Invader Abs (Bombard)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', this.bombardAbsorption).replace('${1}', langStrings[lang]['bombard']));
                 }
 
                 if (this.isVoidborn() && this.plusOneVoidbornApproachAbsorption) {
                     totalAbsorption = totalAbsorption + 1;
-                    absDescription.push('+1 Invader Abs (War card)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', '1').replace('${1}', langStrings[lang]['warCard']));
                 }
             }
 
@@ -1210,19 +1210,19 @@ class PlayerState {
             if (!this.isInvader && !isApproachStep) {
                 if (this.hasShields() && this.totalCorvetteFleetPower() > 0) {
                     totalAbsorption = totalAbsorption + 1;
-                    absDescription.push('+1 Defender Abs (Shields)');
+                    absDescription.push(langStrings[lang]['plusDefenderAbsorption'].replace('${0}', '1').replace('${1}', langStrings[lang]['techShields']));
                 }
 
                 totalAbsorption = totalAbsorption + this.totalDreadnoughtFleetPower();
 
                 if (this.totalDreadnoughtFleetPower() > 0) {
-                    absDescription.push('+' + this.totalDreadnoughtFleetPower() + ' Defender Abs (Dreadnought)');
+                    absDescription.push(langStrings[lang]['plusDefenderAbsorption'].replace('${0}', this.totalDreadnoughtFleetPower()).replace('${1}', langStrings[lang]['fleetDreadnought']));
                 }
 
                 totalAbsorption = totalAbsorption + this.totalCarrierFleetPower();
 
                 if (this.totalCarrierFleetPower() > 0) {
-                    absDescription.push('+' + this.totalCarrierFleetPower() + ' Defender Abs (Carrier)');
+                    absDescription.push(langStrings[lang]['plusDefenderAbsorption'].replace('${0}', this.totalCarrierFleetPower()).replace('${1}', langStrings[lang]['fleetCarrier']));
                 }
             }
 
@@ -1231,38 +1231,38 @@ class PlayerState {
             if (this.isInvader && !isApproachStep) {
                 if (this.hasShields() && this.totalCorvetteFleetPower() > 0) {
                     totalAbsorption = totalAbsorption + 1;
-                    absDescription.push('+1 Invader Abs (Shields)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', '1').replace('${1}', langStrings[lang]['techShields']));
                 }
 
                 if (this.hasBasicAutonomousDrones() && this.spendTradeTokenToUseAutonomousDrones) {
                     totalAbsorption = totalAbsorption + 1;
-                    absDescription.push('+1 Invader Abs (Drones)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', '1').replace('${1}', langStrings[lang]['drones']));
                 }
 
                 if (this.hasImprovedAutonomousDrones() && this.spendTradeTokenToUseAutonomousDrones) {
                     totalAbsorption = totalAbsorption + 2;
-                    absDescription.push('+2 Invader Abs (Improved Drones)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', '2').replace('${1}', langStrings[lang]['improvedDrones']));
                 }
 
                 if (this.useBombard && this.bombardSalvoAbsorption > 0) {
                     totalAbsorption = totalAbsorption + this.bombardSalvoAbsorption;
-                    absDescription.push('+' + this.bombardSalvoAbsorption + ' Invader Abs (Bombard)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', this.bombardSalvoAbsorption).replace('${1}', langStrings[lang]['bombard']));
                 }
 
                 if (this.isVoidborn() && this.plusOneVoidbornSalvoAbsorption) {
                     totalAbsorption = totalAbsorption + 1;
-                    absDescription.push('+1 Invader Abs (War card - Easy)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', '1').replace('${1}', langStrings[lang]['warCardEasy']));
                 }
 
                 if (this.isVoidborn() && this.plusTwoVoidbornSalvoAbsorption) {
                     totalAbsorption = totalAbsorption + 2;
-                    absDescription.push('+2 Invader Abs (War card - Normal/Hard)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', '2').replace('${1}', langStrings[lang]['warCardNormalHard']));
                 }
 
                 // Galactic Event H (Cycle 2)
                 if (this.isVoidborn() && this.plusXVoidbornSalvoAbsorption) {
                     totalAbsorption = totalAbsorption + this.plusXVoidbornSalvoAbsorption;
-                    absDescription.push('+' + this.plusXVoidbornSalvoAbsorption +' Invader Abs (Cycle 2 - Event H)');
+                    absDescription.push(langStrings[lang]['plusInvaderAbsorption'].replace('${0}', this.plusXVoidbornSalvoAbsorption).replace('${1}', langStrings[lang]['cycle2EventH']));
                 }
             }
 
@@ -1287,15 +1287,15 @@ class PlayerState {
             totalDamage = totalDamage + this.totalSentryFleetPower();
 
             if (this.totalSectorDefense() > 0) {
-                dmgDescription.push('+' + this.totalSectorDefense() + ' Defender Dmg (Sector Defenses)');
+                dmgDescription.push(langStrings[lang]['plusDefenderDamage'].replace('${0}', this.totalSectorDefense()).replace('${1}', langStrings[lang]['fleetSectorDefensePlural']));
             }
 
             if (this.totalStarbase() > 0) {
-                dmgDescription.push('+' + this.totalStarbase() + ' Defender Dmg (Starbases)');
+                dmgDescription.push(langStrings[lang]['plusDefenderDamage'].replace('${0}', this.totalStarbase()).replace('${1}', langStrings[lang]['techStarbases']));
             }
 
             if (this.totalSentryFleetPower() > 0) {
-                dmgDescription.push('+' + this.totalSentryFleetPower() + ' Defender Dmg (Sentries)');
+                dmgDescription.push(langStrings[lang]['plusDefenderDamage'].replace('${0}', this.totalSentryFleetPower()).replace('${1}', langStrings[lang]['techSentries']));
             }
 
             if (this.hasImprovedDeepSpaceMissiles()) {
@@ -1303,12 +1303,12 @@ class PlayerState {
                 totalDamage = totalDamage + minMissileDamage;
 
                 if (minMissileDamage > 0)
-                dmgDescription.push('+' + minMissileDamage + ' Defender Dmg (Improved Deep Space Missiles)');
+                dmgDescription.push(langStrings[lang]['plusDefenderDamage'].replace('${0}', minMissileDamage).replace('${1}', langStrings[lang]['improvedDSMs']));
             }
 
             if (this.hasEnergyCellTech() && totalDamage > 0) {
                 totalDamage = totalDamage + 1;
-                dmgDescription.push('+1 Defender Dmg (Energy Cells)');
+                dmgDescription.push(langStrings[lang]['plusDefenderDamage'].replace('${0}', '1').replace('${1}', langStrings[lang]['techEnergyCells']));
             }
         }
 
@@ -1316,12 +1316,12 @@ class PlayerState {
         if (this.isInvader && isApproachStep) {
             if (this.hasImprovedDestroyers() && this.totalDestroyerFleetPower() > 0) {
                 totalDamage = totalDamage + 1;
-                dmgDescription.push('+1 Invader Dmg (Improved Destroyers)');
+                dmgDescription.push(langStrings[lang]['plusInvaderDamage'].replace('${0}', '1').replace('${1}', langStrings[lang]['improvedDestroyers']));
             }
 
             if (this.hasBasicDeepSpaceMissiles() && this.spendEnergyToUseBasicDeepSpaceMissiles && (this.adjacentSectorsWithShipyards + this.adjacentSectorsWithStarbases > 0)) {
                 totalDamage = totalDamage + 1;
-                dmgDescription.push('+1 Invader Dmg (Deep Space Missiles)');
+                dmgDescription.push(langStrings[lang]['plusInvaderDamage'].replace('${0}', '1').replace('${1}', langStrings[lang]['techDeepSpaceMissiles']));
             }
 
             if (this.hasImprovedDeepSpaceMissiles()) {
@@ -1329,7 +1329,7 @@ class PlayerState {
                 totalDamage = totalDamage + minMissileDamage;
 
                 if (minMissileDamage > 0)
-                dmgDescription.push('+' + minMissileDamage + ' Invader Dmg (Improved Deep Space Missiles)');
+                dmgDescription.push(langStrings[lang]['plusInvaderDamage'].replace('${0}', minMissileDamage).replace('${1}', langStrings[lang]['improvedDSMs']));
             }
         }
 
@@ -1338,12 +1338,12 @@ class PlayerState {
             totalDamage = 1; // base damage is always 1
             if (this.hasBasicTorpedoes() && this.totalCorvetteFleetPower() > 0 && isFirstSalvoStep) {
                 totalDamage = totalDamage + 1;
-                dmgDescription.push('+1 Defender Dmg (Torpedoes)');
+                dmgDescription.push(langStrings[lang]['plusDefenderDamage'].replace('${0}', '1').replace('${1}', langStrings[lang]['techTorpedoes']));
             }
 
             if (this.hasImprovedTorpedoes() && this.totalCorvetteFleetPower() > 0) {
                 totalDamage = totalDamage + 1;
-                dmgDescription.push('+1 Defender Dmg (Improved Torpedoes)');
+                dmgDescription.push(langStrings[lang]['plusDefenderDamage'].replace('${0}', '1').replace('${1}', langStrings[lang]['improvedTorpedoes']));
             }
         }
 
@@ -1352,19 +1352,19 @@ class PlayerState {
             totalDamage = 1; // base damage is always 1
             if (this.hasBasicTorpedoes() && this.totalCorvetteFleetPower() > 0 && isFirstSalvoStep) {
                 totalDamage = totalDamage + 1;
-                dmgDescription.push('+1 Invader Dmg (Torpedoes)');
+                dmgDescription.push(langStrings[lang]['plusInvaderDamage'].replace('${0}', '1').replace('${1}', langStrings[lang]['techTorpedoes']));
             }
 
             if (this.hasImprovedTorpedoes() && this.totalCorvetteFleetPower() > 0) {
                 totalDamage = totalDamage + 1;
-                dmgDescription.push('+1 Invader Dmg (Improved Torpedoes)');
+                dmgDescription.push(langStrings[lang]['plusInvaderDamage'].replace('${0}', '1').replace('${1}', langStrings[lang]['improvedTorpedoes']));
             }
 
             if (isFirstSalvoStep) {
                 totalDamage = totalDamage + this.totalDestroyerFleetPower();
 
                 if (this.totalDestroyerFleetPower() > 0) {
-                    dmgDescription.push('+' + this.totalDestroyerFleetPower() + ' Invader Dmg (Destroyers)');
+                    dmgDescription.push(langStrings[lang]['plusInvaderDamage'].replace('${0}', this.totalDestroyerFleetPower()).replace('${1}', langStrings[lang]['techDestroyers']));
                 }
             }
         }
@@ -1533,7 +1533,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.73"
+        version: "1.8"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1580,9 +1580,14 @@ createApp({
                 this.players.pop();
             }
 
-            this.invaderState = new PlayerState(gameState.invaderState.id, gameState.invaderState.playerid, gameState.invaderState.name, gameState.invaderState.isInvader, gameState.invaderState.fleets, gameState.invaderState.techs, gameState.invaderState.useBombard, gameState.invaderState.bombardAbsorption, gameState.invaderState.spendTradeTokenToUseAutonomousDrones, gameState.invaderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.invaderState.adjacentSectorsWithShipyards, gameState.invaderState.adjacentSectorsWithStarbases, gameState.invaderState.plusOneVoidbornApproachAbsorption, gameState.invaderState.plusOneVoidbornSalvoAbsorption, gameState.invaderState.plusTwoVoidbornSalvoAbsorption, gameState.invaderState.plusFiveVoidbornInitiative, gameState.invaderState.bombardSalvoAbsorption, gameState.invaderState.plusXVoidbornSalvoAbsorption);
+            if (this.pageState != PAGE_STATE.StartScreen) {
+                this.invaderState = new PlayerState(gameState.invaderState.id, gameState.invaderState.playerid, gameState.invaderState.name, gameState.invaderState.isInvader, gameState.invaderState.fleets, gameState.invaderState.techs, gameState.invaderState.useBombard, gameState.invaderState.bombardAbsorption, gameState.invaderState.spendTradeTokenToUseAutonomousDrones, gameState.invaderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.invaderState.adjacentSectorsWithShipyards, gameState.invaderState.adjacentSectorsWithStarbases, gameState.invaderState.plusOneVoidbornApproachAbsorption, gameState.invaderState.plusOneVoidbornSalvoAbsorption, gameState.invaderState.plusTwoVoidbornSalvoAbsorption, gameState.invaderState.plusFiveVoidbornInitiative, gameState.invaderState.bombardSalvoAbsorption, gameState.invaderState.plusXVoidbornSalvoAbsorption);
 
-            this.defenderState = new PlayerState(gameState.defenderState.id, gameState.defenderState.playerid, gameState.defenderState.name, gameState.defenderState.isInvader, gameState.defenderState.fleets, gameState.defenderState.techs, gameState.defenderState.useBombard, gameState.defenderState.bombardAbsorption, gameState.defenderState.spendTradeTokenToUseAutonomousDrones, gameState.defenderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.defenderState.adjacentSectorsWithShipyards, gameState.defenderState.adjacentSectorsWithStarbases, gameState.defenderState.plusOneVoidbornApproachAbsorption, gameState.defenderState.plusOneVoidbornSalvoAbsorption, gameState.defenderState.plusTwoVoidbornSalvoAbsorption, gameState.defenderState.plusFiveVoidbornInitiative, gameState.defenderState.bombardSalvoAbsorption, gameState.defenderState.plusXVoidbornSalvoAbsorption);
+                this.defenderState = new PlayerState(gameState.defenderState.id, gameState.defenderState.playerid, gameState.defenderState.name, gameState.defenderState.isInvader, gameState.defenderState.fleets, gameState.defenderState.techs, gameState.defenderState.useBombard, gameState.defenderState.bombardAbsorption, gameState.defenderState.spendTradeTokenToUseAutonomousDrones, gameState.defenderState.spendEnergyToUseBasicDeepSpaceMissiles, gameState.defenderState.adjacentSectorsWithShipyards, gameState.defenderState.adjacentSectorsWithStarbases, gameState.defenderState.plusOneVoidbornApproachAbsorption, gameState.defenderState.plusOneVoidbornSalvoAbsorption, gameState.defenderState.plusTwoVoidbornSalvoAbsorption, gameState.defenderState.plusFiveVoidbornInitiative, gameState.defenderState.bombardSalvoAbsorption, gameState.defenderState.plusXVoidbornSalvoAbsorption);
+            } else {
+                this.invaderState = new PlayerState(1, -1, '', true, _.cloneDeep(Fleets), [], false, 0, false, false, 0, 0);
+                this.defenderState = new PlayerState(2, -1, '', false, _.cloneDeep(Fleets), [], false, 0, false, false, 0, 0);
+            }
 
             if (gameState.hasOwnProperty("scenarioType")) {
                 this.scenarioType = gameState.scenarioType;
@@ -1687,13 +1692,13 @@ createApp({
 
             for (let player of this.players) {
                 if (!player.name || player.name.trim() == '') {
-                    alert("Please enter a name for each player.")
+                    alert(langStrings[lang]['enterNameForEachPlayer']);
                     return;
                 }
 
                 if (this.chosenScenario) {
                     if (!player.houseWithOrigin) {
-                        alert("For scenarios, all players must have a chosen house.");
+                        alert(langStrings[lang]['allPlayersChooseHouse']);
                         return;
                     }
                 }
@@ -1929,16 +1934,16 @@ createApp({
 
             // players
             for (let calcPlayer of this.calculationPlayers) {
-                calc += calcPlayer.isInvader ? "INVADER" : "DEFENDER";
+                calc += calcPlayer.isInvader ? langStrings[lang]['invader'].toUpperCase() : langStrings[lang]['defender'].toUpperCase();
                 calc += "\n";
 
                 if (calcPlayer.playerid != 1000) {
                     const player = this.getPlayerById(calcPlayer.playerid);
 
                     if (player.techs && player.techs.length > 0) {
-                        calc += 'Tech: ';
+                        calc += langStrings[lang]['techLink'] + ': ';
                         let technames = _.map(player.techs, function (t) { 
-                            return t.name + (t.isImproved ? ' (Improved)' : '');
+                            return t.name + (t.isImproved ? ' (' + langStrings[lang]['techImproved'] + ')' : '');
                         });
 
                         calc += _.join(technames, ', ') + '\n';
@@ -1953,55 +1958,55 @@ createApp({
                 }
 
                 if (calcPlayer.isInvader && this.playerHasAutonomousDrones(calcPlayer.playerid)) {
-                    calc += 'Returned Trade Token (Drones)?: ' + (calcPlayer.spendTradeTokenToUseAutonomousDrones ? 'Yes' : 'No') + '\n';
+                    calc += langStrings[lang]['returnTradeTokenDrones'] + ': ' + (calcPlayer.spendTradeTokenToUseAutonomousDrones ? langStrings[lang]['yes'] : langStrings[lang]['no']) + '\n';
                 }
 
                 if (calcPlayer.useBombard && calcPlayer.isInvader) {
-                    calc += 'Bombard Approach Abs (Nervo): ' + calcPlayer.bombardAbsorption + '\n';
-                    calc += 'Bombard Salvo Abs (Nervo): ' + calcPlayer.bombardSalvoAbsorption + '\n';
+                    calc += langStrings[lang]['bombardApproachAbs'] + ': ' + calcPlayer.bombardAbsorption + '\n';
+                    calc += langStrings[lang]['bombardSalvoAbs'] + ': ' + calcPlayer.bombardSalvoAbsorption + '\n';
                 }
 
                 if (calcPlayer.isInvader && this.playerHasBasicDeepSpaceMissiles(calcPlayer.playerid)) {
-                    calc += 'Spent 1 Energy (Deep Space Missiles)?: ' + (calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles ? 'Yes' : 'No') + '\n';
+                    calc += langStrings[lang]['spendEnergyDSM'] + ': ' + (calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles ? langStrings[lang]['yes'] : langStrings[lang]['no']) + '\n';
                 }
 
                 if ((!calcPlayer.isInvader && this.playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)) || ((calcPlayer.isInvader && this.playerHasBasicDeepSpaceMissiles(calcPlayer.playerid) && calcPlayer.spendEnergyToUseBasicDeepSpaceMissiles) || (calcPlayer.isInvader && this.playerHasImprovedDeepSpaceMissiles(calcPlayer.playerid)))) {
-                    calc += 'Adjacent Sectors w/ Shipyards: ' + calcPlayer.adjacentSectorsWithShipyards + '\n';
-                    calc += 'Adjacent Sectors w/ Starbases: ' + calcPlayer.adjacentSectorsWithStarbases + '\n';
+                    calc += langStrings[lang]['adjacentSectorsWithShipyards'] + ': ' + calcPlayer.adjacentSectorsWithShipyards + '\n';
+                    calc += langStrings[lang]['adjacentSectorsWithStarbases'] + ': ' + calcPlayer.adjacentSectorsWithStarbases + '\n';
                 }
 
                 if (calcPlayer.isVoidborn() && calcPlayer.plusFiveVoidbornInitiative) {
-                    calc += '+5 Initiative (War card): Yes\n';
+                    calc += langStrings[lang]['initiativeWarCard'] + ': ' + langStrings[lang]['yes'] + '\n';
                 }
 
                 if (calcPlayer.isVoidborn() && calcPlayer.plusOneVoidbornApproachAbsorption) {
-                    calc += '+1 Approach Absorption (War card): Yes\n';
+                    calc += langStrings[lang]['approachAbsWarCard'] + ': ' + langStrings[lang]['yes'] + '\n';
                 }
 
                 if (calcPlayer.isVoidborn() && calcPlayer.plusOneVoidbornSalvoAbsorption) {
-                    calc += '+1 Salvo Absorption (War card - Easy): Yes\n';
+                    calc += langStrings[lang]['salvoAbsWarCardEasy'] + ': ' + langStrings[lang]['yes'] + '\n';
                 }
 
                 if (calcPlayer.isVoidborn() && calcPlayer.plusTwoVoidbornSalvoAbsorption) {
-                    calc += '+2 Salvo Absorption (War card - Normal/Hard): Yes\n';
+                    calc += langStrings[lang]['salvoAbsWarCardHard'] + ': ' + langStrings[lang]['yes'] + '\n';
                 }
 
                 if (calcPlayer.isVoidborn() && calcPlayer.plusXVoidbornSalvoAbsorption) {
-                    calc += '+' + calcPlayer.plusXVoidbornSalvoAbsorption + ' Salvo Absorption (Cycle 2 - Event H): Yes\n';
+                    calc += langStrings[lang]['salvoAbsCycle2EventHWithDetail'].replace('${0}', calcPlayer.plusXVoidbornSalvoAbsorption) + ': ' + langStrings[lang]['yes'] + '\n';
                 }
 
                 calc += '\n'
             }
 
             // outcome
-            calc += 'OUTCOMES' + '\n';
+            calc += langStrings[lang]['outcomes'].toUpperCase() + '\n';
             if (this.results.invaderWins) {
                 calc += '---\n';
-                calc += 'Invader Wins' + '\n';
+                calc += langStrings[lang]['invaderWinsNoDetail'] + '\n';
 
                 let winIndex = 1;
                 for (let win of this.results.invaderWins) {
-                    calc += 'Final Fleet (v' + winIndex + ') [';
+                    calc += langStrings[lang]['finalFleet'].replace('${0}', winIndex) + ' [';
                     calc += _.join(_.map(_.filter(win.winnerFleet, function(f) {
                         return (f.power > 0 && f.fleetType < 6);
                     }), function(fleet) { 
@@ -2011,9 +2016,9 @@ createApp({
                     calc += ']\n';
                     for (let combat of win.combats) {
                         if (combat.showCombat) {
-                            calc += "\nCombat v" + combat.combatVersion + "\n";
+                            calc += "\n" + langStrings[lang]['combatVersion'].replace('${0}', combat.combatVersion) + "\n";
                             for (let step of combat.steps) {
-                                calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                                calc += (step.stepType === 0 ? langStrings[lang]['approach'] : langStrings[lang]['salvo'] + ' ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
                             }
                         }
                     }
@@ -2025,11 +2030,11 @@ createApp({
 
             if (this.results.defenderWins) {
                 calc += '---\n';
-                calc += 'Defender Wins' + '\n';
+                calc += langStrings[lang]['defenderWinsNoDetail'] + '\n';
 
                 let winIndex = 1;
                 for (let win of this.results.defenderWins) {
-                    calc += 'Final Fleet (v' + winIndex + ') [';
+                    calc += langStrings[lang]['finalFleet'].replace('${0}', winIndex) + ' [';
                     calc += _.join(_.map(_.filter(win.winnerFleet, function(f) {
                         return (f.power > 0 && f.fleetType < 6);
                     }), function(fleet) { 
@@ -2039,9 +2044,9 @@ createApp({
                     calc += ']\n';
                     for (let combat of win.combats) {
                         if (combat.showCombat) {
-                            calc += "\nCombat v" + combat.combatVersion + "\n";
+                            calc += "\n" + langStrings[lang]['combatVersion'].replace('${0}', combat.combatVersion) + "\n";
                             for (let step of combat.steps) {
-                                calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                                calc += (step.stepType === 0 ? langStrings[lang]['approach'] : langStrings[lang]['salvo'] + ' ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
                             }
                         }
                     }
@@ -2053,15 +2058,15 @@ createApp({
 
             if (this.results.ties) {
                 calc += '---\n';
-                calc += 'Ties' + '\n';
+                calc += langStrings[lang]['ties'] + '\n';
 
                 let winIndex = 1;
                 for (let win of this.results.ties) {
                     for (let combat of win.combats) {
                         if (combat.showCombat) {
-                            calc += "\nCombat v" + combat.combatVersion + "\n";
+                            calc += "\n" + langStrings[lang]['combatVersion'].replace('${0}', combat.combatVersion) + "\n";
                             for (let step of combat.steps) {
-                                calc += (step.stepType === 0 ? 'Approach' : 'Salvo ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
+                                calc += (step.stepType === 0 ? langStrings[lang]['approach'] : langStrings[lang]['salvo'] + ' ' + step.salvoNumber) + ': ' + step.desc + (step.stepType === 1 ? ' (' + step.details.invaderInitiative + '/' + step.details.defenderInitiative + ')' : '') + ': ' + step.details.desc + '\n';
                             }
                         }
                     }
@@ -2271,7 +2276,7 @@ createApp({
                 invader.techs = _.cloneDeep(player.techs);
                 invader.name = player.name;
             } else {
-                invader.name = 'Voidborn';
+                invader.name = langStrings[lang]['fleetVoidbornPlural'];
             }
 
             if (defender.isHumanPlayer()) {
@@ -2279,7 +2284,7 @@ createApp({
                 defender.techs = _.cloneDeep(player.techs);
                 defender.name = player.name;
             } else {
-                defender.name = 'Voidborn';
+                defender.name = langStrings[lang]['fleetVoidbornPlural'];
             }
 
             let results = [];
@@ -2392,7 +2397,7 @@ createApp({
                     resultDesc = resultDesc + _.join(absDmgDetails, ", ");
                     resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                     for (let dc of damageCombination) {
-                        if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} defender ${getFleetDesc(dc.fleetType)} lost. `;
+                        if (dc.damage > 0) resultDesc = resultDesc + langStrings[lang]['defenderFleetLost'].replace('${0}', dc.damage).replace('${1}', getFleetDesc(dc.fleetType)) + ' ';
                     }
                     let newSteps = [...steps];
                     if (!wasDamageFullyAbsorbed) {
@@ -2406,7 +2411,7 @@ createApp({
                     for (let damageCombination2 of damageCombinations2) {
                         resultDesc = tempResultDesc;
                         for (let dc of damageCombination2) {
-                            if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} invader ${getFleetDesc(dc.fleetType)} lost. `;
+                            if (dc.damage > 0) resultDesc = resultDesc + langStrings[lang]['invaderFleetLost'].replace('${0}', dc.damage).replace('${1}', getFleetDesc(dc.fleetType)) + ' ';
                         }
                         let newSteps2 = [...newSteps];
                         if (!wasDamageFullyAbsorbed2) {
@@ -2422,16 +2427,16 @@ createApp({
                             let zeroDamageDesc = '';
 
                             if (wasDamageFullyAbsorbed && invaderDamage > 0) {
-                                zeroDamageDesc += `${invaderDamage} Invader dmg fully absorbed by Defender. `
+                                zeroDamageDesc += langStrings[lang]['invaderDmgFullyAbsorbed'].replace('${0}', invaderDamage) + ' ';
                             }
                             if (wasDamageFullyAbsorbed2 && defenderDamage > 0) {
-                                zeroDamageDesc += `${defenderDamage} Defender dmg fully absorbed by Invader. `
+                                zeroDamageDesc += langStrings[lang]['defenderDmgFullyAbsorbed'].replace('${0}', defenderDamage) + ' ';
                             }
                             if (invaderDamage == 0) {
-                                zeroDamageDesc += `Invader has no approach dmg capability. `;
+                                zeroDamageDesc += langStrings[lang]['invaderNoApproachDmg'] + ' ';
                             }
                             if (defenderDamage == 0) {
-                                zeroDamageDesc += `Defender has no approach dmg capability. `;
+                                zeroDamageDesc += langStrings[lang]['defenderNoApproachDmg'] + ' ';
                             }
                             resultDetail = new ResultDetail(-1, -1, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `${resultDesc}${zeroDamageDesc} `);
                         }
@@ -2441,7 +2446,7 @@ createApp({
 
                         }
 
-                        newSteps2.push(new ResultStep(STEP_TYPE.Approach, salvoNumber, resultDetail, "Invader and Defender hit simultaneously", _.cloneDeep(invader), _.cloneDeep(defender)));
+                        newSteps2.push(new ResultStep(STEP_TYPE.Approach, salvoNumber, resultDetail, langStrings[lang]['invaderDefenderSimul'], _.cloneDeep(invader), _.cloneDeep(defender)));
 
                         if (invader.totalFleetPower() === 0 && defender.totalFleetPower() === 0) {
                             let result = new Result(RESULT_TYPE.Tie, newSteps2, _.cloneDeep(invader), _.cloneDeep(defender), _.cloneDeep(invader.fleets), _.cloneDeep(defender.fleets));
@@ -2508,7 +2513,7 @@ createApp({
                         resultDesc = resultDesc + _.join(absDmgDetails, ", ");
                         resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                         for (let dc of damageCombination) {
-                            if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} defender ${getFleetDesc(dc.fleetType)} lost. `;
+                            if (dc.damage > 0) resultDesc = resultDesc + langStrings[lang]['defenderFleetLost'].replace('${0}', dc.damage).replace('${1}', getFleetDesc(dc.fleetType)) + ' ';
                         }
                         if (!wasDamageFullyAbsorbed) {
                             for (let dc of damageCombination) {
@@ -2518,7 +2523,7 @@ createApp({
 
                             let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, resultDesc);
 
-                            newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Invader hits first", _.cloneDeep(invader), _.cloneDeep(defender)));
+                            newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, langStrings[lang]['invaderHitsFirst'], _.cloneDeep(invader), _.cloneDeep(defender)));
 
                             // when one goes first, check after each half of the salvo
                             if (invader.totalFleetPower() === 0 && defender.totalFleetPower() === 0) {
@@ -2531,9 +2536,9 @@ createApp({
                                 results.push(result);
                             }
                         } else {
-                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `${resultDesc}Defender absorbed all damage. `);
+                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `${resultDesc}${langStrings[lang]['defenderAbsorbedAllDmg']} `);
 
-                            newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Invader hits first", _.cloneDeep(invader), _.cloneDeep(defender)));
+                            newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, langStrings[lang]['invaderHitsFirst'], _.cloneDeep(invader), _.cloneDeep(defender)));
                         }
 
                         let invaderAbsorption, absInvDescription;
@@ -2557,7 +2562,7 @@ createApp({
                                 resultDesc = resultDesc + _.join(absDmgDetails, ", ");
                                 resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                                 for (let dc of damageCombination) {
-                                    if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} invader ${getFleetDesc(dc.fleetType)} lost. `;
+                                    if (dc.damage > 0) resultDesc = resultDesc + langStrings[lang]['invaderFleetLost'].replace('${0}', dc.damage).replace('${1}', getFleetDesc(dc.fleetType)) + ' ';
                                 }
                                 let newSteps2 = [...newSteps];
                                 if (!wasDamageFullyAbsorbed2) {
@@ -2568,7 +2573,7 @@ createApp({
 
                                     let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, resultDesc);
 
-                                    newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Defender hits second", _.cloneDeep(invader), _.cloneDeep(defender)));
+                                    newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, langStrings[lang]['defenderHitsSecond'], _.cloneDeep(invader), _.cloneDeep(defender)));
 
                                     // when one goes first, check after each half of the salvo
                                     if (invader.totalFleetPower() === 0 && defenderFleetPower === 0) {
@@ -2581,9 +2586,9 @@ createApp({
                                         results.push(result);
                                     }
                                 } else {
-                                    let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0,  initiative.defenderInitiative == 0 ? `Defender has no salvo dmg capability. ` : `${resultDesc}Invader absorbed all damage. `);
+                                    let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0,  initiative.defenderInitiative == 0 ? langStrings[lang]['defenderNoSalvoDmg'] + ' ' : `${resultDesc}${langStrings[lang]['invaderAbsorbedAllDmg']} `);
 
-                                    newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Defender hits second", _.cloneDeep(invader), _.cloneDeep(defender)));
+                                    newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, langStrings[lang]['defenderHitsSecond'], _.cloneDeep(invader), _.cloneDeep(defender)));
                                 }
 
                                 if (invader.totalFleetPower() > 0 && defender.totalFleetPower() > 0) {
@@ -2633,7 +2638,7 @@ createApp({
                         resultDesc = resultDesc + _.join(absDmgDetails, ", ");
                         resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                         for (let dc of damageCombination) {
-                            if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} invader ${getFleetDesc(dc.fleetType)} lost. `;
+                            if (dc.damage > 0) resultDesc = resultDesc + langStrings[lang]['invaderFleetLost'].replace('${0}', dc.damage).replace('${1}', getFleetDesc(dc.fleetType)) + ' ';
                         }
                         let newSteps = [...steps];
 
@@ -2645,7 +2650,7 @@ createApp({
 
                             let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, resultDesc);
 
-                            newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Defender hits first", _.cloneDeep(invader), _.cloneDeep(defender)));
+                            newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, langStrings[lang]['defenderHitsFirst'], _.cloneDeep(invader), _.cloneDeep(defender)));
 
                             if (invader.totalFleetPower() === 0 && defender.totalFleetPower() === 0) {
                                 let result = new Result(RESULT_TYPE.Tie, newSteps, _.cloneDeep(invader), _.cloneDeep(defender), _.cloneDeep(invader.fleets), _.cloneDeep(defender.fleets));
@@ -2657,9 +2662,10 @@ createApp({
                                 results.push(result);
                             }
                         } else {
-                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, initiative.defenderInitiative == 0 ? `Defender has no salvo dmg capability. ` : `${resultDesc}Invader absorbed all damage. `);
+                            let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, 0, defenderDamage, invaderAbsorption, 0, initiative.defenderInitiative == 0 ? langStrings[lang]['defenderNoSalvoDmg'] 
+                              : `${resultDesc}${langStrings[lang]['invaderAbsorbedAllDmg']} `);
 
-                            newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Defender hits first", _.cloneDeep(invader), _.cloneDeep(defender)));
+                            newSteps.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, langStrings[lang]['defenderHitsFirst'], _.cloneDeep(invader), _.cloneDeep(defender)));
                         }
 
                         let defenderAbsorption, absDefDescription;
@@ -2682,7 +2688,7 @@ createApp({
                                 resultDesc = resultDesc + _.join(absDmgDetails, ", ");
                                 resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                                 for (let dc of damageCombination) {
-                                    if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} defender ${getFleetDesc(dc.fleetType)} lost. `;
+                                    if (dc.damage > 0) resultDesc = resultDesc + langStrings[lang]['defenderFleetLost'].replace('${0}', dc.damage).replace('${1}', getFleetDesc(dc.fleetType)) + ' ';
                                 }
                                 let newSteps2 = [...newSteps];
                                 if (!wasDamageFullyAbsorbed2) {
@@ -2693,7 +2699,7 @@ createApp({
 
                                     let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, resultDesc);
 
-                                    newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Invader hits second", _.cloneDeep(invader), _.cloneDeep(defender)));
+                                    newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, langStrings[lang]['invaderHitsSecond'], _.cloneDeep(invader), _.cloneDeep(defender)));
 
                                     // when one goes first, check after each half of the salvo
                                     if (invader.totalFleetPower() === 0 && defender.totalFleetPower() === 0) {
@@ -2706,9 +2712,9 @@ createApp({
                                         results.push(result);
                                     }
                                 } else {
-                                    let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `${resultDesc}Defender absorbed all damage. `);
+                                    let resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, 0, 0, defenderAbsorption, `${resultDesc}${langStrings[lang]['defenderAbsorbedAllDmg']} `);
 
-                                    newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Invader hits second", _.cloneDeep(invader), _.cloneDeep(defender)));
+                                    newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, langStrings[lang]['invaderHitsSecond'], _.cloneDeep(invader), _.cloneDeep(defender)));
                                 }
 
                                 if (invader.totalFleetPower() > 0 && defender.totalFleetPower() > 0) {
@@ -2771,7 +2777,7 @@ createApp({
                         resultDesc = resultDesc + _.join(absDmgDetails, ", ");
                         resultDesc += absDmgDetails.length > 0 ?  '] --- ' : '';
                         for (let dc of damageCombination) {
-                            if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} defender ${getFleetDesc(dc.fleetType)} lost. `;
+                            if (dc.damage > 0) resultDesc = resultDesc + langStrings[lang]['defenderFleetLost'].replace('${0}', dc.damage).replace('${1}', getFleetDesc(dc.fleetType)) + ' ';
                         }
                         let newSteps = [...steps];
                         if (!wasDamageFullyAbsorbed) {
@@ -2785,7 +2791,7 @@ createApp({
                         for (let damageCombination2 of damageCombinations2) {
                             resultDesc = tempResultDesc;
                             for (let dc of damageCombination2) {
-                                if (dc.damage > 0) resultDesc = resultDesc + `${dc.damage} invader ${getFleetDesc(dc.fleetType)} lost. `;
+                                if (dc.damage > 0) resultDesc = resultDesc + langStrings[lang]['invaderFleetLost'].replace('${0}', dc.damage).replace('${1}', getFleetDesc(dc.fleetType)) + ' ';
                             }
                             let newSteps2 = [...newSteps];
                             if (!wasDamageFullyAbsorbed2) {
@@ -2801,13 +2807,13 @@ createApp({
                                 let zeroDamageDesc = '';
 
                                 if (wasDamageFullyAbsorbed && invaderDamage > 0) {
-                                    zeroDamageDesc += `${invaderDamage} Invader dmg fully absorbed by Defender. `
+                                    zeroDamageDesc += langStrings[lang]['invaderDmgFullyAbsorbed'].replace('${0}', invaderDamage) + ' ';
                                 }
                                 if (wasDamageFullyAbsorbed2 && defenderDamage > 0) {
-                                    zeroDamageDesc += `${defenderDamage} Defender dmg fully absorbed by Invader. `
+                                    zeroDamageDesc += langStrings[lang]['defenderDmgFullyAbsorbed'].replace('${0}', defenderDamage) + ' ';
                                 }
                                 if (wasDamageFullyAbsorbed2 && defenderDamage == 0) {
-                                    zeroDamageDesc += `Defender has no salvo dmg capability. `
+                                    zeroDamageDesc += langStrings[lang]['defenderNoSalvoDmg'] + ' ';
                                 }
                                 resultDetail = new ResultDetail(initiative.invaderInitiative, initiative.defenderInitiative, invaderDamage, defenderDamage, invaderAbsorption, defenderAbsorption, `${resultDesc}${zeroDamageDesc}`);
                             }
@@ -2817,7 +2823,7 @@ createApp({
 
                             }
 
-                            newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, "Invader and Defender hit simultaneously", _.cloneDeep(invader), _.cloneDeep(defender)));
+                            newSteps2.push(new ResultStep(STEP_TYPE.Salvo, salvoNumber, resultDetail, langStrings[lang]['invaderDefenderSimul'], _.cloneDeep(invader), _.cloneDeep(defender)));
 
                             if (invader.totalFleetPower() === 0 && defender.totalFleetPower() === 0) {
                                 let result = new Result(RESULT_TYPE.Tie, newSteps2, _.cloneDeep(invader), _.cloneDeep(defender), _.cloneDeep(invader.fleets), _.cloneDeep(defender.fleets));
@@ -2871,7 +2877,7 @@ createApp({
             return getFleetDesc(fleetType);
         },
         newgame: function (event) {
-            if (confirm('Are you sure you want to clear the app and start a new game?')) {
+            if (confirm(langStrings[lang]['confirmNewGame'])) {
                 this.numberOfPlayers = 1;
                 this.players = [
                     new Player(1, langStrings[lang]["player"] + ' 1', [], _.clone(Technologies)),
@@ -2879,6 +2885,8 @@ createApp({
                     new Player(3, langStrings[lang]["player"] + ' 3', [], _.clone(Technologies)),
                     new Player(4, langStrings[lang]["player"] + ' 4', [], _.clone(Technologies))
                 ];
+                this.invaderState = new PlayerState(1, -1, '', true, _.cloneDeep(Fleets), [], false, 0, false, false, 0, 0);
+                this.defenderState = new PlayerState(2, -1, '', false, _.cloneDeep(Fleets), [], false, 0, false, false, 0, 0);
                 this.resetPlayerStates();
                 this.results = [];
                 this.techTableau = [];

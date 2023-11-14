@@ -444,6 +444,7 @@
             <small class="app-explanation">{{ langStrs[appLang]["appSubtitle"] }}</small>
             <select id="lang" class="lang" v-model="appLang" @change="appLangChanged()">
                 <option value="en">English</option>
+                <option value="de">Deutsch</option>
                 <option value="fr">français</option>
             </select>
             <p>
@@ -748,7 +749,7 @@
                     </article>
                 </section>
                 <section v-if="results.defenderWins" class="winner">
-                    <h2>Defender ({{ results.defenderName }}) Wins</h2>
+                    <h2>{{ langStrs[appLang]["defenderWins"].replace('${0}', results.defenderName) }}</h2>
                     <article v-if="expandAll" v-for="(win, index) in results.defenderWins">
                         <em>{{ langStrs[appLang]["finalFleet"].replace('${0}', index+1) }}</em>
                         <ul class="winner-final-fleet">
@@ -767,7 +768,7 @@
                     </article>
                 </section>
                 <section v-if="results.ties">
-                    <h2>Tie</h2>
+                    <h2>{{ langStrs[appLang]["ties"] }}</h2>
                     <article v-if="expandAll" v-for="win in results.ties" class="winner">
                         <template v-for="combat in win.combats">
                             <p class="combat-version" v-on:click="expandCollapseCombat($event, combat)">{{ langStrs[appLang]["combatVersion"].replace('${0}', combat.combatVersion) }}<span class="combat-version-arrow"><template v-if="!combat.showCombat">&#9660;</template><template v-if="combat.showCombat">&#9650;</template></span></p>
