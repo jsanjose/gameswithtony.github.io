@@ -130,6 +130,7 @@ const langStrings = {
         combatVersion: 'Combat v${0}',
         approach: 'Approche',
         salvo: 'Salve',
+        improvedAdjective: 'Improved ${0}',
         plusAbsorption: '+${0} ${1} Abs (${2}${3})'
     },
     "fr": {
