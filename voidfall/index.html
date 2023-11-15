@@ -727,7 +727,7 @@
             <section v-if="showResults">
                 <p v-if="results.multipleOutcomes" class="multiple-outcomes">{{ langStrs[appLang]["multipleOutcomes"] }}</p>
                 <p class="expand">
-                    <a href="#" v-if="!expandAll" v-on:click="updateExpandAll($event, true)">Expand</a><a href="#"  v-if="expandAll" v-on:click="updateExpandAll($event, false)">{{ langStrs[appLang]["collapse"] }}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="shareCalc($event)">{{ langStrs[appLang]["share"] }}</a>
+                    <a href="#" v-if="!expandAll" v-on:click="updateExpandAll($event, true)">{{ langStrs[appLang]["expand"] }}</a><a href="#"  v-if="expandAll" v-on:click="updateExpandAll($event, false)">{{ langStrs[appLang]["collapse"] }}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" v-on:click="shareCalc($event)">{{ langStrs[appLang]["share"] }}</a>
                 </p>
                 <section v-if="results.invaderWins" class="winner">
                     <h2>{{ langStrs[appLang]["invaderWins"].replace('${0}', results.invaderName) }}</h2>
