@@ -620,7 +620,7 @@
                     <template v-if="calcPlayer.isInvader">{{ langStrs[appLang]["invader"] }}: </template><template v-if="!calcPlayer.isInvader">{{ langStrs[appLang]["defender"] }}: </template>
                     <select v-model="calcPlayer.playerid" @change="calcPlayerChanged(calcPlayerIndex)">
                         <option v-for="(player, index) in players" :value="player.id">{{ player.name }}</option>
-                        <option value="1000">{{ langStrs[appLang]["fleetVoidborn"] }}</option>
+                        <option value="1000">{{ langStrs[appLang]["selectVoidborn"] }}</option>
                     </select>
                 </label>
                 <section v-if="calcPlayer.playerid > 0">
