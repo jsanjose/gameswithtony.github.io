@@ -425,6 +425,7 @@ const langStrings = {
         fleetVoidbornPlural: 'Leere',
         fleetSectorDefensePlural: 'Sektor Verteidigungen',
         fleetStarbasesPlural: 'Sternenbasen',
+        selectVoidborn: 'Leere',
         newGame: 'Neues Spiel',
         confirmNewGame: 'Sind Sie sicher, dass Sie die App löschen und ein neues Spiel starten möchten?',
         techLink: 'Technik',
