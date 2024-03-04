@@ -970,6 +970,10 @@ class PlayerState {
         return _.find(this.fleets, function(f) { return f.fleetType === fleetType });
     }
 
+    hasTargeting() {
+        return _.find(this.techs, function(t) { return t.id === TECHS.Targeting });
+    }
+
     hasBasicTargetingTech() {
         const tech = _.find(this.techs, function(t) { return t.id === TECHS.Targeting });
 
@@ -1099,7 +1103,7 @@ class PlayerState {
     }
 
     hasCorvetteRelatedTech() {
-        return this.hasShields() || this.hasTorpedoes();
+        return this.hasShields() || this.hasTorpedoes() || this.hasTargeting();
     }
 
     initiative() {
@@ -1533,7 +1537,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.86"
+        version: "1.87"
     } },
     watch: {
         numberOfPlayers(val) {
