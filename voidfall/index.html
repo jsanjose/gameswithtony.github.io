@@ -279,6 +279,13 @@
             margin-block-end: 1rem;
         }
 
+        img.shipicon {
+            max-width: 70px;
+            vertical-align: middle;
+            margin-right: 10px;
+            margin-left: -5px;
+        }
+
         .increment {
             display: flex;
             flex-shrink: 0;
@@ -626,7 +633,7 @@
                 <section v-if="calcPlayer.playerid > 0">
                     <template v-for="(playerFleet, playerFleetIndex) in calcPlayer.fleets">
                         <section class="increment" v-if="showFleet(calcPlayerIndex, playerFleetIndex)">
-                            <p class="increment-name">{{ playerFleet.name }}<template v-if="calcPlayer.isInvader && playerFleet.fleetType == 3"><small>{{ langStrs[appLang]["carrierMessage"] }}</small></template></p>
+                            <p class="increment-name"><img src="images/corvette.png" class="shipicon" v-if="playerFleet.fleetType == 0" /><img src="images/destroyer.png" class="shipicon" v-if="playerFleet.fleetType == 1" /><img src="images/dreadnought.png" class="shipicon" v-if="playerFleet.fleetType == 2" /><img src="images/carrier.png" class="shipicon" v-if="playerFleet.fleetType == 3" /><img src="images/sentry.png" class="shipicon" v-if="playerFleet.fleetType == 4" />{{ playerFleet.name }}<template v-if="calcPlayer.isInvader && playerFleet.fleetType == 3"><small>{{ langStrs[appLang]["carrierMessage"] }}</small></template></p>
                             <p class="increment-buttons">
                                 <a href="#" v-on:click="updatePlayerFleet($event, calcPlayerIndex, playerFleetIndex, -1)">- 1</a>
                                 <span class="power">{{ playerFleet.power }}</span>
