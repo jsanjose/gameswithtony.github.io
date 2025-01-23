@@ -243,6 +243,12 @@ let heroes = [
         "useCounter": true,
         "counter": 0
     },
+    {
+        "name": "Wolverine",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
+    }
 ];
 
 let villains = [
@@ -2756,6 +2762,16 @@ let side_schemes = [
         "belongsto": ["MTS Campaign"]
     },
     {
+        "name": "Seeking Vengeance",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Deathstrike"]
+    },
+    {
         "name": "Seized!",
         "isSelected": false,
         "type": "side_scheme",
@@ -2892,6 +2908,16 @@ let side_schemes = [
         "basethreatfixed": true,
         "belongstotype": "module",
         "belongsto": ["Brotherhood"]
+    },
+    {
+        "name": "The Carbonadium Synthesizer",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Omega Red"]
     },
     {
         "name": "The Doomsday Chair",
@@ -3950,6 +3976,14 @@ let minions = [
         "belongsto": ["Kree Militants"]
     },
     {
+        "name": "Lady Deathstrike",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Deathstrike"]
+    },
+    {
         "name": "Laufey",
         "isSelected": false,
         "type": "minion",
@@ -4141,6 +4175,14 @@ let minions = [
         "hitpoints": 9,
         "belongstotype": "module",
         "belongsto": ["Future Past"]
+    },
+    {
+        "name": "Omega Red",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 8,
+        "belongstotype": "villain",
+        "belongsto": ["Wolverine"]
     },
     {
         "name": "Outrider",
@@ -5134,6 +5176,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Jubilee (Wolverine)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Kaluu",
         "isSelected": false,
         "type": "ally",
@@ -5168,6 +5216,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Longshot",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Luke Cage",
@@ -5354,6 +5408,14 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Psylocke",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3,
+        "useCounter": true,
+        "counter": 2
     },
     {
         "name": "Quake",
@@ -5552,6 +5614,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Sunfire",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Thor",
@@ -6015,6 +6083,14 @@ let countercards = [
         "belongsto": ["Justice"]
     },
     {
+        "name": "Warrior Skill",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Aggression"]
+    },
+    {
         "name": "Web Shooter",
         "isSelected": false,
         "type": "counter",
@@ -6072,6 +6148,9 @@ let modules = [
     },
     {
         "name": "Crossfire's Crew"
+    },
+    {
+        "name": "Deathstrike"
     },
     {
         "name": "Down To Earth"
