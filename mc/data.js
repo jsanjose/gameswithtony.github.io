@@ -62,6 +62,14 @@ let heroes = [
         "counter": 0
     },
     {
+        "name": "Gambit",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 9,
+        "useCounter": true,    // Note: uses charge counters
+        "counter": 0
+    },
+    {
         "name": "Gamora",
         "isSelected": false,
         "type": "hero",
@@ -1998,6 +2006,16 @@ let side_schemes = [
         "belongsto": ["SM Campaign"]
     },
     {
+        "name": "Herald of Avalon",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Exodus"]
+    },
+    {
         "name": "Hidden In Shadow",
         "isSelected": false,
         "type": "side_scheme",
@@ -2925,6 +2943,16 @@ let side_schemes = [
         "belongsto": ["Anachronauts"]
     },
     {
+        "name": "The Assassins Guild",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": ["Belladonna"]
+    },
+    {
         "name": "The Brotherhood",
         "isSelected": false,
         "type": "side_scheme",
@@ -3431,6 +3459,14 @@ let minions = [
         "belongsto": ["Sinister Syndicate"]
     },
     {
+        "name": "Belladonna",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "villain",
+        "belongsto": ["Gambit"]
+    },
+    {
         "name": "Berserk Mutate",
         "isSelected": false,
         "type": "minion",
@@ -3736,6 +3772,14 @@ let minions = [
         "belongsto": ["Personal Nightmare"]
     },
     {
+        "name": "Exodus",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Exodus"]
+    },
+    {
         "name": "Fabion Cortez",
         "isSelected": false,
         "type": "minion",
@@ -3823,6 +3867,14 @@ let minions = [
         "hitpoints": 7,
         "belongstotype": "module",
         "belongsto": ["Beasty Boys"]
+    },
+    {
+        "name": "Guild Assassin",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Belladonna"]
     },
     {
         "name": "Headhunter's Henchman",
@@ -4899,6 +4951,14 @@ let allies = [
         "hitpoints": 4
     },
     {
+        "name": "Bishop",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3,
+        "useCounter": true,    // Note: uses energy counters
+        "counter": 0
+    },
+    {
         "name": "Black Cat",
         "isSelected": false,
         "type": "ally",
@@ -5050,6 +5110,12 @@ let allies = [
     },
     {
         "name": "Daredevil",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Dazzler",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -5531,6 +5597,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 6
+    },
+    {
+        "name": "Rogue",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Ronin",
@@ -6020,6 +6092,14 @@ let countercards = [
         "belongsto": ["Nebula (Villain)"]
     },
     {
+        "name": "Operative Skill",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Justice"]
+    },
+    {
         "name": "Organic Steel",
         "isSelected": false,
         "type": "counter",
@@ -6238,6 +6318,9 @@ let modules = [
     },
     {
         "name": "Enchantress"
+    },
+    {
+        "name": "Exodus"
     },
     {
         "name": "Fantasy"
