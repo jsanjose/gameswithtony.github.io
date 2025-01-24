@@ -298,6 +298,12 @@ let heroes = [
         "isSelected": false,
         "type": "hero",
         "hitpoints": 10
+    },
+    {
+        "name": "X-23",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
     }
 ];
 
@@ -2962,6 +2968,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "In the Name of Vengeance",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "X-23"
+        ]
+    },
+    {
         "name": "Insert Virus Program",
         "isSelected": false,
         "type": "side_scheme",
@@ -3044,6 +3062,15 @@ let side_schemes = [
             "Kang (Rama-Tut)",
             "Kang (Scarlet Centurion)"
         ]
+    },
+    {
+        "name": "Keep Them Busy",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
     },
     {
         "name": "Kree Supremacy",
@@ -3438,6 +3465,15 @@ let side_schemes = [
         "belongsto": [
             "On The Run"
         ]
+    },
+    {
+        "name": "Rally the Troops",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
     },
     {
         "name": "Render Medical Aid",
@@ -4059,6 +4095,15 @@ let side_schemes = [
         "belongsto": [
             "Drang"
         ]
+    },
+    {
+        "name": "Specialized Training",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
     },
     {
         "name": "Stryfe's Grasp",
@@ -5625,6 +5670,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Deathstrike"
+        ]
+    },
+    {
+        "name": "Lady Deathstrike (X-23)",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "X-23"
         ]
     },
     {
@@ -7439,6 +7495,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Boom Boom (X-23)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Brawn",
         "isSelected": false,
         "type": "ally",
@@ -7747,6 +7809,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Honey Badger",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Hope Summers",
         "isSelected": false,
         "type": "ally",
@@ -7899,6 +7967,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Shatterstar",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
     },
     {
         "name": "Siryn",

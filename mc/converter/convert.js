@@ -445,27 +445,18 @@ function processCardData(inputDir, outputFile) {
         for (const newItem of newItems) {
             const existingIndex = merged.findIndex(e => e.name === newItem.name);
             if (existingIndex === -1) {
-                // New item, insert in alphabetical order
-                const insertIndex = merged.findIndex(e => e.name.localeCompare(newItem.name) > 0);
-                if (insertIndex === -1) {
-                    merged.push(newItem);
-                } else {
-                    merged.splice(insertIndex, 0, newItem);
-                }
+                // New item, just add it (we'll sort at the end)
+                merged.push(newItem);
             } else if (type === 'ally' && merged[existingIndex].hitpoints !== newItem.hitpoints) {
                 // Ally with different hitpoints, append source
                 const source = newItem.belongsto?.[0] || 'Unknown';
                 newItem.name = `${newItem.name} (${source})`;
-                const insertIndex = merged.findIndex(e => e.name.localeCompare(newItem.name) > 0);
-                if (insertIndex === -1) {
-                    merged.push(newItem);
-                } else {
-                    merged.splice(insertIndex, 0, newItem);
-                }
+                merged.push(newItem);
             }
             // else skip duplicate
         }
-        return merged;
+        // Sort the entire array at the end
+        return merged.sort((a, b) => a.name.localeCompare(b.name));
     }
 
     // Create a mergeModules function similar to mergeArrays
