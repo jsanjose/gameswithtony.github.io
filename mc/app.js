@@ -440,6 +440,16 @@ var app = new Vue({
                     let threat = this.calculateThreat(this.side_schemes[i]);
 
                     let newcharacter = createCharacter(4000+i, this.side_schemes[i].name, threat, TYPE.SideScheme);
+
+                    if (this.side_schemes[i].useCounter) {
+                        newcharacter.useCounter = true;
+                        newcharacter.counter = this.side_schemes[i].counter;
+                    }
+
+                    if (this.side_schemes[i].isPlayerSideScheme) {
+                        newcharacter.isPlayerSideScheme = true;
+                    }
+
                     this.characters.push(newcharacter);
                     this.side_schemes[i].isSelected = false;
                 }
@@ -472,6 +482,11 @@ var app = new Vue({
                     let newcharacter = createCharacter(6000+i, this.minions[i].name, minionhitpoints, TYPE.Character);
                     newcharacter.isMinion = true;
                     newcharacter.isBadGuy = true;
+
+                    if (this.minions[i].useCounter) {
+                        newcharacter.useCounter = true;
+                        newcharacter.counter = this.minions[i].counter;
+                    }
                     
                     this.characters.push(newcharacter);
                     this.minions[i].isSelected = false;

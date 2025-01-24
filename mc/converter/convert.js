@@ -18,18 +18,27 @@ function usesCounters(card) {
         /uses \(\d+ \w+ counters?\)/,  // "Uses (3 warrior counters)"
         /enters? play with \d+ \w+ counters?/i,  // "enters play with 2 psionic counters"
         /starts? with \d+ \w+ counters?/i,  // "starts with 3 growth counters"
-        /place \d+ \w+ counters? on (this|itself|~)/i,  // "place 2 growth counters on this card"
-        /put \d+ \w+ counters? on (this|itself|~)/i,  // "put 3 time counters on ~"
-        /remove \d+ \w+ counters? from (this|itself|~)/i  // "remove a quantum counter from this card"
+        /place \d+ \w+ counters? on (this|itself|~|him|her)/i,  // "place 2 growth counters on this card"
+        /put \d+ \w+ counters? on (this|itself|~|him|her)/i,  // "put 3 time counters on ~"
+        /remove \d+ \w+ counters? from (this|itself|~|him|her)/i,  // "remove a quantum counter from this card"
+        /ratings counters? here/i,  // For environment cards that track ratings counters
+        /\d+ \w+ counters? on it/i,  // "with 2 acceleration counters on it"
+        /\d+ \w+ counters? from it/i,  // "remove 1 threat counter from it"
+        /counters? from (this|itself|~|him|her)/i,  // Generic "remove counters from this card"
+        /\d+ \w+ counters? on (this|itself|~|him|her)/i,  // "1 magnetic counter on him"
+        /counters? on (this|itself|~|him|her)/i  // Generic "counter on him"
     ];
 
     // Patterns that indicate the card only gives counters to other cards
     const givesCounterPatterns = [
-        /place \d+ \w+ counters? on (target|another|that|a|an)/i,
-        /put \d+ \w+ counters? on (target|another|that|a|an)/i,
-        /remove \d+ \w+ counters? from (target|another|that|a|an)/i,
+        /place \d+ \w+ counters? on (target|another|that|a|an|the \w+)/i,  // Added "the <name>"
+        /put \d+ \w+ counters? on (target|another|that|a|an|the \w+)/i,
+        /remove \d+ \w+ counters? from (target|another|that|a|an|the \w+)/i,
         /counter(s|ed|ing)? target/i,  // "counter target attack"
-        /counter(s|ed|ing)? (a|an|that)/i  // "counter an attack"
+        /counter(s|ed|ing)? (a|an|that)/i,  // "counter an attack"
+        /place \d+\[per_hero\] \w+ counters? on/i,  // "place 3[per_hero] ratings counters on"
+        /place \d+ ratings counters? on/i,  // "place 1 ratings counter on The Champion"
+        /place \d+ \w+ counters? on each/i  // "place 1 threat counter on each scheme"
     ];
 
     // If any receives pattern matches and no gives pattern matches, this card uses counters
@@ -164,7 +173,13 @@ function processCardData(inputDir, outputFile) {
                         hitpoints: card.health,
                         hitpointsper: card.health_per_hero || false
                     };
-                    
+
+                    // Check if minion uses counters
+                    if (usesCounters(card)) {
+                        minionCard.useCounter = true;
+                        minionCard.counter = 0;
+                    }
+
                     // Add belongsto relationships if card has a set_code
                     if (card.set_code) {
                         if (card.set_code.includes('_nemesis')) {
@@ -293,33 +308,87 @@ function processCardData(inputDir, outputFile) {
                     }
                     break;
 
+                case 'villain':
+                    // Add stage 1 villains or villains with no stage
+                    if (card.stage === 1 || !card.stage) {
+                        const villainCard = {
+                            ...baseCard,
+                            type: 'villain',
+                            hitpoints: card.health,
+                            hitpointsper: card.health_per_hero || false
+                        };
+                        villains.push(villainCard);
+
+                        // Add to villain name map for belongsto relationships
+                        if (card.set_code) {
+                            villainNameMap.set(card.set_code, card.name);
+                            villainSetCodes.add(card.set_code);
+                        }
+                    }
+                    break;
+
                 default:
+                    // Skip if card is already one of our main types
+                    if (['villain', 'hero', 'ally', 'minion', 'main_scheme', 'side_scheme'].includes(card.type_code)) {
+                        break;
+                    }
+
                     // If it's not one of our main types but uses counters, add to counter cards
                     if (usesCounters(card)) {
-                        const counterCard = {
-                            ...baseCard,
-                            type: 'counter',
-                            counter: 0
-                        };
-                        
-                        // Add belongsto relationships if card has a set_code
-                        if (card.set_code) {
-                            if (card.set_code.includes('_nemesis')) {
-                                const heroSetCode = card.set_code.replace('_nemesis', '');
-                                const heroName = heroNameMap.get(heroSetCode);
-                                counterCard.belongstotype = 'hero';
-                                counterCard.belongsto = [heroName];
-                            } else {
-                                counterCard.belongstotype = 'module';
-                                const moduleName = capitalizeSetCode(card.set_code);
-                                counterCard.belongsto = [moduleName];
-                                if (!villainSetCodes.has(card.set_code)) {
-                                    modules.add(moduleName);
+                        // Only add stage 1 environment cards that use counters
+                        if (card.type_code === 'environment' && card.back_link && !card.stage) {
+                            const counterCard = {
+                                ...baseCard,
+                                type: 'counter',
+                                counter: 0
+                            };
+                            
+                            // Add belongsto relationships if card has a set_code
+                            if (card.set_code) {
+                                if (card.set_code.includes('_nemesis')) {
+                                    const heroSetCode = card.set_code.replace('_nemesis', '');
+                                    const heroName = heroNameMap.get(heroSetCode);
+                                    counterCard.belongstotype = 'hero';
+                                    counterCard.belongsto = [heroName];
+                                } else {
+                                    counterCard.belongstotype = 'module';
+                                    const moduleName = capitalizeSetCode(card.set_code);
+                                    counterCard.belongsto = [moduleName];
+                                    if (!villainSetCodes.has(card.set_code)) {
+                                        modules.add(moduleName);
+                                    }
                                 }
                             }
+                            
+                            counterCards.push(counterCard);
                         }
-                        
-                        counterCards.push(counterCard);
+                        // For non-environment cards that use counters
+                        else if (card.type_code !== 'environment') {
+                            const counterCard = {
+                                ...baseCard,
+                                type: 'counter',
+                                counter: 0
+                            };
+                            
+                            // Add belongsto relationships if card has a set_code
+                            if (card.set_code) {
+                                if (card.set_code.includes('_nemesis')) {
+                                    const heroSetCode = card.set_code.replace('_nemesis', '');
+                                    const heroName = heroNameMap.get(heroSetCode);
+                                    counterCard.belongstotype = 'hero';
+                                    counterCard.belongsto = [heroName];
+                                } else {
+                                    counterCard.belongstotype = 'module';
+                                    const moduleName = capitalizeSetCode(card.set_code);
+                                    counterCard.belongsto = [moduleName];
+                                    if (!villainSetCodes.has(card.set_code)) {
+                                        modules.add(moduleName);
+                                    }
+                                }
+                            }
+                            
+                            counterCards.push(counterCard);
+                        }
                     }
                     break;
             }
@@ -443,7 +512,7 @@ function processCardData(inputDir, outputFile) {
                   `let side_schemes = ${JSON.stringify(finalData.side_schemes, null, 4)};\n\n` +
                   `let minions = ${JSON.stringify(finalData.minions, null, 4)};\n\n` +
                   `let allies = ${JSON.stringify(finalData.allies, null, 4)};\n\n` +
-                  `let counter_cards = ${JSON.stringify(finalData.counter_cards, null, 4)};\n\n` +
+                  `let countercards = ${JSON.stringify(finalData.counter_cards, null, 4)};\n\n` +
                   `let modules = ${JSON.stringify(finalData.modules, null, 4)};\n\n` +
                   `let aspects = ${JSON.stringify(finalData.aspects, null, 4)};`;
 
