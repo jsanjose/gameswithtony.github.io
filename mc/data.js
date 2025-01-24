@@ -62,6 +62,14 @@ let heroes = [
         "counter": 0
     },
     {
+        "name": "Gambit",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 9,
+        "useCounter": true,
+        "counter": 0
+    },
+    {
         "name": "Gamora",
         "isSelected": false,
         "type": "hero",
@@ -2375,6 +2383,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Herald of Avalon",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Exodus"
+        ]
+    },
+    {
         "name": "Hidden In Shadow",
         "isSelected": false,
         "type": "side_scheme",
@@ -3539,6 +3559,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "The Assassins Guild",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Gambit"
+        ]
+    },
+    {
         "name": "The Brotherhood",
         "isSelected": false,
         "type": "side_scheme",
@@ -4184,6 +4216,17 @@ let minions = [
         ]
     },
     {
+        "name": "Belladonna",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Gambit"
+        ]
+    },
+    {
         "name": "Berserk Mutate",
         "isSelected": false,
         "type": "minion",
@@ -4609,6 +4652,17 @@ let minions = [
         ]
     },
     {
+        "name": "Exodus",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Exodus"
+        ]
+    },
+    {
         "name": "Fabion Cortez",
         "isSelected": false,
         "type": "minion",
@@ -4678,6 +4732,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Fantasy"
+        ]
+    },
+    {
+        "name": "Guild Assassin",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 2,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Gambit"
         ]
     },
     {
@@ -6177,6 +6242,12 @@ let allies = [
         "hitpoints": 4
     },
     {
+        "name": "Bishop",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Black Cat",
         "isSelected": false,
         "type": "ally",
@@ -6328,6 +6399,12 @@ let allies = [
     },
     {
         "name": "Daredevil",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Dazzler",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -6568,6 +6645,12 @@ let allies = [
     },
     {
         "name": "Psylocke",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Rogue",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -7350,6 +7433,12 @@ let countercards = [
         ]
     },
     {
+        "name": "Operative Skill",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
         "name": "Organic Steel",
         "isSelected": false,
         "type": "counter",
@@ -7615,6 +7704,9 @@ let modules = [
     },
     {
         "name": "Enchantress"
+    },
+    {
+        "name": "Exodus"
     },
     {
         "name": "Fantasy"
