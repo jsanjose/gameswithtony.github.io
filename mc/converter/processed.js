@@ -152,6 +152,12 @@ let heroes = [
         "hitpoints": 9
     },
     {
+        "name": "Rogue",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 11
+    },
+    {
         "name": "Scarlet Witch",
         "isSelected": false,
         "type": "hero",
@@ -2835,6 +2841,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Mystique's Manipulations",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Rogue"
+        ]
+    },
+    {
         "name": "Pump Up the Crowd",
         "isSelected": false,
         "type": "side_scheme",
@@ -3653,6 +3671,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "The Reavers",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Reavers"
+        ]
+    },
+    {
         "name": "The Red House",
         "isSelected": false,
         "type": "side_scheme",
@@ -4320,6 +4350,17 @@ let minions = [
         ]
     },
     {
+        "name": "Bonebreaker",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Reavers"
+        ]
+    },
+    {
         "name": "Boomerang",
         "isSelected": false,
         "type": "minion",
@@ -4533,6 +4574,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Sinister Assault"
+        ]
+    },
+    {
+        "name": "Donald Pierce",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Reavers"
         ]
     },
     {
@@ -4781,6 +4833,17 @@ let minions = [
         ]
     },
     {
+        "name": "Murray Reese",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Reavers"
+        ]
+    },
+    {
         "name": "Omega Red",
         "isSelected": false,
         "type": "minion",
@@ -4800,6 +4863,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Sci-fi"
+        ]
+    },
+    {
+        "name": "Skullbuster",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Reavers"
         ]
     },
     {
@@ -6020,6 +6094,17 @@ let minions = [
         ]
     },
     {
+        "name": "Wade Cole",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Reavers"
+        ]
+    },
+    {
         "name": "Warbringer",
         "isSelected": false,
         "type": "minion",
@@ -6222,6 +6307,12 @@ let allies = [
         "hitpoints": 3,
         "useCounter": true,
         "counter": 0
+    },
+    {
+        "name": "Armor",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Banshee",
@@ -6458,6 +6549,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Gambit",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Gamora",
         "isSelected": false,
         "type": "ally",
@@ -6544,6 +6641,12 @@ let allies = [
         "hitpoints": 5
     },
     {
+        "name": "Iceman",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Iron Fist",
         "isSelected": false,
         "type": "ally",
@@ -6600,6 +6703,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Karma",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 1
     },
     {
         "name": "Lady Sif",
@@ -7387,6 +7496,12 @@ let countercards = [
         ]
     },
     {
+        "name": "Judoka Skill",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
         "name": "Leadership Skill",
         "isSelected": false,
         "type": "counter",
@@ -7779,6 +7894,9 @@ let modules = [
     },
     {
         "name": "Ransacked Armory"
+    },
+    {
+        "name": "Reavers"
     },
     {
         "name": "Running Interference"
