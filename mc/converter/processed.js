@@ -24,6 +24,12 @@ let heroes = [
         "hitpoints": 12
     },
     {
+        "name": "Bishop",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 12
+    },
+    {
         "name": "Black Panther",
         "isSelected": false,
         "type": "hero",
@@ -144,6 +150,12 @@ let heroes = [
         "hitpoints": 10,
         "useCounter": true,
         "counter": 0
+    },
+    {
+        "name": "Magik",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
     },
     {
         "name": "Ms. Marvel",
@@ -322,6 +334,13 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Apocalypse",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 8,
+        "hitpointsper": true
+    },
+    {
         "name": "Arclight",
         "isSelected": false,
         "type": "villain",
@@ -392,6 +411,20 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Dark Beast",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 15,
+        "hitpointsper": true
+    },
+    {
+        "name": "Death",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 9,
+        "hitpointsper": true
+    },
+    {
         "name": "Doctor Octopus",
         "isSelected": false,
         "type": "villain",
@@ -417,6 +450,13 @@ let villains = [
         "isSelected": false,
         "type": "villain",
         "hitpoints": 8,
+        "hitpointsper": true
+    },
+    {
+        "name": "Famine",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 9,
         "hitpointsper": true
     },
     {
@@ -583,6 +623,13 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Pestilence",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 9,
+        "hitpointsper": true
+    },
+    {
         "name": "Piledriver",
         "isSelected": false,
         "type": "villain",
@@ -716,6 +763,13 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Unus",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 12,
+        "hitpointsper": true
+    },
+    {
         "name": "Venom",
         "isSelected": false,
         "type": "villain",
@@ -741,6 +795,13 @@ let villains = [
         "isSelected": false,
         "type": "villain",
         "hitpoints": 7,
+        "hitpointsper": true
+    },
+    {
+        "name": "War",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 9,
         "hitpointsper": true
     },
     {
@@ -904,6 +965,17 @@ let main_schemes = [
         ]
     },
     {
+        "name": "Dark Beast's Bogus Journey",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 10,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Dark Beast"
+        ]
+    },
+    {
         "name": "Edge of Reality",
         "isSelected": false,
         "type": "main_scheme",
@@ -912,6 +984,19 @@ let main_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Mysterio"
+        ]
+    },
+    {
+        "name": "En Sabah Nur's Pyramid",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 8,
+        "basethreat": 1,
+        "useCounter": true,
+        "counter": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Apocalypse"
         ]
     },
     {
@@ -992,6 +1077,17 @@ let main_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Taskmaster"
+        ]
+    },
+    {
+        "name": "Hunting Gene Traitors",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 11,
+        "basethreat": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Unus"
         ]
     },
     {
@@ -1372,6 +1468,17 @@ let main_schemes = [
         ]
     },
     {
+        "name": "The Age of Apocalypse",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": -1,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Apocalypse"
+        ]
+    },
+    {
         "name": "The Armies of Thanos",
         "isSelected": false,
         "type": "main_scheme",
@@ -1534,6 +1641,17 @@ let main_schemes = [
         ]
     },
     {
+        "name": "The Horsemen of Apocalypse",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 12,
+        "basethreat": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Death"
+        ]
+    },
+    {
         "name": "The Infinity Stone",
         "isSelected": false,
         "type": "main_scheme",
@@ -1654,6 +1772,19 @@ let main_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Kang (Rama-Tut)"
+        ]
+    },
+    {
+        "name": "The Rise of Apocalypse",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 10,
+        "basethreat": 1,
+        "useCounter": true,
+        "counter": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Apocalypse"
         ]
     },
     {
@@ -1789,6 +1920,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "A Time of Famine",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Death"
+        ]
+    },
+    {
         "name": "Abduction Protocols",
         "isSelected": false,
         "type": "side_scheme",
@@ -1810,6 +1953,18 @@ let side_schemes = [
         "belongstotype": "module",
         "belongsto": [
             "Whispers of Paranoia"
+        ]
+    },
+    {
+        "name": "Ancient Ritual",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Clan Akkaba"
         ]
     },
     {
@@ -2427,6 +2582,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Endless Ranks",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Unus"
+        ]
+    },
+    {
         "name": "Enemy of my Enemy",
         "isSelected": false,
         "type": "side_scheme",
@@ -2457,6 +2624,18 @@ let side_schemes = [
         "belongstotype": "module",
         "belongsto": [
             "NeXt Evol Campaign"
+        ]
+    },
+    {
+        "name": "Evacuate Survivors",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Aoa Mission"
         ]
     },
     {
@@ -2553,6 +2732,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Find Lost Mutants",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Aoa Mission"
+        ]
+    },
+    {
         "name": "Find the Norn Stones",
         "isSelected": false,
         "type": "side_scheme",
@@ -2645,6 +2836,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Gene Pool",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Infinites"
+        ]
+    },
+    {
         "name": "Generation Why?",
         "isSelected": false,
         "type": "side_scheme",
@@ -2676,6 +2879,18 @@ let side_schemes = [
         "belongstotype": "module",
         "belongsto": [
             "Nasty Boys"
+        ]
+    },
+    {
+        "name": "Giant Growth",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Apocalypse"
         ]
     },
     {
@@ -2797,6 +3012,18 @@ let side_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Hela"
+        ]
+    },
+    {
+        "name": "Heart of the Empire",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Apocalypse"
         ]
     },
     {
@@ -3224,6 +3451,18 @@ let side_schemes = [
         "basethreat": 2
     },
     {
+        "name": "Liberate the Seattle Core",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Aoa Mission"
+        ]
+    },
+    {
         "name": "Light At The End (Chase!)",
         "isSelected": false,
         "type": "side_scheme",
@@ -3526,6 +3765,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "North American Sea Wall",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Aoa Campaign"
+        ]
+    },
+    {
         "name": "Not My Lucky Day",
         "isSelected": false,
         "type": "side_scheme",
@@ -3751,6 +4002,52 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Plague and Pestilence",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Death"
+        ]
+    },
+    {
+        "name": "Plugged In",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Apocalypse"
+        ]
+    },
+    {
+        "name": "Police State",
+        "isSelected": false,
+        "type": "side_scheme",
+        "basethreatfixed": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Genosha"
+        ]
+    },
+    {
+        "name": "Portal Through Time",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Bishop"
+        ]
+    },
+    {
         "name": "Power Drain",
         "isSelected": false,
         "type": "side_scheme",
@@ -3809,6 +4106,18 @@ let side_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Red Skull"
+        ]
+    },
+    {
+        "name": "Protect the Professor",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Aoa Mission"
         ]
     },
     {
@@ -3921,6 +4230,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Release the Hounds",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Hounds"
+        ]
+    },
+    {
         "name": "Relentless Robots",
         "isSelected": false,
         "type": "side_scheme",
@@ -3975,6 +4296,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Ruler of Limbo",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Magik"
+        ]
+    },
+    {
         "name": "Ruler of the Astral Plane",
         "isSelected": false,
         "type": "side_scheme",
@@ -4006,6 +4339,18 @@ let side_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Magneto"
+        ]
+    },
+    {
+        "name": "Sabotage the Sea Wall",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Aoa Mission"
         ]
     },
     {
@@ -4125,6 +4470,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Source of Power",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Apocalypse"
+        ]
+    },
+    {
         "name": "Spatial Positioning",
         "isSelected": false,
         "type": "side_scheme",
@@ -4206,6 +4563,18 @@ let side_schemes = [
         "basethreat": 4,
         "basethreatfixed": false,
         "isPlayerSideScheme": true
+    },
+    {
+        "name": "Targeted for Extermination",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Dystopian Nightmare"
+        ]
     },
     {
         "name": "Taskmaster's Training Camp",
@@ -4324,6 +4693,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "The Apocalypse Solution",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Apocalypse"
+        ]
+    },
+    {
         "name": "The Assassins Guild",
         "isSelected": false,
         "type": "side_scheme",
@@ -4357,6 +4738,18 @@ let side_schemes = [
         "belongstotype": "hero",
         "belongsto": [
             "Wolverine"
+        ]
+    },
+    {
+        "name": "The Dark Riders",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Dark Riders"
         ]
     },
     {
@@ -4415,6 +4808,18 @@ let side_schemes = [
         "belongstotype": "hero",
         "belongsto": [
             "Captain Marvel"
+        ]
+    },
+    {
+        "name": "The Ravages of War",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Death"
         ]
     },
     {
@@ -4478,6 +4883,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "The Specter of Death",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Death"
+        ]
+    },
+    {
         "name": "The Titan's Throne",
         "isSelected": false,
         "type": "side_scheme",
@@ -4486,6 +4903,30 @@ let side_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Thanos"
+        ]
+    },
+    {
+        "name": "The Towering Citadel",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Apocalypse"
+        ]
+    },
+    {
+        "name": "The Tyrant's Throne",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Apocalypse"
         ]
     },
     {
@@ -4548,6 +4989,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Time-Travel Shenanigans",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Dark Beast"
+        ]
+    },
+    {
         "name": "Tooth and Nail",
         "isSelected": false,
         "type": "side_scheme",
@@ -4592,6 +5045,18 @@ let side_schemes = [
         "belongstotype": "hero",
         "belongsto": [
             "Groot"
+        ]
+    },
+    {
+        "name": "Trial by Combat",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Blue Moon"
         ]
     },
     {
@@ -4736,6 +5201,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Village Under Attack",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Savage Land"
+        ]
+    },
+    {
         "name": "Volunteer Work",
         "isSelected": false,
         "type": "side_scheme",
@@ -4796,6 +5273,17 @@ let minions = [
         ]
     },
     {
+        "name": "Abyss",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Overseer"
+        ]
+    },
+    {
         "name": "Advanced Ultron Drone",
         "isSelected": false,
         "type": "minion",
@@ -4803,6 +5291,28 @@ let minions = [
         "belongstotype": "villain",
         "belongsto": [
             "Ultron"
+        ]
+    },
+    {
+        "name": "Agent of Apocalypse",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Age Of Apocalypse"
+        ]
+    },
+    {
+        "name": "Ahab",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Hounds"
         ]
     },
     {
@@ -4874,6 +5384,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Ransacked Armory"
+        ]
+    },
+    {
+        "name": "Armored Unibike",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Genosha"
         ]
     },
     {
@@ -4978,6 +5499,17 @@ let minions = [
         ]
     },
     {
+        "name": "Bantam",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Bishop"
+        ]
+    },
+    {
         "name": "Baron Mordo",
         "isSelected": false,
         "type": "minion",
@@ -4995,6 +5527,17 @@ let minions = [
         "belongstotype": "hero",
         "belongsto": [
             "Captain America"
+        ]
+    },
+    {
+        "name": "Barrage",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Dark Riders"
         ]
     },
     {
@@ -5025,6 +5568,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Sinister Syndicate"
+        ]
+    },
+    {
+        "name": "Belasco",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Magik"
         ]
     },
     {
@@ -5279,6 +5833,17 @@ let minions = [
         ]
     },
     {
+        "name": "Clan Akkaba Zealot",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Clan Akkaba"
+        ]
+    },
+    {
         "name": "Common Criminal",
         "isSelected": false,
         "type": "minion",
@@ -5468,6 +6033,17 @@ let minions = [
         ]
     },
     {
+        "name": "Earthquake",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Blue Moon"
+        ]
+    },
+    {
         "name": "Ebony Maw",
         "isSelected": false,
         "type": "minion",
@@ -5646,6 +6222,50 @@ let minions = [
         ]
     },
     {
+        "name": "Gauntlet",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Dark Riders"
+        ]
+    },
+    {
+        "name": "Genoshan Mech",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Genosha"
+        ]
+    },
+    {
+        "name": "Giant Ape",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Savage Land"
+        ]
+    },
+    {
+        "name": "Gladiator",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Blue Moon"
+        ]
+    },
+    {
         "name": "Goblin",
         "isSelected": false,
         "type": "minion",
@@ -5755,6 +6375,17 @@ let minions = [
         ]
     },
     {
+        "name": "Hard-Drive",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Dark Riders"
+        ]
+    },
+    {
         "name": "Harpoon",
         "isSelected": false,
         "type": "minion",
@@ -5814,6 +6445,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Iron Spider's Sinister Six"
+        ]
+    },
+    {
+        "name": "Hound",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 2,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Hounds"
         ]
     },
     {
@@ -5912,6 +6554,28 @@ let minions = [
             "Legions of Hydra",
             "Captain America",
             "Hydra Patrol"
+        ]
+    },
+    {
+        "name": "Infinite Hunter",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Unus"
+        ]
+    },
+    {
+        "name": "Infinite Soldier",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Infinites"
         ]
     },
     {
@@ -6152,6 +6816,17 @@ let minions = [
         ]
     },
     {
+        "name": "Magistrate",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Genosha"
+        ]
+    },
+    {
         "name": "Magneto 2.6",
         "isSelected": false,
         "type": "minion",
@@ -6186,6 +6861,17 @@ let minions = [
         ]
     },
     {
+        "name": "Manta",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Blue Moon"
+        ]
+    },
+    {
         "name": "Melter",
         "isSelected": false,
         "type": "minion",
@@ -6193,6 +6879,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "The Masters of Evil"
+        ]
+    },
+    {
+        "name": "Mikhail Rasputin",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Overseer"
         ]
     },
     {
@@ -6223,6 +6920,17 @@ let minions = [
         "belongstotype": "hero",
         "belongsto": [
             "Star-Lord"
+        ]
+    },
+    {
+        "name": "Mister Sinister",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Overseer"
         ]
     },
     {
@@ -6351,6 +7059,17 @@ let minions = [
         ]
     },
     {
+        "name": "Oracle",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Blue Moon"
+        ]
+    },
+    {
         "name": "Outrider",
         "isSelected": false,
         "type": "minion",
@@ -6358,6 +7077,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Armies of Titan"
+        ]
+    },
+    {
+        "name": "Ozymandias",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Clan Akkaba"
         ]
     },
     {
@@ -6442,6 +7172,28 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Menagerie Medley"
+        ]
+    },
+    {
+        "name": "Psynapse",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Dark Riders"
+        ]
+    },
+    {
+        "name": "Pterosaur",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Savage Land"
         ]
     },
     {
@@ -6550,6 +7302,17 @@ let minions = [
         ]
     },
     {
+        "name": "S'ym",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Magik"
+        ]
+    },
+    {
         "name": "Samurai",
         "isSelected": false,
         "type": "minion",
@@ -6590,6 +7353,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Iron Spider's Sinister Six"
+        ]
+    },
+    {
+        "name": "Scarab",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Clan Akkaba"
         ]
     },
     {
@@ -6849,6 +7623,17 @@ let minions = [
         "belongstotype": "hero",
         "belongsto": [
             "Cable"
+        ]
+    },
+    {
+        "name": "Sugar Man",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Overseer"
         ]
     },
     {
@@ -7120,6 +7905,17 @@ let minions = [
         ]
     },
     {
+        "name": "Trevor Fitzroy",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Bishop"
+        ]
+    },
+    {
         "name": "Troll",
         "isSelected": false,
         "type": "minion",
@@ -7128,6 +7924,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Fantasy"
+        ]
+    },
+    {
+        "name": "Tusk",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Dark Riders"
         ]
     },
     {
@@ -7193,6 +8000,17 @@ let minions = [
         ]
     },
     {
+        "name": "Velociraptor",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Savage Land"
+        ]
+    },
+    {
         "name": "Vera",
         "isSelected": false,
         "type": "minion",
@@ -7252,6 +8070,17 @@ let minions = [
         "belongstotype": "hero",
         "belongsto": [
             "Nova"
+        ]
+    },
+    {
+        "name": "Warstar",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Blue Moon"
         ]
     },
     {
@@ -7334,6 +8163,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Extreme Measures"
+        ]
+    },
+    {
+        "name": "Witchfire",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Magik"
         ]
     },
     {
@@ -7549,6 +8389,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Blink",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Blue Marvel",
         "isSelected": false,
         "type": "ally",
@@ -7729,6 +8575,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Destiny",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Diamondback",
         "isSelected": false,
         "type": "ally",
@@ -7841,6 +8693,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 4
+    },
+    {
+        "name": "Goldballs",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Goliath",
@@ -8017,6 +8875,12 @@ let allies = [
         "hitpoints": 4
     },
     {
+        "name": "Legion",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Lockheed",
         "isSelected": false,
         "type": "ally",
@@ -8065,6 +8929,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Malcolm",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Mantis",
         "isSelected": false,
         "type": "ally",
@@ -8072,6 +8942,12 @@ let allies = [
     },
     {
         "name": "Maria Hill",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
+        "name": "Marrow",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
@@ -8135,6 +9011,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 5
+    },
+    {
+        "name": "Morph",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Ms. Marvel",
@@ -8285,6 +9167,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 4
+    },
+    {
+        "name": "Randall",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Red Dagger",
@@ -8497,6 +9385,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Tempus",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "The Locust",
         "isSelected": false,
         "type": "ally",
@@ -8525,6 +9419,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Triage",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "U.S. Agent",
@@ -8666,6 +9566,18 @@ let allies = [
     },
     {
         "name": "Wrath",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "X-23",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "X-Man",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -8964,6 +9876,16 @@ let countercards = [
         ]
     },
     {
+        "name": "Pursued by the Past",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Standard Iii"
+        ]
+    },
+    {
         "name": "Quinjet",
         "isSelected": false,
         "type": "counter",
@@ -9034,6 +9956,22 @@ let countercards = [
         ]
     },
     {
+        "name": "Stepford Cuckoos",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
+        "name": "Super-Charged",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Bishop"
+        ]
+    },
+    {
         "name": "Surveillance Team",
         "isSelected": false,
         "type": "counter",
@@ -9052,6 +9990,12 @@ let countercards = [
         "belongsto": [
             "Aggression"
         ]
+    },
+    {
+        "name": "Test the Defense",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
     },
     {
         "name": "The Challengers",
@@ -9130,7 +10074,16 @@ let modules = [
         "name": "Acolytes"
     },
     {
+        "name": "Age Of Apocalypse"
+    },
+    {
         "name": "Anachronauts"
+    },
+    {
+        "name": "Aoa Campaign"
+    },
+    {
+        "name": "Aoa Mission"
     },
     {
         "name": "Armadillo"
@@ -9148,10 +10101,16 @@ let modules = [
         "name": "Beasty Boys"
     },
     {
+        "name": "Bishop"
+    },
+    {
         "name": "Black Order"
     },
     {
         "name": "Black Tom Cassidy"
+    },
+    {
+        "name": "Blue Moon"
     },
     {
         "name": "Bomb Scare"
@@ -9169,10 +10128,16 @@ let modules = [
         "name": "City In Chaos"
     },
     {
+        "name": "Clan Akkaba"
+    },
+    {
         "name": "Crime"
     },
     {
         "name": "Crossfire's Crew"
+    },
+    {
+        "name": "Dark Riders"
     },
     {
         "name": "Deathstrike"
@@ -9182,6 +10147,9 @@ let modules = [
     },
     {
         "name": "Dreadpool"
+    },
+    {
+        "name": "Dystopian Nightmare"
     },
     {
         "name": "Enchantress"
@@ -9205,6 +10173,9 @@ let modules = [
         "name": "Galactic Artifacts"
     },
     {
+        "name": "Genosha"
+    },
+    {
         "name": "GMW Campaign"
     },
     {
@@ -9220,10 +10191,16 @@ let modules = [
         "name": "Horror"
     },
     {
+        "name": "Hounds"
+    },
+    {
         "name": "Hydra Assault"
     },
     {
         "name": "Hydra Patrol"
+    },
+    {
+        "name": "Infinites"
     },
     {
         "name": "Infinity Gauntlet"
@@ -9280,10 +10257,16 @@ let modules = [
         "name": "Osborn Tech"
     },
     {
+        "name": "Overseer"
+    },
+    {
         "name": "Personal Nightmare"
     },
     {
         "name": "Power Drain"
+    },
+    {
+        "name": "Prelates"
     },
     {
         "name": "Ransacked Armory"
@@ -9293,6 +10276,9 @@ let modules = [
     },
     {
         "name": "Running Interference"
+    },
+    {
+        "name": "Savage Land"
     },
     {
         "name": "Sci-fi"
@@ -9314,6 +10300,9 @@ let modules = [
     },
     {
         "name": "SM Campaign"
+    },
+    {
+        "name": "Standard Iii"
     },
     {
         "name": "State of Emergency"
