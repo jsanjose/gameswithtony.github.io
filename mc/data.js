@@ -152,6 +152,13 @@ let heroes = [
         "hitpoints": 9
     },
     {
+        "name": "Rogue",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 11,
+        "useCounter": false
+    },
+    {
         "name": "Scarlet Witch",
         "isSelected": false,
         "type": "hero",
@@ -2426,6 +2433,15 @@ let side_schemes = [
         "belongsto": ["Wasp"]
     },
     {
+        "name": "Mystique's Manipulations",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": ["Mystique"]
+    },
+    {
         "name": "Nefarious Trap",
         "isSelected": false,
         "type": "side_scheme",
@@ -3021,6 +3037,16 @@ let side_schemes = [
         "belongsto": ["Captain Marvel"]
     },
     {
+        "name": "The Reavers",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": ["Reavers"]
+    },
+    {
         "name": "The Red House",
         "isSelected": false,
         "type": "side_scheme",
@@ -3532,6 +3558,14 @@ let minions = [
         "belongsto": ["Iron Spider's Sinister Six"]
     },
     {
+        "name": "Bonebreaker",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Reavers"]
+    },
+    {
         "name": "Boomerang",
         "isSelected": false,
         "type": "minion",
@@ -3690,6 +3724,15 @@ let minions = [
         "hitpoints": 6,
         "belongstotype": "module",
         "belongsto": ["Sinister Assault"]
+    },
+    
+    {
+        "name": "Donald Pierce",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "module",
+        "belongsto": ["Reavers"]
     },
     {
         "name": "Draugr",
@@ -4229,12 +4272,29 @@ let minions = [
         "belongsto": ["Magneto"]
     },
     {
+        "name": "Murray Reese",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Reavers"]
+    },
+    {
         "name": "Mystique",
         "isSelected": false,
         "type": "minion",
         "hitpoints": 9,
         "belongstotype": "module",
         "belongsto": ["Mystique"]
+    },
+    
+    {
+        "name": "Mystique (Rogue)",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "belongstotype": "villain",
+        "belongsto": ["Rogue"]
     },
     {
         "name": "Nebula",
@@ -4510,6 +4570,14 @@ let minions = [
         "belongsto": ["Anachronauts"]
     },
     {
+        "name": "Skullbuster",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "belongstotype": "module",
+        "belongsto": ["Reavers"]
+    },
+    {
         "name": "Skurge",
         "isSelected": false,
         "type": "minion",
@@ -4768,6 +4836,14 @@ let minions = [
         "belongsto": ["Sinister Assault"]
     },
     {
+        "name": "Wade Cole",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "belongstotype": "module",
+        "belongsto": ["Reavers"]
+    },
+    {
         "name": "Warbringer",
         "isSelected": false,
         "type": "minion",
@@ -4931,6 +5007,12 @@ let allies = [
         "hitpoints": 3,
         "useCounter": true,
         "counter": 0
+    },
+    {
+        "name": "Armor",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Banshee",
@@ -5168,6 +5250,15 @@ let allies = [
         "type": "ally",
         "hitpoints": 2
     },
+    
+    {
+        "name": "Gambit",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3,
+        "useCounter": true,
+        "counter": 3
+    },
     {
         "name": "Gamora",
         "isSelected": false,
@@ -5257,6 +5348,14 @@ let allies = [
         "hitpoints": 5
     },
     {
+        "name": "Iceman",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3,
+        "useCounter": true,
+        "counter": 3
+    },
+    {
         "name": "Iron Fist",
         "isSelected": false,
         "type": "ally",
@@ -5313,6 +5412,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Karma",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 1
     },
     {
         "name": "Lady Sif",
@@ -6052,6 +6157,14 @@ let countercards = [
         "belongsto": ["Aggression"]
     },
     {
+        "name": "Judoka Skill",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": ["Protection"]
+    },
+    {
         "name": "Leadership Skill",
         "isSelected": false,
         "type": "counter",
@@ -6393,6 +6506,9 @@ let modules = [
     },
     {
         "name": "Ransacked Armory"
+    },
+    {
+        "name": "Reavers"
     },
     {
         "name": "Running Interference"
