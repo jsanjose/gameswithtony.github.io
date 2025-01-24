@@ -152,6 +152,12 @@ let heroes = [
         "hitpoints": 9
     },
     {
+        "name": "Psylocke",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
+    },
+    {
         "name": "Quicksilver",
         "isSelected": false,
         "type": "hero",
@@ -2944,6 +2950,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Interdimensional Plunder",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Psylocke"
+        ]
+    },
+    {
         "name": "Intruder Alert",
         "isSelected": false,
         "type": "side_scheme",
@@ -3071,6 +3089,15 @@ let side_schemes = [
         "belongsto": [
             "Crime"
         ]
+    },
+    {
+        "name": "Lay the Trap",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
     },
     {
         "name": "Leader of the Morlocks",
@@ -7263,6 +7290,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Angel",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Angela",
         "isSelected": false,
         "type": "ally",
@@ -7421,6 +7454,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Captain Britain",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Captain Marvel (Spider-Woman Ally)",
         "isSelected": false,
         "type": "ally",
@@ -7475,6 +7514,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Cypher",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Daredevil",
         "isSelected": false,
         "type": "ally",
@@ -7503,6 +7548,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Domino",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Drax",
@@ -7776,6 +7827,12 @@ let allies = [
     },
     {
         "name": "Outlaw",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Pete Wisdom",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
