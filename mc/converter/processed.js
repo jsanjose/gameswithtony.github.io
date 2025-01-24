@@ -6,7 +6,19 @@ let heroes = [
         "hitpoints": 11
     },
     {
+        "name": "Angel",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 12
+    },
+    {
         "name": "Ant-Man",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 12
+    },
+    {
+        "name": "Archangel",
         "isSelected": false,
         "type": "hero",
         "hitpoints": 12
@@ -2821,6 +2833,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Hook, Line, and Sinker",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Archangel"
+        ]
+    },
+    {
         "name": "Hot Pursuit",
         "isSelected": false,
         "type": "side_scheme",
@@ -3414,6 +3438,15 @@ let side_schemes = [
         "belongsto": [
             "On The Run"
         ]
+    },
+    {
+        "name": "Render Medical Aid",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
     },
     {
         "name": "Ruler of the Astral Plane",
@@ -7442,6 +7475,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Cannonball (Angel)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Captain America",
         "isSelected": false,
         "type": "ally",
@@ -7575,6 +7614,12 @@ let allies = [
     },
     {
         "name": "Elektra",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Elixir",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -7851,6 +7896,12 @@ let allies = [
     },
     {
         "name": "Rogue",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Siryn",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -8348,6 +8399,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Warpath",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
+    },
+    {
         "name": "Wasp",
         "isSelected": false,
         "type": "ally",
@@ -8428,6 +8485,12 @@ let allies = [
 ];
 
 let countercards = [
+    {
+        "name": "Angel's Aerie",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
     {
         "name": "Badoon Ship",
         "isSelected": false,
