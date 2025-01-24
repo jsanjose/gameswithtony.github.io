@@ -411,24 +411,10 @@ let villains = [
         "hitpointsper": true
     },
     {
-        "name": "MaGog",
-        "isSelected": false,
-        "type": "villain",
-        "hitpoints": 10,
-        "hitpointsper": true
-    },
-    {
         "name": "Master Mold",
         "isSelected": false,
         "type": "villain",
         "hitpoints": 12,
-        "hitpointsper": true
-    },
-    {
-        "name": "Mojo",
-        "isSelected": false,
-        "type": "villain",
-        "hitpoints": 16,
         "hitpointsper": true
     },
     {
@@ -532,13 +518,6 @@ let villains = [
         "hitpointsper": true
     },
     {
-        "name": "Spiral",
-        "isSelected": false,
-        "type": "villain",
-        "hitpoints": 13,
-        "hitpointsper": true
-    },
-    {
         "name": "Taskmaster",
         "isSelected": false,
         "type": "villain",
@@ -618,15 +597,6 @@ let villains = [
 ];
 
 let main_schemes = [
-    {
-        "name": "Across the Mojoverse",
-        "isSelected": false,
-        "type": "main_scheme",
-        "threat": 15,
-        "basethreat": 1,
-        "belongstotype": "villain",
-        "belongsto": ["Spiral"]
-    },
     {
         "name": "All Hail King Loki",
         "isSelected": false,
@@ -865,15 +835,6 @@ let main_schemes = [
         "belongsto": ["Mysterio"]
     },
     {
-        "name": "Melee in the Mojo-seum",
-        "isSelected": false,
-        "type": "main_scheme",
-        "threat": 6,
-        "basethreat": 1,
-        "belongstotype": "villain",
-        "belongsto": ["MaGog"]
-    },
-    {
         "name": "Midtown Manhattan",
         "isSelected": false,
         "type": "main_scheme",
@@ -881,15 +842,6 @@ let main_schemes = [
         "basethreat": 2,
         "belongstotype": "villain",
         "belongsto": ["Venom Goblin"]
-    },
-    {
-        "name": "MojoMania",
-        "isSelected": false,
-        "type": "main_scheme",
-        "threat": 25,
-        "basethreat": 10,
-        "belongstotype": "villain",
-        "belongsto": ["Mojo"]
     },
     {
         "name": "Mutagen Cloud",
@@ -1546,16 +1498,6 @@ let side_schemes = [
         "belongsto": ["Bulldozer"]
     },
     {
-        "name": "Crime Scene Investigation",
-        "isSelected": false,
-        "type": "side_scheme",
-        "threat": 5,
-        "basethreat": 5,
-        "basethreatfixed": true,
-        "belongstotype": "module",
-        "belongsto": ["Crime"]
-    },
-    {
         "name": "Collapsing Bridge",
         "isSelected": false,
         "type": "side_scheme",
@@ -2194,16 +2136,6 @@ let side_schemes = [
         "belongsto": ["Venom"]
     },
     {
-        "name": "Law & Order",
-        "isSelected": false,
-        "type": "side_scheme",
-        "threat": 5,
-        "basethreat": 5,
-        "basethreatfixed": true,
-        "belongstotype": "module",
-        "belongsto": ["Crime"]
-    },
-    {
         "name": "Legions of Hel",
         "isSelected": false,
         "type": "side_scheme",
@@ -2605,15 +2537,6 @@ let side_schemes = [
         "belongsto": ["Avalanche", "Blob", "Pyro", "Toad"]
     },
     {
-        "name": "Pump Up the Crowd",
-        "isSelected": false,
-        "type": "side_scheme",
-        "threat": 4,
-        "basethreat": 4,
-        "belongstotype": "villain",
-        "belongsto": ["MaGog"]
-    },
-    {
         "name": "Rampage",
         "isSelected": false,
         "type": "side_scheme",
@@ -2950,15 +2873,6 @@ let side_schemes = [
         "basethreatfixed": false,
         "belongstotype": "villain",
         "belongsto": ["Red Skull"]
-    },
-    {
-        "name": "The Search for Spiral",
-        "isSelected": false,
-        "type": "side_scheme",
-        "threat": 3,
-        "basethreat": 3,
-        "belongstotype": "villain",
-        "belongsto": ["Spiral"]
     },
     {
         "name": "The Sleeper Awakened",
@@ -3491,14 +3405,6 @@ let minions = [
         "hitpoints": 4,
         "belongstotype": "module",
         "belongsto": ["Mister Hyde"]
-    },
-    {
-        "name": "Card Shark",
-        "isSelected": false,
-        "type": "minion",
-        "hitpoints": 7,
-        "belongstotype": "module",
-        "belongsto": ["Western"]
     },
     {
         "name": "Chitauri Soldier",
@@ -4430,23 +4336,6 @@ let minions = [
         "hitpoints": 5,
         "belongstotype": "module",
         "belongsto": ["Black Order"]
-    },
-    {
-        "name": "Supporting Actor",
-        "isSelected": false,
-        "type": "minion",
-        "hitpoints": 6,
-        "belongstotype": "villain",
-        "belongsto": ["Mojo"]
-    },
-    {
-        "name": "Surprise Contender",
-        "isSelected": false,
-        "type": "minion",
-        "hitpoints": 7,
-        "hitpointsper": true,
-        "belongstotype": "villain",
-        "belongsto": ["MaGog"]
     },
     {
         "name": "Symbiotic Berserker",
@@ -5975,22 +5864,6 @@ let countercards = [
         "belongsto": ["Aggression"]
     },
     {
-        "name": "The Champion",
-        "isSelected": false,
-        "type": "counter",
-        "counter": 0,
-        "belongstotype": "villain",
-        "belongsto": ["MaGog"]
-    },
-    {
-        "name": "The Challengers",
-        "isSelected": false,
-        "type": "counter",
-        "counter": 0,
-        "belongstotype": "villain",
-        "belongsto": ["MaGog"]
-    },
-    {
         "name": "The Night Nurse",
         "isSelected": false,
         "type": "counter",
@@ -6068,9 +5941,6 @@ let modules = [
         "name": "City In Chaos"
     },
     {
-        "name": "Crime"
-    },
-    {
         "name": "Crossfire's Crew"
     },
     {
@@ -6078,9 +5948,6 @@ let modules = [
     },
     {
         "name": "Enchantress"
-    },
-    {
-        "name": "Fantasy"
     },
     {
         "name": "Frost Giants"
@@ -6099,9 +5966,6 @@ let modules = [
     },
     {
         "name": "Guerilla Tactics"
-    },
-    {
-        "name": "Horror"
     },
     {
         "name": "Hydra Assault"
@@ -6155,9 +6019,6 @@ let modules = [
         "name": "Running Interference"
     },
     {
-        "name": "Sci-fi"
-    },
-    {
         "name": "Sentinels"
     },
     {
@@ -6168,9 +6029,6 @@ let modules = [
     },
     {
         "name": "Sinister Syndicate"
-    },
-    {
-        "name": "Sitcom"
     },
     {
         "name": "SM Campaign"
@@ -6198,9 +6056,6 @@ let modules = [
     },
     {
         "name": "Under Attack"
-    },
-    {
-        "name": "Western"
     },
     {
         "name": "Whispers of Paranoia"
