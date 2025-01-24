@@ -1887,7 +1887,6 @@ let side_schemes = [
         "threat": 5,
         "basethreat": 5,
         "basethreatfixed": true,
-        "isPlayerSideScheme": false,
         "belongstotype": "module",
         "belongsto": [
             "Crime"
@@ -2027,7 +2026,6 @@ let side_schemes = [
         "threat": 5,
         "basethreat": 5,
         "basethreatfixed": true,
-        "isPlayerSideScheme": false,
         "belongstotype": "module",
         "belongsto": [
             "Crime"
@@ -2132,7 +2130,6 @@ let side_schemes = [
         "threat": 6,
         "basethreat": 6,
         "basethreatfixed": false,
-        "isPlayerSideScheme": false,
         "belongstotype": "module",
         "belongsto": [
             "Fantasy"
@@ -2481,7 +2478,6 @@ let side_schemes = [
         "threat": 2,
         "basethreat": 2,
         "basethreatfixed": false,
-        "isPlayerSideScheme": false,
         "belongstotype": "module",
         "belongsto": [
             "Sci-fi"
@@ -2647,7 +2643,6 @@ let side_schemes = [
         "threat": 5,
         "basethreat": 5,
         "basethreatfixed": true,
-        "isPlayerSideScheme": false,
         "belongstotype": "module",
         "belongsto": [
             "Crime"
@@ -2808,7 +2803,6 @@ let side_schemes = [
         "threat": 4,
         "basethreat": 4,
         "basethreatfixed": false,
-        "isPlayerSideScheme": false,
         "belongstotype": "villain",
         "belongsto": [
             "MaGog"
@@ -2821,7 +2815,6 @@ let side_schemes = [
         "threat": 5,
         "basethreat": 5,
         "basethreatfixed": true,
-        "isPlayerSideScheme": false,
         "belongstotype": "module",
         "belongsto": [
             "Deathstrike"
@@ -3534,7 +3527,6 @@ let side_schemes = [
         "threat": 5,
         "basethreat": 5,
         "basethreatfixed": true,
-        "isPlayerSideScheme": false,
         "belongstotype": "hero",
         "belongsto": [
             "Wolverine"
@@ -3617,7 +3609,6 @@ let side_schemes = [
         "threat": 3,
         "basethreat": 3,
         "basethreatfixed": false,
-        "isPlayerSideScheme": false,
         "belongstotype": "villain",
         "belongsto": [
             "Spiral"
@@ -3805,7 +3796,6 @@ let side_schemes = [
         "threat": 2,
         "basethreat": 2,
         "basethreatfixed": true,
-        "isPlayerSideScheme": false,
         "belongstotype": "villain",
         "belongsto": [
             "Mojo"

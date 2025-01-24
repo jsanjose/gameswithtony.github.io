@@ -256,9 +256,13 @@ function processCardData(inputDir, outputFile) {
                             type: 'side_scheme',
                             threat: card.base_threat,
                             basethreat: card.base_threat,
-                            basethreatfixed: card.base_threat_fixed || false,
-                            isPlayerSideScheme: card.type_code === 'player_side_scheme'
+                            basethreatfixed: card.base_threat_fixed || false
                         };
+
+                        // Only add isPlayerSideScheme if it's true
+                        if (card.type_code === 'player_side_scheme') {
+                            sideSchemeCard.isPlayerSideScheme = true;
+                        }
 
                         if (card.set_code) {
                             if (card.set_code.includes('_nemesis')) {
