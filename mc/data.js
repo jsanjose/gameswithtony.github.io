@@ -170,6 +170,12 @@ let heroes = [
         "hitpoints": 10
     },
     {
+        "name": "Magneto",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
+    },
+    {
         "name": "Ms. Marvel",
         "isSelected": false,
         "type": "hero",
@@ -177,6 +183,12 @@ let heroes = [
     },
     {
         "name": "Nebula (Hero)",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 9
+    },
+    {
+        "name": "Nightcrawler",
         "isSelected": false,
         "type": "hero",
         "hitpoints": 9
@@ -2016,6 +2028,15 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Astonishing X-Men",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "isPlayerSideScheme": true
+    },
+    {
         "name": "Avalanche!",
         "isSelected": false,
         "type": "side_scheme",
@@ -2151,6 +2172,18 @@ let side_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Rhino"
+        ]
+    },
+    {
+        "name": "Brimstone Dimension",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Nightcrawler"
         ]
     },
     {
@@ -3699,6 +3732,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Martyr for Mutants",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Magneto"
+        ]
+    },
+    {
         "name": "Mass Chaos",
         "isSelected": false,
         "type": "side_scheme",
@@ -3829,6 +3874,15 @@ let side_schemes = [
         "belongsto": [
             "Spider-Ham"
         ]
+    },
+    {
+        "name": "New Recruits",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
     },
     {
         "name": "North American Sea Wall",
@@ -4844,6 +4898,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "The Crazy Gang",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Crazy Gang"
+        ]
+    },
+    {
         "name": "The Dark Riders",
         "isSelected": false,
         "type": "side_scheme",
@@ -4876,6 +4942,18 @@ let side_schemes = [
         "belongstotype": "hero",
         "belongsto": [
             "Shadowcat"
+        ]
+    },
+    {
+        "name": "The Inner Circle",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Hellfire"
         ]
     },
     {
@@ -5552,6 +5630,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Sci-fi"
+        ]
+    },
+    {
+        "name": "Azazel",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Nightcrawler"
         ]
     },
     {
@@ -6265,6 +6354,17 @@ let minions = [
         ]
     },
     {
+        "name": "Executioner",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Crazy Gang"
+        ]
+    },
+    {
         "name": "Exodus",
         "isSelected": false,
         "type": "minion",
@@ -6273,6 +6373,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Exodus"
+        ]
+    },
+    {
+        "name": "Fabian Cortez",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Magneto"
         ]
     },
     {
@@ -6294,6 +6405,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Mutant Insurrection"
+        ]
+    },
+    {
+        "name": "Frenzy",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Magneto"
         ]
     },
     {
@@ -6722,6 +6844,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "The Inheritors"
+        ]
+    },
+    {
+        "name": "Jester",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Crazy Gang"
         ]
     },
     {
@@ -7355,6 +7488,17 @@ let minions = [
         ]
     },
     {
+        "name": "Queen of Hearts",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Crazy Gang"
+        ]
+    },
+    {
         "name": "Radioactive Man",
         "isSelected": false,
         "type": "minion",
@@ -7543,6 +7687,28 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "NeXt Evol Campaign"
+        ]
+    },
+    {
+        "name": "Sebastian Shaw",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Hellfire"
+        ]
+    },
+    {
+        "name": "Selene",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Hellfire"
         ]
     },
     {
@@ -8086,6 +8252,17 @@ let minions = [
         ]
     },
     {
+        "name": "Tweedledope",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Crazy Gang"
+        ]
+    },
+    {
         "name": "Tyrannosaurus Rex",
         "isSelected": false,
         "type": "minion",
@@ -8457,6 +8634,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Anole",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Ant-Man",
         "isSelected": false,
         "type": "ally",
@@ -8538,6 +8721,12 @@ let allies = [
     },
     {
         "name": "Blindfold",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
+        "name": "Bling!",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
@@ -8705,6 +8894,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Cyclops (Magneto)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Cypher",
         "isSelected": false,
         "type": "ally",
@@ -8715,6 +8910,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Daytripper",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Dazzler",
@@ -8959,6 +9160,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Indra",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Iron Fist",
         "isSelected": false,
         "type": "ally",
@@ -9023,6 +9230,12 @@ let allies = [
         "hitpoints": 1
     },
     {
+        "name": "Kid Omega",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Kidpool",
         "isSelected": false,
         "type": "ally",
@@ -9075,6 +9288,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 5
+    },
+    {
+        "name": "M",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 4
     },
     {
         "name": "Machine Man",
@@ -9225,6 +9444,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Northstar",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Nova",
@@ -9569,6 +9794,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Surge",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Synch",
         "isSelected": false,
         "type": "ally",
@@ -9702,6 +9933,12 @@ let allies = [
     },
     {
         "name": "White Fox",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "White Queen",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -10330,6 +10567,9 @@ let modules = [
         "name": "Clan Akkaba"
     },
     {
+        "name": "Crazy Gang"
+    },
+    {
         "name": "Crime"
     },
     {
@@ -10382,6 +10622,9 @@ let modules = [
     },
     {
         "name": "Guerilla Tactics"
+    },
+    {
+        "name": "Hellfire"
     },
     {
         "name": "Hope Summers"

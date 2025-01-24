@@ -127,7 +127,7 @@ var app = new Vue({
         filterModule: "",
         filterAspect: "",
         computedUpdater: 1,
-        version: "1.2"
+        version: "1.3"
     },
     mounted: function() {
         this.computedUpdater++;
