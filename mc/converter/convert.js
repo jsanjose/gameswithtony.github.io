@@ -86,8 +86,8 @@ function processCardData(inputDir, outputFile) {
         if (minionsMatch) existingData.minions = eval(minionsMatch[1]);
         const alliesMatch = content.match(/let allies = (.*?);/s);
         if (alliesMatch) existingData.allies = eval(alliesMatch[1]);
-        const counterCardsMatch = content.match(/let counter_cards = (.*?);/s);
-        if (counterCardsMatch) existingData.counter_cards = eval(counterCardsMatch[1]);
+        const counterCardsMatch = content.match(/let (counter_cards|countercards) = (.*?);/s);
+        if (counterCardsMatch) existingData.counter_cards = eval(counterCardsMatch[2]);
         const modulesMatch = content.match(/let modules = (.*?);/s);
         if (modulesMatch) existingData.modules = eval(modulesMatch[1]);
         const aspectsMatch = content.match(/let aspects = (.*?);/s);

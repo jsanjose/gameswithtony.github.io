@@ -6990,6 +6990,16 @@ let allies = [
 
 let countercards = [
     {
+        "name": "Badoon Ship",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Brotherhood of Badoon"
+        ]
+    },
+    {
         "name": "Bandolier of Stakes",
         "isSelected": false,
         "type": "counter",
@@ -6997,6 +7007,106 @@ let countercards = [
         "belongstotype": "module",
         "belongsto": [
             "Horror"
+        ]
+    },
+    {
+        "name": "Battery Pack",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Rocket Raccoon"
+        ]
+    },
+    {
+        "name": "Beat Cop",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Justice"
+        ]
+    },
+    {
+        "name": "Command Team",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Leadership"
+        ]
+    },
+    {
+        "name": "Compact Darts",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "SM Campaign"
+        ]
+    },
+    {
+        "name": "Defensive Training",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Protection"
+        ]
+    },
+    {
+        "name": "Energy Barrier",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Protection"
+        ]
+    },
+    {
+        "name": "Energy Channel",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Captain Marvel"
+        ]
+    },
+    {
+        "name": "Enhanced Awareness",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Basic"
+        ]
+    },
+    {
+        "name": "Enhanced Physique",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Basic"
+        ]
+    },
+    {
+        "name": "Enhanced Reflexes",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Basic"
         ]
     },
     {
@@ -7010,6 +7120,196 @@ let countercards = [
         ]
     },
     {
+        "name": "Field Agent",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Justice"
+        ]
+    },
+    {
+        "name": "Fireball",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Ebony Maw"
+        ]
+    },
+    {
+        "name": "Hall of Heroes",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 1,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Aggression"
+        ]
+    },
+    {
+        "name": "Hand Cannon",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Aggression"
+        ]
+    },
+    {
+        "name": "Manipulation",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Ebony Maw"
+        ]
+    },
+    {
+        "name": "Med Team",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Protection"
+        ]
+    },
+    {
+        "name": "Munitions Bunker",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "hero",
+        "belongsto": [
+            "War Machine"
+        ]
+    },
+    {
+        "name": "Nebula's Ship",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Nebula (Villain)"
+        ]
+    },
+    {
+        "name": "Organic Steel",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Colossus"
+        ]
+    },
+    {
+        "name": "Pacification",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Ebony Maw"
+        ]
+    },
+    {
+        "name": "Particle Cannon",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Rocket Raccoon"
+        ]
+    },
+    {
+        "name": "Phoenix Force",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 4,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Phoenix"
+        ]
+    },
+    {
+        "name": "Plasma Pistol",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Basic"
+        ]
+    },
+    {
+        "name": "Quinjet",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Leadership"
+        ]
+    },
+    {
+        "name": "Rocket Launcher",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Rocket Raccoon"
+        ]
+    },
+    {
+        "name": "Rocket's Pistol",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Rocket Raccoon"
+        ]
+    },
+    {
+        "name": "Rubblestorm",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Ebony Maw"
+        ]
+    },
+    {
+        "name": "Sonic Rifle",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Justice"
+        ]
+    },
+    {
+        "name": "Soul World",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 1,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Adam Warlock"
+        ]
+    },
+    {
         "name": "Spiral's Swords",
         "isSelected": false,
         "type": "counter",
@@ -7017,6 +7317,26 @@ let countercards = [
         "belongstotype": "module",
         "belongsto": [
             "Spiral"
+        ]
+    },
+    {
+        "name": "Surveillance Team",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Justice"
+        ]
+    },
+    {
+        "name": "Tac Team",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Aggression"
         ]
     },
     {
@@ -7037,6 +7357,47 @@ let countercards = [
         "belongstotype": "module",
         "belongsto": [
             "Magog"
+        ]
+    },
+    {
+        "name": "The Night Nurse",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Protection"
+        ]
+    },
+    {
+        "name": "The Poison",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Galactic Artifacts"
+        ]
+    },
+    {
+        "name": "Vigilante Training",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 2,
+        "belongstotype": "aspect",
+        "belongsto": [
+            "Justice"
+        ]
+    },
+    {
+        "name": "Web Shooter",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 3,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Spider-Man",
+            "Spider-Man (Miles Morales)"
         ]
     }
 ];
