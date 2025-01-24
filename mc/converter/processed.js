@@ -652,6 +652,7 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": null,
         "basethreat": 1,
+        "threat": 15,
         "belongstotype": "villain",
         "belongsto": [
             "Spiral"
@@ -964,6 +965,7 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": null,
         "basethreat": 1,
+        "threat": 6,
         "belongstotype": "villain",
         "belongsto": [
             "MaGog"
@@ -986,6 +988,7 @@ let main_schemes = [
         "type": "main_scheme",
         "threat": null,
         "basethreat": 1,
+        "threat": 25,
         "belongstotype": "villain",
         "belongsto": [
             "Mojo"

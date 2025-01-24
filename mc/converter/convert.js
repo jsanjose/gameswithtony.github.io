@@ -11,39 +11,48 @@ function capitalizeSetCode(setCode) {
 function usesCounters(card) {
     if (!card.text) return false;
     
-    const text = card.text.toLowerCase();
+    // Strip HTML tags and convert to lowercase
+    const text = card.text.toLowerCase().replace(/<[^>]*>/g, '');
     
-    // Patterns that indicate a card receives counters itself
+    // Patterns that indicate a card receives or uses counters itself
     const receivesCounterPatterns = [
         /uses \(\d+ \w+ counters?\)/,  // "Uses (3 warrior counters)"
         /enters? play with \d+ \w+ counters?/i,  // "enters play with 2 psionic counters"
         /starts? with \d+ \w+ counters?/i,  // "starts with 3 growth counters"
-        /place \d+ \w+ counters? on (this|itself|~|him|her)/i,  // "place 2 growth counters on this card"
-        /put \d+ \w+ counters? on (this|itself|~|him|her)/i,  // "put 3 time counters on ~"
-        /remove \d+ \w+ counters? from (this|itself|~|him|her)/i,  // "remove a quantum counter from this card"
+        /place \d+ \w+ counters? on (this|itself|~)/i,  // "place 2 growth counters on this card"
+        /put \d+ \w+ counters? on (this|itself|~)/i,  // "put 3 time counters on ~"
+        /remove \d+ \w+ counters? from (this|itself|~)/i,  // "remove a quantum counter from this card"
         /ratings counters? here/i,  // For environment cards that track ratings counters
         /\d+ \w+ counters? on it/i,  // "with 2 acceleration counters on it"
         /\d+ \w+ counters? from it/i,  // "remove 1 threat counter from it"
-        /counters? from (this|itself|~|him|her)/i,  // Generic "remove counters from this card"
-        /\d+ \w+ counters? on (this|itself|~|him|her)/i,  // "1 magnetic counter on him"
-        /counters? on (this|itself|~|him|her)/i  // Generic "counter on him"
+        /counters? from (this|itself|~)/i,  // Generic "remove counters from this card"
+        /\d+ \w+ counters? here/i,  // "momentum counter here"
+        /gets \+\d+ \w+ for each \w+ counter/i,  // "gets +1 ATK for each momentum counter"
+        /gets \+\d+ \w+ points? for each \w+ counter/i,  // "gets +1 hit points for each luck counter"
+        /place \d+ \w+ counters? here\b/i,  // "place 1 knock counter here"
+        /\w+ counters? here\b/i,  // "knock counter here"
+        /if there (is|are) \d+ \w+ counters? here/i,  // "if there are 3 knock counters here"
+        /if there are at least \d+ \w+ counters? here/i  // "if there are at least 3 knock counters here"
     ];
 
     // Patterns that indicate the card only gives counters to other cards
     const givesCounterPatterns = [
-        /place \d+ \w+ counters? on (target|another|that|a|an|the \w+)/i,  // Added "the <name>"
-        /put \d+ \w+ counters? on (target|another|that|a|an|the \w+)/i,
-        /remove \d+ \w+ counters? from (target|another|that|a|an|the \w+)/i,
+        /place \d+ \w+ counters? on (target|another|that|a|an|the \w+)/i,  // "place 1 counter on target"
+        /put \d+ \w+ counters? on (target|another|that|a|an|the \w+)/i,  // "put 1 counter on another"
+        /remove \d+ \w+ counters? from (target|another|that|a|an|the \w+)/i,  // "remove counter from target"
         /counter(s|ed|ing)? target/i,  // "counter target attack"
         /counter(s|ed|ing)? (a|an|that)/i,  // "counter an attack"
         /place \d+\[per_hero\] \w+ counters? on/i,  // "place 3[per_hero] ratings counters on"
         /place \d+ ratings counters? on/i,  // "place 1 ratings counter on The Champion"
-        /place \d+ \w+ counters? on each/i  // "place 1 threat counter on each scheme"
+        /place \d+ \w+ counters? on each/i,  // "place 1 threat counter on each scheme"
+        /place \d+ \w+ counters? on \w+(?! (counter|here))/i  // "place 1 momentum counter on Juggernaut" but not if followed by "counter" or "here"
     ];
 
-    // If any receives pattern matches and no gives pattern matches, this card uses counters
+    // If card has any receives pattern, it uses counters
     const receives = receivesCounterPatterns.some(pattern => pattern.test(text));
-    const onlyGives = givesCounterPatterns.some(pattern => pattern.test(text)) && !receives;
+    
+    // If card only has gives patterns and no receives patterns, it doesn't use counters
+    const onlyGives = !receives && givesCounterPatterns.some(pattern => pattern.test(text));
 
     return receives && !onlyGives;
 }
@@ -220,12 +229,21 @@ function processCardData(inputDir, outputFile) {
 
                 case 'main_scheme':
                     if (card.stage === 1 && card.back_link) {
+                        // Find the stage 2 card to get correct base threat and text
+                        const stage2Card = data.find(c => c.code === card.back_link);
+                        
                         const mainSchemeCard = {
                             ...baseCard,
                             type: 'main_scheme',
-                            threat: card.threat,
-                            basethreat: card.base_threat_fixed ? 0 : 1
+                            threat: stage2Card?.threat || card.threat || 0,
+                            basethreat: stage2Card?.base_threat || card.base_threat || 0
                         };
+
+                        // Check if main scheme uses counters by looking at both sides
+                        if (usesCounters(card) || (stage2Card && usesCounters(stage2Card))) {
+                            mainSchemeCard.useCounter = true;
+                            mainSchemeCard.counter = 0;
+                        }
 
                         if (card.set_code) {
                             // Get the villain's name directly from the map
@@ -321,6 +339,13 @@ function processCardData(inputDir, outputFile) {
                             hitpoints: card.health,
                             hitpointsper: card.health_per_hero || false
                         };
+
+                        // Check if villain uses counters
+                        if (usesCounters(card)) {
+                            villainCard.useCounter = true;
+                            villainCard.counter = 0;
+                        }
+
                         villains.push(villainCard);
 
                         // Add to villain name map for belongsto relationships
