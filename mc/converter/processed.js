@@ -242,6 +242,12 @@ let heroes = [
         "hitpoints": 10,
         "useCounter": true,
         "counter": 0
+    },
+    {
+        "name": "Wolverine",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
     }
 ];
 
@@ -2809,6 +2815,19 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Seeking Vengeance",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "isPlayerSideScheme": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Deathstrike"
+        ]
+    },
+    {
         "name": "Self-Experimentation",
         "isSelected": false,
         "type": "side_scheme",
@@ -3506,6 +3525,19 @@ let side_schemes = [
         "belongstotype": "module",
         "belongsto": [
             "Brotherhood"
+        ]
+    },
+    {
+        "name": "The Carbonadium Synthesizer",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "isPlayerSideScheme": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Wolverine"
         ]
     },
     {
@@ -4629,6 +4661,17 @@ let minions = [
         ]
     },
     {
+        "name": "Lady Deathstrike",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Deathstrike"
+        ]
+    },
+    {
         "name": "Magneto 2.6",
         "isSelected": false,
         "type": "minion",
@@ -4639,6 +4682,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Sci-fi"
+        ]
+    },
+    {
+        "name": "Omega Red",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 8,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Wolverine"
         ]
     },
     {
@@ -6399,6 +6453,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Jubilee (Wolverine)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Kaluu",
         "isSelected": false,
         "type": "ally",
@@ -6433,6 +6493,18 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Psylocke",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Sunfire",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "The Locust",
@@ -7390,6 +7462,12 @@ let countercards = [
         ]
     },
     {
+        "name": "Warrior Skill",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
         "name": "Web Shooter",
         "isSelected": false,
         "type": "counter",
@@ -7450,6 +7528,9 @@ let modules = [
     },
     {
         "name": "Crossfire's Crew"
+    },
+    {
+        "name": "Deathstrike"
     },
     {
         "name": "Down To Earth"
