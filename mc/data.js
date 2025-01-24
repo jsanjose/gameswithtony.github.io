@@ -206,6 +206,12 @@ let heroes = [
         "hitpoints": 10
     },
     {
+        "name": "Storm",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
+    },
+    {
         "name": "Thor",
         "isSelected": false,
         "type": "hero",
@@ -2649,6 +2655,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Leader of the Morlocks",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Storm"
+        ]
+    },
+    {
         "name": "Legions of Hel",
         "isSelected": false,
         "type": "side_scheme",
@@ -2806,6 +2824,18 @@ let side_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "MaGog"
+        ]
+    },
+    {
+        "name": "Ruler of the Astral Plane",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Shadow King"
         ]
     },
     {
@@ -4297,6 +4327,17 @@ let minions = [
         ]
     },
     {
+        "name": "Callisto",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Storm"
+        ]
+    },
+    {
         "name": "Calvin Zabo",
         "isSelected": false,
         "type": "minion",
@@ -5710,6 +5751,17 @@ let minions = [
         ]
     },
     {
+        "name": "The Shadow King",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Shadow King"
+        ]
+    },
+    {
         "name": "The Sleeper",
         "isSelected": false,
         "type": "minion",
@@ -6323,7 +6375,19 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Forge",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Gamora",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Gentle",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -6351,6 +6415,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 6
+    },
+    {
+        "name": "Havok",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Hawkeye (Barton)",
@@ -6483,6 +6553,18 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Mirage",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
+        "name": "Pixie",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Psylocke",
@@ -7222,6 +7304,12 @@ let countercards = [
         ]
     },
     {
+        "name": "Leadership Skill",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
         "name": "Manipulation",
         "isSelected": false,
         "type": "counter",
@@ -7608,6 +7696,9 @@ let modules = [
     },
     {
         "name": "Sentinels"
+    },
+    {
+        "name": "Shadow King"
     },
     {
         "name": "Ship Command"
