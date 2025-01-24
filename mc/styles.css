@@ -394,6 +394,10 @@ option {
     transition: width 500ms ease-in-out;
 }
 
+.progress-bar-fill.playersidescheme {
+    background-color: #008000; /* hulk green */
+}
+
 .official-list {
     padding: 1rem;
 }

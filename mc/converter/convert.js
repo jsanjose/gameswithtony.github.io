@@ -228,15 +228,17 @@ function processCardData(inputDir, outputFile) {
                     break;
 
                 case 'main_scheme':
-                    if (card.stage === 1 && card.back_link) {
-                        // Find the stage 2 card to get correct base threat and text
-                        const stage2Card = data.find(c => c.code === card.back_link);
+                    // Process all main scheme cards that don't have a front_link (they're not the back of another card)
+                    if (!card.front_link) {
+                        // For stage 1 cards (with back_link), find the stage 2 card to get values
+                        // For stage 2+ cards (no back_link), use their own values
+                        const stage2Card = card.back_link ? data.find(c => c.code === card.back_link) : card;
                         
                         const mainSchemeCard = {
                             ...baseCard,
                             type: 'main_scheme',
-                            threat: stage2Card?.threat || card.threat || 0,
-                            basethreat: stage2Card?.base_threat || card.base_threat || 0
+                            threat: stage2Card.threat || 0,  // Get threat from stage 2/back side
+                            basethreat: stage2Card.base_threat || 0  // Get base_threat from stage 2/back side
                         };
 
                         // Check if main scheme uses counters by looking at both sides

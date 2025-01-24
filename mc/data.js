@@ -24,6 +24,12 @@ let heroes = [
         "hitpoints": 9
     },
     {
+        "name": "Cable",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 12
+    },
+    {
         "name": "Captain America",
         "isSelected": false,
         "type": "hero",
@@ -52,6 +58,12 @@ let heroes = [
         "isSelected": false,
         "type": "hero",
         "hitpoints": 10
+    },
+    {
+        "name": "Domino",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 9
     },
     {
         "name": "Drax",
@@ -280,6 +292,13 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Arclight",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 10,
+        "hitpointsper": true
+    },
+    {
         "name": "Avalanche",
         "isSelected": false,
         "type": "villain",
@@ -294,10 +313,24 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Blockbuster",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 11,
+        "hitpointsper": true
+    },
+    {
         "name": "Bulldozer",
         "isSelected": false,
         "type": "villain",
         "hitpoints": 12,
+        "hitpointsper": true
+    },
+    {
+        "name": "Chimera",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 11,
         "hitpointsper": true
     },
     {
@@ -364,6 +397,20 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Greycrow",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 9,
+        "hitpointsper": true
+    },
+    {
+        "name": "Harpoon",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 10,
+        "hitpointsper": true
+    },
+    {
         "name": "Hela",
         "isSelected": false,
         "type": "villain",
@@ -376,6 +423,15 @@ let villains = [
         "type": "villain",
         "hitpoints": 9,
         "hitpointsper": true
+    },
+    {
+        "name": "Juggernaut",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 18,
+        "hitpointsper": true,
+        "useCounter": true,
+        "counter": 0
     },
     {
         "name": "Kang (Immortus)",
@@ -451,6 +507,13 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Mister Sinister",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 14,
+        "hitpointsper": true
+    },
+    {
         "name": "Mojo",
         "isSelected": false,
         "type": "villain",
@@ -518,6 +581,13 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Riptide",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 9,
+        "hitpointsper": true
+    },
+    {
         "name": "Ronan",
         "isSelected": false,
         "type": "villain",
@@ -564,6 +634,13 @@ let villains = [
         "isSelected": false,
         "type": "villain",
         "hitpoints": 13,
+        "hitpointsper": true
+    },
+    {
+        "name": "Stryfe",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 15,
         "hitpointsper": true
     },
     {
@@ -623,6 +700,13 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Vertigo",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 9,
+        "hitpointsper": true
+    },
+    {
         "name": "Vulture",
         "isSelected": false,
         "type": "villain",
@@ -650,9 +734,8 @@ let main_schemes = [
         "name": "Across the Mojoverse",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": null,
-        "basethreat": 1,
         "threat": 15,
+        "basethreat": 1,
         "belongstotype": "villain",
         "belongsto": [
             "Spiral"
@@ -745,6 +828,17 @@ let main_schemes = [
         ]
     },
     {
+        "name": "Bulking Up",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 5,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Mister Sinister"
+        ]
+    },
+    {
         "name": "Corporate Acquisition",
         "isSelected": false,
         "type": "main_scheme",
@@ -791,6 +885,17 @@ let main_schemes = [
         ]
     },
     {
+        "name": "Escaping with Hope",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 9,
+        "basethreat": 1,
+        "belongstotype": "module",
+        "belongsto": [
+            "On The Run"
+        ]
+    },
+    {
         "name": "Factory Online",
         "isSelected": false,
         "type": "main_scheme",
@@ -801,6 +906,28 @@ let main_schemes = [
         "counter": 0,
         "belongsto": [
             "Magneto"
+        ]
+    },
+    {
+        "name": "Focusing In",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 5,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Mister Sinister"
+        ]
+    },
+    {
+        "name": "Gotta Get Away",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 8,
+        "basethreat": 1,
+        "belongstotype": "module",
+        "belongsto": [
+            "On The Run"
         ]
     },
     {
@@ -893,6 +1020,19 @@ let main_schemes = [
         ]
     },
     {
+        "name": "Knock, Knock",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 6,
+        "basethreat": 1,
+        "useCounter": true,
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Morlock Siege"
+        ]
+    },
+    {
         "name": "Leave Us Alone!",
         "isSelected": false,
         "type": "main_scheme",
@@ -901,6 +1041,17 @@ let main_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Venom"
+        ]
+    },
+    {
+        "name": "Left to Your Fate",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 8,
+        "basethreat": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Stryfe"
         ]
     },
     {
@@ -963,9 +1114,8 @@ let main_schemes = [
         "name": "Melee in the Mojo-seum",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": null,
-        "basethreat": 1,
         "threat": 6,
+        "basethreat": 1,
         "belongstotype": "villain",
         "belongsto": [
             "MaGog"
@@ -986,9 +1136,8 @@ let main_schemes = [
         "name": "MojoMania",
         "isSelected": false,
         "type": "main_scheme",
-        "threat": null,
-        "basethreat": 1,
         "threat": 25,
+        "basethreat": 1,
         "belongstotype": "villain",
         "belongsto": [
             "Mojo"
@@ -1003,6 +1152,17 @@ let main_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Green Goblin"
+        ]
+    },
+    {
+        "name": "Mutant Massacre",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 8,
+        "basethreat": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Morlock Siege"
         ]
     },
     {
@@ -1100,6 +1260,28 @@ let main_schemes = [
         ]
     },
     {
+        "name": "Sinister Ends",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 7,
+        "basethreat": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Mister Sinister"
+        ]
+    },
+    {
+        "name": "Sinister Intent",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 0,
+        "basethreat": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Mister Sinister"
+        ]
+    },
+    {
         "name": "Sinister Synchronization",
         "isSelected": false,
         "type": "main_scheme",
@@ -1135,6 +1317,17 @@ let main_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Ronan"
+        ]
+    },
+    {
+        "name": "Taking Off",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 5,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Mister Sinister"
         ]
     },
     {
@@ -1470,6 +1663,28 @@ let main_schemes = [
         ]
     },
     {
+        "name": "The Unstoppable Juggernaut",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 7,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Juggernaut"
+        ]
+    },
+    {
+        "name": "Uncontrollable Power",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 9,
+        "basethreat": 0,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Stryfe"
+        ]
+    },
+    {
         "name": "Under Siege",
         "isSelected": false,
         "type": "main_scheme",
@@ -1579,6 +1794,19 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Assemble the Team",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "NeXt Evol Campaign"
+        ]
+    },
+    {
         "name": "Avalanche!",
         "isSelected": false,
         "type": "side_scheme",
@@ -1598,6 +1826,18 @@ let side_schemes = [
         "belongstotype": "module",
         "belongsto": [
             "SM Campaign"
+        ]
+    },
+    {
+        "name": "Back to the Future",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Cable"
         ]
     },
     {
@@ -1746,6 +1986,72 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Build Support",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
+    },
+    {
+        "name": "Building Momentum",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Juggernaut"
+        ]
+    },
+    {
+        "name": "Bushwhack",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 1,
+        "basethreat": 1,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "On The Run"
+        ]
+    },
+    {
+        "name": "By Any Means",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Morlock Siege"
+        ]
+    },
+    {
+        "name": "Call for Backup",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
+    },
+    {
+        "name": "Captive Hope",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Hope Summers"
+        ]
+    },
+    {
         "name": "Captured by Hydra",
         "isSelected": false,
         "type": "side_scheme",
@@ -1801,6 +2107,18 @@ let side_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Red Skull"
+        ]
+    },
+    {
+        "name": "Cerebral Erasure",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Stryfe"
         ]
     },
     {
@@ -2078,6 +2396,28 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Establish Perimeter",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
+    },
+    {
+        "name": "Establish Safehouse",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "NeXt Evol Campaign"
+        ]
+    },
+    {
         "name": "Extortion of Seismic Proportion",
         "isSelected": false,
         "type": "side_scheme",
@@ -2086,6 +2426,18 @@ let side_schemes = [
         "belongstotype": "hero",
         "belongsto": [
             "Quicksilver"
+        ]
+    },
+    {
+        "name": "Extreme Measures",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Extreme Measures"
         ]
     },
     {
@@ -2238,6 +2590,19 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Gear Up",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "NeXt Evol Campaign"
+        ]
+    },
+    {
         "name": "Genetic Manipulation",
         "isSelected": false,
         "type": "side_scheme",
@@ -2257,6 +2622,18 @@ let side_schemes = [
         "belongstotype": "hero",
         "belongsto": [
             "Ms. Marvel"
+        ]
+    },
+    {
+        "name": "Get Nasty",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Nasty Boys"
         ]
     },
     {
@@ -2543,6 +2920,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "In the Midst of Chaos",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Morlock Siege"
+        ]
+    },
+    {
         "name": "Insert Virus Program",
         "isSelected": false,
         "type": "side_scheme",
@@ -2772,6 +3161,27 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Living Bomb",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Stryfe"
+        ]
+    },
+    {
+        "name": "Lock and Load",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
+    },
+    {
         "name": "Madness on Midgard",
         "isSelected": false,
         "type": "side_scheme",
@@ -2793,6 +3203,30 @@ let side_schemes = [
         "belongstotype": "module",
         "belongsto": [
             "Galactic Artifacts"
+        ]
+    },
+    {
+        "name": "Making Green",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Black Tom Cassidy"
+        ]
+    },
+    {
+        "name": "Maraudin' Ain't Easy",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Morlock Siege"
         ]
     },
     {
@@ -2832,6 +3266,43 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Mission Prep",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "NeXt Evol Campaign"
+        ]
+    },
+    {
+        "name": "Mutant Insurrection",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Insurrection"
+        ]
+    },
+    {
+        "name": "Mutant Slayers",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Slayers"
+        ]
+    },
+    {
         "name": "Mutants at the Mall",
         "isSelected": false,
         "type": "side_scheme",
@@ -2856,6 +3327,44 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Not My Lucky Day",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Domino"
+        ]
+    },
+    {
+        "name": "Practice Maneuvers",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "NeXt Evol Campaign"
+        ]
+    },
+    {
+        "name": "Prepare Defenses",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "NeXt Evol Campaign"
+        ]
+    },
+    {
         "name": "Pump Up the Crowd",
         "isSelected": false,
         "type": "side_scheme",
@@ -2865,6 +3374,18 @@ let side_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "MaGog"
+        ]
+    },
+    {
+        "name": "Pure Force",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "On The Run"
         ]
     },
     {
@@ -3480,6 +4001,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Stryfe's Grasp",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Stryfe"
+        ]
+    },
+    {
         "name": "Super Absorbing Power",
         "isSelected": false,
         "type": "side_scheme",
@@ -3502,6 +4035,15 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Superpower Training",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
+    },
+    {
         "name": "Surprise Attack",
         "isSelected": false,
         "type": "side_scheme",
@@ -3511,6 +4053,15 @@ let side_schemes = [
         "belongsto": [
             "MG Campaign"
         ]
+    },
+    {
+        "name": "Take Out the Guards",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
     },
     {
         "name": "Taskmaster's Training Camp",
@@ -3544,6 +4095,55 @@ let side_schemes = [
         "belongstotype": "hero",
         "belongsto": [
             "Ant-Man"
+        ]
+    },
+    {
+        "name": "Technovirus Purge",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "isPlayerSideScheme": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Cable"
+        ]
+    },
+    {
+        "name": "Telepathic Camouflage",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Stryfe"
+        ]
+    },
+    {
+        "name": "Teleported Away",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Mister Sinister"
+        ]
+    },
+    {
+        "name": "Territorial Control",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 4,
+        "basethreat": 4,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Morlock Siege"
         ]
     },
     {
@@ -3650,7 +4250,7 @@ let side_schemes = [
         ]
     },
     {
-        "name": "The Next Evolution",
+        "name": "The NeXt Evolution",
         "isSelected": false,
         "type": "side_scheme",
         "threat": 2,
@@ -3707,6 +4307,18 @@ let side_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Spiral"
+        ]
+    },
+    {
+        "name": "The Senator's Support",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Military Grade"
         ]
     },
     {
@@ -3882,6 +4494,18 @@ let side_schemes = [
         "belongstotype": "hero",
         "belongsto": [
             "Vision"
+        ]
+    },
+    {
+        "name": "Under Pressure",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "NeXt Evol Campaign"
         ]
     },
     {
@@ -4065,6 +4689,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Anachronauts"
+        ]
+    },
+    {
+        "name": "Arclight",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Slayers"
         ]
     },
     {
@@ -4270,6 +4905,17 @@ let minions = [
         ]
     },
     {
+        "name": "Black Tom Cassidy",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Black Tom Cassidy"
+        ]
+    },
+    {
         "name": "Blackjack O'Hare",
         "isSelected": false,
         "type": "minion",
@@ -4340,6 +4986,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Sci-fi"
+        ]
+    },
+    {
+        "name": "Blockbuster",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Slayers"
         ]
     },
     {
@@ -4446,6 +5103,17 @@ let minions = [
         ]
     },
     {
+        "name": "Chimera",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Slayers"
+        ]
+    },
+    {
         "name": "Chitauri Soldier",
         "isSelected": false,
         "type": "minion",
@@ -4496,6 +5164,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Children of Thanos"
+        ]
+    },
+    {
+        "name": "Creeping Willow",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Black Tom Cassidy"
         ]
     },
     {
@@ -4599,6 +5278,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Fantasy"
+        ]
+    },
+    {
+        "name": "Dragoness",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Insurrection"
         ]
     },
     {
@@ -4728,6 +5418,17 @@ let minions = [
         ]
     },
     {
+        "name": "Forearm",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Insurrection"
+        ]
+    },
+    {
         "name": "Frost Giant",
         "isSelected": false,
         "type": "minion",
@@ -4790,6 +5491,28 @@ let minions = [
         ]
     },
     {
+        "name": "Gorgeous George",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Nasty Boys"
+        ]
+    },
+    {
+        "name": "Greycrow",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Slayers"
+        ]
+    },
+    {
         "name": "Guild Assassin",
         "isSelected": false,
         "type": "minion",
@@ -4812,6 +5535,28 @@ let minions = [
         ]
     },
     {
+        "name": "Hairbag",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Nasty Boys"
+        ]
+    },
+    {
+        "name": "Harpoon",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Slayers"
+        ]
+    },
+    {
         "name": "Lady Deathstrike",
         "isSelected": false,
         "type": "minion",
@@ -4820,6 +5565,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Deathstrike"
+        ]
+    },
+    {
+        "name": "Lady Mastermind",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "NeXt Evol Campaign"
         ]
     },
     {
@@ -4833,6 +5589,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Sci-fi"
+        ]
+    },
+    {
+        "name": "Malice",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 1,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "NeXt Evol Campaign"
         ]
     },
     {
@@ -4858,6 +5625,19 @@ let minions = [
         ]
     },
     {
+        "name": "Prototype",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 1,
+        "hitpointsper": false,
+        "useCounter": true,
+        "counter": 0,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Domino"
+        ]
+    },
+    {
         "name": "Pyro 4.0",
         "isSelected": false,
         "type": "minion",
@@ -4869,6 +5649,85 @@ let minions = [
         ]
     },
     {
+        "name": "Ramrod",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Nasty Boys"
+        ]
+    },
+    {
+        "name": "Reaper",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Insurrection"
+        ]
+    },
+    {
+        "name": "Riptide",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Slayers"
+        ]
+    },
+    {
+        "name": "Ruckus",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Nasty Boys"
+        ]
+    },
+    {
+        "name": "Samurai",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "useCounter": true,
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Insurrection"
+        ]
+    },
+    {
+        "name": "Scrambler",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "NeXt Evol Campaign"
+        ]
+    },
+    {
+        "name": "Sinister Soldier",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Mister Sinister"
+        ]
+    },
+    {
         "name": "Skullbuster",
         "isSelected": false,
         "type": "minion",
@@ -4877,6 +5736,41 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Reavers"
+        ]
+    },
+    {
+        "name": "Slab",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "useCounter": true,
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Nasty Boys"
+        ]
+    },
+    {
+        "name": "Strobe",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Extreme Measures"
+        ]
+    },
+    {
+        "name": "Stryfe",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Cable"
         ]
     },
     {
@@ -4899,6 +5793,17 @@ let minions = [
         "belongstotype": "villain",
         "belongsto": [
             "MaGog"
+        ]
+    },
+    {
+        "name": "Tempo",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Extreme Measures"
         ]
     },
     {
@@ -5934,6 +6839,17 @@ let minions = [
         ]
     },
     {
+        "name": "Thumbelina",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Extreme Measures"
+        ]
+    },
+    {
         "name": "Thunderball",
         "isSelected": false,
         "type": "minion",
@@ -6005,6 +6921,17 @@ let minions = [
         ]
     },
     {
+        "name": "Topaz",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Domino"
+        ]
+    },
+    {
         "name": "Troll",
         "isSelected": false,
         "type": "minion",
@@ -6067,6 +6994,17 @@ let minions = [
         ]
     },
     {
+        "name": "Vanisher",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "NeXt Evol Campaign"
+        ]
+    },
+    {
         "name": "Vera",
         "isSelected": false,
         "type": "minion",
@@ -6074,6 +7012,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "The Inheritors"
+        ]
+    },
+    {
+        "name": "Vertigo",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Mutant Slayers"
         ]
     },
     {
@@ -6179,6 +7128,17 @@ let minions = [
         ]
     },
     {
+        "name": "Wildside",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Extreme Measures"
+        ]
+    },
+    {
         "name": "Wrecker",
         "isSelected": false,
         "type": "minion",
@@ -6236,6 +7196,17 @@ let minions = [
         "belongstotype": "hero",
         "belongsto": [
             "Adam Warlock"
+        ]
+    },
+    {
+        "name": "Zero",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Stryfe"
         ]
     },
     {
@@ -6316,6 +7287,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
+    },
+    {
+        "name": "Atlas Bear",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Banshee",
@@ -6420,6 +7397,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Caliban",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Cannonball",
         "isSelected": false,
         "type": "ally",
@@ -6504,6 +7487,24 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Deadpool",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Deathlok",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Diamondback",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Drax",
         "isSelected": false,
         "type": "ally",
@@ -6541,6 +7542,18 @@ let allies = [
     },
     {
         "name": "Fandral",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Fantomex",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Feral",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -6633,6 +7646,12 @@ let allies = [
     },
     {
         "name": "Hogun",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Hope Summers",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -6750,6 +7769,18 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Morlock",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 5
+    },
+    {
+        "name": "Outlaw",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Pixie",
         "isSelected": false,
         "type": "ally",
@@ -6769,6 +7800,12 @@ let allies = [
     },
     {
         "name": "Sunfire",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
+        "name": "Sunspot",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 2
@@ -7261,6 +8298,12 @@ let allies = [
     },
     {
         "name": "Wasp (Nadia Van Dyne)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "White Fox",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -7794,6 +8837,9 @@ let modules = [
         "name": "Black Order"
     },
     {
+        "name": "Black Tom Cassidy"
+    },
+    {
         "name": "Bomb Scare"
     },
     {
@@ -7827,6 +8873,9 @@ let modules = [
         "name": "Exodus"
     },
     {
+        "name": "Extreme Measures"
+    },
+    {
         "name": "Fantasy"
     },
     {
@@ -7846,6 +8895,9 @@ let modules = [
     },
     {
         "name": "Guerilla Tactics"
+    },
+    {
+        "name": "Hope Summers"
     },
     {
         "name": "Horror"
@@ -7878,13 +8930,34 @@ let modules = [
         "name": "MG Campaign"
     },
     {
+        "name": "Military Grade"
+    },
+    {
         "name": "Mister Hyde"
+    },
+    {
+        "name": "Morlock Siege"
     },
     {
         "name": "MTS Campaign"
     },
     {
+        "name": "Mutant Insurrection"
+    },
+    {
+        "name": "Mutant Slayers"
+    },
+    {
         "name": "Mystique"
+    },
+    {
+        "name": "Nasty Boys"
+    },
+    {
+        "name": "NeXt Evol Campaign"
+    },
+    {
+        "name": "On The Run"
     },
     {
         "name": "Osborn Tech"
