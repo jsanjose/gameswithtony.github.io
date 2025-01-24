@@ -158,6 +158,12 @@ let heroes = [
         "counter": 0
     },
     {
+        "name": "Jubilee",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 9
+    },
+    {
         "name": "Magik",
         "isSelected": false,
         "type": "hero",
@@ -1974,6 +1980,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Arcade's Funhouse",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Arcade"
+        ]
+    },
+    {
         "name": "Armored Assault",
         "isSelected": false,
         "type": "side_scheme",
@@ -2865,6 +2883,15 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Generation X",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
+    },
+    {
         "name": "Genetic Manipulation",
         "isSelected": false,
         "type": "side_scheme",
@@ -3006,6 +3033,18 @@ let side_schemes = [
         "belongstotype": "module",
         "belongsto": [
             "MTS Campaign"
+        ]
+    },
+    {
+        "name": "Hall of Mirrors",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Arcade"
         ]
     },
     {
@@ -3768,6 +3807,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Naughty Children",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Jubilee"
+        ]
+    },
+    {
         "name": "Nefarious Trap",
         "isSelected": false,
         "type": "side_scheme",
@@ -4483,6 +4534,19 @@ let side_schemes = [
         "belongstotype": "hero",
         "belongsto": [
             "Nebula (Hero)"
+        ]
+    },
+    {
+        "name": "Shopping Spree",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "isPlayerSideScheme": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Jubilee"
         ]
     },
     {
@@ -5288,6 +5352,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Welcome to Murderworld",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Arcade"
+        ]
+    },
+    {
         "name": "Zola's Experiments",
         "isSelected": false,
         "type": "side_scheme",
@@ -5382,6 +5458,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Anachronauts"
+        ]
+    },
+    {
+        "name": "Arcade",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Arcade"
         ]
     },
     {
@@ -7056,6 +7143,17 @@ let minions = [
         ]
     },
     {
+        "name": "Nanny",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Jubilee"
+        ]
+    },
+    {
         "name": "Nebula",
         "isSelected": false,
         "type": "minion",
@@ -8559,6 +8657,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Chamber",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Charlie-27",
         "isSelected": false,
         "type": "ally",
@@ -8841,6 +8945,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 5
+    },
+    {
+        "name": "Husk",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Iceman",
@@ -9459,6 +9569,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Synch",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Tempus",
         "isSelected": false,
         "type": "ally",
@@ -9710,6 +9826,12 @@ let countercards = [
         "belongsto": [
             "Justice"
         ]
+    },
+    {
+        "name": "Cell Phone",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
     },
     {
         "name": "Command Team",
@@ -10158,6 +10280,9 @@ let modules = [
     },
     {
         "name": "Aoa Mission"
+    },
+    {
+        "name": "Arcade"
     },
     {
         "name": "Armadillo"
