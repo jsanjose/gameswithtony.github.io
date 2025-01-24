@@ -138,6 +138,12 @@ let heroes = [
         "hitpoints": 18
     },
     {
+        "name": "Iceman",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 11
+    },
+    {
         "name": "Iron Man",
         "isSelected": false,
         "type": "hero",
@@ -3330,6 +3336,15 @@ let side_schemes = [
         "isPlayerSideScheme": true
     },
     {
+        "name": "Keep Up the Pressure",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": false,
+        "isPlayerSideScheme": true
+    },
+    {
         "name": "Killer for Hire",
         "isSelected": false,
         "type": "side_scheme",
@@ -4014,6 +4029,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Playing with Fire",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Iceman"
+        ]
+    },
+    {
         "name": "Plugged In",
         "isSelected": false,
         "type": "side_scheme",
@@ -4363,6 +4390,18 @@ let side_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Thanos"
+        ]
+    },
+    {
+        "name": "Sauron Lives!",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Sauron"
         ]
     },
     {
@@ -7356,6 +7395,17 @@ let minions = [
         ]
     },
     {
+        "name": "Sauron",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Sauron"
+        ]
+    },
+    {
         "name": "Scarab",
         "isSelected": false,
         "type": "minion",
@@ -8335,6 +8385,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Beak",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Beast",
         "isSelected": false,
         "type": "ally",
@@ -8693,6 +8749,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 4
+    },
+    {
+        "name": "Glob",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Goldballs",
@@ -9247,6 +9309,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Shark-Girl",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Shatterstar",
         "isSelected": false,
         "type": "ally",
@@ -9275,6 +9343,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Snow Clone",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
     },
     {
         "name": "Snowguard",
@@ -10276,6 +10350,9 @@ let modules = [
     },
     {
         "name": "Running Interference"
+    },
+    {
+        "name": "Sauron"
     },
     {
         "name": "Savage Land"
