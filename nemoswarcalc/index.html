@@ -10,9 +10,11 @@
     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
     <meta http-equiv="pragma" content="no-cache" />
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <title>Nemo's War Score Calculator</title>
+    <title>Nemo's War Score Calculator | gameswithtony.com</title>
 </head>
 
 <body>
@@ -20,17 +22,19 @@
         <section class="entries">
             <section class="motive">
                 <select v-model="motive">
-                    <option value="0">Science</option>
-                    <option value="1">Explore</option>
-                    <option value="2">Anti-Imperalism</option>
-                    <option value="3">War</option>
                     <option value="4">Adventure</option>
+                    <option value="2">Anti-Imperalism</option>
+                    <option value="1">Explore</option>
                     <option value="5">Humanist</option>
+                    <option value="10">Piracy</option>
+                    <option value="0">Science</option>
+                    <option value="3">War</option>
+                    <option value="11">World Order</option>
                     <optgroup label="-- Unofficial --">
-                        <option value="6">Prince Dakkar</option>
-                        <option value="7">Nemo-Hook</option>
-                        <option value="8">Swashbuckler</option>
                         <option value="9">Anti-Colonialism</option>
+                        <option value="7">Nemo-Hook</option>
+                        <option value="6">Prince Dakkar</option>
+                        <option value="8">Swashbuckler</option>
                     </optgroup>
                 </select>
             </section>
@@ -41,61 +45,58 @@
                     <li>If there is a third box (0s): enter the total <em>number</em> of all indicated cards/tiles with a 0VP value.</li>
                 </ul>
             </section>
-            <label for="warshipsSunk">Warships Sunk</label>
+            <label for="warshipsSunk">Warships Sunk <span class="linetotal">({{ warshipsSunkTotal }})</span></label>
             <input type="number" inputmode="numeric" name="warshipsSunk" id="warshipsSunk" class="entry" v-model="warshipsSunk" />
             <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][0] != 0">#</span><input type="number" min="0" max="100" inputmode="numeric" name="warshipsSunkNumber" id="warshipsSunkNumber" class="entry-small" v-model="warshipsSunkNumber" v-if="MOTIVE_MULTIPLIER[motive][0] != 0" />
             <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][0] < 0">0s</span><input type="number" min="0" max="100" inputmode="numeric" name="warshipsSunkZero" id="warshipsSunkZero" class="entry-small" v-model="warshipsSunkZero" v-if="MOTIVE_MULTIPLIER[motive][0] < 0" />
-            {{ warshipsSunkTotal }}
             
-            <label for="nonWarshipsSunk">Non-Warships Sunk</label>
+            
+            <label for="nonWarshipsSunk">Non-Warships Sunk <span class="linetotal">({{ nonWarshipsSunkTotal }})</span></label>
             <input type="number" inputmode="numeric" name="nonWarshipsSunk" id="nonWarshipsSunk" class="entry" v-model="nonWarshipsSunk" />
             <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][1] != 0">#</span><input type="number" min="0" max="100" inputmode="numeric" name="nonWarshipsSunkNumber" id="nonWarshipsSunkNumber" class="entry-small" v-model="nonWarshipsSunkNumber"  v-model="warshipsSunkNumber" v-if="MOTIVE_MULTIPLIER[motive][1] != 0" />
             <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][1] < 0">0s</span><input type="number" min="0" max="100" inputmode="numeric" name="nonWarshipsSunkZero" id="nonWarshipsSunkZero" class="entry-small" v-model="nonWarshipsSunkZero" v-if="MOTIVE_MULTIPLIER[motive][1] < 0" />
-            {{ nonWarshipsSunkTotal }}
             
-            <label for="adventureCards">Adventure Cards</label>
+            <label for="adventureCards">Adventure Cards <span class="linetotal">({{ adventureCardsTotal }})</span></label>
+            <p class="reminder">in PASS pile; from Nautilus Upgrade in Tableau</p>
             <input type="number" inputmode="numeric" name="adventureCards" id="adventureCards" class="entry" v-model="adventureCards" />
             <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][2] != 0">#</span><input type="number" min="0" max="100" inputmode="numeric" name="adventureCardsNumber" id="adventureCardsNumber" class="entry-small" v-model="adventureCardsNumber" v-if="MOTIVE_MULTIPLIER[motive][2] != 0" />
             <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][2] < 0">0s</span><input type="number" min="0" max="100" inputmode="numeric" name="adventureCardsZero" id="adventureCardsZero" class="entry-small" v-model="adventureCardsZero"  v-if="MOTIVE_MULTIPLIER[motive][2] < 0" />
-            {{ adventureCardsTotal }}
 
-            <label for="treasure">Collected Treasure</label>
+            <label for="treasure">Collected Treasure <span class="linetotal">({{ treasureTotal }})</span></label>
+            <p class="reminder">from Treasure Box and Tableau</p>
             <input type="number" inputmode="numeric" name="treasure" id="treasure" class="entry" v-model="treasure" />
             <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][3] != 0">#</span><input type="number" min="0" max="100" inputmode="numeric" name="treasureNumber" id="treasureNumber" class="entry-small" v-model="treasureNumber" v-if="MOTIVE_MULTIPLIER[motive][3] != 0" />
             <span class="small-label" v-if="MOTIVE_MULTIPLIER[motive][3] < 0">0s</span><input type="number" min="0" max="100" inputmode="numeric" name="treasureZero" id="treasureZero" class="entry-small" v-model="treasureZero" v-if="MOTIVE_MULTIPLIER[motive][3] < 0" />
-            {{ treasureTotal }}
 
-            <label for="liberation">Liberation</label>
+            <label for="liberation">Liberation <span class="linetotal">({{ liberationTotal }})</span></label>
             <input type="number" inputmode="numeric" name="liberation" id="liberation" class="entry" v-model="liberation" />
-            {{ liberationTotal }}
 
-            <label for="scienceDiscovered">Science</label>
+            <label for="scienceDiscovered">Science <span class="linetotal">({{ scienceDiscoveredTotal }})</span></label>
+            <p class="reminder">from Sunken Ships in Tonnage, cards in PASS pile, Nautilus Upgrade in Tableau, Nautilus Hull, Professor Aronnax Survival tile</p>
             <input type="number" inputmode="numeric" name="scienceDiscovered" id="scienceDiscovered" class="entry" v-model="scienceDiscovered" />
-            {{ scienceDiscoveredTotal }}
 
-            <label for="wondersSeen">Wonders</label>
+            <label for="wondersSeen">Wonders <span class="linetotal">({{ wondersSeenTotal }})</span></label>
+            <p class="reminder">from Sunken Ships in Tonnage, cards in PASS pile, Nautilus Upgrade in Tableau, Treasure Box, Nemo’s mental health</p>
             <input type="number" inputmode="numeric" name="wondersSeen" id="wondersSeen" class="entry" v-model="wondersSeen" />
-            {{ wondersSeenTotal }}
 
-            <label for="charactersRemaining">Surviving Characters</label>
+            <label for="charactersRemaining">Surviving Characters <span class="linetotal">({{ charactersRemainingTotal }})</span></label>
+            <p class="reminder">from cards in PASS pile, Surviving character tiles, Crew track value</p>
             <input type="number" inputmode="numeric" name="charactersRemaining" id="charactersRemaining" class="entry" v-model="charactersRemaining" />
-            {{ charactersRemainingTotal }}
 
-            <label for="shipResourcesPenalty">Scouring The Seas</label>
+            <label for="shipResourcesPenalty">Scouring The Seas <span class="linetotal">({{ scouringTheSeasTotal }})</span></label>
             <input type="number" inputmode="numeric" name="scouringTheSeas" id="scouringTheSeas" class="entry" v-model="scouringTheSeas" />
-            {{ scouringTheSeasTotal }}
 
-            <label for="shipResourcesPenalty">Ship Resources Penalty</label>
-            - <input type="number" inputmode="numeric" name="shipResourcesPenalty" id="shipResourcesPenalty" class="entry" v-model="shipResourcesPenalty" />
-            {{ shipResourcesPenaltyTotal }}
+            <label for="shipResourcesPenalty">Ship Resources Penalty <span class="linetotal">({{ shipResourcesPenaltyTotal }})</span></label>
+            <input type="number" inputmode="numeric" name="shipResourcesPenalty" id="shipResourcesPenalty" class="entry" v-model="shipResourcesPenalty" />
            
             <section class="totalscore">
                 TOTAL SCORE: {{ totalScore }}
                 <br />
-                    <em>{{ victoryLevel }}</em>
-                
+                <em class="victorylevel">{{ victoryLevel }}</em>
             </section>
-            <a class="otherlinks" href="https://gameswithtony.com/nemoswar">Nemo's War Dice Roller</a>
+            <section class="otherlinks">
+            <a href="https://gameswithtony.com/nemoswar">Nemo's War Dice Roller</a><a href="https://gameswithtony.com">gameswithtony.com</a>
+        </section>
         </section>
     </main>
 </body>
