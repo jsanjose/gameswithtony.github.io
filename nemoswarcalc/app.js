@@ -5,7 +5,7 @@ const LOCALSTORAGENAME = 'nemoswarcalc';
 var app = new Vue({
     el: '#nemocalc',
     data: {
-      motive: 0,
+      motive: 4,
       warshipsSunk: null,
       warshipsSunkNumber: null,
       warshipsSunkZero: null,
