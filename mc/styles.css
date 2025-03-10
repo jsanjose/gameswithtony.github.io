@@ -145,6 +145,16 @@ body {
     color: darkred;
 }
 
+.threatcounter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 0.95rem;
+    text-align: right;
+    color: darkred;
+    margin-top: 0.5rem;
+}
+
 .counter-buttons {
     display: flex;
     margin-left: 0.5rem;
@@ -159,6 +169,11 @@ body {
     border-radius: 25%;
     display: inline-flex;
     align-items: center;
+}
+
+.counter-buttons a.threat {
+    background-color: darkred;
+    color: #fff;
 }
 
 .counter-button-item {
@@ -185,6 +200,10 @@ body {
     background-color: blue;
     font-weight: bold;
     color: #fff;
+}
+
+.countercard .counter-buttons a.counter-button-threat {
+    background-color: darkred;
 }
 
 .countercard .counter-buttons a, .countercard .counter-button-item {
@@ -310,7 +329,15 @@ option {
 
 .character-maxhitpoints {
     width: 70px;
-    margin-left: 0.5rem
+    margin-left: 0.5rem;
+    text-align: center;
+}
+
+.character-threatcounter {
+    width: 60px;
+    text-align: center;
+    background-color: darkred;
+    color: white;
 }
 
 .edit-buttons {

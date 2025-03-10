@@ -176,6 +176,12 @@ let heroes = [
         "hitpoints": 10
     },
     {
+        "name": "Maria Hill",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 9
+    },
+    {
         "name": "Ms. Marvel",
         "isSelected": false,
         "type": "hero",
@@ -186,6 +192,12 @@ let heroes = [
         "isSelected": false,
         "type": "hero",
         "hitpoints": 9
+    },
+    {
+        "name": "Nick Fury",
+        "isSelected": false,
+        "type": "hero",
+        "hitpoints": 10
     },
     {
         "name": "Nightcrawler",
@@ -379,6 +391,27 @@ let villains = [
         "hitpointsper": true
     },
     {
+        "name": "Baron Zemo",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 12,
+        "hitpointsper": false
+    },
+    {
+        "name": "Batroc",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 8,
+        "hitpointsper": false
+    },
+    {
+        "name": "Black Widow",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 13,
+        "hitpointsper": true
+    },
+    {
         "name": "Blob",
         "isSelected": false,
         "type": "villain",
@@ -404,6 +437,13 @@ let villains = [
         "isSelected": false,
         "type": "villain",
         "hitpoints": 11,
+        "hitpointsper": true
+    },
+    {
+        "name": "Citizen V",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 12,
         "hitpointsper": true
     },
     {
@@ -578,6 +618,15 @@ let villains = [
         "type": "villain",
         "hitpoints": 20,
         "hitpointsper": true
+    },
+    {
+        "name": "M.O.D.O.K.",
+        "isSelected": false,
+        "type": "villain",
+        "hitpoints": 10,
+        "hitpointsper": false,
+        "useCounter": true,
+        "counter": 0
     },
     {
         "name": "Magneto",
@@ -868,6 +917,17 @@ let main_schemes = [
         ]
     },
     {
+        "name": "Apprehending Rogue Agents",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 11,
+        "basethreat": 1,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Citizen V"
+        ]
+    },
+    {
         "name": "Assault on NORAD",
         "isSelected": false,
         "type": "main_scheme",
@@ -1035,6 +1095,17 @@ let main_schemes = [
         ]
     },
     {
+        "name": "Extract Captives",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 18,
+        "basethreat": 12,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Batroc"
+        ]
+    },
+    {
         "name": "Factory Online",
         "isSelected": false,
         "type": "main_scheme",
@@ -1127,6 +1198,17 @@ let main_schemes = [
         ]
     },
     {
+        "name": "Infiltrate A.I.M. Island Embassy",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 12,
+        "basethreat": 6,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Batroc"
+        ]
+    },
+    {
         "name": "Interception Imminent",
         "isSelected": false,
         "type": "main_scheme",
@@ -1202,6 +1284,17 @@ let main_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Stryfe"
+        ]
+    },
+    {
+        "name": "Locate Missing Person",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 10,
+        "basethreat": 3,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Batroc"
         ]
     },
     {
@@ -1859,6 +1952,17 @@ let main_schemes = [
         ]
     },
     {
+        "name": "The Widow's Web",
+        "isSelected": false,
+        "type": "main_scheme",
+        "threat": 10,
+        "basethreat": 2,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Black Widow"
+        ]
+    },
+    {
         "name": "Uncontrollable Power",
         "isSelected": false,
         "type": "main_scheme",
@@ -1956,6 +2060,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Abduct Superhumans",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "A.I.M. Abduction"
+        ]
+    },
+    {
         "name": "Abduction Protocols",
         "isSelected": false,
         "type": "side_scheme",
@@ -1965,6 +2081,18 @@ let side_schemes = [
         "belongstotype": "villain",
         "belongsto": [
             "Sabretooth"
+        ]
+    },
+    {
+        "name": "Acquire Infinity Formula",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 5,
+        "basethreat": 5,
+        "basethreatfixed": true,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Nick Fury"
         ]
     },
     {
@@ -2015,6 +2143,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Army of the Controlled",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Maria Hill"
+        ]
+    },
+    {
         "name": "Assemble the Team",
         "isSelected": false,
         "type": "side_scheme",
@@ -2035,6 +2175,18 @@ let side_schemes = [
         "basethreat": 5,
         "basethreatfixed": true,
         "isPlayerSideScheme": true
+    },
+    {
+        "name": "Automated Defenses",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Black Widow"
+        ]
     },
     {
         "name": "Avalanche!",
@@ -2092,6 +2244,18 @@ let side_schemes = [
         "belongstotype": "module",
         "belongsto": [
             "Future Past"
+        ]
+    },
+    {
+        "name": "Batroc's Brigade",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 6,
+        "basethreat": 6,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "Batrocs Brigade"
         ]
     },
     {
@@ -2401,6 +2565,18 @@ let side_schemes = [
         ]
     },
     {
+        "name": "Commandeer Security Office",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 3,
+        "basethreat": 3,
+        "basethreatfixed": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Batroc"
+        ]
+    },
+    {
         "name": "Consume the World",
         "isSelected": false,
         "type": "side_scheme",
@@ -2577,6 +2753,18 @@ let side_schemes = [
         "belongstotype": "module",
         "belongsto": [
             "MTS Campaign"
+        ]
+    },
+    {
+        "name": "Destroy Evidence",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Black Widow"
         ]
     },
     {
@@ -3635,6 +3823,18 @@ let side_schemes = [
         "basethreat": 2,
         "basethreatfixed": false,
         "isPlayerSideScheme": true
+    },
+    {
+        "name": "Mad Science",
+        "isSelected": false,
+        "type": "side_scheme",
+        "threat": 2,
+        "basethreat": 2,
+        "basethreatfixed": true,
+        "belongstotype": "module",
+        "belongsto": [
+            "A.I.M. Science"
+        ]
     },
     {
         "name": "Madness on Midgard",
@@ -5456,6 +5656,61 @@ let side_schemes = [
 
 let minions = [
     {
+        "name": "A.I.M. Abductor",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "A.I.M. Abduction"
+        ]
+    },
+    {
+        "name": "A.I.M. Commando",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Black Widow"
+        ]
+    },
+    {
+        "name": "A.I.M. Grunt",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Black Widow"
+        ]
+    },
+    {
+        "name": "A.I.M. Scientist",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 2,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "A.I.M. Science"
+        ]
+    },
+    {
+        "name": "A.I.M. Soldier",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "A.I.M. Science"
+        ]
+    },
+    {
         "name": "Abomination",
         "isSelected": false,
         "type": "minion",
@@ -5474,6 +5729,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Overseer"
+        ]
+    },
+    {
+        "name": "Adaptoid",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "M.O.D.O.K."
         ]
     },
     {
@@ -6069,6 +6335,17 @@ let minions = [
         ]
     },
     {
+        "name": "Controller",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Maria Hill"
+        ]
+    },
+    {
         "name": "Corrupt Prison Guard",
         "isSelected": false,
         "type": "minion",
@@ -6297,6 +6574,28 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Iron Spider's Sinister Six"
+        ]
+    },
+    {
+        "name": "Embassy Guard",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Batroc"
+        ]
+    },
+    {
+        "name": "Embassy Patrol",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "villain",
+        "belongsto": [
+            "Batroc"
         ]
     },
     {
@@ -6981,6 +7280,17 @@ let minions = [
         ]
     },
     {
+        "name": "Leviathan Soldier",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Nick Fury"
+        ]
+    },
+    {
         "name": "Life-Size Decoy",
         "isSelected": false,
         "type": "minion",
@@ -7038,6 +7348,28 @@ let minions = [
         "belongstotype": "villain",
         "belongsto": [
             "Magneto"
+        ]
+    },
+    {
+        "name": "MACH-IV",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 16,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Supersonic"
+        ]
+    },
+    {
+        "name": "Machete",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 3,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Batrocs Brigade"
         ]
     },
     {
@@ -7340,6 +7672,17 @@ let minions = [
         ]
     },
     {
+        "name": "Orion",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 6,
+        "hitpointsper": false,
+        "belongstotype": "hero",
+        "belongsto": [
+            "Nick Fury"
+        ]
+    },
+    {
         "name": "Outrider",
         "isSelected": false,
         "type": "minion",
@@ -7527,6 +7870,17 @@ let minions = [
         "belongstotype": "module",
         "belongsto": [
             "Nasty Boys"
+        ]
+    },
+    {
+        "name": "Rapido",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 4,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Batrocs Brigade"
         ]
     },
     {
@@ -8542,6 +8896,17 @@ let minions = [
         ]
     },
     {
+        "name": "Zaran",
+        "isSelected": false,
+        "type": "minion",
+        "hitpoints": 5,
+        "hitpointsper": false,
+        "belongstotype": "module",
+        "belongsto": [
+            "Batrocs Brigade"
+        ]
+    },
+    {
         "name": "Zealot of Truth",
         "isSelected": false,
         "type": "minion",
@@ -9020,6 +9385,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Flying Inhuman",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 5
+    },
+    {
         "name": "Forge",
         "isSelected": false,
         "type": "ally",
@@ -9072,6 +9443,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 4
+    },
+    {
+        "name": "Grant Ward",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
     },
     {
         "name": "Groot",
@@ -9338,6 +9715,12 @@ let allies = [
         "hitpoints": 2
     },
     {
+        "name": "Maria Hill (Unknown)",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
         "name": "Marrow",
         "isSelected": false,
         "type": "ally",
@@ -9363,6 +9746,12 @@ let allies = [
     },
     {
         "name": "Marvel Girl",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Melinda May",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -9435,6 +9824,12 @@ let allies = [
     },
     {
         "name": "Nick Fury",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Nick Fury, Sr.",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -9578,6 +9973,12 @@ let allies = [
         "hitpoints": 3
     },
     {
+        "name": "Rescued Captive",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 5
+    },
+    {
         "name": "Rictor",
         "isSelected": false,
         "type": "ally",
@@ -9606,6 +10007,12 @@ let allies = [
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
+    },
+    {
+        "name": "Sarah Garza",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 5
     },
     {
         "name": "Scarlet Spider",
@@ -9675,6 +10082,12 @@ let allies = [
     },
     {
         "name": "Siryn",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 3
+    },
+    {
+        "name": "Slingshot",
         "isSelected": false,
         "type": "ally",
         "hitpoints": 3
@@ -9884,6 +10297,12 @@ let allies = [
         "hitpoints": 4
     },
     {
+        "name": "Victoria Hand",
+        "isSelected": false,
+        "type": "ally",
+        "hitpoints": 2
+    },
+    {
         "name": "Vision",
         "isSelected": false,
         "type": "ally",
@@ -10025,6 +10444,17 @@ let countercards = [
         "counter": 0
     },
     {
+        "name": "Assault",
+        "isSelected": false,
+        "type": "counter",
+        "isThreat": true,
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Nick Fury"
+        ]
+    },
+    {
         "name": "Badoon Ship",
         "isSelected": false,
         "type": "counter",
@@ -10069,6 +10499,16 @@ let countercards = [
         "isSelected": false,
         "type": "counter",
         "counter": 0
+    },
+    {
+        "name": "Chief Tactical Officer",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "S.h.i.e.l.d. Executive Board"
+        ]
     },
     {
         "name": "Command Team",
@@ -10201,6 +10641,22 @@ let countercards = [
         ]
     },
     {
+        "name": "Heightened Reflexes",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Batroc"
+        ]
+    },
+    {
+        "name": "Jemma Simmons",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
         "name": "Judoka Skill",
         "isSelected": false,
         "type": "counter",
@@ -10208,6 +10664,12 @@ let countercards = [
     },
     {
         "name": "Leadership Skill",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
+        "name": "Leo Fitz",
         "isSelected": false,
         "type": "counter",
         "counter": 0
@@ -10359,6 +10821,16 @@ let countercards = [
         ]
     },
     {
+        "name": "Safe House #221",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Nick Fury"
+        ]
+    },
+    {
         "name": "Sonic Rifle",
         "isSelected": false,
         "type": "counter",
@@ -10389,6 +10861,17 @@ let countercards = [
         ]
     },
     {
+        "name": "Stealth",
+        "isSelected": false,
+        "type": "counter",
+        "isThreat": true,
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Nick Fury"
+        ]
+    },
+    {
         "name": "Stepford Cuckoos",
         "isSelected": false,
         "type": "counter",
@@ -10402,6 +10885,16 @@ let countercards = [
         "belongstotype": "module",
         "belongsto": [
             "Bishop"
+        ]
+    },
+    {
+        "name": "Support Staff",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Maria Hill"
         ]
     },
     {
@@ -10431,6 +10924,12 @@ let countercards = [
         "counter": 0
     },
     {
+        "name": "The Bellerophon",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
         "name": "The Challengers",
         "isSelected": false,
         "type": "counter",
@@ -10451,6 +10950,28 @@ let countercards = [
         ]
     },
     {
+        "name": "The Circe",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
+        "name": "The Douglass",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
+    },
+    {
+        "name": "The Iliad",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0,
+        "belongstotype": "module",
+        "belongsto": [
+            "Maria Hill"
+        ]
+    },
+    {
         "name": "The Night Nurse",
         "isSelected": false,
         "type": "counter",
@@ -10459,6 +10980,12 @@ let countercards = [
         "belongsto": [
             "Protection"
         ]
+    },
+    {
+        "name": "The Pericles",
+        "isSelected": false,
+        "type": "counter",
+        "counter": 0
     },
     {
         "name": "The Poison",
@@ -10504,6 +11031,12 @@ let modules = [
         "name": "A Mess of Things"
     },
     {
+        "name": "A.I.M. Abduction"
+    },
+    {
+        "name": "A.I.M. Science"
+    },
+    {
         "name": "Acolytes"
     },
     {
@@ -10532,6 +11065,9 @@ let modules = [
     },
     {
         "name": "Band of Badoon"
+    },
+    {
+        "name": "Batrocs Brigade"
     },
     {
         "name": "Beasty Boys"
@@ -10657,6 +11193,9 @@ let modules = [
         "name": "Legions of Hydra"
     },
     {
+        "name": "Maria Hill"
+    },
+    {
         "name": "Master of Time"
     },
     {
@@ -10693,6 +11232,9 @@ let modules = [
         "name": "NeXt Evol Campaign"
     },
     {
+        "name": "Nick Fury"
+    },
+    {
         "name": "On The Run"
     },
     {
@@ -10718,6 +11260,9 @@ let modules = [
     },
     {
         "name": "Running Interference"
+    },
+    {
+        "name": "S.h.i.e.l.d. Executive Board"
     },
     {
         "name": "Sauron"
@@ -10757,6 +11302,9 @@ let modules = [
     },
     {
         "name": "Space Pirates"
+    },
+    {
+        "name": "Supersonic"
     },
     {
         "name": "Symbiotic Strength"

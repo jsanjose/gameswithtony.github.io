@@ -87,11 +87,19 @@
                     <a class="counter-button-item" href="#" v-on:click="character.updateCounter(1, $event)">+ 1</a>
                 </section>
             </section>
+            <section class="threatcounter" v-if="character.hasThreatCounter">
+                Threat: 
+                <section class="counter-buttons">
+                    <a class="counter-button-item threat" href="#" v-on:click="character.updateThreatCounter(-1, $event)">- 1</a>
+                    <span class="counter-button-item threat">{{ character.threatcounter }}</span>
+                    <a class="counter-button-item threat" href="#" v-on:click="character.updateThreatCounter(1, $event)">+ 1</a>
+                </section>
+            </section>
             <section class="countercard" v-if="character.type == 3">
                 <section class="counter-buttons">
-                    <a class="counter-button-item" href="#" v-on:click="character.updateCounter(-1, $event)">- 1</a>
+                    <a class="counter-button-item" v-bind:class="{ 'counter-button-threat': character.isThreat }" href="#" v-on:click="character.updateCounter(-1, $event)">- 1</a>
                     <span class="counter-button-item countercard-total">{{ character.counter }}</span>
-                    <a class="counter-button-item" href="#" v-on:click="character.updateCounter(1, $event)">+ 1</a>
+                    <a class="counter-button-item" v-bind:class="{ 'counter-button-threat': character.isThreat }" href="#" v-on:click="character.updateCounter(1, $event)">+ 1</a>
                 </section>
                 <p class="max-button" v-on:click="character.hideMe($event)">Hide</p>
             </section>
@@ -130,6 +138,8 @@
                     <option value="1">Side Scheme</option>
                 </select>
                 <label v-if="character.type == 2">&nbsp;&nbsp;<input type="checkbox" v-model="character.useCounter" />Counters</label>
+                <label v-if="character.type == 2">&nbsp;&nbsp;<input type="checkbox" v-model="character.hasThreatCounter" />Threat Counter</label>
+                <label v-if="character.hasThreatCounter && character.type == 2">&nbsp;&nbsp;Value: <input type="number" inputmode="numeric" pattern="[0-9]*" class="character-threatcounter" v-model="character.threatcounter" /></label>
                 <br />
                 <div class="character-edit-buttons">
                     <label v-if="character.type == 2"><input type="checkbox" v-model="character.isStunned" />Stunned</label>

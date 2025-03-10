@@ -44,6 +44,17 @@ const updateCounter = function (diff, event) {
     app.$forceUpdate();
 }
 
+const updateThreatCounter = function (diff, event) {
+    let totalthreatcounter = new Number(this.threatcounter) + new Number(diff);
+    this.threatcounter = totalthreatcounter;
+    if (this.threatcounter < 0) {
+        this.threatcounter = 0;
+    }
+    app.saveGameState();
+    event.preventDefault();
+    app.$forceUpdate();
+}
+
 const hideMe = function (event) {
     this.hide = true;
 
@@ -85,6 +96,9 @@ function createCharacter(id, name, hitpoints, type) {
         hitpoints: hitpoints,
         maxhitpoints: hitpoints,
         counter: hitpoints,
+        threatcounter: 0,
+        hasThreatCounter: false,
+        isThreat: false,
         hide: false,
         isStunned: false,
         isTough: false,
@@ -93,6 +107,7 @@ function createCharacter(id, name, hitpoints, type) {
         updateHitPoints: updateHitPoints,
         updateMaxHitPoints: updateMaxHitPoints,
         updateCounter: updateCounter,
+        updateThreatCounter: updateThreatCounter,
         toggleStatus: toggleStatus,
         hideMe: hideMe,
         showMe: showMe
@@ -127,7 +142,7 @@ var app = new Vue({
         filterModule: "",
         filterAspect: "",
         computedUpdater: 1,
-        version: "1.3"
+        version: "1.35"
     },
     mounted: function() {
         this.computedUpdater++;
@@ -179,6 +194,7 @@ var app = new Vue({
                 this.characters[i].updateHitPoints = updateHitPoints;
                 this.characters[i].updateMaxHitPoints = updateMaxHitPoints;
                 this.characters[i].updateCounter = updateCounter;
+                this.characters[i].updateThreatCounter = updateThreatCounter;
                 this.characters[i].toggleStatus = toggleStatus;
                 this.characters[i].hideMe = hideMe;
                 this.characters[i].showMe = showMe;
@@ -210,6 +226,14 @@ var app = new Vue({
 
                 if (!this.characters[i].hasOwnProperty("type")) {
                     this.characters[i].type = TYPE.Character;
+                }
+
+                if (!this.characters[i].hasOwnProperty("threatcounter")) {
+                    this.characters[i].threatcounter = 0;
+                }
+
+                if (!this.characters[i].hasOwnProperty("hasThreatCounter")) {
+                    this.characters[i].hasThreatCounter = false;
                 }
             };
         }
@@ -301,6 +325,12 @@ var app = new Vue({
             }
 
             let filtered = _.filter(this.countercards, function (c) {
+                // Keep cards that are explicitly selected
+                if (c.isSelected) return true;
+                
+                // Keep cards that don't have a belongstotype property
+                if (!c.belongstotype) return true;
+
                 let moduleMatch = true;
                 let aspectMatch = true;
 
@@ -386,6 +416,11 @@ var app = new Vue({
                     if (this.heroes[i].useCounter) {
                         newcharacter.useCounter = true;
                         newcharacter.counter = this.heroes[i].counter;
+                    }
+
+                    if (this.heroes[i].hasThreatCounter) {
+                        newcharacter.hasThreatCounter = true;
+                        newcharacter.threatcounter = 0;
                     }
 
                     newcharacter.isHero = true;
@@ -496,6 +531,10 @@ var app = new Vue({
             for (let i=0;i<this.countercards.length;i++) {
                 if (this.countercards[i].isSelected) {
                     let newcharacter = createCharacter(7000+i, this.countercards[i].name, this.countercards[i].counter, TYPE.CounterCard);
+
+                    if (this.countercards[i].isThreat === true) {
+                        newcharacter.isThreat = true;
+                    }
 
                     this.characters.push(newcharacter);
                     this.countercards[i].isSelected = false;

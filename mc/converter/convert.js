@@ -9,6 +9,16 @@ function capitalizeSetCode(setCode) {
 }
 
 function usesCounters(card) {
+    // Check for S.H.I.E.L.D. support cards
+    if (card.type_code === 'support' && card.traits && card.traits.includes('S.H.I.E.L.D.')) {
+        return true;
+    }
+    
+    // Check for Suit form upgrades
+    if (card.type_code === 'upgrade' && card.text && card.text.includes('Suit form.')) {
+        return true;
+    }
+
     if (!card.text) return false;
     
     // Strip HTML tags and convert to lowercase
@@ -45,7 +55,12 @@ function usesCounters(card) {
         /place \d+\[per_hero\] \w+ counters? on/i,  // "place 3[per_hero] ratings counters on"
         /place \d+ ratings counters? on/i,  // "place 1 ratings counter on The Champion"
         /place \d+ \w+ counters? on each/i,  // "place 1 threat counter on each scheme"
-        /place \d+ \w+ counters? on \w+(?! (counter|here))/i  // "place 1 momentum counter on Juggernaut" but not if followed by "counter" or "here"
+        /place \d+ \w+ counters? on \w+(?! (counter|here))/i,  // "place 1 momentum counter on Juggernaut" but not if followed by "counter" or "here"
+        /place \d+ all-purpose counters? on/i,  // "place 1 all-purpose counter on a S.H.I.E.L.D. support"
+        /move \d+ all-purpose counters? from/i,  // "move 1 all-purpose counter from a S.H.I.E.L.D. support"
+        /add \d+ all-purpose counters? to/i,  // "add 1 all-purpose counter to a S.H.I.E.L.D. support"
+        /place a total of \d+ all-purpose counters?/i,  // "place a total of 3 all-purpose counters..."
+        /remove \d+ all-purpose counters? from/i  // "remove 1 all-purpose counter from a support"
     ];
 
     // If card has any receives pattern, it uses counters
