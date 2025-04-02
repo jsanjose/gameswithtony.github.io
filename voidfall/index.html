@@ -451,8 +451,10 @@
             <small class="app-explanation">{{ langStrs[appLang]["appSubtitle"] }}</small>
             <select id="lang" class="lang" v-model="appLang" @change="appLangChanged()">
                 <option value="en">English</option>
+                <option value="es">Español</option>
                 <option value="de">Deutsch</option>
                 <option value="fr">Français</option>
+                <option value="pt-br">Português (Brasil)</option>
             </select>
             <p>
                 <label for="numberOfPlayers">{{ langStrs[appLang]["numOfPlayers"] }}: </label>

@@ -176,7 +176,7 @@ const langStrings = {
         defenderAbsorbedAllDmg: 'Defender absorbed all damage.',
         invaderAbsorbedAllDmg: 'Invader absorbed all damage.'
     },
-    "ptbr": {
+    "pt-br": {
         appTitle: "Voidfall Helper",
         appSubtitle: "Randomizador de Casas, gerador de oferta de tecnologias, e calculador de combate.",
         numOfPlayers: "# de jogadores",
