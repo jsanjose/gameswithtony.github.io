@@ -1515,7 +1515,7 @@ class ResultDetail {
 createApp({
     data() { return {
         numberOfPlayers: 1,
-        appLang: "en",
+        appLang: localStorage.getItem("VoidfallLang") || "en",
         langStrs: langStrings, // from lang-str.js
         pageState: PAGE_STATE.StartScreen,
         players: [
@@ -1537,7 +1537,7 @@ createApp({
         showResults: false,
         expandAll: true,
         computedUpdater: 1,
-        version: "1.9"
+        version: "1.91"
     } },
     watch: {
         numberOfPlayers(val) {
@@ -1557,7 +1557,6 @@ createApp({
 
             this.pageState = gameState.pageState;
             this.numberOfPlayers = gameState.numberOfPlayers;
-            this.appLang = lang; // from lang-str.js
  
             if (this.pageState != PAGE_STATE.StartScreen) {
                 for (let i=0; i<gameState.players.length; i++) {
